@@ -1,0 +1,47 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        // TinkerPatch 插件
+        classpath "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.1.8"
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+ext {
+    android = [
+            applicationId    : "com.suxuantech.erpsys",
+            compileSdkVersion: 26,
+            buildToolsVersion: '26.0.0',
+            minSdkVersion    : 19,
+            targetSdkVersion : 26,
+            versionCode      : 1,
+            versionName      : "1.0",
+            support_library_version : '25.0+',
+    ]
+    println "版本名称:==========${rootProject.ext.android.versionName}==========="
+}
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://jitpack.io"
+        }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+        //从api 26开始，support libraries 需要从google的maven仓库下载，所以需要在project的build.gradle中allprojects 添加如下配置即可
+        maven { url "https://maven.google.com" }
+
+    }
+}
+
+task clean(type: Delete) {
+
+    delete rootProject.buildDir
+}

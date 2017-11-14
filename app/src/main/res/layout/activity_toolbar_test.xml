@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--测试-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.test.ToolbarTestActivity">
+    <Button
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title"
+        tools:layout_editor_absoluteX="118dp"
+        tools:layout_editor_absoluteY="80dp" />
+    <Button
+        android:id="@+id/Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subtitle"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="128dp" />
+
+    <Button
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="logo"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+    <Button
+        android:id="@+id/NavigationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NavigationIcon"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="menu"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <Button
+        android:id="@+id/inflateMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="inflateMenu"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <Button
+        android:id="@+id/addMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="addMenu"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <Button
+        android:id="@+id/addView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="addView"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+
+
+</LinearLayout>

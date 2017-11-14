@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--侵入到内容的沉浸式-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout_content_immersed"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v4.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/content_view_linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+
+    <!--状态栏和导航栏-->
+    <LinearLayout
+        android:id="@+id/status_and_nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.yanzhenjie.statusview.StatusView
+        android:id="@+id/status_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:fitsView="@id/root_layout"/>
+        <!--导航栏-->
+        <include layout="@layout/navigation_heads"/>
+    </LinearLayout>
+    <com.yanzhenjie.statusview.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/navigation"/>
+</FrameLayout>
