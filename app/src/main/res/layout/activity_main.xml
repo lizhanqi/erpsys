@@ -41,7 +41,7 @@
         android:id="@+id/BaseTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BaseActivityTest"
+        android:text="权限测试"
         android:layout_below="@+id/teststu"
         android:layout_toEndOf="@+id/full"
         android:layout_marginStart="71dp"

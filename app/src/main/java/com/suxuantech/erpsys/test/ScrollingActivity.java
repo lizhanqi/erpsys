@@ -10,10 +10,17 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
 import com.yanzhenjie.statusview.StatusUtils;
 
+import java.util.List;
+
 /**
  * 暂时搁置这里
  */
 public class ScrollingActivity extends StatusImmersedBaseActivity {
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

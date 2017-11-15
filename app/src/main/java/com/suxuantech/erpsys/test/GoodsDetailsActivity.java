@@ -29,6 +29,8 @@ import com.yanzhenjie.statusview.NavigationView;
 import com.yanzhenjie.statusview.StatusUtils;
 import com.yanzhenjie.statusview.StatusView;
 
+import java.util.List;
+
 /**
  * <p>
  * Content intrusion status bar.
@@ -41,6 +43,12 @@ public class GoodsDetailsActivity extends ContentImmersedBaseActivity {
     Toolbar mToolbar;
     NavigationView mNavigationView;
     View mHeaderView;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,9 +11,16 @@ import android.widget.TextView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
 
+import java.util.List;
+
 public class ToolbarTestActivity extends StatusImmersedBaseActivity {
 
     private Toolbar toolbar;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

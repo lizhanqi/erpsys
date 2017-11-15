@@ -144,6 +144,11 @@ public class LoadMoreTestActivity extends StatusImmersedBaseActivity {
     }
 
     @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_more_test);

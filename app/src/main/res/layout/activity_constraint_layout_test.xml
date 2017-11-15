@@ -48,12 +48,12 @@
         android:id="@+id/BaseTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BaseActivityTest"
+        android:text="权限基本测试页面"
         android:layout_marginEnd="88dp"
         android:layout_below="@+id/rec"
         android:layout_alignParentEnd="true"
-        tools:layout_editor_absoluteY="-8dp"
-        tools:layout_editor_absoluteX="-32dp" />
+        tools:layout_editor_absoluteY="-5dp"
+        tools:layout_editor_absoluteX="16dp" />
     <Button
         android:id="@+id/rec"
         android:layout_width="wrap_content"
@@ -70,8 +70,8 @@
         android:text="标题"
         android:layout_alignBottom="@+id/BaseTest"
         android:layout_toStartOf="@+id/BaseTest"
-        tools:layout_editor_absoluteY="5dp"
-        tools:layout_editor_absoluteX="124dp" />
+        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteX="192dp" />
     <Button
         android:id="@+id/setLeft"
         android:layout_width="wrap_content"

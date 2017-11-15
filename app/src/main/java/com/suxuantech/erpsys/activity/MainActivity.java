@@ -24,6 +24,8 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
+import java.util.List;
+
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 
 public class MainActivity extends StatusImmersedBaseActivity {
@@ -42,7 +44,7 @@ public class MainActivity extends StatusImmersedBaseActivity {
         findViewSetOnClick(R.id.setTitle);
         findViewSetOnClick(R.id.setLeft);
         findViewSetOnClick(R.id.setRight);
-              idSetOnClick(R.id.fold);
+        idSetOnClick(R.id.fold);
         setSupportToolbar();
     }
 
@@ -65,7 +67,7 @@ public void get(){
 
 }
     @Override
-    public void widgetClick(View v) {
+    protected void widgetClick(View v) {
         switch (v.getId()) {
             case R.id.teststu:
                // throw new RuntimeException("I'm a cool exception and I crashed the main thread!");
@@ -103,11 +105,30 @@ public void get(){
                 break;
         }
     }
+
+    //请求权限后结果
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
+
+
+
+
+
+
+
 /*    private void nets() {
         JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>();
         HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>();
         CallServer.getInstance().add(this,districtBeanJavaBeanRequest,districtBeanHttpResponseListener,10,true,true);
     }*/
+
+
+
+
+
     public void send() {
         Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.188:8883/DBServer/Add", RequestMethod.POST);
         // stringRequest.addHeader("Content-Type", "application/json");

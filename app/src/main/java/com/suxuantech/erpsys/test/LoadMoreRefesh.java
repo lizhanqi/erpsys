@@ -46,6 +46,12 @@ import in.srain.cube.views.ptr.PtrHandler;
 
 public class LoadMoreRefesh extends BaseActivity {
     private PtrClassicFrameLayout mPtrFrame;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

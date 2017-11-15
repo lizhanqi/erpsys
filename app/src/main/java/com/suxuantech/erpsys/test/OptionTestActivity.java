@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 
@@ -25,6 +26,11 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
 
     private TimePickerView pvTime;
     private OptionsPickerView pvOptions;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
