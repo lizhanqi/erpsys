@@ -61,6 +61,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     /**
      * 是否输出日志信息
      **/
+    public int fastClickTime=1000;
     private final int MUSTPERMISSIONCODE = 2626;
     protected final String TAG = this.getClass().getSimpleName();
     //本页面需要的权限(hash的目的是去除重复添加的,没必要多次重复添加)
@@ -442,7 +443,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      * @return
      */
     private boolean fastClick(View v) {
-        if (System.currentTimeMillis() - lastClick <= 1000 && lastView == v) {
+        if (System.currentTimeMillis() - lastClick <= fastClickTime && lastView == v) {
             toast("已经点过了");
             return false;
         }
@@ -456,6 +457,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      *
      * @param v
      */
+    @Override
     public void onClick(View v) {
         if (fastClick(v)) {
             widgetClick(v);

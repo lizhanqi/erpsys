@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -51,8 +52,10 @@ public class StringUtils {
         }
         return newStr;
     }
+
     public static boolean strIsNumber(String str) {
-        Pattern pattern = Pattern.compile("[0-9]{1,}");
+        final String compile = "[0-9]{1,}";
+        Pattern pattern = Pattern.compile(compile);
         Matcher matcher = pattern.matcher((CharSequence) str);
         boolean result = matcher.matches();
         return result;
@@ -60,32 +63,35 @@ public class StringUtils {
 
     /**
      * 判断字符串是否是null
+     *
      * @param str
      * @return
      */
     public static boolean strIsNull(String str) {
-        return str==null;
+        return str == null;
     }
+
     /**
      * 改变字符串为null的值为空字符串
+     *
      * @param str
      * @return
      */
     public static String strChangeNull(String str) {
-        if (str==null){
-            return  str="";
+        if (str == null) {
+            return str = "";
         }
-        return str ;
+        return str;
     }
-
 
 
     /**
      * 判断是否为合法IP
+     *
      * @return the ipbuild.gradle
      */
-    public static boolean isIp(String ipAddress){
-                String ip = "([1-9]|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])(//.(//d|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])){3}";
+    public static boolean isIp(String ipAddress) {
+        String ip = "([1-9]|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])(//.(//d|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])){3}";
         Pattern pattern = Pattern.compile(ip);
         Matcher matcher = pattern.matcher(ipAddress);
         return matcher.matches();

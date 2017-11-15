@@ -95,8 +95,10 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      */
     @Override
     public void onStart(int what) {
-        if (mWaitDialog != null && !mWaitDialog.isShowing())
+        if (mWaitDialog != null && !mWaitDialog.isShowing()){
             mWaitDialog.show();
+        }
+
     }
 
     /**
@@ -104,8 +106,10 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      */
     @Override
     public void onFinish(int what) {
-        if (mWaitDialog != null && mWaitDialog.isShowing())
+        if (mWaitDialog != null && mWaitDialog.isShowing()){
             mWaitDialog.dismiss();
+        }
+
     }
     /**
      * 成功回调.
@@ -126,13 +130,13 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
     public void onFailed(int what, Response<T> response) {
         Exception exception = response.getException();
         if (isShowError) {
-            if (exception instanceof NetworkError) {// 网络不好
+            if (exception instanceof NetworkError) {
                 ToastUtils.show(R.string.error_please_check_network);
-            } else if (exception instanceof TimeoutError) {// 请求超时
+            } else if (exception instanceof TimeoutError) {
                 ToastUtils.show(R.string.error_timeout);
-            } else if (exception instanceof UnKnownHostError) {// 找不到服务器
+            } else if (exception instanceof UnKnownHostError) {
                 ToastUtils.show(R.string.error_not_found_server);
-            } else if (exception instanceof URLError) {// URL是错的
+            } else if (exception instanceof URLError) {
                 ToastUtils.show(R.string.error_url_error);
             } else if (exception instanceof NotFoundCacheError) {
                 // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
@@ -144,8 +148,8 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                 ToastUtils.show(R.string.error_unknow+response.getException().getMessage());
             }
         }
-        if (callback != null)
-            callback.onFailed(what, response);
+        if (callback != null){
+            callback.onFailed(what, response);}
     }
 
 }

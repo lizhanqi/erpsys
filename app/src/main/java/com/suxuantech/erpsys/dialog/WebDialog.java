@@ -59,13 +59,15 @@ public class WebDialog extends AlertDialog.Builder {
     }
 
     public void dismiss() {
-        if (alertDialog != null && alertDialog.isShowing())
+        if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
+        }
     }
 
     public void cancel() {
-        if (alertDialog != null && alertDialog.isShowing())
+        if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.cancel();
+        }
     }
 
     @Override
@@ -74,8 +76,9 @@ public class WebDialog extends AlertDialog.Builder {
             alertDialog = create();
             alertDialog.setTitle(null);
         }
-        if (!alertDialog.isShowing())
+        if (!alertDialog.isShowing()) {
             alertDialog.show();
+        }
         return alertDialog;
     }
 }

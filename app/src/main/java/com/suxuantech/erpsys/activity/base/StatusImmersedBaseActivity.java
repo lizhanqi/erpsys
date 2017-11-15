@@ -428,15 +428,17 @@ public abstract class StatusImmersedBaseActivity extends BaseActivity {
     public void hideStatus() {
         super.hideStatus();
         //防止是侵入式需要隐藏一下
-        if (mStatusView != null)
+        if (mStatusView != null) {
             mStatusView.setVisibility(View.GONE);
+        }
     }
     @Override
     public void showStatus() {
         super.showStatus();
         //防止是侵入式需要显示出来一下
-        if (mStatusView != null)
+        if (mStatusView != null) {
             mStatusView.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

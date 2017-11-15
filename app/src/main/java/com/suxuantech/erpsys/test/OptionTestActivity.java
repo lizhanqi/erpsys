@@ -30,11 +30,18 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty_test);
+
+
         idSetOnClick(R.id.tv_address);
         idSetOnClick(R.id.tv_time);
         initJsonData();
-//        getSwipeBackLayout().setShadow(R.mipmap.header, SwipeBackLayout.EDGE_LEFT);
+//        getSwipeBackLayout().
+//                setEdgeTrackingEnabled();
+//
+//
+// getSwipeBackLayout().setShadow(R.mipmap.header, SwipeBackLayout.EDGE_LEFT);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -47,22 +54,22 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                String tx = options1Items.get(options1).getPickerViewText()+
-                        options2Items.get(options1).get(options2)+
+                String tx = options1Items.get(options1).getPickerViewText() +
+                        options2Items.get(options1).get(options2) +
                         options3Items.get(options1).get(options2).get(options3);
 
-                Toast.makeText(OptionTestActivity.this,tx,Toast.LENGTH_SHORT).show();
+                Toast.makeText(OptionTestActivity.this, tx, Toast.LENGTH_SHORT).show();
             }
-        }) .setTitleText("城市选择")
+        }).setTitleText("城市选择")
                 .setDividerColor(Color.BLACK)
                 .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
                 .setContentTextSize(20)
                 .build();
-        pvOptions.setPicker(options1Items, options2Items,options3Items);//三级选择器
+        pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
         pvOptions.show();
     }
 
-   @Override
+    @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
             case R.id.tv_address:
@@ -73,9 +80,11 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
                 break;
         }
     }
-    ArrayList<DistrictBean> options1Items =new ArrayList<>();
+
+    ArrayList<DistrictBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
+
     private void initJsonData() {//解析数据
 
         /**
@@ -83,7 +92,7 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
          * 关键逻辑在于循环体
          *
          * */
-        String JsonData = new AssetFileRead().getString(this,"province.json");//获取assets目录下的json文件数据
+        String JsonData = new AssetFileRead().getString(this, "province.json");//获取assets目录下的json文件数据
         ArrayList<DistrictBean> jsonBean = parseData(JsonData);//用Gson 转成实体
         /**
          * 添加省份数据
@@ -93,11 +102,11 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
          */
         options1Items = jsonBean;
 
-        for (int i=0;i<jsonBean.size();i++){//遍历省份
+        for (int i = 0; i < jsonBean.size(); i++) {//遍历省份
             ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
             ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
 
-            for (int c=0; c<jsonBean.get(i).getCityList().size(); c++){//遍历该省份的所有城市
+            for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {//遍历该省份的所有城市
                 String CityName = jsonBean.get(i).getCityList().get(c).getName();
                 CityList.add(CityName);//添加城市
 
@@ -105,11 +114,11 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
 
                 //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
                 if (jsonBean.get(i).getCityList().get(c).getArea() == null
-                        ||jsonBean.get(i).getCityList().get(c).getArea().size()==0) {
+                        || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {
                     City_AreaList.add("");
-                }else {
+                } else {
 
-                    for (int d=0; d < jsonBean.get(i).getCityList().get(c).getArea().size(); d++) {//该城市对应地区所有数据
+                    for (int d = 0; d < jsonBean.get(i).getCityList().get(c).getArea().size(); d++) {//该城市对应地区所有数据
                         String AreaName = jsonBean.get(i).getCityList().get(c).getArea().get(d);
 
                         City_AreaList.add(AreaName);//添加该城市所有地区数据
@@ -129,6 +138,7 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
             options3Items.add(Province_AreaList);
         }
     }
+
     public ArrayList<DistrictBean> parseData(String result) {//Gson 解析
         ArrayList<DistrictBean> detail = new ArrayList<>();
         try {
@@ -145,9 +155,9 @@ public class OptionTestActivity extends StatusImmersedBaseActivity {
     }
 
 
-    public void  showDataSelect(){
-       Calendar instance = Calendar.getInstance();
-       //时间选择器
+    public void showDataSelect() {
+        Calendar instance = Calendar.getInstance();
+        //时间选择器
         //选中事件回调
 //                DateUtil.dateToString()
 //年月日时分秒 的显示与否，不设置则默认全部显示

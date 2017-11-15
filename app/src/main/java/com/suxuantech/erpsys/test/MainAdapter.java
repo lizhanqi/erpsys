@@ -37,6 +37,7 @@ public class MainAdapter extends BaseAdapter<MainAdapter.ViewHolder> {
         super(context);
     }
 
+    @Override
     public void notifyDataSetChanged(List<String> dataList) {
         this.mDataList = dataList;
         super.notifyDataSetChanged();

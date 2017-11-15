@@ -22,13 +22,16 @@ package com.suxuantech.erpsys.utils;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/2 20:30 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 十六进制转换工具
  */
+
 import java.io.UnsupportedEncodingException;
+
 public class HexUtil {
     private static String hexString = "0123456789ABCDEF";
+
     public static String encodeCN(String data) {
         byte[] bytes;
         try {
@@ -81,9 +84,12 @@ public class HexUtil {
      * @return
      */
     public static String getHexStr(String targetStr) {
-        if (targetStr==null)return null;
-        if (targetStr.length()%2!=0)
-            targetStr+=" ";
+        if (targetStr == null) {
+            return null;
+        }
+        if (targetStr.length() % 2 != 0) {
+            targetStr += " ";
+        }
         StringBuilder hexStr = new StringBuilder();
         int len = targetStr.length();
         if (len > 0) {
@@ -104,9 +110,10 @@ public class HexUtil {
      * @param args
      */
     public static void main(String[] args) {
-      System.out.println(getHexStr("0731D0026226"));
+        System.out.println(getHexStr("0731D0026226"));
         System.out.println(hexToStringGBK("4130303030323033"));
     }
+
     /**
      * 16进制字符转为汉字
      * @param targetHexStr  十六进制字符

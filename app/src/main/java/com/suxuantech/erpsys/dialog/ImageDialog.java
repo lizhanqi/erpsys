@@ -58,21 +58,22 @@ public class ImageDialog extends AlertDialog.Builder {
     }
 
     public void dismiss() {
-        if (alertDialog != null && alertDialog.isShowing())
-            alertDialog.dismiss();
+        if (alertDialog != null && alertDialog.isShowing()){
+            alertDialog.dismiss();}
     }
 
     public void cancel() {
-        if (alertDialog != null && alertDialog.isShowing())
-            alertDialog.cancel();
+        if (alertDialog != null && alertDialog.isShowing()){
+            alertDialog.cancel();}
     }
 
     @Override
     public AlertDialog show() {
-        if (alertDialog == null)
+        if (alertDialog == null) {
             alertDialog = create();
-        if (!alertDialog.isShowing())
-            alertDialog.show();
+        }
+        if (!alertDialog.isShowing()){
+            alertDialog.show();}
         return alertDialog;
     }
 }

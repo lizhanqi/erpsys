@@ -27,13 +27,14 @@ public class LoadMoreTestActivity extends StatusImmersedBaseActivity {
     private SwipeMenuRecyclerView mRecyclerView;
     private MainAdapter mAdapter;
     private List<String> mDataList;
+
     /**
      * 使用注意事项:SwipeMenuRecyclerView使用加载更多的时候一定要第一次调用,否则本来只是加载更多的视图,却仅仅是一个空白展位图
-     *       mRecyclerView.loadMoreFinish(false, true);
+     * mRecyclerView.loadMoreFinish(false, true);
      * // 第一次加载数据：一定要调用这个方法，否则不会触发加载更多。
-     // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-     // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-    /**
+     * // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
+     * // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
+     * /**
      * 这是这个类的主角，如何自定义LoadMoreView。
      */
     static final class DefineLoadMoreView extends LinearLayout implements SwipeMenuRecyclerView.LoadMoreView, View.OnClickListener {
@@ -136,9 +137,12 @@ public class LoadMoreTestActivity extends StatusImmersedBaseActivity {
          */
         @Override
         public void onClick(View v) {
-            if (mLoadMoreListener != null) mLoadMoreListener.onLoadMore();
+            if (mLoadMoreListener != null) {
+                mLoadMoreListener.onLoadMore();
+            }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,11 +150,12 @@ public class LoadMoreTestActivity extends StatusImmersedBaseActivity {
         setSupportToolbar();
 //        mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
 //        mRefreshLayout.setOnRefreshListener(mRefreshListener); // 刷新监听。
-        mRecyclerView =idGetView(R.id.recycler_view);
+        mRecyclerView = idGetView(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MainAdapter(this);
 
-        mRecyclerView.setAdapter(mAdapter); mRecyclerView.useDefaultLoadMore(); // 使用默认的加载更多的View。
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.useDefaultLoadMore(); // 使用默认的加载更多的View。
 //  //      mRecyclerView.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.album_ItemLayer)));
 //       // mRecyclerView.setSwipeItemClickListener(mItemClickListener); // RecyclerView Item点击监听。
 //        mRecyclerView.addFooterView(getLayoutInflater().inflate(R.layout.head_test,null));
