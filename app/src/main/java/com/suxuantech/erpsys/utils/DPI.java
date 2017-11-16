@@ -49,9 +49,9 @@ public class DPI {
         System.out.println( Math.sqrt(  w*w+h*h)/inchordpi);
     }
     //px转dp模板
-    private final static String dpTemplate = "<dimen name=\"px{0}\">{1}dp</dimen>\n";
+    private final static String DP_TEMPLATE = "<dimen name=\"px{0}\">{1}dp</dimen>\n";
     //  px转sp模板
-    private final static String spTemplate = "<dimen name=\"xs{0}\">{1}sp</dimen>\n";
+    private final static String SP_TEMPLATE = "<dimen name=\"xs{0}\">{1}sp</dimen>\n";
     /**
      * 创建xml文件
      * @param w 最大宽度，也就是可能生成最大是多少像素的dp这里我给的是
@@ -71,14 +71,14 @@ public class DPI {
         //计算dp（从负数的到）
         for (int i = -w; i <= w; i++) {
             if (i<0){
-                sbForWidth.append(dpTemplate.replace("{0}", "_"+ Math.abs(i) ).replace("{1}",i/cell + ""));
+                sbForWidth.append(DP_TEMPLATE.replace("{0}", "_"+ Math.abs(i) ).replace("{1}",i/cell + ""));
             }else {
-                sbForWidth.append(dpTemplate.replace("{0}", i + "").replace("{1}", i / cell + ""));
+                sbForWidth.append(DP_TEMPLATE.replace("{0}", i + "").replace("{1}", i / cell + ""));
             }
         }
         //计算sp字体最大估计不会用到300个像素，也不会有负数所以这里目前就写死了，
         for (int i = 0; i < 300; i++) {
-            sbForWidth.append(spTemplate.replace("{0}", i + "").replace("{1}", i/cell + ""));
+            sbForWidth.append(SP_TEMPLATE.replace("{0}", i + "").replace("{1}", i/cell + ""));
         }
         sbForWidth.append("</resources>");
         String dirStr = "./res";

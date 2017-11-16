@@ -48,7 +48,7 @@ import com.yanzhenjie.statusview.StatusView;
  * @Description: 状态栏和导航栏沉浸式（注意不要使用协调者布局,以及约束布局）
  */
 
-public abstract class StatusImmersedBaseActivity extends BaseActivity {
+  abstract public  class StatusImmersedBaseActivity extends BaseActivity {
     private View rootViews;//填充的view
     //包含状态栏和导航栏的view
     private LinearLayout mStatusAndNavLayout;
@@ -172,10 +172,10 @@ public abstract class StatusImmersedBaseActivity extends BaseActivity {
     }
     /**
      * 标题文本颜色
-     * @param Color
+     * @param mColor
      */
-    public void setUseDefinedNavTitleTextColor(int Color){
-        mTvNavTitle.setTextColor(Color);
+    public void setUseDefinedNavTitleTextColor(int mColor){
+        mTvNavTitle.setTextColor(mColor);
     }
     //---------------------自定义导航左侧-------------
     /**
@@ -245,10 +245,10 @@ public abstract class StatusImmersedBaseActivity extends BaseActivity {
 
     /**
      * 左侧文本颜色
-     * @param Color
+     * @param mColor
      */
-    public void setUseDefinedNavLeftTextColor(int Color){
-        mTvNavLeft.setTextColor(Color);
+    public void setUseDefinedNavLeftTextColor(int mColor){
+        mTvNavLeft.setTextColor(mColor);
     }
     //---------------------自定义导航左侧end-------------
 

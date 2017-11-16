@@ -59,7 +59,7 @@ public class DownLoad {
         public void onCancel(int what) {
         }
     };
-    public void Dolad(int what,String url, String fileFolder, boolean isDeleteOld) {
+    public void download(int what,String url, String fileFolder, boolean isDeleteOld) {
         DownloadRequest downloadRequest = NoHttp.createDownloadRequest(url,fileFolder,isDeleteOld);
         NoHttp.getDownloadQueueInstance().add(what,downloadRequest, dl);
     }

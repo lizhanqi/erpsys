@@ -178,6 +178,7 @@ public class ReflexUtils {
                         method.invoke(t, Float.valueOf(value));
                     }
                     break;
+                default:
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();

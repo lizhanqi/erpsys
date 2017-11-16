@@ -48,7 +48,22 @@ public class AdjustDrawableTextView extends AppCompatTextView {
      * 代码中设置drawable大小要确定是给那边的设置的
      */
     public  enum InWhere{
-        LEFTONTEXT,TOPONTEXT,RIGHTONTEXT,BOTTOMONTEXT
+        /**
+         * 绘制图片在文字左边
+         */
+        LEFTONTEXT,
+        /**
+         * 绘制图片在文字上边
+         */
+        TOPONTEXT,
+        /**
+         * 绘制图片在文字右边
+         */
+        RIGHTONTEXT,
+        /**
+         * 绘制图片在文字下边
+         */
+        BOTTOMONTEXT
     }
     int leftDrawableWidth=0;
     int leftDrawableHeight=0;
@@ -113,6 +128,7 @@ public class AdjustDrawableTextView extends AppCompatTextView {
                 case R.styleable.AdjustDrawableTextView_drawableHeight_bottom:
                     bottomDrawableHeight = a.getDimensionPixelSize(attr, 0);
                     break;
+                default:
 //                case R.styleable.XXDrawableTextView_testnumber:
 //                    System.out.println("啦啦啦啦啦啦啦TextView2_testnumber:"+a.getDimensionPixelSize(attr,10));
 //                    break;

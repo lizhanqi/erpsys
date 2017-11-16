@@ -34,7 +34,7 @@ import java.util.List;
  * @Description: todo(用一句话描述该文件做什么)
  */
 
-public abstract class CommonAdapter<T> extends RecyclerView.ViewHolder {
+ abstract public class CommonAdapter<T> extends RecyclerView.ViewHolder {
     private List<T> list;//数据源
     private Context context;//上下文
     public CommonAdapter(View itemView) {

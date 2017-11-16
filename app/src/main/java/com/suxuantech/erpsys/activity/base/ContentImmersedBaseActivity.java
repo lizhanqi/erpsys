@@ -47,7 +47,7 @@ import com.yanzhenjie.statusview.StatusView;
  *         E-mail:lizhanqihd@163.com
  * @Description: 内容沉浸到状态栏的基础Activity(注意不要使用协调者布局,以及约束布局)
  */
-public abstract class ContentImmersedBaseActivity extends BaseActivity {
+ abstract  public class ContentImmersedBaseActivity extends BaseActivity {
     /**
      *   填充的view
      */
@@ -214,10 +214,10 @@ public abstract class ContentImmersedBaseActivity extends BaseActivity {
     }
     /**
      * 标题文本颜色
-     * @param Color
+     * @param mColor
      */
-    public void setUseDefinedNavTitleTextColor(int Color){
-        mTvNavTitle.setTextColor(Color);
+    public void setUseDefinedNavTitleTextColor(int mColor){
+        mTvNavTitle.setTextColor(mColor);
     }
     //---------------------自定义导航左侧-------------
     /**
@@ -287,10 +287,10 @@ public abstract class ContentImmersedBaseActivity extends BaseActivity {
 
     /**
      * 左侧文本颜色
-     * @param Color
+     * @param mColor
      */
-    public void setUseDefinedNavLeftTextColor(int Color){
-        mTvNavLeft.setTextColor(Color);
+    public void setUseDefinedNavLeftTextColor(int mColor){
+        mTvNavLeft.setTextColor(mColor);
     }
     //---------------------自定义导航左侧end-------------
 
@@ -362,10 +362,10 @@ public abstract class ContentImmersedBaseActivity extends BaseActivity {
     }
     /**
      * 右侧文本颜色
-     * @param Color
+     * @param mColor
      */
-    public void setUseDefinedNavRightTextColor(int Color){
-        mTvNavRight.setTextColor(Color);
+    public void setUseDefinedNavRightTextColor(int mColor){
+        mTvNavRight.setTextColor(mColor);
     }
     //---------------------自定义导航右侧end-------------
     /**
