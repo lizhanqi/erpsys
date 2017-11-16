@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#F00ffFFF</color>
+    <color name="copyrigth">#515050</color>
+    <color name="themeColor">#3786fc</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

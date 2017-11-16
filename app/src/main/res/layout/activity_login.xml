@@ -1,0 +1,144 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.suxuantech.erpsys.activity.LoginActivity">
+    <ScrollView
+        android:background="@drawable/bg_login"
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:paddingRight="@dimen/px175"
+            android:paddingLeft="@dimen/px175"
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_marginTop="@dimen/px380"
+                android:id="@+id/image_view_logo"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logo"
+                android:layout_width="@dimen/px312"
+                android:layout_height="@dimen/px226" />
+            <!--ID-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px145">
+                <ImageView
+                    android:layout_marginTop="@dimen/px10"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/id"
+                    android:layout_width="@dimen/px43"
+                    android:layout_height="@dimen/px41" />
+                <!--     app:theme="@style/Login"-->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <AutoCompleteTextView
+                        android:textSize="@dimen/xs30"
+                        android:textColor="@color/copyrigth"
+                        android:textColorHint="@color/copyrigth"
+                        android:id="@+id/company_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_pleases_input_company_id"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+        <!--账号-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px145">
+            <ImageView
+                android:layout_marginTop="@dimen/px10"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/person"
+                android:layout_width="@dimen/px43"
+                android:layout_height="@dimen/px41" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <AutoCompleteTextView
+                    android:textSize="@dimen/xs30"
+                    android:textColor="@color/copyrigth"
+                    android:textColorHint="@color/copyrigth"
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_person_id"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
+        <!--密码-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px145">
+            <ImageView
+                android:layout_marginTop="@dimen/px10"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/lock"
+                android:layout_width="@dimen/px43"
+                android:layout_height="@dimen/px41" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/copyrigth"
+                    android:textColorHint="@color/copyrigth"
+                    android:textSize="@dimen/xs30" />
+            </android.support.design.widget.TextInputLayout>
+</LinearLayout>
+            <Button
+                android:textSize="@dimen/xs40"
+
+                android:layout_marginTop="@dimen/px110"
+                android:background="@drawable/login_button_sp"
+                android:id="@+id/email_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px115"
+                android:text="@string/action_sign_in" />
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:textSize="@dimen/xs32"
+        android:id="@+id/copyright"
+        android:textColor="@color/copyrigth"
+        android:layout_marginBottom="@dimen/px145"
+        android:layout_alignParentBottom="true"
+        android:text="@string/copyright"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

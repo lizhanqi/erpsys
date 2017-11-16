@@ -18,4 +18,24 @@
     <string name="customactivityoncrash_error_activity_error_details_copy">复制到剪贴板</string>
     <string name="customactivityoncrash_error_activity_error_details_copied">复制到剪贴板</string>
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label">错误信息</string>
+
+
+<!--登陆-->
+    <string name="copyright">素玄科技版权所有</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_pleases_input_company_id">请输入您的企业ID</string>
+    <string name="prompt_person_id">请输入您的账号</string>
+    <string name="prompt_password">请输入您的密码</string>
+    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
 </resources>
