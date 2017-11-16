@@ -45,44 +45,86 @@ import com.yanzhenjie.statusview.StatusView;
  * @author Created by 李站旗 on 2017/11/6 9:24 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 内容沉浸到状态栏的基础Activity
+ * @Description: 内容沉浸到状态栏的基础Activity(注意不要使用协调者布局,以及约束布局)
  */
 public abstract class ContentImmersedBaseActivity extends BaseActivity {
-    //设置自定义导航时候的margin值用来是给那个view的
-    private View rootViews;//填充的view
-    //包含状态栏和导航栏的view
+    /**
+     *   填充的view
+     */
+    private View rootViews;
+    /**
+     * 包含状态栏和导航栏的view
+     */
     private LinearLayout mStatusAndNavLayout;
-    //状态栏
+    /**
+     * 状态栏
+     */
+
     private StatusView mStatusView;
-    //toolbar
+    /**
+     * toolbar
+     */
     private Toolbar mToolbar;
-    //自定义头部导航最大view
+    /**
+     *    自定义头部导航最大view
+     */
     private RelativeLayout mHeadNavUseDefinedRoot;
-    //自定义导航
+    /**
+     *     自定义导航左侧
+     */
     private AdjustDrawableTextView mTvNavLeft;
+    /**
+     *     自定义导航标题
+     */
     private AdjustDrawableTextView mTvNavTitle;
+    /**
+     *  自定义导航右侧
+     */
     private AdjustDrawableTextView mTvNavRight;
-    //替代系统的导航栏
+    /**
+     *  替代系统的导航栏
+     */
     private NavigationView mNavigationView;
-    //最大的外层
+    /**
+     *最大的外层
+     */
     private FrameLayout mRootLayoutContentImmersed;
-    //让用户添加的VIew可滑动直接
+    /**
+     * 让用户添加的VIew可滑动直接
+     */
+
     private NestedScrollView mNestedScrollView;
-    //继承者setview都会添加到这个下面
+    /**
+     *     继承者setview都会添加到这个下面
+     */
     private LinearLayout mContentViewLinearlayout;
-    //当前Activity渲染用户的主要内容
+    /**
+     * 当前Activity渲染用户的主要内容
+     */
     private View mContextView;
 
     //-----------------------------顶部导航-------------------------------------
-    //获取自定义导航左侧view
+
+    /**
+     * 获取自定义导航左侧view
+     * @return
+     */
     public AdjustDrawableTextView getNavLeftView() {
         return mTvNavLeft;
     }
-    //获取自定义导航标题
+
+    /**
+     * 获取自定义导航标题
+     * @return
+     */
     public AdjustDrawableTextView getNavTitleView() {
         return mTvNavTitle;
     }
-    //获取自定义导航右侧view
+
+    /**
+     * 获取自定义导航右侧view
+     * @return
+     */
     public AdjustDrawableTextView getNavRightView() {
         return mTvNavRight;
     }
@@ -399,7 +441,9 @@ public abstract class ContentImmersedBaseActivity extends BaseActivity {
             super.setContentView(rootViews);
         }
     }
-    //如果用户用自己的,name我们就隐藏我们自己的
+    /**
+     * 如果用户用自己的,name我们就隐藏我们自己的
+     */
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         throw new UnsupportedOperationException("ContentImmersedBaseActivity:setContentView(view,params)该方法重写后被禁用");
@@ -408,7 +452,6 @@ public abstract class ContentImmersedBaseActivity extends BaseActivity {
      * 创建外层
      */
     private void createRootView() {
-
         rootViews = View.inflate(this, R.layout.base_root_content_immersed, null);
         mRootLayoutContentImmersed =  rootViews.findViewById(R.id.root_layout_content_immersed);
         mStatusAndNavLayout = rootViews. findViewById(R.id.status_and_nav_layout);

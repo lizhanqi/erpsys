@@ -19,8 +19,9 @@ public class ScheduleDao {
     Context context;
     private ScheduleDao(Context context) {
         this.context=context;
-        if (mHelper==null)
-        mHelper = new JeekSQLiteHelper(context);
+        if (mHelper==null){
+            mHelper = new JeekSQLiteHelper(context);
+        }
     }
 
     public static ScheduleDao getInstance(Context context) {

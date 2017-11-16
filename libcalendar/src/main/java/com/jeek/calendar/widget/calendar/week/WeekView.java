@@ -77,9 +77,10 @@ public class WeekView extends View {
         if (mIsShowHint) {
             // 从数据库中获取圆点提示数据
             ScheduleDao dao = ScheduleDao.getInstance(getContext());
-            if (CalendarUtils.getInstance(getContext()).getTaskHints(date.getYear(), date.getMonthOfYear() - 1).size() == 0)
+            if (CalendarUtils.getInstance(getContext()).getTaskHints(date.getYear(), date.getMonthOfYear() - 1).size() == 0) {
                 CalendarUtils.getInstance(getContext()).addTaskHints(date.getYear(), date.getMonthOfYear() - 1, dao.getTaskHintByMonth(mSelYear, mSelMonth));
-        }
+            }
+            }
     }
 
     private void initAttrs(TypedArray array, DateTime dateTime) {

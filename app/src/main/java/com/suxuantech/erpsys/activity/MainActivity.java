@@ -11,12 +11,13 @@ import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.test.BaseTestActivity;
-import com.suxuantech.erpsys.test.CanlanderActivity;
 import com.suxuantech.erpsys.test.ConstraintLayoutTestActivity;
 import com.suxuantech.erpsys.test.GoodsDetailsActivity;
 import com.suxuantech.erpsys.test.LoadMoreRefesh;
 import com.suxuantech.erpsys.test.OptionTestActivity;
 import com.suxuantech.erpsys.test.ScrollingActivity;
+import com.suxuantech.erpsys.utils.DensityUtils;
+import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -25,8 +26,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.util.List;
-
-import me.imid.swipebacklayout.lib.SwipeBackLayout;
 
 public class MainActivity extends StatusImmersedBaseActivity {
     @Override
@@ -101,8 +100,15 @@ public void get(){
                 setUseDefinedNavRightText("");
                 break;
             case R.id.fold:
-                startActivity(CanlanderActivity.class);
+              //  toast(DensityUtils.dp2px(this,360)+"") ;
+             //  toast(getResources().getDimension(R.dimen.px1080)+"");
+//                toast(i+"");
+
+                toast(ScreenUtils.getScreenWidth(this)+"");
+        //   toast(idGetView(R.id.fold).getWidth()+"");
+            //    startActivity(CanlanderActivity.class);
                 break;
+            default:
         }
     }
 

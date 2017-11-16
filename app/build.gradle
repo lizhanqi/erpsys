@@ -10,7 +10,12 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        ndk {
+//            //   abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', 'x86', 'x86_64'
+//            abiFilters  'armeabi-v7a','x86','x86_64','mips64', 'arm64-v8a','mips'
+//        }
     }
+
     //multiDex的一些相关配置，这样配置可以让你的编译速度更快
     dexOptions {
         preDexLibraries = false
@@ -65,7 +70,18 @@ dependencies {
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
 }
+//task makeJar(type: Copy) {
+//    delete 'build/libs/mysdk.jar'
+//    from('com/suxuantech/erpsys/test/GenerateValueFiles.java')
+//    into('build/libs/')
+//    include('classes.jar')
+//    rename ('classes.jar', 'starsdk.jar')
+//}
+//
+//makeJar.dependsOn(build)
+//终端执行命令   gradlew makeJar即可生成jar
 /*configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested

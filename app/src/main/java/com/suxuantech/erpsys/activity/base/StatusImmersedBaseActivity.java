@@ -45,7 +45,7 @@ import com.yanzhenjie.statusview.StatusView;
  * @author Created by 李站旗 on 2017/11/6 9:25 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 状态栏和导航栏沉浸式（）
+ * @Description: 状态栏和导航栏沉浸式（注意不要使用协调者布局,以及约束布局）
  */
 
 public abstract class StatusImmersedBaseActivity extends BaseActivity {

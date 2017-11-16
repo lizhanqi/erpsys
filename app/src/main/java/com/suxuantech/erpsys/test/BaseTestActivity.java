@@ -58,7 +58,7 @@ public class BaseTestActivity extends BaseActivity {
                 requstPermissions(110, null, true, Manifest.permission.SEND_SMS);
                 break;
             case R.id.look:
-                HashSet<String> permissionList = getPermissionList();
+                HashSet<String> permissionList = getPermissionSet();
                 ArrayList<String> strings = new ArrayList<>(permissionList);
                 for (String s: strings ) {
                     dLog(s);

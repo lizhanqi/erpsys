@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.QRCodeScanActivity" />
+        <activity android:name=".activity.QRCodeScanActivity" android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".test.StatusTestActivity"
             android:configChanges="orientation|screenSize" />
@@ -48,7 +48,6 @@
         <activity android:name=".test.LoadMoreTestActivity" />
         <activity android:name=".test.LoadMoreRefesh" />
         <activity android:name=".test.ConstraintLayoutTestActivity" />
-        <activity android:name=".test.CalendarTestActivity" />
         <activity android:name=".test.CanlanderActivity"></activity>
     </application>
 
