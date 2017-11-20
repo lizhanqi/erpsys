@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'//黄油刀
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -14,6 +14,7 @@ android {
 //            //   abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', 'x86', 'x86_64'
 //            abiFilters  'armeabi-v7a','x86','x86_64','mips64', 'arm64-v8a','mips'
 //        }
+        //
     }
 
     //multiDex的一些相关配置，这样配置可以让你的编译速度更快
@@ -35,7 +36,6 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -56,8 +56,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.yanzhenjie:durban:1.0.1'
     compile 'com.yanzhenjie:statusview:1.0.3'
-    compile 'com.yanzhenjie:fragment:1.0.1'
-    compile 'com.yanzhenjie:album:2.0.1'
+    compile 'com.yanzhenjie:album:2.0.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'com.jakewharton:butterknife:8.4.0'
@@ -69,7 +68,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     testCompile 'junit:junit:4.12'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
+    compile "com.jakewharton:butterknife:8.4.0"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8+'
+    compile 'com.coldmoqiuli:banners:1.0.1'
 
 }
 //task makeJar(type: Copy) {

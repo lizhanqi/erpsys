@@ -4,15 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
+    android:background="@drawable/bg_login"
     tools:context="com.suxuantech.erpsys.activity.LoginActivity">
+    <TextView
+    android:textSize="@dimen/xs32"
+    android:id="@+id/copyright"
+    android:layout_marginTop="@dimen/px_10"
+    android:textColor="@color/copyrigth"
+    android:layout_marginBottom="@dimen/px145"
+    android:layout_alignParentBottom="true"
+    android:text="@string/copyright"
+    android:layout_centerHorizontal="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
     <ScrollView
-        android:background="@drawable/bg_login"
+        android:layout_above="@id/copyright"
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent">
         <LinearLayout
             android:paddingRight="@dimen/px175"
             android:paddingLeft="@dimen/px175"
@@ -35,7 +44,7 @@
                 <ImageView
                     android:layout_marginTop="@dimen/px10"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/id"
+                    android:src="@drawable/icon_id"
                     android:layout_width="@dimen/px43"
                     android:layout_height="@dimen/px41" />
                 <!--     app:theme="@style/Login"-->
@@ -66,7 +75,7 @@
             <ImageView
                 android:layout_marginTop="@dimen/px10"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/person"
+                android:src="@drawable/icon_person"
                 android:layout_width="@dimen/px43"
                 android:layout_height="@dimen/px41" />
             <android.support.design.widget.TextInputLayout
@@ -95,7 +104,7 @@
             <ImageView
                 android:layout_marginTop="@dimen/px10"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/lock"
+                android:src="@drawable/icon_lock"
                 android:layout_width="@dimen/px43"
                 android:layout_height="@dimen/px41" />
             <android.support.design.widget.TextInputLayout
@@ -115,7 +124,8 @@
                     android:singleLine="true"
                     android:textColor="@color/copyrigth"
                     android:textColorHint="@color/copyrigth"
-                    android:textSize="@dimen/xs30" />
+                    android:textSize="@dimen/xs30"
+                    tools:ignore="InvalidImeActionId" />
             </android.support.design.widget.TextInputLayout>
 </LinearLayout>
             <Button
@@ -131,14 +141,4 @@
                 android:text="@string/action_sign_in" />
         </LinearLayout>
     </ScrollView>
-    <TextView
-        android:textSize="@dimen/xs32"
-        android:id="@+id/copyright"
-        android:textColor="@color/copyrigth"
-        android:layout_marginBottom="@dimen/px145"
-        android:layout_alignParentBottom="true"
-        android:text="@string/copyright"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </RelativeLayout>

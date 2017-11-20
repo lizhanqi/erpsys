@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -25,11 +26,11 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.yanzhenjie.permission.Request;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 /**
@@ -471,10 +472,19 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     public void showSoftKeyBoard(EditText et){
         KeyBoardUtils.openKeybord(et,this);
     }
-
+    /**
+     * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
+     * @param str
+     */
+    @Deprecated
     public void toast(String str) {
         ToastUtils.show(str);
     }
+
+    /**
+     * 弹出一个吐司
+     * @param str
+     */
     public void toast(@StringRes int str) {
         ToastUtils.show(str);
     }
@@ -652,4 +662,65 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
         }
     }
     //--------------------------------------View点击end------------------
+
+    /**
+     *     获取是否存在NavigationBar(也就是是否存在导航栏)
+     */
+
+    public  boolean checkDeviceHasNavigationBar( ) {
+        boolean hasNavigationBar = false;
+        Resources rs = getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+            }
+        } catch (Exception e) {
+
+        }
+        return hasNavigationBar;
+    }
+    /**
+     //透明状态栏
+     getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+     //透明导航栏
+     *getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+     * 获取状态栏高度
+
+     * @return
+     */
+    public  int getStatusBarHeight( ) {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen",
+                "android");
+        if (resourceId > 0) {
+            result =getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    /**
+     * 获取导航栏高度
+     * @return
+     */
+    public  int getDaoHangHeight( ) {
+        int result = 0;
+        int resourceId=0;
+        int rid = getResources().getIdentifier("config_showNavigationBar", "bool", "android");
+        if (rid!=0){
+            resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            return getResources().getDimensionPixelSize(resourceId);
+        }else {
+            return 0;
+        }
+    }
+
 }

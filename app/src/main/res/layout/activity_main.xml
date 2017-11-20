@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- 状态栏沉浸-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.suxuantech.erpsys.activity.MainActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    >
+    <com.yanzhenjie.statusview.NavigationView
+    android:id="@+id/navigation_view_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     android:layout_alignParentBottom="true"
+   android:background="@drawable/navigation"/>
+    <RelativeLayout
+        android:layout_above="@id/navigation_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!--不能使用match_parent-->
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/bottomNavigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        app:bnbActiveColor="@color/themeColor"
+        app:bnbBackgroundColor="@color/white"
+        app:bnbInactiveColor="@color/mainNav"
+        app:bnbMode="mode_fixed"/>
+    <View
+        android:id="@+id/vilin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px2"
+        android:layout_above="@id/bottomNavigationBar"
+        android:background="@color/mainNavline" />
+    <FrameLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/vilin"
+        android:background="@color/white"></FrameLayout>
+    </RelativeLayout>
 </RelativeLayout>
-

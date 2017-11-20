@@ -21,4 +21,14 @@
         <attr name="drawableWidth_bottom"  format="dimension"/>
         <attr name="drawableHeight_bottom" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="MaterialLayout">
+        <attr name="alpha1" format="integer" />
+        <attr name="alpha_step" format="integer" />
+        <attr name="framerate" format="integer" />
+        <attr name="duration" format="integer" />
+        <attr name="color" format="color" />
+        <attr name="scale" format="float" />
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,21 @@
+<!--重要说明:
+android:background="@color/white"
+android:clickable="true"
+必须要有background防止fragment页面穿透的,
+clickable是防止页面穿透的点击事件的
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/white"
+    tools:context="com.suxuantech.erpsys.activity.fragment.WorkFragment">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/tv_fm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/work" />
+</RelativeLayout>

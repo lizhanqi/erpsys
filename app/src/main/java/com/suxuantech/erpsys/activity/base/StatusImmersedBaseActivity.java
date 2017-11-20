@@ -8,7 +8,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -375,8 +374,9 @@ import com.yanzhenjie.statusview.StatusView;
      */
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
+       // mContextView = LayoutInflater.from(this).inflate(layoutResID, null, false);
         //转换为View
-        mContextView = View.inflate(this, layoutResID, null);
+       mContextView = View.inflate(this, layoutResID, null);
         //添加到最外层的需要包裹的view
         setContentView(mContextView);
     }
@@ -389,6 +389,7 @@ import com.yanzhenjie.statusview.StatusView;
     public void setContentView(View view) {
     if (view instanceof CoordinatorLayout||view instanceof ConstraintLayout) {//如果设置的是协调者布局则不要嵌套外层,因为协调者需要在最外层
       throw  new  IllegalArgumentException("不能使用ConstraintLayout和CoordinatorLayout布局");
+      
       } else {
             createRootView();
             mContentViewLinearlayout.addView(view);
@@ -419,7 +420,7 @@ import com.yanzhenjie.statusview.StatusView;
         mTvNavRight = rootViews.findViewById(R.id.tv_nav_right);
         mTvNavRight.setOnClickListener(this);
         //内容
-//        mNestedScrollView =rootViews.findViewById(R.id.nested_scroll_view);
+//        mNestedScrollView =rootViews.findViewById(R.icon_id.nested_scroll_view);
         mContentViewLinearlayout = rootViews.findViewById(R.id.content_view_linearlayout);
         //底部导航
         mNavigationView = rootViews.findViewById(R.id.navigation_view);

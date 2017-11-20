@@ -1,12 +1,11 @@
 package com.suxuantech.erpsys.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,13 +15,16 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
@@ -61,26 +63,49 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mLoginFormView;
+    private TextView copyRight;
+    //    private View mLoginFormView;
 
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
 
     }
 
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //横向
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.topMargin=20;
+            layoutParams.bottomMargin=20;
+            copyRight.setLayoutParams(layoutParams);
+            copyRight.getParent().requestLayout();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.topMargin=0;
+            layoutParams.bottomMargin= (int) getResources().getDimension(R.dimen.px145);
+            copyRight.setLayoutParams(layoutParams);
+            copyRight.getParent().requestLayout();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getDaoHangHeight());
+        setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
         StatusUtils.setFullToNavigationBar(this);
         StatusUtils.setFullToStatusBar(this);
-        TextView copyRight = idGetView(R.id.copyright);
         hideStatus();
-        copyRight.setText(getString(R.string.copyright)+" "+ AppUtil.getVersionName(this));
+        StatusUtils.setStatusBarColor(this,getResources().getColor(R.color.transparency));
+        StatusUtils.setSystemBarColor(this,getResources().getColor(R.color.transparency),getResources().getColor(R.color.transparency));
+        copyRight = idGetView(R.id.copyright);
+        copyRight.setText(getString(R.string.copyright)+" V"+ AppUtil.getVersionName(this));
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -92,7 +117,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 return false;
             }
         });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +127,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+//        mLoginFormView = findViewById(R.id.login_form);
     }
 
     @Override
@@ -215,20 +239,20 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
 
 
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+     //       mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

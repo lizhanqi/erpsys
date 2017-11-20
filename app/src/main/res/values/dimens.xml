@@ -3,7 +3,18 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-
+    <!--BottomNavigationBar属性，覆盖后修改这个值就能定义自己的尺寸
+    https://www.cnblogs.com/shufeng/p/7448559.html
+    -->
+    <!--高度内容高度-->
+    <!--<dimen name="fixed_height">@dimen/px120</dimen>-->
+    <!--文字距离图片距离，如果想远离使用负数-->
+    <dimen name="fixed_height_bottom_padding">@dimen/px16</dimen>
+    <!--<dimen name="fixed_height_top_padding">@dimen/px16</dimen>-->
+    <!--字体大小-->
+    <dimen name="fixed_label_active">@dimen/xs33</dimen>
+    <dimen name="fixed_label_inactive">@dimen/xs26</dimen>
+    <!--BottomNavigationBar属性end-->
     <!--生成的，标准1080的dp-->
     <!--说明，这里如果是px_ 这种开头的代表负数的，xs是字体使用的px是正常的-->
     <dimen name="px_1080">-360.0dp</dimen>

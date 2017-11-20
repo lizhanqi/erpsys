@@ -6,6 +6,7 @@ repositories {
 
 dependencies {
     compile "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}"
+    compile 'com.yanzhenjie:fragment:1.0.1'
 }
 
 android {

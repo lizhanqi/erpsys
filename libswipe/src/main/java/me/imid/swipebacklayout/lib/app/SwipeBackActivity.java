@@ -2,13 +2,14 @@
 package me.imid.swipebacklayout.lib.app;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.yanzhenjie.fragment.CompatActivity;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 
-public class SwipeBackActivity extends AppCompatActivity implements SwipeBackActivityBase {
+public class SwipeBackActivity extends CompatActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
 
     @Override
@@ -16,6 +17,11 @@ public class SwipeBackActivity extends AppCompatActivity implements SwipeBackAct
         super.onCreate(savedInstanceState);
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
+    }
+
+    @Override
+    protected int fragmentLayoutId() {
+        return 0;
     }
 
     @Override
