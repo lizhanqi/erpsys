@@ -81,13 +81,20 @@ clickable是防止页面穿透的点击事件的
                         android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
+            <com.suxuantech.erpsys.views.MaterialLayout
+                app:duration="200"
+                app:alpha="200"
+                app:scale="1.2"
+                app:color="#FFD306"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/myBackground"
+                        android:background="@color/myBackground_f7"
                         android:orientation="vertical">
 
                         <RelativeLayout
@@ -103,7 +110,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/department"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -115,14 +122,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/salesroom"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -137,7 +144,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/belongs_tos_tore"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -149,14 +156,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/belongs_tos_tore"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -171,7 +178,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/employee_id"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -183,14 +190,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/belongs_tos_tore"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -205,7 +212,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/phone_number"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -217,14 +224,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/salesroom"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -239,7 +246,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/ID_Identification"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -251,14 +258,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/salesroom"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -275,7 +282,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/about_us"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -287,14 +294,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/salesroom"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -309,7 +316,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_marginLeft="@dimen/px55"
                                 android:gravity="center_vertical"
                                 android:text="@string/version"
-                                android:textColor="@color/mainNav"
+                                android:textColor="@color/mainNav_66"
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
@@ -321,14 +328,14 @@ clickable是防止页面穿透的点击事件的
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
                                 android:text="@string/salesroom"
-                                android:textColor="@color/myValue333"
+                                android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
                             <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/mainNavline" />
+                                android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -351,6 +358,7 @@ clickable是防止页面穿透的点击事件的
 
                     </LinearLayout>
                 </ScrollView>
+            </com.suxuantech.erpsys.views.MaterialLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

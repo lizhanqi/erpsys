@@ -189,7 +189,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="今日选片满档率"
-                                    android:textColor="@color/myValue333"
+                                    android:textColor="@color/myValue_33"
                                     android:textSize="@dimen/xs44" />
 
                                 <RelativeLayout
@@ -224,7 +224,7 @@ clickable是防止页面穿透的点击事件的
                                     android:gravity="center"
                                     android:lineSpacingExtra="@dimen/px28"
                                     android:text="总档期:78档 \n今日 拍档:28档"
-                                    android:textColor="@color/myValue333"
+                                    android:textColor="@color/myValue_33"
                                     android:textSize="@dimen/xs40" />
                             </LinearLayout>
 
@@ -243,7 +243,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="本月任务"
-                                    android:textColor="@color/myValue333"
+                                    android:textColor="@color/myValue_33"
                                     android:textSize="@dimen/xs44" />
 
                                 <RelativeLayout
@@ -278,7 +278,7 @@ clickable是防止页面穿透的点击事件的
                                     android:gravity="center"
                                     android:lineSpacingExtra="@dimen/px28"
                                     android:text="本月任务:500万 \n已完成: 300万"
-                                    android:textColor="@color/myValue333"
+                                    android:textColor="@color/myValue_33"
                                     android:textSize="@dimen/xs40" />
                             </LinearLayout>
                         </LinearLayout>

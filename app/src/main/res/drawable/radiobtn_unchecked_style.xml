@@ -4,7 +4,7 @@
         android:radius="@dimen/px20"/>
 
     <solid
-        android:color="@color/mainNavline"/>
+        android:color="@color/mainNavline_e7"/>
 
     <size
         android:height="@dimen/px20"
@@ -12,6 +12,6 @@
 
     <stroke
         android:width="@dimen/px0"
-        android:color="@color/mainNavline"/>
+        android:color="@color/mainNavline_e7"/>
 
 </shape>

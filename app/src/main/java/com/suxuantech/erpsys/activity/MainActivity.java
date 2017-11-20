@@ -112,6 +112,7 @@ public class MainActivity extends BaseActivity {
         initMyBottomNavigation();
         StatusUtils.setFullToStatusBar(this);
         StatusUtils.setFullToNavigationBar(this);
+
 //        //设置状态栏和导航栏颜色
 //        StatusUtils.setSystemBarColor(this,getResources().getColor(R.color.translucent_black_90),getResources().getColor(R.color.translucent_black_90));
           //清空下布局文件中的导航栏颜色,因为布局文件中的颜色比较重,如果设置淡颜色可能无法着色或者着色错误
@@ -130,11 +131,11 @@ public class MainActivity extends BaseActivity {
         BottomNavigationItem msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
         msgItem.setBadgeItem(badgeItem);
         msgItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_msg_normal));//非选中的图片
-        msgItem.setInActiveColor(getResources().getColor(R.color.mainNav));
+        msgItem.setInActiveColor(getResources().getColor(R.color.mainNav_66));
         msgItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem workItem = new BottomNavigationItem(R.drawable.icon_work_pressed, getString(R.string.work));
         workItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_work_normal));//非选中的图片
-        workItem.setInActiveColor(getResources().getColor(R.color.mainNav));
+        workItem.setInActiveColor(getResources().getColor(R.color.mainNav_66));
         workItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem erpItem = new BottomNavigationItem(R.drawable.icon_erp_pressed, getString(R.string.erp));
         erpItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_erp_normal));//非选中的图片
