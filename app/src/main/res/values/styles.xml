@@ -1,4 +1,5 @@
 <resources>
+        
     <!--启动页-->
     <style name="WelcomeStyle"   parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
@@ -44,5 +45,42 @@
         </style>
 
         <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <!--开单-->
+    <!--ERP右边详情key(管理)-->
+    <style name="DetailsKey">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/px32</item>
+        <item name="android:textSize">@dimen/xs42</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/myValue_33</item>
+    </style>
+    <!--ERP右边数据-->
+    <style name="DetailsValue">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textColor">@color/textHint_99</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/xs44</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
 
-    </resources>
+    <style name="OpenOrderValue">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textColor">@color/myValue_33</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/xs44</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColorHint">@color/textHint_99</item>
+        <item name="android:drawablePadding"> @dimen/px30</item>
+        <item name="android:drawableRight">@drawable/arrows_right_gray</item>
+    </style>
+    <!--一个横线-->
+    <style name="line"  >
+        <item name="android:background">@color/mainNavline_e7</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px2</item>
+    </style>
+
+</resources>

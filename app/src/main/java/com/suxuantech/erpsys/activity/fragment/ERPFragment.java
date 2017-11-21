@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.oragee.banners.BannerView;
 import com.suxuantech.erpsys.R;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ERPFragment extends BaseNoFragment {
 
     private BannerView bannersView;
+    private RadioGroup mRadioGroup;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,47 @@ View view;
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
          this.view=view;
+        fragmentrs = new ArrayList<>();
+        ERPLeftFragment erpLeftFragment = new ERPLeftFragment();
+        ERPRightFragment erpRightFragment = new ERPRightFragment();
+        fragmentrs.add(erpLeftFragment);
+        fragmentrs.add(erpRightFragment);
+        final ViewPager mViewPager = view.findViewById(R.id.view_pager);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+               for (int i=0;i<mRadioGroup.getChildCount();i++){
+                   RadioButton childAt = (RadioButton) mRadioGroup.getChildAt(i);
+                   if (i==position){
+                       childAt.setChecked(true);
+                   }else {
+                       childAt.setChecked(false);
+                   }
+               }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter( getChildFragmentManager(), fragmentrs);
+        mViewPager.setAdapter(myFragmentAdapter);
+        mViewPager.setCurrentItem(0);
+        mRadioGroup = view.findViewById(R.id.rg_vp);
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId==R.id.radio_1){
+                    mViewPager.setCurrentItem(0);
+                }else {
+                    mViewPager.setCurrentItem(1);
+                }
+            }
+        });
     }
 
     @Override
@@ -50,32 +93,7 @@ View view;
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        fragmentrs = new ArrayList<>();
-        ERPLeftFragment erpLeftFragment = new ERPLeftFragment();
-        ERPRightFragment erpRightFragment = new ERPRightFragment();
-        fragmentrs.add(erpLeftFragment);
-        fragmentrs.add(erpRightFragment);
-        ViewPager mViewPager = view.findViewById(R.id.view_pager);
 
-        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter( getChildFragmentManager(), fragmentrs);
-        mViewPager.setAdapter(myFragmentAdapter);
-        mViewPager.setCurrentItem(0);
-        super.onResume();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    }
-
-    @Override
-    public void onStart() {
-
-
-        super.onStart();
-    }
 
     @Override
     protected void widgetClick(View v) {

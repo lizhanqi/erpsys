@@ -90,5 +90,15 @@
     <string name="cancel">取消</string>
     <string name="please_select_sex">请选择性别</string>
     <string name="submit">提交</string>
-    <string-array name="sex"><item>男</item><item>女</item></string-array>
+    <string name="order_money_look">订单数据金额一览</string>
+    <string name="film_number">拍摄量</string>
+    <string name="chip_select_nubmer">选片量</string>
+    <string name="order_number">订单量</string>
+    <string name="revenue">营收</string>
+    <string name="into_customer_number">进客量</string>
+    <string name="customer_complain_number">客诉量</string>
+    <string-array name="sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
 </resources>

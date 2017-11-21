@@ -22,12 +22,14 @@ clickable是防止页面穿透的点击事件的
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RadioButton
+            android:id="@+id/radio_1"
             android:layout_marginRight="@dimen/px16"
             android:checked="true"
             android:button="@drawable/radio_button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <RadioButton
+            android:id="@+id/radio_2"
             android:button="@drawable/radio_button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

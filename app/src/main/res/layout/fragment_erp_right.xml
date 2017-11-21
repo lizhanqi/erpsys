@@ -4,21 +4,166 @@ android:clickable="true"
 必须要有background防止fragment页面穿透的,
 clickable是防止页面穿透的点击事件的
 -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.suxuantech.erpsys.activity.fragment.ERPFragment">
-
-<TextView
-    android:textSize="@dimen/xs222"
-    android:text="右边"
+    android:id="@+id/root_layout_status_immersed"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent">
+    <!--状态栏和导航栏-->
+    <LinearLayout
+        android:id="@+id/status_and_nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.yanzhenjie.statusview.StatusView
+            android:id="@+id/status_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:fitsView="@id/root_layout_status_immersed"/>
+        <include layout="@layout/navigation_haed_user_defined"/>
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/myBackground_f7"
+        android:layout_above="@id/navigation_view"
+        android:layout_below="@id/status_and_nav_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.suxuantech.erpsys.activity.fragment.ERPFragment"
+        >
+        <TextView
+            android:background="@color/white"
+            android:textSize="@dimen/px36"
+            android:textColor="@color/wave"
+            android:paddingLeft="@dimen/px55"
+            android:paddingTop="@dimen/px40"
+            android:text="@string/order_money_look"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/linechart"
+            android:background="@color/white"
+            android:paddingTop="@dimen/px30"
+            android:paddingBottom="@dimen/px30"
+            android:src="@drawable/bg_login"
+            android:paddingRight="@dimen/px55"
+            android:paddingLeft="@dimen/px55"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px530" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/px30"
+        android:paddingLeft="@dimen/px55"
+        android:paddingRight="@dimen/px55"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/into_customer_number"
+                android:drawableLeft="@drawable/icon_into_customer_number"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_into_customer_number"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/customer_complain_number"
+                android:drawableLeft="@drawable/icon_customer_complain_number"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_customer_complain_number"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/film_number"
+                android:drawableLeft="@drawable/icon_film_number"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_film_number"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/chip_select_nubmer"
+                android:drawableLeft="@drawable/icon_chip_select_number"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_chip_select_nubmer"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/order_number"
+                android:drawableLeft="@drawable/icon_order_number"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_order_number"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px135">
+            <TextView
+                android:text="@string/revenue"
+                android:drawableLeft="@drawable/icon_revenue"
+                style="@style/DetailsKey"/>
+            <TextView
+                android:id="@+id/tv_revenue"
+                style="@style/DetailsValue"
+                android:text="@string/zero"
+                />
+        </LinearLayout>
+        <View
+            style="@style/line"/>
+
+    </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </RelativeLayout>

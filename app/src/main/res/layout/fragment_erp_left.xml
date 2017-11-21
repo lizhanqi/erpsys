@@ -17,7 +17,6 @@ clickable是防止页面穿透的点击事件的
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.widget.NestedScrollView>
-
     <!--状态栏和导航栏-->
     <LinearLayout
         android:id="@+id/status_and_nav_layout"
@@ -33,7 +32,6 @@ clickable是防止页面穿透的点击事件的
         <!--导航栏-->
         <include layout="@layout/navigation_heads"/>
     </LinearLayout>
-
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -42,16 +40,13 @@ clickable是防止页面穿透的点击事件的
             android:background="@color/gray_f9"
             android:clickable="true"
             tools:context="com.suxuantech.erpsys.activity.fragment.ERPLeftFragment">
-
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/gray_f9">
-
                     <RelativeLayout
                         android:id="@+id/left_top"
                         android:layout_width="match_parent"
@@ -60,7 +55,6 @@ clickable是防止页面穿透的点击事件的
                         android:layout_alignParentTop="true"
                         android:background="@drawable/bg_work"
                         android:gravity="center">
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px144"
@@ -68,7 +62,6 @@ clickable是防止页面穿透的点击事件的
                             android:gravity="center_vertical"
                             android:paddingLeft="@dimen/px55"
                             android:paddingRight="@dimen/px55">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

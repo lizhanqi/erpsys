@@ -21,33 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
         <TextView
-            android:layout_weight="0"
-            android:textColor="@color/myValue_33"
-            android:gravity="center"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px30"
+             style="@style/DetailsKey"
             android:drawableLeft="@drawable/icon_order"
-            android:text="@string/order_id"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:text="@string/order_id" />
         <TextView
+            android:drawableRight="@null"
             android:id="@+id/tv_order_id"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/please_input_order_id"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px30"
-
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+            style="@style/OpenOrderValue" />
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line" />
         <!--客户姓名-->
     <LinearLayout
         android:id="@+id/ll_customer_name"
@@ -55,35 +39,21 @@
         android:paddingLeft="@dimen/px55"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
+            style="@style/DetailsKey"
             android:drawableLeft="@drawable/icon_customer_name"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
-            android:text="@string/customer_name"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            android:text="@string/customer_name" />
         <android.support.design.widget.TextInputEditText
             android:background="@null"
+            android:drawableRight="@null"
             android:id="@+id/et_customer_name"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/please_input_customer_name"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            style="@style/OpenOrderValue"
+         />
 
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line" />
         <!--客户手机-->
     <LinearLayout
         android:id="@+id/ll_customer_phone"
@@ -92,33 +62,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
+            style="@style/DetailsKey"
             android:drawableLeft="@drawable/icon_customer_phone"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
-            android:text="@string/customer_phone"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            android:text="@string/customer_phone" />
         <android.support.design.widget.TextInputEditText
             android:background="@null"
+            android:drawableRight="@null"
             android:id="@+id/et_customer_phone"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/please_input_phone_number"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            style="@style/OpenOrderValue"
+         />
 
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+     style="@style/line"/>
         <!--性别-->
         <LinearLayout
             android:id="@+id/ll_sex"
@@ -127,33 +84,17 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/px155">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
                 android:drawableLeft="@drawable/icon_sex"
-                android:drawablePadding="@dimen/px30"
-                android:gravity="center"
                 android:text="@string/sex"
-                android:textColor="@color/myValue_33"
-                android:textSize="@dimen/xs44" />
+              style="@style/DetailsKey" />
             <TextView
                 android:id="@+id/tv_sex"
                 android:text="@string/women"
-                android:drawableRight="@drawable/arrows_right_gray"
-                android:textColorHint="@color/textHint_99"
-                android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:textColor="@color/myValue_33"
-                android:textSize="@dimen/xs44"
-                android:drawablePadding="@dimen/px50"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                style="@style/OpenOrderValue"  />
 
         </LinearLayout>
         <View
-            android:background="@color/mainNavline_e7"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/px2"/>
+          style="@style/line"/>
     <!--消费类型-->
     <LinearLayout
         android:id="@+id/ll_consumption_type"
@@ -162,34 +103,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
+        style="@style/DetailsKey"
             android:drawableLeft="@drawable/consumption_type"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
-            android:text="@string/consumption_type"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            android:text="@string/consumption_type" />
         <TextView
-
             android:id="@+id/tv_consumption_type"
-            android:drawableRight="@drawable/arrows_right_gray"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/please_select_consumption_type"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px50"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+            style="@style/OpenOrderValue"  />
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line"/>
         <!--门市接单点-->
     <LinearLayout
         android:id="@+id/ll_outlets_reception"
@@ -199,32 +122,16 @@
         android:layout_height="@dimen/px155">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
+             style="@style/DetailsKey"
             android:drawableLeft="@drawable/icon_outlets_reception"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
-            android:text="@string/outlets_reception"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            android:text="@string/outlets_reception" />
         <TextView
             android:id="@+id/tv_outlets_reception"
-            android:drawableRight="@drawable/arrows_right_gray"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
-            android:hint="@string/please_selsect_outlets_reception"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px50"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            style="@style/OpenOrderValue"
+            android:hint="@string/please_selsect_outlets_reception"/>
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line"/>
         <!--接单点-->
     <LinearLayout
         android:id="@+id/ll_order_receiving_site"
@@ -232,35 +139,17 @@
         android:paddingLeft="@dimen/px55"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
             android:drawableLeft="@drawable/icon_order_receiving_site"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
             android:text="@string/order_receiving_site"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+           style="@style/DetailsKey"/>
         <TextView
+            style="@style/OpenOrderValue"
             android:id="@+id/tv_order_receiving_site"
-            android:drawableRight="@drawable/arrows_right_gray"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
-            android:hint="@string/please_select_order_receiving_site"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px50"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+            android:hint="@string/please_select_order_receiving_site" />
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line"/>
         <!--包套名称 -->
     <LinearLayout
         android:id="@+id/ll_package_set"
@@ -269,33 +158,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
             android:drawableLeft="@drawable/icon_package_set_name"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
-            android:text="@string/package_set_of_names"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            style="@style/DetailsKey"
+            android:text="@string/package_set_of_names" />
         <TextView
             android:id="@+id/tv_package_set"
-            android:drawableRight="@drawable/arrows_right_gray"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/please_select_package_set"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px50"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+            style="@style/OpenOrderValue" />
     </LinearLayout>
     <View
-        android:background="@color/mainNavline_e7"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/px2"/>
+        style="@style/line"/>
         <!--新增产品-->
     <LinearLayout
         android:id="@+id/ll_addition"
@@ -304,43 +176,28 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/px155">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
             android:drawableLeft="@drawable/icon_addition"
-            android:drawablePadding="@dimen/px30"
-            android:gravity="center"
             android:text="@string/addition"
-            android:textColor="@color/myValue_33"
-            android:textSize="@dimen/xs44" />
+            style="@style/DetailsKey"
+        />
         <TextView
             android:id="@+id/tv_addition"
-            android:drawableRight="@drawable/arrows_right_gray"
-            android:textColorHint="@color/textHint_99"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/myValue_33"
             android:hint="@string/zero"
-            android:textSize="@dimen/xs44"
-            android:drawablePadding="@dimen/px50"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+          style="@style/OpenOrderValue" />
 
     </LinearLayout>
-
-
        <!--其他信息-->
-    <TextView
-        android:id="@+id/tv_other_infromation"
-        android:paddingLeft="@dimen/px55"
-        android:paddingRight="@dimen/px55"
-        android:gravity="center_vertical"
-        android:drawableRight="@drawable/arrows_down_gray"
-        android:textColor="@color/myValue_33"
-        android:background="@color/myBackground_f7"
-        android:text="@string/information"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/px123" />
+        <TextView
+            android:id="@+id/tv_other_infromation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px123"
+            android:background="@color/myBackground_f7"
+            android:drawableRight="@drawable/arrows_status"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/px55"
+            android:paddingRight="@dimen/px55"
+            android:text="@string/information"
+            android:textColor="@color/myValue_33" />
      <LinearLayout
          android:visibility="gone"
         android:id="@+id/ll_other_information"
@@ -354,36 +211,19 @@
              android:paddingLeft="@dimen/px55"
              android:layout_width="match_parent"
              android:layout_height="@dimen/px155">
-
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0"
                  android:drawableLeft="@drawable/icon_customer_zone"
-                 android:drawablePadding="@dimen/px30"
-                 android:gravity="center"
+                 style="@style/DetailsKey"
                  android:text="@string/customer_zone"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44" />
+                />
              <TextView
                  android:id="@+id/tv_vip_zone"
                  android:text="@string/vip_zone"
-                 android:drawableRight="@drawable/arrows_right_gray"
-                 android:textColorHint="@color/textHint_99"
-                 android:layout_weight="1"
-                 android:gravity="center_vertical|right"
-                 android:textColor="@color/myValue_33"
-                 android:hint="@string/please_input_phone_number"
-                 android:textSize="@dimen/xs44"
-                 android:drawablePadding="@dimen/px50"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent" />
+                 style="@style/OpenOrderValue"  />
 
          </LinearLayout>
          <View
-             android:background="@color/mainNavline_e7"
-             android:layout_width="wrap_content"
-             android:layout_height="@dimen/px2"/>
+           style="@style/line"/>
          <!--接单助理-->
          <LinearLayout
              android:id="@+id/ll_reception"
@@ -393,34 +233,17 @@
              android:layout_height="@dimen/px155">
 
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0"
                  android:drawableLeft="@drawable/icon_reception"
-                 android:drawablePadding="@dimen/px30"
-                 android:gravity="center"
                  android:text="@string/reception"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44" />
-
+                 style="@style/DetailsKey" />
              <TextView
                  android:id="@+id/tv_reception"
                  android:text="@string/lixiaoxiao"
-                 android:drawableRight="@drawable/arrows_right_gray"
-                 android:textColorHint="@color/textHint_99"
-                 android:layout_weight="1"
-                 android:gravity="center_vertical|right"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44"
-                 android:drawablePadding="@dimen/px50"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent" />
+                 style="@style/OpenOrderValue" />
 
          </LinearLayout>
          <View
-             android:background="@color/mainNavline_e7"
-             android:layout_width="wrap_content"
-             android:layout_height="@dimen/px2"/>
+          style="@style/line"/>
 <!--婚期-->
          <LinearLayout
              android:id="@+id/ll_marriage_date"
@@ -430,34 +253,18 @@
              android:layout_height="@dimen/px155">
 
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0"
+                 style="@style/DetailsKey"
                  android:drawableLeft="@drawable/icon_marry_date"
-                 android:drawablePadding="@dimen/px30"
-                 android:gravity="center"
-                 android:text="@string/marriage_date"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44" />
+                 android:text="@string/marriage_date" />
 
              <TextView
                 android:id="@+id/tv_marriage_date"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="1"
-                 android:drawablePadding="@dimen/px50"
-                 android:drawableRight="@drawable/arrows_right_gray"
-                 android:gravity="center_vertical|right"
                  android:hint="@string/please_select_marriage_date"
-                 android:textColor="@color/myValue_33"
-                 android:textColorHint="@color/textHint_99"
-                 android:textSize="@dimen/xs44" />
+                 style="@style/OpenOrderValue" />
 
          </LinearLayout>
          <View
-             android:background="@color/mainNavline_e7"
-             android:layout_width="wrap_content"
-             android:layout_height="@dimen/px2"/>
+     style="@style/line"/>
     <!--客户备注-->
          <LinearLayout
              android:id="@+id/ll_customer_remarks"
@@ -466,33 +273,19 @@
              android:layout_width="match_parent"
              android:layout_height="@dimen/px155">
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0"
                  android:drawableLeft="@drawable/icon_customer_remarks"
-                 android:drawablePadding="@dimen/px30"
-                 android:gravity="center"
                  android:text="@string/customer_remarks"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44" />
+                 style="@style/DetailsKey" />
              <android.support.design.widget.TextInputEditText
+                 android:drawableRight="@null"
                  android:id="@+id/et_customer_remarks"
                  android:background="@null"
-                 android:textColorHint="@color/textHint_99"
-                 android:layout_weight="1"
-                 android:gravity="center_vertical|left"
-                 android:textColor="@color/myValue_33"
                  android:hint="@string/please_input_customer_remarks"
-                 android:textSize="@dimen/xs44"
-                 android:drawablePadding="@dimen/px30"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent" />
+                 style="@style/OpenOrderValue" />
 
          </LinearLayout>
          <View
-             android:background="@color/mainNavline_e7"
-             android:layout_width="wrap_content"
-             android:layout_height="@dimen/px2"/>
+           style="@style/line"/>
         <!--摄影备注-->
          <LinearLayout
              android:id="@+id/ll_photography_remarks"
@@ -502,28 +295,15 @@
              android:layout_height="@dimen/px155">
 
              <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0"
                  android:drawableLeft="@drawable/icon_photography_remarks"
-                 android:drawablePadding="@dimen/px30"
-                 android:gravity="center"
                  android:text="@string/photographic_remarks"
-                 android:textColor="@color/myValue_33"
-                 android:textSize="@dimen/xs44" />
+                 style="@style/DetailsKey" />
              <android.support.design.widget.TextInputEditText
+                 android:drawableRight="@null"
                  android:id="@+id/et_photography_remarks"
                  android:background="@null"
-                 android:textColorHint="@color/textHint_99"
-                 android:layout_weight="1"
-                 android:gravity="center_vertical"
-                 android:textColor="@color/myValue_33"
                  android:hint="@string/please_fill_in_photography_remarks"
-                 android:textSize="@dimen/xs44"
-                 android:drawablePadding="@dimen/px30"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent" />
-
+                 style="@style/OpenOrderValue" />
          </LinearLayout>
          <View
              android:background="@color/mainNavline_e7"

@@ -3,7 +3,7 @@ package com.suxuantech.erpsys.activity.base;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
-import android.support.constraint.ConstraintLayout;
+
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -387,7 +387,7 @@ import com.yanzhenjie.statusview.StatusView;
      */
     @Override
     public void setContentView(View view) {
-    if (view instanceof CoordinatorLayout||view instanceof ConstraintLayout) {//如果设置的是协调者布局则不要嵌套外层,因为协调者需要在最外层
+    if (view instanceof CoordinatorLayout) {//如果设置的是协调者布局则不要嵌套外层,因为协调者需要在最外层
       throw  new  IllegalArgumentException("不能使用ConstraintLayout和CoordinatorLayout布局");
       
       } else {

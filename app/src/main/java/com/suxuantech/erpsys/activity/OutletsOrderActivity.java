@@ -133,8 +133,8 @@ public class OutletsOrderActivity extends BaseActivity {
                         getResources().getStringArray(R.array.sex) ,
                         this, AlertView.Style.ActionSheet, new OnItemClickListener(){
                     @Override
-                    public void onItemClick(Object o, int position){
-                    toast( "点击了第" + position + "个"+  getResources().getStringArray(R.array.sex)[position]);
+                    public void onItemClick(Object o, int position){//position -1是取消按钮
+                    toast( "点击了第" + position + "个");
                     }
                 }).show();
                 break;
@@ -167,8 +167,10 @@ public class OutletsOrderActivity extends BaseActivity {
             case R.id.tv_other_infromation:
                 if (mLlOtherInformation.getVisibility()!=View.VISIBLE){
                     mLlOtherInformation.setVisibility(View.VISIBLE);
+                    mTvOtherInformation.setSelected(true);
                 }else {
                     mLlOtherInformation.setVisibility(View.GONE);
+                    mTvOtherInformation.setSelected(false);
                 }
 
                 break;
