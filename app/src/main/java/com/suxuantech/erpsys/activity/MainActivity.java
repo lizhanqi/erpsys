@@ -153,10 +153,10 @@ public class MainActivity extends BaseActivity {
                 .addItem(erpItem)
                 .addItem(crmItem)
                 .addItem(myItem)
-                .setFirstSelectedPosition(0)
+                .setFirstSelectedPosition(2)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
-        startFragment(MsgFragment .class,true);
+        startFragment(ERPFragment .class,true);
     }
     /**
      * 设置底部导航栏颜色

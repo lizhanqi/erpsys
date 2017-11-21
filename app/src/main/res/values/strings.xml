@@ -1,7 +1,6 @@
 <resources>
 
 
-
     <string name="app_name">素玄科技</string>
     <string name="used">used</string>
     <!--封装的网络-->
@@ -46,9 +45,8 @@
     <string name="erp">ERP</string>
     <string name="work">办公</string>
     <string name="msg">消息</string>
-
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--ERP左侧-->
     <string name="salesroom">门市部</string>
     <string name="department">所属部门</string>
     <string name="belongs_tos_tore">所属店面</string>
@@ -60,5 +58,37 @@
     <string name="action_login_out">退出登陆</string>
     <string name="outlets_order">门市开单</string>
     <string name="order_search">订单搜索</string>
-
+    <string name="order_id">订单编号</string>
+    <string name="please_input_order_id">请输入订单编号</string>
+    <string name="please_input_phone_number">请输入手机号</string>
+    <string name="please_input_customer_name">请输入客户姓名</string>
+    <string name="sex">性别</string>
+    <string name="women">女</string>
+    <string name="information">其他资料</string>
+    <string name="please_fill_in_photography_remarks">请填写摄影备注</string>
+    <string name="photographic_remarks">摄影备注:</string>
+    <string name="customer_remarks">客户备注:</string>
+    <string name="please_input_customer_remarks">请填写客户备注</string>
+    <string name="marriage_date">结婚日期</string>
+    <string name="please_select_marriage_date">请选择婚期</string>
+    <string name="reception">接待助理</string>
+    <string name="lixiaoxiao">李晓晓</string>
+    <string name="customer_zone">客户分区</string>
+    <string name="vip_zone">VIP区</string>
+    <string name="addition">新增产品</string>
+    <string name="zero">0</string>
+    <string name="package_set_of_names">包套名称</string>
+    <string name="please_select_package_set">请选择包套</string>
+    <string name="order_receiving_site">接单点</string>
+    <string name="please_select_order_receiving_site">请选择接单点</string>
+    <string name="outlets_reception">门市接待</string>
+    <string name="please_selsect_outlets_reception">请选择门市接待</string>
+    <string name="consumption_type">消费类型</string>
+    <string name="please_select_consumption_type">请选择消费类型</string>
+    <string name="customer_name">客户姓名</string>
+    <string name="customer_phone">客户手机</string>
+    <string name="cancel">取消</string>
+    <string name="please_select_sex">请选择性别</string>
+    <string name="submit">提交</string>
+    <string-array name="sex"><item>男</item><item>女</item></string-array>
 </resources>

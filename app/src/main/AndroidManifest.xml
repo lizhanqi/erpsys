@@ -29,21 +29,24 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme" >            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+            android:theme="@style/AppTheme">
+        </activity>
         <activity
             android:name=".activity.QRCodeScanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:theme="@style/LoginTheme"
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            >
+            android:theme="@style/LoginTheme"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity android:name=".activity.OutletsOrderActivity" />
+        <activity android:name=".activity.SplashScreenActivity"
+            android:theme="@style/WelcomeStyle" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".activity.base.BaseNoFragment" />
     </application>
 
 </manifest>

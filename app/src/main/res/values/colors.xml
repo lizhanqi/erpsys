@@ -15,6 +15,7 @@
     <color name="wavel">#ffd5a7</color>
     <color name="wavebg">#fff3e7</color>
     <color name="wave">#ff8e13</color>
+    <color name="textHint_99">#999999</color>
 
     <color name="themeColor">#3786fc</color>
     <color name="msgColor">#e60b0b</color>

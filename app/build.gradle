@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
@@ -44,7 +45,6 @@ dependencies {
     compile project(':libzxing')
     compile files('libs/json-lib-2.4-jdk15.jar')
     compile project(':libswipe')
-    compile project(path: ':libswipe')
     compile project(':libcalendar')
     // compile 'com.android.support:appcompat-v7:25.3.1'
     compile "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}"
@@ -59,7 +59,6 @@ dependencies {
     compile 'com.yanzhenjie:album:2.0.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
-    compile 'com.jakewharton:butterknife:8.4.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.yanzhenjie.zbar:camera:1.0.0'
     compile 'com.yanzhenjie.zbar:zbar:1.0.0'
@@ -69,10 +68,10 @@ dependencies {
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     testCompile 'junit:junit:4.12'
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
-    compile "com.jakewharton:butterknife:8.4.0"
+    compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8+'
     compile 'com.coldmoqiuli:banners:1.0.1'
-
+    compile 'com.bigkoo:alertview:1.0.3'
 }
 //task makeJar(type: Copy) {
 //    delete 'build/libs/mysdk.jar'

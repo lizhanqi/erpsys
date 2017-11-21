@@ -81,13 +81,6 @@ clickable是防止页面穿透的点击事件的
                         android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
-            <com.suxuantech.erpsys.views.MaterialLayout
-                app:duration="200"
-                app:alpha="200"
-                app:scale="1.2"
-                app:color="#FFD306"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -358,7 +351,6 @@ clickable是防止页面穿透的点击事件的
 
                     </LinearLayout>
                 </ScrollView>
-            </com.suxuantech.erpsys.views.MaterialLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

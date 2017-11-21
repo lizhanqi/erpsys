@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--自定义顶部导航view组合-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:id="@+id/head_nav_use_defined_root"
-    android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="@dimen/px144">
     <com.suxuantech.erpsys.views.AdjustDrawableTextView
+            android:paddingRight="@dimen/px55"
+            android:paddingLeft="@dimen/px55"
+            android:drawableLeft="@drawable/arrows_left_black"
             android:id="@+id/tv_nav_left"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     <com.suxuantech.erpsys.views.AdjustDrawableTextView
+        android:textSize="@dimen/xs54"
         android:layout_centerInParent="true"
         android:id="@+id/tv_nav_title"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
     <com.suxuantech.erpsys.views.AdjustDrawableTextView
+        android:paddingRight="@dimen/px55"
+        android:paddingLeft="@dimen/px55"
         android:layout_alignParentRight="true"
         android:id="@+id/tv_nav_right"
         android:gravity="center"
-        android:drawableRight="@mipmap/ic_launcher"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
+    <View
+        android:background="@color/mainNavline_e7"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px2"/>
 </RelativeLayout>

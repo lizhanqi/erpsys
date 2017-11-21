@@ -17,6 +17,7 @@ clickable是防止页面穿透的点击事件的
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.widget.NestedScrollView>
+
     <!--状态栏和导航栏-->
     <LinearLayout
         android:id="@+id/status_and_nav_layout"
@@ -146,6 +147,7 @@ clickable是防止页面穿透的点击事件的
                             android:background="@color/white">
 
                             <TextView
+                                android:id="@+id/outlets_order"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

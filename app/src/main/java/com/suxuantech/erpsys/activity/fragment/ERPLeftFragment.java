@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.activity.fragment;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
 import com.yanzhenjie.statusview.StatusUtils;
@@ -41,6 +43,12 @@ public class ERPLeftFragment extends Fragment {
         TextView viewById = view.findViewById(R.id.tv_info);
         viewById.setSelected(true);
         StatusUtils.setFullToStatusBar(getActivity());
+        view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),OutletsOrderActivity.class));
+            }
+        });
     }
     @Override
     public void onDestroyView() {

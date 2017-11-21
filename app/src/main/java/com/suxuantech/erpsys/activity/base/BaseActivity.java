@@ -77,6 +77,9 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 1.可以重写alwaysDeniedPermissionDiaLog方法(有主意事项,alwaysDeniedPermissionDiaLog在方法中有说明)
  * 2.或者可以传入一个permissionListener,然后自己处理剩下的流程,如果你有了permissionListener,
  * 那么我就不会管理你的了如果想还用permissionResult方法接收你可以调用我的这个也可以
+ *
+ *
+ * 其他说明:如果使用了ButterKnife做点击事件,再使用这里的idsetClick,这里的会无效不会走这里的
  */
 public abstract class BaseActivity extends SwipeBackActivity implements View.OnClickListener{
 
@@ -640,7 +643,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      *
      * @return
      */
-    private boolean fastClick(View v) {
+    public boolean fastClick(View v) {
         if (System.currentTimeMillis() - lastClick <= fastClickTime && lastView == v) {
             toast("已经点过了");
             return false;
@@ -652,7 +655,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
 
     /**
      * View的点击事件
-     *
+     *如果你使用了ButterKnifename不会走这个的
      * @param v
      */
     @Override
