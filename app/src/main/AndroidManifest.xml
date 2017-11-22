@@ -29,7 +29,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.QRCodeScanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -48,7 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchOrderActivity"></activity>
+        <activity android:name=".activity.SearchOrderActivity" />
+        <activity android:name=".activity.ScheduleActivity" />
+        <activity android:name=".activity.fragment.TodayRevenueActivity"></activity>
     </application>
 
 </manifest>

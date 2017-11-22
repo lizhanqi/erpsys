@@ -151,6 +151,7 @@ clickable是防止页面穿透的点击事件的
                                 android:text="@string/outlets_order" />
 
                             <TextView
+                                android:id="@+id/tv_order_search"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

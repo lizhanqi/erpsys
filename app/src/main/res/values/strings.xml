@@ -97,6 +97,8 @@
     <string name="revenue">营收</string>
     <string name="into_customer_number">进客量</string>
     <string name="customer_complain_number">客诉量</string>
+    <string name="recently_search">最近搜索</string>
+    <string name="clear_search_history">清除搜索记录</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

@@ -28,4 +28,4 @@
     compile 'com.jakewharton:butterknife:8.4.0'//注解
     annotationProcessor 'com.jakewharton:butterknife-compiler:8+'//注解
     compile 'com.coldmoqiuli:banners:1.0.1'
-    compile 'com.bigkoo:alertview:1.0.3'//仿ios弹窗
+    compile 'com.bigkoo:alertview:1.0.3'//仿ios弹窗http://blog.csdn.net/da_caoyuan/article/details/70216112

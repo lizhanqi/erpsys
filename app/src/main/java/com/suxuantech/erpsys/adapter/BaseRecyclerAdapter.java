@@ -73,6 +73,17 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
             }
         });
     }
+   public void  notifyDataSetChanged(Collection<T> datas){
+       if (datas == null) {
+           realDatas = new ArrayList<>();
+       } else if (datas instanceof List) {
+           realDatas = (List<T>) datas;
+       } else {
+           realDatas = new ArrayList<>(datas);
+       }
+       notifyDataSetChanged();
+   }
+
 
     /**
      * Recycler适配器填充方法

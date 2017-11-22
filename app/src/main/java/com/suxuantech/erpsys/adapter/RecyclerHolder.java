@@ -109,15 +109,17 @@ public class RecyclerHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    /**
+/*    *
      * 为ImageView设置图片
      *
      * @param viewId
      * @param url
-     * @return
-     */
-//    public RecyclerHolder setImageByUrl(KJBitmap bitmap, int viewId, String url) {
-//        bitmap.display(getView(viewId), url);
-//        return this;
-//    }
+     * @return*/
+
+/*    public RecyclerHolder setImageByUrl(Context bitmap, int Image, String url) {
+        Glide.with(bitmap)
+                .load(url)
+                .into(viewId);
+        return this;
+    }*/
 }

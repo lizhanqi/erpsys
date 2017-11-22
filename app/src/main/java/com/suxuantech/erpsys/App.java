@@ -3,8 +3,11 @@ package com.suxuantech.erpsys;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.anye.greendao.gen.DaoMaster;
+import com.anye.greendao.gen.DaoSession;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -47,7 +50,10 @@ import cat.ereza.customactivityoncrash.config.CaocConfig;
  */
 
 public class App extends Application {
-
+    private DaoMaster.DevOpenHelper mHelper;
+    private SQLiteDatabase db;
+    private DaoMaster mDaoMaster;
+    private DaoSession mDaoSession;
     protected static Context context;
     private static Application application;
     public static   boolean ISDEBUG=true;
@@ -63,7 +69,6 @@ public class App extends Application {
         if (!ISDEBUG){
             initErrorPage();
         }
-
     }
 
     /**
