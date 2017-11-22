@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--服务费用底部增加服务费用-->
+<LinearLayout
+    android:background="@color/myBackground_f7"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View style="@style/line"/>
+ <TextView
+         android:paddingRight="@dimen/px355"
+        android:paddingLeft="@dimen/px355"
+        android:layout_gravity="center"
+        android:drawablePadding="@dimen/px40"
+        android:text="@string/add_fee"
+        android:textSize="@dimen/xs44"
+        android:textColor="@color/themeColor"
+        android:drawableLeft="@drawable/icon_add"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/px125" />
+</LinearLayout>

@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--搜索结果-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--上边-->
+    <LinearLayout
+        android:paddingBottom="@dimen/px40"
+        android:paddingTop="@dimen/px40"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/recently_search"
+            android:textColor="@color/myValue_33"
+            android:id="@+id/tv_user_name"
+            android:textSize="@dimen/xs44"
+            android:drawableLeft="@drawable/consumption_type"
+            android:drawablePadding="@dimen/px40"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/consume_type"
+            android:layout_weight="0"
+            android:textSize="@dimen/xs44"
+            android:textColor="@color/textHint_99"
+            android:text="@string/recently_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+        <TextView
+            android:layout_marginTop="@dimen/px30"
+            android:text="@string/recently_search"
+            android:textColor="@color/mainNav_66"
+            android:id="@+id/tv_order_id"
+            android:textSize="@dimen/xs44"
+            android:drawableLeft="@drawable/consumption_type"
+            android:drawablePadding="@dimen/px40"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--中间详情-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--左边-->
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="@dimen/px0"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="552555"
+                style="@style/customer_order_detail"/>
+            <TextView
+                android:text="552555"
+                style="@style/customer_order_detail"/>
+            <TextView
+                android:text="552555"
+                style="@style/customer_order_detail"/>
+            <TextView
+                android:text="552555"
+                style="@style/customer_order_detail"/>
+        </LinearLayout>
+        <!--右边-->
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical|right"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="@dimen/px0"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/customer_order_detail"
+                android:text="¥:3695.02\n\t\t\t\t\t总价"
+                />
+            <TextView
+                style="@style/customer_order_detail"
+                android:text="¥:3695.02\n\t\t\t\t\t总价"
+                />
+            <!--这里测试一个制表符\t代表2个字符-->
+            <TextView
+                style="@style/customer_order_detail"
+                android:text="¥:2\n\t\t\t\t\t总价"  />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

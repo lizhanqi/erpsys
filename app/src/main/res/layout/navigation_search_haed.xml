@@ -31,7 +31,6 @@
         android:textSize="@dimen/xs40"
         android:layout_centerInParent="true"
         android:id="@+id/tiet_nav_search"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <com.suxuantech.erpsys.views.AdjustDrawableTextView

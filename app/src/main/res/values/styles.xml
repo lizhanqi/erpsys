@@ -82,5 +82,17 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/px2</item>
     </style>
+    <style name="customer_order_detail">
+        <item name="android:textSize">@dimen/xs42</item>
+        <item name="android:textColor">@color/textcolor_b6</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 
+    <style name="customer_order_money">
+        <item name="android:textSize">@dimen/xs40</item>
+        <item name="android:textColor">@color/textHint_99</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

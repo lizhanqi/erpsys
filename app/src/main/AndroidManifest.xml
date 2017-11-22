@@ -50,7 +50,8 @@
         </activity>
         <activity android:name=".activity.SearchOrderActivity" />
         <activity android:name=".activity.ScheduleActivity" />
-        <activity android:name=".activity.fragment.TodayRevenueActivity"></activity>
+        <activity android:name=".activity.TodayRevenueActivity" />
+        <activity android:name=".activity.ServiceFeeActivity"></activity>
     </application>
 
 </manifest>

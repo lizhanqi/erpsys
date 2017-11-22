@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.activity.base;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 
 import android.support.design.widget.CoordinatorLayout;
@@ -71,6 +72,7 @@ import com.yanzhenjie.statusview.StatusView;
     private LinearLayout mContentViewLinearlayout;
     //当前Activity渲染用户的主要内容
     private View mContextView;
+    private View lineView;
 
     //-----------------------------顶部导航-------------------------------------
     //获取自定义导航左侧view
@@ -147,7 +149,14 @@ import com.yanzhenjie.statusview.StatusView;
     public void hideUsetDefinedNav(){
         mHeadNavUseDefinedRoot.setVisibility(View.GONE);
     }
+        public View getLineView(){
+        return lineView;
+        }
 
+    public void setUserDefinedLineViewBG(@IntegerRes int  lineColor) {
+        lineView.setBackground(null);
+            lineView.setBackgroundColor(lineColor);
+    }
     //----------------自定义导航标题--------------
     /**
      *
@@ -195,7 +204,13 @@ import com.yanzhenjie.statusview.StatusView;
      * @param drawable
      */
     public void setUseDefinedNavLeftDrawable(Drawable drawable){
-        setUseDefinedNavLeftDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        if (drawable!=null){
+            setUseDefinedNavLeftDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        }else {
+            setUseDefinedNavLeftDrawable(null, 0,0);
+
+        }
+
     }
     /**
      * 左侧图片指定宽高
@@ -404,7 +419,6 @@ import com.yanzhenjie.statusview.StatusView;
      * @return
      */
     private void createRootView() {
-
         rootViews = View.inflate(this, R.layout.base_root_status_immersed, null);
         mRootLayoutStatusImmersed = rootViews.findViewById(R.id.root_layout_status_immersed);
         mStatusAndNavLayout = rootViews. findViewById(R.id.status_and_nav_layout);
@@ -418,6 +432,7 @@ import com.yanzhenjie.statusview.StatusView;
         mTvNavTitle = rootViews.findViewById(R.id.tv_nav_title);
         mTvNavTitle.setOnClickListener(this);
         mTvNavRight = rootViews.findViewById(R.id.tv_nav_right);
+        lineView = rootViews.findViewById(R.id.v_line);
         mTvNavRight.setOnClickListener(this);
         //内容
 //        mNestedScrollView =rootViews.findViewById(R.icon_id.nested_scroll_view);

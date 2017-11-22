@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--服务费用-->
+<LinearLayout
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/px55"
+    android:paddingRight="@dimen/px55"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="@dimen/px125">
+    <TextView
+        android:id="@+id/tv_serial_number"
+        android:textSize="@dimen/xs44"
+        android:textColor="@color/myValue_33"
+        android:text="01"
+        android:layout_width="@dimen/px185"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_service_name"
+        android:textSize="@dimen/xs44"
+        android:textColor="@color/myValue_33"
+        android:layout_weight="1"
+        android:text="服务名称"
+        android:layout_width="@dimen/px185"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_service_fee"
+        android:textSize="@dimen/xs44"
+        android:textColor="@color/myValue_33"
+        android:drawableRight="@drawable/arrows_right_gray"
+        android:text="服务价格"
+        android:layout_width="@dimen/px250"
+        android:layout_height="wrap_content" />
+</LinearLayout>

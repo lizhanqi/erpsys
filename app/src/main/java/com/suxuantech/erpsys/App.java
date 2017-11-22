@@ -3,23 +3,18 @@ package com.suxuantech.erpsys;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import com.anye.greendao.gen.DaoMaster;
-import com.anye.greendao.gen.DaoSession;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+
 
 /**
  * ......................我佛慈悲....................
@@ -50,15 +45,10 @@ import cat.ereza.customactivityoncrash.config.CaocConfig;
  */
 
 public class App extends Application {
-    private DaoMaster.DevOpenHelper mHelper;
-    private SQLiteDatabase db;
-    private DaoMaster mDaoMaster;
-    private DaoSession mDaoSession;
     protected static Context context;
     private static Application application;
     public static   boolean ISDEBUG=true;
     public static String APP_LOG_NAME = "debug";
-
     @Override
     public void onCreate() {
         super.onCreate();

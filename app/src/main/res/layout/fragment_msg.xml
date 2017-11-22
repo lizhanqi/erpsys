@@ -18,6 +18,5 @@ clickable是防止页面穿透的点击事件的
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/msg" />
-
-
+    <include layout="@layout/item_custrom_order"/>
 </FrameLayout>

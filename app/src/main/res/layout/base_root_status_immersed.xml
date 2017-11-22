@@ -9,6 +9,7 @@ android:layout_height="wrap_content"
 android:orientation="vertical">
 <!--状态栏和导航栏-->
 <LinearLayout
+    android:background="@color/white"
     android:id="@+id/status_and_nav_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +21,7 @@ android:orientation="vertical">
         android:background="?attr/colorPrimary"
         app:fitsView="@id/root_layout_status_immersed"/>
     <!--导航栏-->
-    <include android:visibility="gone" layout="@layout/navigation_heads"/>
+    <include  layout="@layout/navigation_heads"/>
 </LinearLayout>
 <com.yanzhenjie.statusview.NavigationView
     android:id="@+id/navigation_view"

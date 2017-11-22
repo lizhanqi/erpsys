@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--服务费用的标题-->
+<LinearLayout
+android:orientation="vertical"
+    android:background="@color/myBackground_f7"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="@dimen/px125">
+    <!--这里的俩VIew是用来解决添加head时候的，不能满屏的问题的-->
+    <View style="@style/line" android:layout_height="@dimen/px0" />
+    <LinearLayout
+        android:gravity="center"
+        android:paddingLeft="@dimen/px55"
+        android:paddingRight="@dimen/px55"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px125">
+    <TextView
+        android:textSize="@dimen/px50"
+        android:textColor="@color/textHint_99"
+        android:text="@string/serial_number"
+        android:layout_width="@dimen/px185"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="@dimen/px50"
+        android:textColor="@color/textHint_99"
+        android:layout_weight="1"
+        android:text="@string/service_name"
+        android:layout_width="@dimen/px185"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="@dimen/px50"
+        android:textColor="@color/textHint_99"
+        android:text="@string/service_price"
+        android:layout_width="@dimen/px250"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View style="@style/line" android:layout_height="@dimen/px0"  />
+</LinearLayout>

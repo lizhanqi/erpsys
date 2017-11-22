@@ -2,7 +2,6 @@ package com.suxuantech.erpsys.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
@@ -89,6 +88,7 @@ public class AdjustDrawableTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
         getAttributes(context, attrs, defStyleAttr);
     }
+
 
 
     public void getAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -222,117 +222,5 @@ public class AdjustDrawableTextView extends AppCompatTextView {
         }
         setCompoundDrawablesWithIntrinsicBounds(left,top,right,bottom);
         setCompoundDrawablePadding(20);
-    }
-    @Override
-    protected void onDraw(Canvas canvas) {
-        // Draw the background for this view
-        super.onDraw(canvas);
-       /*
-       测试圆角的
-       Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas2 = new Canvas(bitmap);
-
-        super.onDraw(canvas2);
-
-        mPaint = new Paint();
-        mPaint.setColor(Color.RED);
-        mPaint.setAntiAlias(true);
-        //16种状态
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        mPaint2 = new Paint();
-        mPaint2.setColor(Color.YELLOW);
-        mPaint2.setXfermode(null);
-
-        int radius=100;
-        Path path = new Path();
-        path.moveTo(0, radius);
-        path.lineTo(0, 0);
-        path.lineTo(radius, 0);
-        //arcTo的第二个参数是以多少度为开始点，第三个参数-90度表示逆时针画弧，正数表示顺时针
-        path.arcTo(new RectF(0, 0, radius * 2, radius * 2), -90, -90);
-        path.close();
-        canvas2.drawPath(path, mPaint);
-
-        canvas.drawBitmap(bitmap, 0, 0, mPaint2);
-        bitmap.recycle();*/
-
-/*
-        final int compoundPaddingLeft = getCompoundPaddingLeft();
-        final int compoundPaddingTop = getCompoundPaddingTop();
-        final int compoundPaddingRight = getCompoundPaddingRight();
-        final int compoundPaddingBottom = getCompoundPaddingBottom();
-        final int scrollX = getScrollX();
-        final int scrollY = getScrollY();
-        final int right = getRight();
-        final int left = getLeft();
-        final int bottom = getBottom();
-        final int top = getTop();
-        final int offset =0;
-        final int leftOffset = 0;
-        final int rightOffset =0;
-
-
-        *//*
-        * 0-1-2-3
-        * left-top-right-bottom
-        * *//*
-        Drawable[] drawables = getCompoundDrawables();
-
-
-            *//*
-             * Compound, not extended, because the icon is not clipped
-             * if the text height is smaller.
-             *//*
-
-            int vspace = bottom - top - compoundPaddingBottom - compoundPaddingTop;
-            int hspace = right - left - compoundPaddingRight - compoundPaddingLeft;
-
-            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-            // Make sure to update invalidateDrawable() when changing this code.
-            if (drawables[0] != null) {
-                canvas.save();
-                canvas.translate(scrollX + getPaddingLeft() + leftOffset,
-                        scrollY + compoundPaddingTop +
-                                (vspace - leftDrawableHeight) / 2);
-                drawables[0].draw(canvas);
-                canvas.restore();
-            }
-
-            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-            // Make sure to update invalidateDrawable() when changing this code.
-            if (dr.mShowing[Drawables.RIGHT] != null) {
-                canvas.save();
-                canvas.translate(scrollX + right - left - mPaddingRight
-                                - dr.mDrawableSizeRight - rightOffset,
-                        scrollY + compoundPaddingTop + (vspace - dr.mDrawableHeightRight) / 2);
-                dr.mShowing[Drawables.RIGHT].draw(canvas);
-                canvas.restore();
-            }
-
-            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-            // Make sure to update invalidateDrawable() when changing this code.
-            if (dr.mShowing[Drawables.TOP] != null) {
-                canvas.save();
-                canvas.translate(scrollX + compoundPaddingLeft +
-                        (hspace - dr.mDrawableWidthTop) / 2, scrollY + mPaddingTop);
-                dr.mShowing[Drawables.TOP].draw(canvas);
-                canvas.restore();
-            }
-
-            // IMPORTANT: The coordinates computed are also used in invalidateDrawable()
-            // Make sure to update invalidateDrawable() when changing this code.
-            if (dr.mShowing[Drawables.BOTTOM] != null) {
-                canvas.save();
-                canvas.translate(scrollX + compoundPaddingLeft +
-                                (hspace - dr.mDrawableWidthBottom) / 2,
-                        scrollY + bottom - top - mPaddingBottom - dr.mDrawableSizeBottom);
-                dr.mShowing[Drawables.BOTTOM].draw(canvas);
-                canvas.restore();
-            }
-
-
-
-
-        canvas.restore();*/
     }
 }
