@@ -73,7 +73,6 @@
     <string name="please_select_marriage_date">请选择婚期</string>
     <string name="reception">接待助理</string>
     <string name="lixiaoxiao">李晓晓</string>
-    <string name="customer_zone">客户分区</string>
     <string name="vip_zone">VIP区</string>
     <string name="addition">新增产品</string>
     <string name="zero">0</string>
@@ -105,6 +104,34 @@
     <string name="serial_number">序号</string>
     <string name="service_name">服务名称</string>
     <string name="service_price">服务价格</string>
+    <string name="service_stores">服务店面</string>
+    <string name="customer_id">客户编号</string>
+    <string name="order_type">订单类型</string>
+    <string name="subscribe_date">预约日期</string>
+    <string name="consume_type">消费类型</string>
+    <string name="man_name">男士姓名</string>
+    <string name="woman_name">女士姓名</string>
+    <string name="customer_source">客户来源</string>
+    <string name="customer_zone">客户分区</string>
+    <string name="outlets_for_three">门市三</string>
+    <string name="card_number">会员卡号</string>
+    <string name="member_type">会员类型</string>
+    <string name="man_phone">男士手机</string>
+    <string name="woman_phone">女士手机</string>
+    <string name="manager">主管人员</string>
+    <string name="support_staff">客服人员</string>
+    <string name="engagement_date">订婚日期</string>
+    <string name="please_input_remarkes">请输入备注</string>
+    <string name="please_select_engagement_date">请选择订婚日期</string>
+    <string name="please_select_support_staff">请选择客服人员</string>
+    <string name="please_select_manager">请选择主管人员</string>
+    <string name="please_select_member_type">请选择会员类型</string>
+    <string name="please_select_outlets_for_three">请选择门市三</string>
+    <string name="please_select_reception">请选择接待助理</string>
+    <string name="please_select_customer_zone">请选择客户分区</string>
+    <string name="please_select_customer_source">请选择客户来源</string>
+    <string name="please_select_name">请输入姓名</string>
+    <string name="please_select_subscribe_date">请选择预约日期</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

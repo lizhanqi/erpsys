@@ -32,10 +32,15 @@ import java.io.InputStreamReader;
  * @author Created by 李站旗 on 2017/11/7 22:02 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: asset资源文件读取为Stirng
  */
 
 public class AssetFileRead {
+    private AssetFileRead() {
+             /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
+
     public String getString(Context context, String fileName) {
         StringBuilder stringBuilder = new StringBuilder();
         try {

@@ -39,6 +39,10 @@ import java.util.Map;
 public class FastJsonUtils {
 
     private static final SerializeConfig CONFIG;
+    private FastJsonUtils() {
+             /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
 
     static {
         CONFIG = new SerializeConfig();

@@ -31,7 +31,10 @@ import java.io.UnsupportedEncodingException;
 
 public class HexUtil {
     private static String hexString = "0123456789ABCDEF";
-
+    private HexUtil() {
+             /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     public static String encodeCN(String data) {
         byte[] bytes;
         try {

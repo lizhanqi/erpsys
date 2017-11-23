@@ -41,7 +41,10 @@ import java.io.ByteArrayOutputStream;
  */
 public class BitmapUtil {
 
-    private BitmapUtil(){}
+    private BitmapUtil(){
+             /* cannot be instantiated */
+            throw new UnsupportedOperationException("cannot be instantiated");
+    }
 
     /**
      * 根据资源id获取指定大小的Bitmap对象

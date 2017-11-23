@@ -36,6 +36,10 @@ import java.lang.reflect.Type;
  */
 
 public class ReflexUtils {
+    private ReflexUtils() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     /**
      * 通过反射获取一个类的私有值
      * @param instance 反射类对象

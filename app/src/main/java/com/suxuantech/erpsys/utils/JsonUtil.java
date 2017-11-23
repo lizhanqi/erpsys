@@ -23,6 +23,10 @@ import java.util.Map;
  * @author YOLANDA
  */
 public class JsonUtil {
+    private JsonUtil() {
+             /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     /**
      * 用fastjson 将json字符串解析为一个 JavaBean
      *

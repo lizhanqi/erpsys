@@ -31,12 +31,14 @@ import java.util.Locale;
  * @author Created by 李站旗 on 2017/11/7 19:30 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: 时间工具
  */
 
 public class DateUtil {
 
     private DateUtil() {
+             /* cannot be instantiated */
+            throw new UnsupportedOperationException("cannot be instantiated");
     }
 
     /**

@@ -38,6 +38,11 @@ import java.util.Map;
 
 public class SPUtils
 {
+    private SPUtils()
+    {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     /**
      * 保存在手机里面的文件名
      */

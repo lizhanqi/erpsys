@@ -5,11 +5,21 @@ package com.suxuantech.erpsys.utils;
  */
 
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+/**
+ * 蓝牙工具类
+ */
 public class BluetoothUtils {
+    private BluetoothUtils(){
+             /* cannot be instantiated */
+            throw new UnsupportedOperationException("cannot be instantiated");
+    }
+
     /**
      *
      * 与设备配对 参考源码：platform/packages/apps/Settings.git

@@ -25,6 +25,11 @@ import com.suxuantech.erpsys.App;
  * Created by Yan Zhenjie on 2016/10/16.
  */
 public class ToastUtils {
+
+    private ToastUtils() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     private static Toast mToast;
     /**
      * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)

@@ -1,7 +1,5 @@
 package com.suxuantech.erpsys.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +31,10 @@ import java.util.regex.Pattern;
  * @Description: 处理字符串工具
  */
 public class StringUtils {
+    private StringUtils() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     /**
      * 清理接送中多余的\和"
      *

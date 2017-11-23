@@ -36,6 +36,10 @@ import android.widget.TextView;
 
 public class TextUtils {
 
+    private TextUtils() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
     public static void setColorText(TextView textView, String normalText, String colorText, int mColor){
 //       红颜色
         String str=normalText+"<font color='"+textView.getResources().getColor(mColor)+"'>"+colorText+"</font>";

@@ -34,10 +34,8 @@ import android.widget.EditText;
  * @author zhy
  *
  */
-public class KeyBoardUtils
-{
-    private KeyBoardUtils()
-    {
+public class KeyBoardUtils {
+    private KeyBoardUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
 
