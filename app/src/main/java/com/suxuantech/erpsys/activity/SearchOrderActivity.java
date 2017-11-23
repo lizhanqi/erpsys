@@ -15,6 +15,7 @@ import com.anye.greendao.gen.HistoryBeanDao;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.views.DefaultItemDecoration;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
@@ -23,8 +24,8 @@ import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -97,7 +98,6 @@ public class SearchOrderActivity extends AppCompatActivity {
                 ToastUtils.show(position+"");
             }
         });
-
          historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
             @Override
             public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
@@ -118,7 +118,7 @@ public class SearchOrderActivity extends AppCompatActivity {
                 ToastUtils.show("100==-->"+searchHosiery.get(position).getName());
             }
         });
-            mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
+            mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3).offSetX(100));
             mSmrHistory.setAdapter(historyAdapter);
             int height = mSmrHistory.getHeight();
               int i = mSmrHistory.computeVerticalScrollExtent();
@@ -215,6 +215,9 @@ public class SearchOrderActivity extends AppCompatActivity {
      * 获取搜索历史
      */
     public List<HistoryBean> getSearchHosiery(){
-     return   historyDao.loadAll();
+        List<HistoryBean> historyBeans = historyDao.loadAll();
+        //倒序下，因为最新的要在上面显示
+        Collections.reverse(historyBeans);
+        return   historyBeans;
     }
 }

@@ -4,5 +4,4 @@
     <item android:drawable="@drawable/arrows_down_gray" android:state_pressed="true"/>-->
     <item android:drawable="@drawable/arrows_right_gray" android:state_selected="false"/>
     <item android:drawable="@drawable/arrows_down_gray" android:state_selected="true"/>
-
 </selector>

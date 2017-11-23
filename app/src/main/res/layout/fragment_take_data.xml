@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.fragment.TakeDataFragment">
+    <!--取件资料-->
+    <android.support.design.widget.TabLayout
+        android:layout_gravity="center"
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabTextColor="@color/textHint_99"
+        app:tabBackground="@color/white"
+        app:tabMinWidth="@dimen/px360"
+        app:tabIndicatorHeight="@dimen/px2"
+        app:tabIndicatorColor="@color/color_f1403b"
+        app:tabGravity="center"
+        app:tabMode="fixed"
+        app:tabMaxWidth="100dp"
+        app:tabSelectedTextColor="@color/colorAccent">
+    </android.support.design.widget.TabLayout>
+    <View style="@style/line"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

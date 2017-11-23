@@ -51,7 +51,8 @@
         <activity android:name=".activity.SearchOrderActivity" />
         <activity android:name=".activity.ScheduleActivity" />
         <activity android:name=".activity.TodayRevenueActivity" />
-        <activity android:name=".activity.ServiceFeeActivity"></activity>
+        <activity android:name=".activity.ServiceFeeActivity" />
+        <activity android:name=".activity.OrderDetailActivity"></activity>
     </application>
 
 </manifest>

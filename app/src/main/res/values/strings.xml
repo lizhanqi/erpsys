@@ -109,4 +109,13 @@
         <item>男</item>
         <item>女</item>
     </string-array>
+
+    <string-array name="order">
+        <item>客户资料</item>
+        <item>取件资料</item>
+        <item>订单详情1</item>
+        <item>拍照礼服1</item>
+        <item>订单详情2</item>
+        <item>拍照礼服2</item>
+    </string-array>
 </resources>

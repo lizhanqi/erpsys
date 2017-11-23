@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import com.oragee.banners.BannerView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseNoFragment;
-import com.suxuantech.erpsys.adapter.MyFragmentAdapter;
+import com.suxuantech.erpsys.adapter.DefaultFragmentAdapter;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,12 @@ View view;
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-        MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter( getChildFragmentManager(), fragmentrs);
+        DefaultFragmentAdapter myFragmentAdapter = new DefaultFragmentAdapter(getChildFragmentManager(), 2, new DefaultFragmentAdapter.FragmentShow() {
+            @Override
+            public Fragment getItemFragment(int positon) {
+               return fragmentrs.get(positon);
+            }
+        });
         mViewPager.setAdapter(myFragmentAdapter);
         mViewPager.setCurrentItem(0);
         mRadioGroup = view.findViewById(R.id.rg_vp);
