@@ -104,7 +104,7 @@
         android:layout_height="@dimen/px155">
         <TextView
         style="@style/DetailsKey"
-            android:drawableLeft="@drawable/consumption_type"
+            android:drawableLeft="@drawable/icon_consumption_type"
             android:text="@string/consumption_type" />
         <TextView
             android:id="@+id/tv_consumption_type"

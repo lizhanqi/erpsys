@@ -19,7 +19,9 @@ import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
 import com.suxuantech.erpsys.utils.L;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
+import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
@@ -87,14 +89,35 @@ public class SearchOrderActivity extends AppCompatActivity {
             if (searchHosiery.size()<=0){
                 mBtn_clear.setVisibility(View.GONE);
             }
-              historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
+       mSmrHistory.setLayoutManager(new LinearLayoutManager(this));
+       // mSmrHistory.addHeaderView(getLayoutInflater().inflate(R.layout.footer_add_service_fee,null));
+        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                ToastUtils.show(position+"");
+            }
+        });
+
+         historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
             @Override
             public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_history);
                 view.setText(item.getName());
             }
         };
-            mSmrHistory.setLayoutManager(new LinearLayoutManager(this));
+//        historyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, Object data, int position) {
+//              ToastUtils.show("99==-->"+position);
+//            }
+//        });
+        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+
+                ToastUtils.show("100==-->"+searchHosiery.get(position).getName());
+            }
+        });
             mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
             mSmrHistory.setAdapter(historyAdapter);
             int height = mSmrHistory.getHeight();
