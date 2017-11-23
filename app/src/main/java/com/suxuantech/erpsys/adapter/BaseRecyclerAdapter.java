@@ -46,7 +46,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     protected boolean isScrolling;
     protected Context cxt;
     private OnItemClickListener listener;
-
+    private boolean useListener=false;//是否使用这个的监听（如果不调用setListenername就不会有回调避免了跟SwipeMenuRecyclerView的点击事件冲突）
     public interface OnItemClickListener {
         void onItemClick(View view, Object data, int position);
     }
@@ -73,6 +73,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
             }
         });
     }
+    /**
+     * 更新数据
+     * @param datas
+     */
    public void  notifyDataSetChanged(Collection<T> datas){
        if (datas == null) {
            realDatas = new ArrayList<>();
@@ -104,7 +108,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(RecyclerHolder holder, int position) {
         convert(holder, realDatas.get(position), position, isScrolling);
-        holder.itemView.setOnClickListener(getOnClickListener(position));
+        if (useListener){
+            holder.itemView.setOnClickListener(getOnClickListener(position));
+        }
     }
 
     @Override
@@ -113,6 +119,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     }
 
     public void setOnItemClickListener(OnItemClickListener l) {
+        useListener=true;
         listener = l;
     }
 
