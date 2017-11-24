@@ -1,0 +1,89 @@
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myBackground_f7"
+    tools:context="com.suxuantech.erpsys.activity.ServiceDetailsActivity">
+    <TextView
+        android:textColor="@color/textHint_99"
+        android:textSize="@dimen/xs36"
+        android:text="@string/photographic_remarks"
+        android:drawablePadding="@dimen/px10"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/px55"
+        android:layout_marginRight="@dimen/px55"
+        android:drawableLeft="@drawable/icon_location"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100" />
+   <include layout="@layout/fragment_customer_information"/>
+        <ImageView
+            android:id="@+id/img_fold"
+            android:padding="@dimen/px40"
+            android:src="@drawable/sl_arrows_up_down"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+            <EditText
+                android:paddingTop="@dimen/px10"
+                android:paddingLeft="@dimen/px10"
+                android:paddingRight="@dimen/px10"
+                android:gravity="top"
+                android:id="@+id/et_say_something"
+                android:layout_marginTop="@dimen/px20"
+                android:layout_marginLeft="@dimen/px55"
+                android:layout_marginRight="@dimen/px55"
+                android:background="@drawable/sp_edittext"
+                android:hint="@string/say_something"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px250" />
+    <!--这里设计图是添加按钮,实际这里可能是跳转到相机或者其他方式选择多个照片然后进行横向滑动的-->
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/smrv_say_something"
+            android:layout_marginLeft="@dimen/px55"
+            android:layout_marginRight="@dimen/px55"
+            android:layout_marginTop="@dimen/px30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    <TextView
+        android:layout_marginLeft="@dimen/px55"
+        android:id="@+id/tv_time"
+        android:layout_marginTop="@dimen/px30"
+        android:layout_marginBottom="@dimen/px30"
+        android:textSize="@dimen/xs40"
+        android:textColor="@color/myValue_33"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginBottom="@dimen/px100"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/px55"
+            android:paddingRight="@dimen/px55"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:background="@drawable/sl_butn_gray_theme"
+                android:layout_weight="1"
+                android:id="@+id/btn_start_service"
+                android:text="@string/start_service"
+                android:textColor="@color/white"
+                android:textSize="@dimen/xs44"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px115" />
+            <Button
+                android:background="@drawable/sl_butn_gray_theme"
+                android:layout_marginLeft="@dimen/px20"
+                android:id="@+id/service_complete"
+                android:text="@string/service_complete"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/xs44"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px115" />
+        </LinearLayout>
+</LinearLayout>
+</ScrollView>

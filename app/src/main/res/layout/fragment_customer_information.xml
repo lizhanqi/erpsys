@@ -322,7 +322,7 @@
 
                 <TextView
                     style="@style/CustomerInformationKey"
-                    android:text="@string/customer_remarks" />
+                    android:text="@string/customer_remark" />
                 <EditText
                     android:hint="@string/please_input_remarkes"
                     android:id="@+id/et_customer_remarks"
@@ -330,12 +330,12 @@
                     android:gravity="top|left"
                     android:layout_height="wrap_content"
                     android:minLines="3"
-                    style="@style/CustomerInformationValue"
-                    android:text="@string/service_stores" />
+                    style="@style/CustomerInformationValue" />
             </LinearLayout>
             <View
                 style="@style/line"/>
             <Button
+                android:id="@+id/btn_submint"
                 android:layout_marginTop="@dimen/px100"
                 android:layout_marginBottom="@dimen/px60"
                 android:text="@string/submit"
@@ -346,7 +346,6 @@
                 android:background="@drawable/login_button_sp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px115" />
-
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

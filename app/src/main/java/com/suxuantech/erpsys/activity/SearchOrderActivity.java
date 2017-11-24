@@ -91,7 +91,6 @@ public class SearchOrderActivity extends AppCompatActivity {
                 mBtn_clear.setVisibility(View.GONE);
             }
        mSmrHistory.setLayoutManager(new LinearLayoutManager(this));
-       // mSmrHistory.addHeaderView(getLayoutInflater().inflate(R.layout.footer_add_service_fee,null));
         mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -105,20 +104,15 @@ public class SearchOrderActivity extends AppCompatActivity {
                 view.setText(item.getName());
             }
         };
+
 //        historyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(View view, Object data, int position) {
 //              ToastUtils.show("99==-->"+position);
 //            }
 //        });
-        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
 
-                ToastUtils.show("100==-->"+searchHosiery.get(position).getName());
-            }
-        });
-            mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3).offSetX(100));
+            mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3)    );
             mSmrHistory.setAdapter(historyAdapter);
             int height = mSmrHistory.getHeight();
               int i = mSmrHistory.computeVerticalScrollExtent();

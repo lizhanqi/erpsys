@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myBackground_f7"
+    tools:context="com.suxuantech.erpsys.activity.ServiceDetailsActivity">
+    <TextView
+        android:textColor="@color/textHint_99"
+        android:textSize="@dimen/xs36"
+        android:text="@string/photographic_remarks"
+        android:drawablePadding="@dimen/px10"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/px55"
+        android:layout_marginRight="@dimen/px55"
+        android:drawableLeft="@drawable/icon_location"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100" />
+<!--    <include layout="@layout/fragment_customer_information"/>-->
+    <TextView
+        android:textColor="@color/myValue_33"
+        android:textSize="@dimen/xs44"
+        android:text="@string/service_information"
+        android:drawablePadding="@dimen/px10"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/px55"
+        android:layout_marginRight="@dimen/px55"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px120" />
+    <LinearLayout
+        android:paddingLeft="@dimen/px55"
+        android:paddingRight="@dimen/px55"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:lineSpacingExtra="@dimen/px22"
+            android:textColor="@color/myValue_33"
+            android:textSize="@dimen/xs44"
+            android:text="获奖感言"
+            android:drawablePadding="@dimen/px10"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px120" />
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:visibility="gone"
+            android:id="@+id/smrv_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+        <TextView
+            android:layout_gravity="right"
+            android:textColor="@color/textHint_99"
+            android:textSize="@dimen/xs36"
+            android:text="@string/photographic_remarks"
+            android:drawablePadding="@dimen/px10"
+            android:gravity="center_vertical|right"
+            android:drawableLeft="@drawable/icon_location"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px100" />
+        <TextView
+            android:layout_gravity="right"
+            android:textColor="@color/textHint_99"
+            android:textSize="@dimen/xs36"
+            android:text="@string/zero"
+            android:drawablePadding="@dimen/px10"
+            android:gravity="center_vertical|right"
+            android:drawableLeft="@drawable/icon_zan"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px100" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:paddingLeft="@dimen/px55"
+        android:paddingRight="@dimen/px55"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/textHint_99"
+            android:textSize="@dimen/xs36"
+            android:text="服务人员:欧阳露娜\n开始时间:2017年8月29日 10:29\n结束时间:2017年8月29日 10:29"
+            android:drawablePadding="@dimen/px10"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/textHint_99"
+            android:textSize="@dimen/xs36"
+            android:text="@string/photographic_remarks"
+            android:drawablePadding="@dimen/px10"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/icon_location"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px100" />
+    </LinearLayout>
+</LinearLayout>

@@ -26,6 +26,7 @@
     <color name="msgColor">#e60b0b</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparency">#00000000</color>
+    <color name="color_bb">#bbbbbb</color>
     <!--白色透明度-->
     <color name="translucent_white_05">#f2ffffff</color>
     <color name="translucent_white_10">#e6ffffff</color>
