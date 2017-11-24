@@ -20,13 +20,11 @@ public class ServiceDetailsActivity extends StatusImmersedBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_details);
+        setContentView(R.layout.refresh_and_recyclerview);
         showUsetDefinedNav();
-
     }
 
     @Override
     protected void widgetClick(View v) {
-
     }
 }

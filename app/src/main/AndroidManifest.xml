@@ -53,7 +53,8 @@
         <activity android:name=".activity.TodayRevenueActivity" />
         <activity android:name=".activity.OrderDetailActivity" />
         <activity android:name=".activity.ServiceDetailsActivity" />
-        <activity android:name=".activity.OrderServiceActivity"></activity>
+        <activity android:name=".activity.OrderServiceActivity" />
+        <activity android:name=".activity.ServiceDetailListActivity"></activity>
     </application>
 
 </manifest>

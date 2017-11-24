@@ -31,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 /**
  * ......................我佛慈悲....................
@@ -85,6 +86,7 @@ public class SearchOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_order);
         ButterKnife.bind(this);
         initDB();
+        mPtrRefresh.addPtrUIHandler(new PtrClassicDefaultHeader(this));
         mPtrRefresh.setPullToRefresh(false);
         searchHosiery = getSearchHosiery();
             if (searchHosiery.size()<=0){
