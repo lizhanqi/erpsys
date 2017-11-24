@@ -25,7 +25,6 @@
                     style="@style/CustomerInformationValue"
                     android:text="@string/service_stores" />
             </LinearLayout>
-
                 <!--1  4个-->
             <LinearLayout
                 android:layout_marginTop="@dimen/px30"

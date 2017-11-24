@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/myBackground_f7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--1 - 4-->
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/notice_time" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_notice_time"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_notice_time" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/notice_staff" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_notice_staff"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_notice_staff" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/notice_status" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_notice_status"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_notice_status" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_height="@dimen/px245"
+        style="@style/CustomerInformationContain">
+        <TextView
+            android:layout_marginTop="@dimen/px40"
+            android:layout_gravity="top"
+            style="@style/CustomerInformationKey"
+            android:text="@string/notice_remarks" />
+        <EditText
+            android:gravity="top"
+            android:minLines="3"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/px40"
+            android:background="@null"
+            android:id="@+id/et_notice_remarks"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_input_notice_remarks" />
+    </LinearLayout>
+    <!--2  - 2-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/filming_store" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_filming_store"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/service_stores" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/filming_time" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_filming_time"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_filming_time" />
+    </LinearLayout>
+
+    <!--3  - 2-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/filming_type" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_filming_type"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_filming_type" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/filming_status" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_filming_status"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_filming_status" />
+    </LinearLayout>
+
+    <!--4-10-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/cameraman" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_cameraman"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_cameraman" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/camera_operator" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_camera_operator"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_camera_operator" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/lighting_engineer" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_lighting_engineer"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_lighting_engineer" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/lighting_engineer_assistant" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_lighting_engineer_assistant"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_lighting_engineer_assistant" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/styling_designer" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_styling_designer"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_styling_designer" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/styling_designer_assistant" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_styling_designer_assistant"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_styling_designer_assistant" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/tutorA" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_tutorA"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_tutorA" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/tutorB" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_tutorB"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_tutorB" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/dresser" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_dresser"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_dresser" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/dresser_assistant" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_dresser_assistant"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_dresser_assistant" />
+    </LinearLayout>
+
+
+    <!--5-10-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/shoot_number" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_shoot_number"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/take_clothes_number" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_take_clothes_number"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/number_of_interior" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_number_of_interior"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/number_of_location" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_number_of_location"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/model_number" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_model_number"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/take_the_studio" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_take_the_studio"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_take_the_studio" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/dressing_room" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_dressing_room"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_dressing_room" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/base_name" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_base_name"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_base_name" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/photography_theme" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_photography_theme"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_photography_theme" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/photography_scenic_spot" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_photography_scenic_spot"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_photography_scenic_spot" />
+    </LinearLayout>
+
+
+    <!--6-7-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/cameramanA" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_cameramanA"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_cameramanA" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/cameramanB" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_cameramanB"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_cameramanB" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/full_dress_number" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_full_dress_number"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_input_full_dress_number" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/other_assistant" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_other_assistant"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_other_assistant" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/mv" />
+        <TextView            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_mv"
+            style="@style/CustomerInformationValue"
+            android:text="@string/no" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:id="@+id/ll_"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/mv_number" />
+        <EditText
+            android:background="@null"
+            android:id="@+id/tv_mv_number"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_input_mv_number" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:layout_height="@dimen/px245"
+        style="@style/CustomerInformationContain">
+        <TextView
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/px40"
+            style="@style/CustomerInformationKey"
+            android:text="@string/photographic_remark" />
+        <EditText
+            android:layout_marginTop="@dimen/px40"
+            android:background="@null"
+            android:gravity="top"
+            android:minLines="3"
+            android:layout_height="match_parent"
+            android:id="@+id/tv_store_name"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_photographic_remarks" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    </LinearLayout>
+</ScrollView>

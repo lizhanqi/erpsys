@@ -25,12 +25,19 @@ import java.util.Arrays;
 
 public class TakeDataFragment extends NoFragment {
     private ArrayList<Fragment> fragments;
+    int witch;
+    //    设置参数确定子Fragment加载
+    /**
+     *     0是取件资料的
+     *     1是摄影资料
+     */
     public TakeDataFragment() {
-    }
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        witch = getArguments().getInt("witch");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_take_data, container, false);
     }
@@ -41,9 +48,16 @@ public class TakeDataFragment extends NoFragment {
         final ViewPager pager = (ViewPager) view.findViewById(R.id.vp);
         String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
         fragments = new ArrayList<>();
-        fragments.add(new TakeDataFragment1Fragment());
-        fragments.add(new TakeDataFragment1Fragment());
-        fragments.add(new TakeDataFragment1Fragment());
+        if (witch==0) {
+            fragments.add(new TakeDataFragment1Fragment());
+            fragments.add(new TakeDataFragment1Fragment());
+            fragments.add(new TakeDataFragment1Fragment());
+        } else if (witch==1){
+            fragments.add(new PhotographicDataFragment());
+            fragments.add(new PhotographicDataFragment());
+            fragments.add(new PhotographicDataFragment());
+        }
+
         pager.setAdapter(new DefaultFragmentAdapter(getChildFragmentManager(), new  ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {

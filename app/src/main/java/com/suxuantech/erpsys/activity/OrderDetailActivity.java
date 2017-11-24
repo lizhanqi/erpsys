@@ -101,6 +101,13 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 case "服务费用":
                     startFragment(ServiceFeeFragment.class);
                     break;
+                case "摄影资料":
+                    TakeDataFragment takeDataFragment = new TakeDataFragment();
+                    Bundle bd=  new Bundle();
+                    bd.putInt("witch",1);
+                    takeDataFragment.setArguments(bd);
+                    startFragment(takeDataFragment);
+                    break;
             }
     }
     public void showpopupwindow(){
