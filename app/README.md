@@ -1,3 +1,17 @@
+
+
+关于使用ButterKnife问题说明:
+如果在Fragment中使用onCreateView的时候请按照下面的格式使用
+	错误示范:
+        unbinder = ButterKnife.bind(this, inflater.inflate(R.layout.fragment_take_data_fragment1, container, false));
+        return inflater.inflate(R.layout.fragment_take_data_fragment1, container, false);
+	正确示范:
+		View inflate = inflater.inflate(R.layout.fragment_take_data_fragment1, container, false);
+        unbinder = ButterKnife.bind(this, inflate);
+        return inflate;
+	如果按照错误的示范使用,那么就会导致设置数据设置不上,其实是因为	ButterKnife绑定的view,和返回的View不是同一个对象导致的
+		
+
 说明:关于APP模块中compile说明
     compile project(':libzxing') //二维码扫描
     compile files('libs/json-lib-2.4-jdk15.jar')

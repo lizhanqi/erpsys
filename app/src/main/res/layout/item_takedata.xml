@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:paddingRight="@dimen/px55"
+        android:paddingLeft="@dimen/px55"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px120">
+        <TextView
+            android:id="@+id/tv_commodity"
+            android:text="@string/commodity"
+            android:textColor="@color/mainNav_66"
+            android:textSize="@dimen/xs42"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/themeColor"
+            android:textSize="@dimen/xs42"
+            android:text="@string/Did_not_take"
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:background="@color/color_fa"
+        android:paddingTop="@dimen/px40"
+        android:paddingBottom="@dimen/px40"
+        android:paddingLeft="@dimen/px55"
+        android:paddingRight="@dimen/px55"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView android:scaleType="fitXY"
+            android:src="@drawable/logo"
+            android:layout_width="@dimen/px240"
+            android:layout_height="@dimen/px240" />
+            <TextView
+                android:textColor="@color/textHint_99"
+                android:layout_marginLeft="@dimen/px24"
+                android:textSize="@dimen/px38"
+                android:lineSpacingExtra="@dimen/px30"
+                 android:text="取件状态:未取\n取件日期:2017年11月11日\n取件人:luck\n取件数量:1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

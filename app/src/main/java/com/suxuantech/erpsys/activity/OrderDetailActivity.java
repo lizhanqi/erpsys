@@ -126,10 +126,9 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 }
                 view.setTextSize(25);
                 view.setText(item);
-
             }
         };
-        viewById.setLayoutManager(new LinearLayoutManager(this));
+      viewById.setLayoutManager(new LinearLayoutManager(this));
         viewById.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
         viewById.setAdapter(stringBaseRecyclerAdapter);
         window = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT- (int) getResources().getDimension(R.dimen.px146));

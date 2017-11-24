@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         mItemLayoutId = itemLayoutId;
         cxt = v.getContext();
-
         v.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -72,6 +72,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
                 }
             }
         });
+       v.setAdapter(this);
+       v.setLayoutManager(new LinearLayoutManager(v.getContext()));
     }
     /**
      * 更新数据

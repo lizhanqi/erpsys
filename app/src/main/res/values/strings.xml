@@ -132,17 +132,19 @@
     <string name="please_select_customer_source">请选择客户来源</string>
     <string name="please_select_name">请输入姓名</string>
     <string name="please_select_subscribe_date">请选择预约日期</string>
+    <string name="Did_not_take">未取</string>
+    <string name="commodity">商品</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>
     </string-array>
-
     <string-array name="order">
         <item>客户资料</item>
         <item>取件资料</item>
-        <item>订单详情1</item>
-        <item>拍照礼服1</item>
-        <item>订单详情2</item>
-        <item>拍照礼服2</item>
+    </string-array>
+    <string-array name="takedata_information_item">
+        <item>婚纱摄影</item>
+        <item>全家福</item>
+        <item>孕妇写真</item>
     </string-array>
 </resources>

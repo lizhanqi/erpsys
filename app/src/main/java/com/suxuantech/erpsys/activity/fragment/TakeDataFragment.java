@@ -15,18 +15,17 @@ import com.suxuantech.erpsys.adapter.DefaultFragmentAdapter;
 import com.yanzhenjie.fragment.NoFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
  * 取件资料
+ *
  */
+
 public class TakeDataFragment extends NoFragment {
-
-
     private ArrayList<Fragment> fragments;
-
     public TakeDataFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -39,18 +38,13 @@ public class TakeDataFragment extends NoFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TabLayout tablayout = (TabLayout) view.findViewById(R.id.tablayout);
-
-
         final ViewPager pager = (ViewPager) view.findViewById(R.id.vp);
-        ArrayList<String> list = new ArrayList<>();
-        list.add("11");
-        list.add("22");
-        list.add("33");
+        String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
         fragments = new ArrayList<>();
         fragments.add(new TakeDataFragment1Fragment());
-        fragments.add(new TakeDataFragment2Fragment());
-        fragments.add(new TakeDataFragment2Fragment());
-        pager.setAdapter(new DefaultFragmentAdapter(getChildFragmentManager(), list, new DefaultFragmentAdapter.FragmentShow() {
+        fragments.add(new TakeDataFragment1Fragment());
+        fragments.add(new TakeDataFragment1Fragment());
+        pager.setAdapter(new DefaultFragmentAdapter(getChildFragmentManager(), new  ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
                 return fragments.get(positon);
