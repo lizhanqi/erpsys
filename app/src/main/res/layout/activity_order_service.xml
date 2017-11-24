@@ -20,7 +20,7 @@
         android:drawableLeft="@drawable/icon_location"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px100" />
-   <include layout="@layout/fragment_customer_information"/>
+   <include layout="@layout/comment_order_information"/>
         <ImageView
             android:id="@+id/img_fold"
             android:padding="@dimen/px40"

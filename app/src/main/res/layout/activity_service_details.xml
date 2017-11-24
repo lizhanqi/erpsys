@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +21,7 @@
         android:drawableLeft="@drawable/icon_location"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px100" />
-<!--    <include layout="@layout/fragment_customer_information"/>-->
+    <include layout="@layout/comment_order_information"/>
     <TextView
         android:textColor="@color/myValue_33"
         android:textSize="@dimen/xs44"
@@ -37,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_marginTop="@dimen/px35"
             android:lineSpacingExtra="@dimen/px22"
             android:textColor="@color/myValue_33"
             android:textSize="@dimen/xs44"
@@ -72,7 +76,9 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/px100" />
     </LinearLayout>
-    <View style="@style/line"/>
+    <View
+        android:layout_marginTop="@dimen/px35"
+            style="@style/line"/>
     <LinearLayout
         android:paddingLeft="@dimen/px55"
         android:paddingRight="@dimen/px55"
@@ -99,3 +105,4 @@
             android:layout_height="@dimen/px100" />
     </LinearLayout>
 </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

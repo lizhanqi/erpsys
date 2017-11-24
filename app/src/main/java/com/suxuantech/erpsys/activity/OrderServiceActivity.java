@@ -84,19 +84,14 @@ public class OrderServiceActivity extends StatusImmersedBaseActivity {
     Button mBtnStartService;
     @BindView(R.id.service_complete)
     Button mServiceComplete;
-    @BindView(R.id.btn_submint)
-    Button mBtnSubmint;
     @BindView(R.id.tv_time)
     TextView mTvTime;
     private ArrayList<AlbumFile> pics;
     private BaseRecyclerAdapter<AlbumFile> baseRecyclerAdapter;
-
-
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +100,6 @@ public class OrderServiceActivity extends StatusImmersedBaseActivity {
         showUsetDefinedNav();
          setTitle("订单服务");
         getNavTitleView().setTextColor(getResources().getColor(R.color.myValue_33));
-        mBtnSubmint.setVisibility(View.GONE);
         ImageView imageView = new ImageView(this);
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.icon_add_bg_gray));
         mSmrvSaySomething.setHasFixedSize(true);
