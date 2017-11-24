@@ -43,7 +43,7 @@ public class TakeDataFragment1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //这里一定要ButterKnife和返回的view是同一个,不然布局显示不出来
-        View inflate = inflater.inflate(R.layout.fragment_take_data_fragment1, container, false);
+        View inflate = inflater.inflate(R.layout.refresh_and_recyclerview, container, false);
         unbinder = ButterKnife.bind(this, inflate);
         return inflate;
     }

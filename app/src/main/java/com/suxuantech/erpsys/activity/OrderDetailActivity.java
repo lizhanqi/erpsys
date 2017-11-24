@@ -44,7 +44,6 @@ import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,6 +98,9 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 case "取件资料":
                     startFragment(TakeDataFragment.class);
                     break;
+                case "服务费用":
+                    startFragment(ServiceFeeFragment.class);
+                    break;
             }
     }
     public void showpopupwindow(){
@@ -128,30 +130,21 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 view.setText(item);
             }
         };
-      viewById.setLayoutManager(new LinearLayoutManager(this));
-        viewById.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
+        viewById.setLayoutManager(new LinearLayoutManager(this));
         viewById.setAdapter(stringBaseRecyclerAdapter);
         window = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT- (int) getResources().getDimension(R.dimen.px146));
         // 背景色
         window.setBackgroundDrawable(new ColorDrawable());
-        // 获取焦点（光标）
-        // window.setFocusable(true);
         // 设置该pop外区域可触摸
         window.setOutsideTouchable(true);
         window.setFocusable(true); // 设置PopupWindow可获得焦点
         window.setTouchable(true); // 设置PopupWindow可触摸
         window.setHeight(2000);
         window.setBackgroundDrawable(getResources().getDrawable( R.color.translucent_black_90));
-
-        // 第一种方式展示pop
-        // p.showAtLocation(rl, Gravity.CENTER, 0, 100);
         // 展示出来
-        window.showAsDropDown(getLineView());
-        //p.showAsDropDown(tv,100,200);
-        //p.showAtLocation(tv, Gravity.TOP, 200, 300);
-        // 找到popwindn页面的按钮设置关闭事件
-
+       window.showAsDropDown(getLineView());
     }
+
     @Override
     protected int fragmentLayoutId() {
         return R.id.container;

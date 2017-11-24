@@ -38,6 +38,9 @@ import java.util.List;
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
  * @Description:RecyclerView的万能适配器，适配任何一个RecyclerView
+ * 并且可不用再调用RecyclerView的 setAdapter
+ * 以及RecyclerView的.setLayoutManager(new LinearLayoutManager(v.getContext()));
+ * 我这里默认就给你代理了我这使用的是LinearLayoutManager,如果你想用其他的那么你自己再重新设置就好
  */
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
@@ -52,7 +55,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         void onItemClick(View view, Object data, int position);
     }
 
-    public BaseRecyclerAdapter(RecyclerView v, Collection<T> datas, int itemLayoutId) {
+    public BaseRecyclerAdapter(RecyclerView recyclerView, Collection<T> datas, int itemLayoutId) {
         if (datas == null) {
             realDatas = new ArrayList<>();
         } else if (datas instanceof List) {
@@ -61,8 +64,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
             realDatas = new ArrayList<>(datas);
         }
         mItemLayoutId = itemLayoutId;
-        cxt = v.getContext();
-        v.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        cxt = recyclerView.getContext();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -72,8 +75,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
                 }
             }
         });
-       v.setAdapter(this);
-       v.setLayoutManager(new LinearLayoutManager(v.getContext()));
+        if (recyclerView.getAdapter()==null){
+            recyclerView.setAdapter(this);
+        }
+        if (recyclerView.getLayoutManager()==null){
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        }
     }
     /**
      * 更新数据

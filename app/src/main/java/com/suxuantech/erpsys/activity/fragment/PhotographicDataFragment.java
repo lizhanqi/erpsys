@@ -9,9 +9,9 @@ import com.suxuantech.erpsys.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TakeDataFragment2Fragment extends Fragment {
+public class PhotographicDataFragment extends Fragment {
 
-    public TakeDataFragment2Fragment() {
+    public PhotographicDataFragment() {
         // Required empty public constructor
     }
 
@@ -20,7 +20,6 @@ public class TakeDataFragment2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_take_data_fragment2, container, false);
+        return inflater.inflate(R.layout.refresh_and_recyclerview, container, false);
     }
-
 }
