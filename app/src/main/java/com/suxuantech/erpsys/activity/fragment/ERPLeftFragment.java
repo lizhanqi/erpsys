@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.OrderServiceActivity;
 import com.suxuantech.erpsys.activity.SearchOrderActivity;
-import com.suxuantech.erpsys.activity.ServiceDetailListActivity;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
 import com.yanzhenjie.statusview.StatusUtils;
@@ -53,7 +53,7 @@ public class ERPLeftFragment extends Fragment {
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),ServiceDetailListActivity.class));
+                startActivity(new Intent(getActivity(),OrderServiceActivity.class));
             }
         });
     }

@@ -39,6 +39,8 @@ public class ServiceDetailListActivity extends StatusImmersedBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
         ButterKnife.bind(this);
+        showUsetDefinedNav();
+        setUseDefinedNavTitle("11111");
         init();
     }
     @Override
@@ -49,8 +51,9 @@ public class ServiceDetailListActivity extends StatusImmersedBaseActivity {
         mRotateHeaderGridViewFrame.setDurationToClose(200);
         mRotateHeaderGridViewFrame.setDurationToCloseHeader(1000);
         // default is false
-        mRotateHeaderGridViewFrame.setPullToRefresh(true);
-        mRotateHeaderGridViewFrame.getHeader().setBackground(getResources().getDrawable(R.drawable.logo));
+        mRotateHeaderGridViewFrame.setPullToRefresh(false);
+        mRotateHeaderGridViewFrame.getHeader().setBackgroundColor(getResources().getColor(R.color.themeColor));
+        int childCount = mRotateHeaderGridViewFrame.getHeader().getChildCount();
         // default is true
         mRotateHeaderGridViewFrame.setKeepHeaderWhenRefresh(true);
         //刷新完成    这么用才有效(不设置这个会吃掉子view)

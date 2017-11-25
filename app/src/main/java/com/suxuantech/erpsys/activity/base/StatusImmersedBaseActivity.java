@@ -74,6 +74,21 @@ import com.yanzhenjie.statusview.StatusView;
     private View mContextView;
     private View lineView;
 
+    @Override
+    public void setTitle(CharSequence title) {
+        if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
+            setUseDefinedNavTitle(title);
+        }
+        super.setTitle(title);
+    }
+    @Override
+    public void setTitle(int titleId) {
+            if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
+                setUseDefinedNavTitle(getResources().getString(titleId ));
+            }
+        super.setTitle(titleId);
+    }
+
     //-----------------------------顶部导航-------------------------------------
     //获取自定义导航左侧view
     public AdjustDrawableTextView getNavLeftView() {

@@ -15,13 +15,13 @@ import com.anye.greendao.gen.HistoryBeanDao;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.views.DefaultItemDecoration;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
+import com.suxuantech.erpsys.views.DefaultItemDecoration;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -31,8 +31,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -86,8 +89,22 @@ public class SearchOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_order);
         ButterKnife.bind(this);
         initDB();
-        mPtrRefresh.addPtrUIHandler(new PtrClassicDefaultHeader(this));
-        mPtrRefresh.setPullToRefresh(false);
+        mPtrRefresh.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mPtrRefresh.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPtrRefresh.refreshComplete();
+                    }
+                }, 3000);
+            }
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        mPtrRefresh.setPullToRefresh(true);
         searchHosiery = getSearchHosiery();
             if (searchHosiery.size()<=0){
                 mBtn_clear.setVisibility(View.GONE);
