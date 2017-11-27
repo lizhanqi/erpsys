@@ -132,8 +132,26 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <!--这个是标准的包裹内容,不要定义死了高度,否则文字大小不会影响高度-->
+    <style name="LinearLayoutStandard">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingRight">@dimen/px55</item>
+        <item name="android:paddingLeft">@dimen/px55</item>
+        <item name="android:paddingBottom">@dimen/px40</item>
+        <item name="android:paddingTop">@dimen/px40</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Standard" parent="PayDetail">
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">@dimen/px30</item>
+    </style>
 
-
-
-
+    <style name="ArrowsRight" parent="PayDetail">
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">@dimen/px30</item>
+        <item name="android:drawableRight">@drawable/arrows_right_gray</item>
+        <item name="android:textColor">@color/textHint_99</item>
+    </style>
 </resources>

@@ -31,6 +31,7 @@ public class TakeDataFragment extends NoFragment {
      *     0是取件资料的
      *     1是摄影资料
      *     2是选片资料
+     *     3是拍照礼服
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +59,11 @@ public class TakeDataFragment extends NoFragment {
             fragments.add(new SelectedPictureInformationFragment());
             fragments.add(new SelectedPictureInformationFragment());
             fragments.add(new SelectedPictureInformationFragment());
+        }else if (witch==3){
+//            拍照礼服
+            fragments.add(new TakePictureDressFragment());
+            fragments.add(new TakePictureDressFragment());
+            fragments.add(new TakePictureDressFragment());
         }
         pager.setAdapter(new DefaultFragmentAdapter(getChildFragmentManager(), new  ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
             @Override
@@ -65,6 +71,9 @@ public class TakeDataFragment extends NoFragment {
                 return fragments.get(positon);
             }
         }));
-        tablayout.setupWithViewPager(pager);
+            tablayout.setupWithViewPager(pager);
     }
+
+
+
 }

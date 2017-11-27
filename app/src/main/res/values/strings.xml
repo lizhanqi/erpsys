@@ -228,6 +228,10 @@
     <string name="makeup_date">化妆日期:</string>
     <string name="package_name">套餐名称:</string>
     <string name="outlets_orders">门市接单:</string>
+    <string name="single_rent_dress">单租礼服</string>
+    <string name="engagement_dress">订婚礼服</string>
+    <string name="marriage_dress">结婚礼服</string>
+    <string name="take_picture_dress">拍照礼服</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

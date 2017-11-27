@@ -114,6 +114,12 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                     takeDataFragmentsele.setArguments( bd);
                     startFragment(takeDataFragmentsele);
                     break;
+                case "礼服资料":
+                    bd.putInt("witch",3);
+                    TakeDataFragment ff = new TakeDataFragment();
+                    ff.setArguments( bd);
+                    startFragment(ff);
+                    break;
             }
     }
     public void  select(){

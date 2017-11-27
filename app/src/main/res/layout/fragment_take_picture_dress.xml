@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    tools:context=".activity.fragment.TakePictureDressFragment"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_take_picture_dress"
+        style="@style/LinearLayoutStandard">
+        <TextView
+            style="@style/Standard"
+            android:drawableLeft="@drawable/icon_camera"
+            android:text="@string/take_picture_dress" />
+        <TextView
+            android:id="@+id/tv_take_picture_dress"
+            style="@style/ArrowsRight" android:text="x套"/>
+    </LinearLayout>
+    <View style="@style/line"/>
+
+    <LinearLayout
+        android:id="@+id/ll_single_rent_dress"
+        style="@style/LinearLayoutStandard">
+        <TextView
+            style="@style/Standard"
+            android:drawableLeft="@drawable/icon_single_rent"
+            android:text="@string/single_rent_dress" />
+        <TextView
+            android:id="@+id/tv_single_rent_dress"
+            style="@style/ArrowsRight" android:text="x套"/>
+    </LinearLayout>
+    <View style="@style/line"/>
+
+    <LinearLayout
+        android:id="@+id/ll_engagement_dress"
+        style="@style/LinearLayoutStandard">
+        <TextView
+            style="@style/Standard"
+            android:drawableLeft="@drawable/icon_engagement"
+            android:text="@string/engagement_dress" />
+        <TextView
+            android:id="@+id/tv_engagement_dress"
+            style="@style/ArrowsRight" android:text="x套"/>
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:id="@+id/ll_marriage_dress"
+        style="@style/LinearLayoutStandard">
+        <TextView
+            style="@style/Standard"
+            android:drawableLeft="@drawable/icon_customer_zone"
+            android:text="@string/marriage_dress" />
+        <TextView
+            android:id="@+id/tv_marriage_dress"
+            style="@style/ArrowsRight" android:text="x套"/>
+    </LinearLayout>
+    <View style="@style/line"/>
+</LinearLayout>
