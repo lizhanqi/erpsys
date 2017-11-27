@@ -222,6 +222,8 @@
     <string name="give_number_of_sheets">赠送张数</string>
     <string name="group_sum">增组金额</string>
     <string name="selected_pictrue_remarks">选片备注</string>
+    <string name="receipt_staff">收款人</string>
+    <string name="pay_type">付款类型</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

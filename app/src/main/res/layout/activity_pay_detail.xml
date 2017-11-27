@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--付款明细-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.PayDetailActivity">
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/px55"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:drawablePadding="@dimen/px30"
+            android:drawableLeft="@drawable/icon_receipt_date"
+            android:text="收款日期"
+            style="@style/PayDetail" />
+        <TextView
+            android:id="@+id/tv_receipt_date"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="收款日期"
+            style="@style/PayDetail" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/px55"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:drawablePadding="@dimen/px30"
+            android:drawableLeft="@drawable/icon_receipt_type"
+            android:text="收款类型"
+            style="@style/PayDetail" />
+        <TextView
+            android:id="@+id/tv_receipt_type"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="收款日期"
+            style="@style/PayDetail" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/px55"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:drawablePadding="@dimen/px30"
+            android:drawableLeft="@drawable/icon_receipt_staff"
+            android:text="@string/receipt_staff"
+            style="@style/PayDetail" />
+        <TextView
+            android:id="@+id/tv_receipt_staff"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="收款日期"
+            style="@style/PayDetail" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/px55"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:drawablePadding="@dimen/px30"
+            android:drawableLeft="@drawable/icon_pay_type"
+            android:text="@string/pay_type"
+            style="@style/PayDetail" />
+        <TextView
+            android:id="@+id/tv_receipt_date"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="收款日期"
+            style="@style/PayDetail" />
+    </LinearLayout>
+</LinearLayout>

@@ -54,7 +54,8 @@
         <activity android:name=".activity.OrderDetailActivity" />
         <activity android:name=".activity.ServiceDetailsActivity" />
         <activity android:name=".activity.OrderServiceActivity" />
-        <activity android:name=".activity.ServiceDetailListActivity"></activity>
+        <activity android:name=".activity.ServiceDetailListActivity" />
+        <activity android:name=".activity.PayDetailActivity"></activity>
     </application>
 
 </manifest>
