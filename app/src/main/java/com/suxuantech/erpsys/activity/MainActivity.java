@@ -21,6 +21,7 @@ import com.suxuantech.erpsys.bean.DistrictBean;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -46,6 +47,7 @@ public class MainActivity extends BaseActivity {
                 case 4:
                     StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.themeColor));
                     startFragment(MyFragment.class,true);
+                    send();
                     break;
                 case 3:
                     startFragment(CRMFragment.class,true);
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 1:
                     startFragment(WorkFragment.class,true);
+                    startActivity(WorkScheduleActivity.class);
                     //状态栏颜色
                     StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
                     break;
@@ -69,12 +72,9 @@ public class MainActivity extends BaseActivity {
                     break;
             }
         }
-
         @Override
         public void onTabUnselected(int position) {
-
         }
-
         @Override
         public void onTabReselected(int position) {
 
@@ -236,24 +236,23 @@ public class MainActivity extends BaseActivity {
     }*/
 
     public void send() {
-        Request<String> stringRequest = NoHttp.createStringRequest("http://icon_launcher.168.0.188:8883/DBServer/Add", RequestMethod.POST);
+
+        Request<String> stringRequest = NoHttp.createStringRequest("http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0", RequestMethod.POST);
         // stringRequest.addHeader("Content-Type", "application/json");
         //stringRequest.setDefineRequestBodyForJson("{\"x\":1,\"y\":2}");
-        stringRequest.add("x",1);
-        stringRequest.add("y",4);
+/*        stringRequest.add("x",1);
+        stringRequest.add("y",4);*/
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
-
         requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
                     @Override
                     public void onStart(int what) {
                         super.onStart(what);
                     }
-
                     @Override
                     public void onSucceed(int what, Response<String> response) {
                         super.onSucceed(what, response);
+                        L.d("NoHttpSample",response.get());
                     }
-
                     @Override
                     public void onFailed(int what, Response<String> response) {
                         super.onFailed(what, response);
