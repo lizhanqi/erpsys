@@ -204,6 +204,24 @@
     <string name="start_service">开始服务</string>
     <string name="service_complete">服务完成</string>
     <string name="time_number">20170808 09:10</string>
+    <string name="view_photos">查看照片</string>
+    <string name="selected_picture_store">选片店面</string>
+    <string name="please_selected_pictrue_store">请选择选片店面</string>
+    <string name="selected_pictrue_time">选片时间</string>
+    <string name="please_selecte_selected_pictrue_time">请选择选片时间</string>
+    <string name="selected_pictrue_status">选片状态</string>
+    <string name="please_select_selected_pictrue_status">请选择选片状态</string>
+    <string name="selected_picture_staff">选片人员</string>
+    <string name="please_select_selected_pictrue_staff">请选择选片人员</string>
+    <string name="selected_number">已选张数</string>
+    <string name="add_to_pick_number">加挑张数</string>
+    <string name="reservation_number">预约张数</string>
+    <string name="art_editor_ps_pictrue">美编P图</string>
+    <string name="design_plot">设计P图</string>
+    <string name="give_number_of_P">赠送P数</string>
+    <string name="give_number_of_sheets">赠送张数</string>
+    <string name="group_sum">增组金额</string>
+    <string name="selected_pictrue_remarks">选片备注</string>
     <string-array name="sex">
         <item>男</item>
         <item>女</item>

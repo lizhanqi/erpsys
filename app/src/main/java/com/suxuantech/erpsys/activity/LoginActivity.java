@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getDaoHangHeight());
+        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
         StatusUtils.setFullToNavigationBar(this);
@@ -117,6 +117,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 return false;
             }
         });
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override

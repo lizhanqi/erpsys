@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -55,8 +56,8 @@ import java.util.List;
 public class OrderDetailActivity extends StatusImmersedBaseActivity {
 
     private String[] stringArray;
-    private PopupWindow window;
-    private SwipeMenuRecyclerView viewById;
+        private PopupWindow window;
+    private SwipeMenuRecyclerView recycleView;
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
 
     @Override
@@ -90,7 +91,7 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
         }
 
     }
-
+    Bundle bd=  new Bundle();
     public void gotoFragment(){
             switch (current){
                 default:startFragment(CustomerInformationFragment.class);
@@ -103,19 +104,23 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                     break;
                 case "摄影资料":
                     TakeDataFragment takeDataFragment = new TakeDataFragment();
-                    Bundle bd=  new Bundle();
                     bd.putInt("witch",1);
                     takeDataFragment.setArguments(bd);
                     startFragment(takeDataFragment);
                     break;
+                case "选片资料":
+                    bd.putInt("witch",2);
+                    TakeDataFragment takeDataFragmentsele = new TakeDataFragment();
+                    takeDataFragmentsele.setArguments( bd);
+                    startFragment(takeDataFragmentsele);
+                    break;
             }
     }
-    public void showpopupwindow(){
-        // 将一个布局文件填充为view
-        View vw = View.inflate(this, R.layout.pop_select_information,null);
-        viewById = vw.findViewById(R.id.smrv_select);
+    public void  select(){
+        LinearLayout ll_window = idGetView(R.id.ll_window);
+        recycleView = idGetView(R.id.smrv_select);
         ArrayList<String> objects = new ArrayList<>(Arrays.asList(stringArray));
-        viewById.setSwipeItemClickListener(new SwipeItemClickListener() {
+        this.recycleView.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
                 current = stringArray[position];
@@ -125,8 +130,7 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 gotoFragment();
             }
         });
-
-        stringBaseRecyclerAdapter = new BaseRecyclerAdapter<String>(viewById, objects, R.layout.item_pop_type) {
+        stringBaseRecyclerAdapter = new BaseRecyclerAdapter<String>(OrderDetailActivity.this.recycleView, objects, R.layout.item_pop_type) {
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_type);
@@ -137,21 +141,64 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 view.setText(item);
             }
         };
-        viewById.setLayoutManager(new LinearLayoutManager(this));
-        viewById.setAdapter(stringBaseRecyclerAdapter);
-        window = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT- (int) getResources().getDimension(R.dimen.px146));
+        this.recycleView.setLayoutManager(new LinearLayoutManager(this));
+        this.recycleView.setAdapter(stringBaseRecyclerAdapter);
+
+    }
+
+    public void showpopupwindow(){
+        // 将一个布局文件填充为view
+        View vw = View.inflate(this, R.layout.pop_select_information,null);
+        recycleView = vw.findViewById(R.id.smrv_select);
+        TextView tvt = vw.findViewById(R.id.tv_nav_title);
+         vw.findViewById(R.id.head_nav_use_defined_root).setBackgroundColor(getResources().getColor(R.color.white));
+
+        vw.findViewById(R.id.head_nav_use_defined_root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+
+        tvt.setText(current);
+        ArrayList<String> objects = new ArrayList<>(Arrays.asList(stringArray));
+        recycleView.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                window.dismiss();
+                String temp = stringArray[position];
+                if (temp.equals(current)){
+                    return;
+                }
+                current = stringArray[position];
+                stringBaseRecyclerAdapter.notifyDataSetChanged();
+                setUseDefinedNavTitle(current);
+                gotoFragment();
+            }
+        });
+        stringBaseRecyclerAdapter = new BaseRecyclerAdapter<String>(recycleView, objects, R.layout.item_pop_type) {
+            @Override
+            public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
+                TextView view = holder.getView(R.id.tv_type);
+                if (  current.equals(item)) {
+                    holder.getView(R.id.ll_root_bg).setBackgroundColor(getResources().getColor(R.color.translucent_black_90));
+                }
+                view.setTextSize(25);
+                view.setText(item);
+            }
+        };
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        recycleView.setAdapter(stringBaseRecyclerAdapter);
+        //真坑MAT.CH_PARENT
+        window = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         // 背景色
-        window.setBackgroundDrawable(new ColorDrawable());
+        window.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.translucent_black_90)));
         // 设置该pop外区域可触摸
         window.setOutsideTouchable(true);
         window.setFocusable(true); // 设置PopupWindow可获得焦点
         window.setTouchable(true); // 设置PopupWindow可触摸
-        window.setHeight(2000);
-        window.setBackgroundDrawable(getResources().getDrawable( R.color.translucent_black_90));
-        // 展示出来
-       window.showAsDropDown(getLineView());
+        window.showAsDropDown(getLineView());
     }
-
     @Override
     protected int fragmentLayoutId() {
         return R.id.container;

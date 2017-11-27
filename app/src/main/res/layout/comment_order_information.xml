@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
     <!--服务店面-->
     <LinearLayout
         style="@style/CustomerInformationContain">
@@ -312,13 +314,14 @@
         <TextView
             style="@style/CustomerInformationKey"
             android:text="@string/customer_remark" />
+
         <EditText
-            android:hint="@string/please_input_remarkes"
             android:id="@+id/et_customer_remarks"
+            style="@style/CustomerInformationValue"
+            android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="top|left"
-            android:layout_height="wrap_content"
-            android:minLines="3"
-            style="@style/CustomerInformationValue" />
+            android:hint="@string/please_input_remarkes"
+            android:minLines="3" />
     </LinearLayout>
-</merge>
+</LinearLayout>

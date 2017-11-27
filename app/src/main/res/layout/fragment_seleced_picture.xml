@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/myBackground_f7"
+    tools:context="activity.fragment.SelectedPictureInformationFragment"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    tools:context="activity.fragment.SelectedPictureInformationFragment"
+    android:layout_height="match_parent">
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            android:id="@+id/view_photos"
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:layout_weight="1"
+            style="@style/CustomerInformationKey"
+            android:text="@string/view_photos" />
+    </LinearLayout>
+    <View style="@style/line"/>
+  <include layout="@layout/comment_notice" />
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_picture_store" />
+        <TextView
+
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_selected_pictrue_store"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_selected_pictrue_store" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_pictrue_time" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_selected_pictrue_time"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_selecte_selected_pictrue_time" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_pictrue_status" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_selected_pictrue_status"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_selected_pictrue_status" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_picture_staff" />
+        <TextView
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:id="@+id/tv_selected_picture_staff"
+            style="@style/CustomerInformationValue"
+            android:hint="@string/please_select_selected_pictrue_staff" />
+    </LinearLayout>
+<!---->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_number" />
+        <EditText
+            android:id="@+id/et_selected_number"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/add_to_pick_number" />
+        <EditText
+            android:id="@+id/et_add_to_pick_number"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/reservation_number" />
+        <EditText
+            android:id="@+id/et_reservation_number"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/art_editor_ps_pictrue" />
+        <EditText
+            android:id="@+id/et_art_editor_ps_pictrue"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/design_plot" />
+        <EditText
+            android:id="@+id/et_design_plot"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/give_number_of_P" />
+        <EditText
+            android:id="@+id/et_give_number_of_P"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/give_number_of_sheets" />
+        <EditText
+            android:id="@+id/et_give_number_of_sheets"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="@string/group_sum" />
+        <EditText
+            android:id="@+id/et_group_sum"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="@dimen/px250"
+        style="@style/CustomerInformationContain">
+        <TextView
+            android:paddingTop="@dimen/px40"
+            android:layout_gravity="top"
+            style="@style/CustomerInformationKey"
+            android:text="@string/selected_pictrue_remarks" />
+        <EditText
+            android:gravity="top"
+            android:paddingTop="@dimen/px40"
+            android:layout_gravity="top"
+            android:minLines="3"
+            android:background="@null"
+            android:id="@+id/EditNormal"
+            style="@style/EditNormal"
+            android:hint="@string/zero" />
+    </LinearLayout>
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

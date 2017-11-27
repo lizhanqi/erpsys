@@ -30,10 +30,8 @@ public class TakeDataFragment extends NoFragment {
     /**
      *     0是取件资料的
      *     1是摄影资料
+     *     2是选片资料
      */
-    public TakeDataFragment() {
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,8 +54,11 @@ public class TakeDataFragment extends NoFragment {
             fragments.add(new PhotographicDataFragment());
             fragments.add(new PhotographicDataFragment());
             fragments.add(new PhotographicDataFragment());
+        } else if (witch==2){
+            fragments.add(new SelectedPictureInformationFragment());
+            fragments.add(new SelectedPictureInformationFragment());
+            fragments.add(new SelectedPictureInformationFragment());
         }
-
         pager.setAdapter(new DefaultFragmentAdapter(getChildFragmentManager(), new  ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {

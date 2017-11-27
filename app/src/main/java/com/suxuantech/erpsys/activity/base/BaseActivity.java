@@ -666,6 +666,9 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     }
     //--------------------------------------View点击end------------------
 
+    public void hideSystemNavigation(){
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
     /**
      *     获取是否存在NavigationBar(也就是是否存在导航栏)
      */
@@ -714,7 +717,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      * 获取导航栏高度
      * @return
      */
-    public  int getDaoHangHeight( ) {
+    public  int getNavigationBarHeight( ) {
         int result = 0;
         int resourceId=0;
         int rid = getResources().getIdentifier("config_showNavigationBar", "bool", "android");
