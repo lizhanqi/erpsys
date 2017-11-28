@@ -87,38 +87,32 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 finish();
                 break;
             default:
-
         }
-
     }
     Bundle bd=  new Bundle();
     public void gotoFragment(){
             switch (current){
-                default:startFragment(CustomerInformationFragment.class);
+                default:
+                    startFragment(CustomerInformationFragment.class,false);
                 break;
-                case "取件资料":
-                    startFragment(TakeDataFragment.class);
-                    break;
                 case "服务费用":
                     startFragment(ServiceFeeFragment.class);
                     break;
+                case "取件资料":
+                    bd.putInt("witch",0);
+                    startFragment(fragment(TakeDataFragment.class,bd));
+                    break;
                 case "摄影资料":
-                    TakeDataFragment takeDataFragment = new TakeDataFragment();
                     bd.putInt("witch",1);
-                    takeDataFragment.setArguments(bd);
-                    startFragment(takeDataFragment);
+                    startFragment(fragment(TakeDataFragment.class,bd));
                     break;
                 case "选片资料":
                     bd.putInt("witch",2);
-                    TakeDataFragment takeDataFragmentsele = new TakeDataFragment();
-                    takeDataFragmentsele.setArguments( bd);
-                    startFragment(takeDataFragmentsele);
+                    startFragment(fragment(TakeDataFragment.class,bd));
                     break;
                 case "礼服资料":
                     bd.putInt("witch",3);
-                    TakeDataFragment ff = new TakeDataFragment();
-                    ff.setArguments( bd);
-                    startFragment(ff);
+                    startFragment(fragment(TakeDataFragment.class,bd));
                     break;
             }
     }

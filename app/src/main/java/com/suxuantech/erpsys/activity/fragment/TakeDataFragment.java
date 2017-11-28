@@ -24,14 +24,14 @@ import java.util.Arrays;
  */
 
 public class TakeDataFragment extends NoFragment {
-    private ArrayList<Fragment> fragments;
+    private ArrayList<NoFragment> fragments;
     int witch;
     //    设置参数确定子Fragment加载
     /**
      *     0是取件资料的
      *     1是摄影资料
      *     2是选片资料
-     *     3是拍照礼服
+     *     3是拍照礼服(礼服资料)
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,19 +48,22 @@ public class TakeDataFragment extends NoFragment {
         String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
         fragments = new ArrayList<>();
         if (witch==0) {
+            //取件资料
             fragments.add(new TakeDataFragment1Fragment());
             fragments.add(new TakeDataFragment1Fragment());
             fragments.add(new TakeDataFragment1Fragment());
         } else if (witch==1){
+            //摄影资料
             fragments.add(new PhotographicDataFragment());
             fragments.add(new PhotographicDataFragment());
             fragments.add(new PhotographicDataFragment());
         } else if (witch==2){
+            //选片资料
             fragments.add(new SelectedPictureInformationFragment());
             fragments.add(new SelectedPictureInformationFragment());
             fragments.add(new SelectedPictureInformationFragment());
         }else if (witch==3){
-//            拍照礼服
+//            拍照礼服(礼服资料)
             fragments.add(new TakePictureDressFragment());
             fragments.add(new TakePictureDressFragment());
             fragments.add(new TakePictureDressFragment());

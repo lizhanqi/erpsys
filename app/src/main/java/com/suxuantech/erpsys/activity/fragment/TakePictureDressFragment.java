@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.OrderDetailActivity;
 import com.yanzhenjie.fragment.NoFragment;
 
 import butterknife.BindView;
@@ -16,7 +17,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * 选片
+ *  拍照礼服(礼服资料)
  */
 public class TakePictureDressFragment extends NoFragment {
     @BindView(R.id.tv_take_picture_dress)
@@ -39,19 +40,20 @@ public class TakePictureDressFragment extends NoFragment {
     private Unbinder unbinder;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_take_picture_dress, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
-
     @OnClick({R.id.tv_take_picture_dress, R.id.ll_take_picture_dress, R.id.tv_single_rent_dress, R.id.ll_single_rent_dress, R.id.tv_engagement_dress, R.id.ll_engagement_dress, R.id.tv_marriage_dress, R.id.ll_marriage_dress})
     public void onClick(View v) {
         switch (v.getId()) {
+                case R.id.tv_nav_left:
+                    break;
             case R.id.tv_take_picture_dress:
                 break;
             case R.id.ll_take_picture_dress:
+                (( OrderDetailActivity)getActivity()).startFragment(TakePictureDressDetailFragment.class);
                 break;
             case R.id.tv_single_rent_dress:
                 break;

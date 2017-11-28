@@ -3,7 +3,6 @@ package com.suxuantech.erpsys.activity.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
+import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 取件资料
  */
-public class TakeDataFragment1Fragment extends Fragment {
+public class TakeDataFragment1Fragment extends NoFragment {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
@@ -47,7 +47,6 @@ public class TakeDataFragment1Fragment extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         return inflate;
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
