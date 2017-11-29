@@ -41,7 +41,7 @@ public class AssetFileRead {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
-    public String getString(Context context, String fileName) {
+    public static  String getString(Context context, String fileName) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             AssetManager assetManager = context.getAssets();

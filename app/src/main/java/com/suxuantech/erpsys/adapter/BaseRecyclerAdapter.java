@@ -42,7 +42,6 @@ import java.util.List;
  * 以及RecyclerView的.setLayoutManager(new LinearLayoutManager(v.getContext()));
  * 我这里默认就给你代理了我这使用的是LinearLayoutManager,如果你想用其他的那么你自己再重新设置就好
  */
-
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
 
     protected List<T> realDatas;

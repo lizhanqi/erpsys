@@ -43,3 +43,6 @@
     annotationProcessor 'com.jakewharton:butterknife-compiler:8+'//注解
     compile 'com.coldmoqiuli:banners:1.0.1'
     compile 'com.bigkoo:alertview:1.0.3'//仿ios弹窗http://blog.csdn.net/da_caoyuan/article/details/70216112
+     compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.2.0' recycleview 分组的适配器  https://github.com/donkingliang/GroupedRecyclerViewAdapter
+     其实还有一个网上流传比较好的适配器BaseRecyclerViewAdapterHelper，这个有时间再换
+

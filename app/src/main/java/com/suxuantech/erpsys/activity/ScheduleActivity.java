@@ -1,9 +1,11 @@
 package com.suxuantech.erpsys.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jeek.calendar.widget.calendar.BingText;
@@ -12,6 +14,13 @@ import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleLayout;
 import com.jeek.calendar.widget.calendar.week.WeekCalendarView;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.adapter.GroupAdaputer;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -50,12 +59,82 @@ import in.srain.cube.views.ptr.PtrHandler;
  * @Description: 排程页面
  */
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends StatusImmersedBaseActivity {
     private MonthCalendarView monthCalendarView;
     private ScheduleLayout schedule_layout;
     private TextView viewById;
     private PtrClassicFrameLayout mPtrFrame;
     private WeekCalendarView weekCalendarView;
+    private GroupAdaputer groupAdaputer;
+    /**
+     * 创建菜单：
+     */
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int viewType) {
+           // if(viewType== com.donkingliang.groupedadapter.R.integer.type_child){
+                if (viewType==111){
+                    SwipeMenuItem closeItem = new SwipeMenuItem(ScheduleActivity.this)
+                            .setBackground(R.color.themeColor)
+                            .setText("删除")
+                            .setTextColor(Color.WHITE)
+                            .setWidth(100)
+                            .setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+//                    SwipeMenuItem deleteItem = new SwipeMenuItem(ScheduleActivity.this) ; // 各种文字和图标属性设置。
+//                    deleteItem.setWeight( ViewGroup.LayoutParams.MATCH_PARENT);
+//                    deleteItem.setText("删除"+viewType);
+                    rightMenu.addMenuItem(closeItem); // 在Item右侧添加一个菜单。
+                }
+           // }
+        }
+    };
+    /**
+     *菜单监听
+     */
+
+    SwipeMenuItemClickListener mMenuItemClickListener = new SwipeMenuItemClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge) {
+            int  counts=-1;
+            int groupPosition = 0;//记录第几组
+            int childrenPosition=-1;//记录第几组的第几个(这里-1代表就是分组的组名)
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
+            int direction = menuBridge.getDirection(); // 左侧还是右侧菜单。
+            int adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
+            int menuPosition = menuBridge.getPosition(); // 菜单在RecyclerView的Item中的Position。
+                //获取多个分组
+            int groupCount = groupAdaputer.getGroupCount();
+            boolean isLoop=true;
+            //统计分组多少个的时候能
+            for (int i=0;i<groupCount;i++){
+                if (isLoop) {
+                    groupPosition=i;
+                     counts++;
+                if (adapterPosition==counts){
+                    childrenPosition=-1;
+                    break;
+                }
+              for (int j = 0; j < groupAdaputer.getChildrenCount(i); j++) {
+                        counts++;
+                        if (counts==adapterPosition) {
+                            childrenPosition = j;
+                            isLoop = false;
+                            break;
+                        }
+                    }
+                }else {
+                    break;
+                }
+            }
+            toast("第"+groupPosition+"组的第"+childrenPosition);
+        }
+    };
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +142,25 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
         initView();
         SwipeMenuRecyclerView mRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.rvScheduleList);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.useDefaultLoadMore();
-        List<String> dataList = createDataList(0);
         mRecyclerView.loadMoreFinish(false, true);
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v. getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        groupAdaputer = new GroupAdaputer(this);
+        // 设置监听器。
+        mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
+        // 菜单点击监听。
+        mRecyclerView.setSwipeMenuItemClickListener(mMenuItemClickListener);
+        mRecyclerView.setItemViewSwipeEnabled(false);
+        mRecyclerView.setAdapter(groupAdaputer);
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_grid_view_frame);
+        mPtrFrame.setMinimumHeight(100);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
@@ -99,6 +192,12 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         }, 100);
     }
+
+    @Override
+    protected void widgetClick(View v) {
+
+    }
+
     BingText bt = new BingText() {
 
         @Override

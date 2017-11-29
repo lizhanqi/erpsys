@@ -32,6 +32,7 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,8 +46,12 @@ public class RecyclerHolder extends RecyclerView.ViewHolder {
 
     public RecyclerHolder(View itemView) {
         super(itemView);
-        //一般不会超过8个吧
-        this.mViews = new SparseArray<View>(8);
+        if (itemView instanceof ViewGroup){
+            this.mViews = new SparseArray<View>(((ViewGroup) itemView).getChildCount() );
+        }else {
+            //一般不会超过8个吧
+            this.mViews = new SparseArray<View>(8);
+        }
     }
 
     public SparseArray<View> getAllView() {
