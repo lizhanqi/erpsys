@@ -265,4 +265,6 @@
     <string name="look_board_schedule">看板排程</string>
     <string name="take_pictrue_schedule">取件排程</string>
     <string name="option_dress_schedule">礼服挑选排程</string>
+    <string name="history_notice">历史公告</string>
+    <string name="notice">公告</string>
 </resources>

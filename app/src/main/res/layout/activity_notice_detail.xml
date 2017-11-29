@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/px55"
+    android:paddingRight="@dimen/px55"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.NoticeDetailActivity">
+    <TextView
+        android:layout_marginTop="@dimen/px40"
+        android:layout_marginBottom="@dimen/px40"
+        android:textColor="@color/myValue_33"
+        android:textSize="@dimen/xs44"
+        android:gravity="center"
+        android:text="\u3000\u300011111111111"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+
+        android:textColor="@color/myValue_33"
+        android:textSize="@dimen/xs42"
+        android:lineSpacingExtra="@dimen/px36"
+        android:id="@+id/tv_content"
+        android:text="\u3000\u3000消息内容xxx回内容xxx回内容xxx回内容xxx回内容xxx回内容xxx回内容xxx回事，大家知道了吗？\n\u3000\u3000望各位互相转告"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:lineSpacingExtra="@dimen/px20"
+        android:textColor="@color/myValue_33"
+        android:textSize="@dimen/xs42"
+        android:id="@+id/tv_inscribe"
+        android:gravity="right"
+        android:text="xxx店\nxx年xx月xx日"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

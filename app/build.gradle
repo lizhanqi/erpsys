@@ -83,6 +83,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.2.0'
+    compile 'com.github.lygttpod:SuperTextView:2.1.5'
 
 }
 //task makeJar(type: Copy) {

@@ -46,3 +46,15 @@
      compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.2.0' recycleview 分组的适配器  https://github.com/donkingliang/GroupedRecyclerViewAdapter
      其实还有一个网上流传比较好的适配器BaseRecyclerViewAdapterHelper，这个有时间再换
 
+//TextView可以通过html有效加载的标签
+  //这里换行标签是<br/>
+  //font 的seize 无效 color可以
+ //small有效
+ //strike删除线有效
+ //big有效 ，b也行
+ //上标文本sup
+  //下表文本sup
+  例如：
+        textView.setText(
+                Html.fromHtml("<font size=\"60\" color='"+getResources().getColor(R.color.myValue_33)+"'>今天天气好吗？</font>" +
+                "<font size=\"12\"color='"+getResources().getColor(R.color.textHint_99)+"'><br/>挺好的<sub><small>fadf</small></sub></font>"));

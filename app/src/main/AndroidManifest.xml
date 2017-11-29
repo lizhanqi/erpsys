@@ -57,7 +57,9 @@
         <activity android:name=".activity.ServiceDetailListActivity" />
         <activity android:name=".activity.PayDetailActivity" />
         <activity android:name=".activity.WorkScheduleActivity" />
-        <activity android:name=".activity.ScheduleTypeActivity"></activity>
+        <activity android:name=".activity.ScheduleTypeActivity" />
+        <activity android:name=".activity.HistoryNoticeActivity" />
+        <activity android:name=".activity.NoticeDetailActivity"></activity>
     </application>
 
 </manifest>
