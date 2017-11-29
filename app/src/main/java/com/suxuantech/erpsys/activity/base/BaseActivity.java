@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 /**
  * ......................我佛慈悲....................
@@ -59,7 +61,6 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
  * @Description: 最基础的Activity(封装了常用的一些页面功能,以及权限处理)
- *
  * 说明:关于权限的
  * 首先:关于权限这里可以是permissionListener也可是其他对象,如果是其他对象,那么你可以在那个对象类中写注解方式回调
  * 其次关于请求我提供了两种方式,
@@ -77,9 +78,11 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 1.可以重写alwaysDeniedPermissionDiaLog方法(有主意事项,alwaysDeniedPermissionDiaLog在方法中有说明)
  * 2.或者可以传入一个permissionListener,然后自己处理剩下的流程,如果你有了permissionListener,
  * 那么我就不会管理你的了如果想还用permissionResult方法接收你可以调用我的这个也可以
- *
- *
- * 其他说明:如果使用了ButterKnife做点击事件,再使用这里的idsetClick,这里的会无效不会走这里的
+ * 其他说明:useButterKnife 这里默认提供了一个注解你可以直接使用，页面销毁的时候也会自动销毁
+ * 1.注解点击事件为方法onClick(View view)时候无法走widgetClick点击事件（也就是idSetOnClick无法生效）,
+ * 如果注解的方法不是onClick(View view) 而是其他的比如onxxx(View v) 这时候如果也设置了idSetOnClick那么就会走widgetClick
+ * 总结 注意这里主要的就是onClick是否被重写
+ * 如果别重写了onClick，那么注解优先级高，如果没有重写onClick那么idSetOnClick高
  */
 public abstract class BaseActivity extends SwipeBackActivity implements View.OnClickListener{
 
@@ -150,6 +153,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
             rationaleDialog(requestCode,rationale);
         }
     };
+    private Unbinder unbinder;
 
     /**
      * 询问弹窗(可以重写)
@@ -160,7 +164,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
    public void  rationaleDialog(int requestCode,Rationale rationale){
        AndPermission.rationaleDialog(this, rationale).show();
     }
-
     /**
      * 总是拒绝弹窗(切记如果这里重写后自定义弹窗那么取消按钮一定要调用下resetGotoSettings,确定按钮必须管,那个你需要跳转到设置页面)
      * restGeotoSettings();进行重置,移除去设置页面的请求权限,权限请求失败了
@@ -187,7 +190,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
         goToSetting=-66;
         permissionResult(false,requestSettingCode,deniedPermissions);
     }
-
 //---------------对话的框end-----------------------------------------
 // -------------------权限请求-------------------
     /**
@@ -204,7 +206,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
             requestMustPermission(useDefaultRationale);
         }
     }
-
     /**
      *   添加必须的权限(没有Rationale)
      * @param isNowRequest 是否现在请求
@@ -219,7 +220,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
             requestMustPermission(false);
         }
     }
-
     /**
      * 仅仅添加必须权限
      * @param permission
@@ -229,7 +229,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
             permissionSet.add(per);
         }
     }
-
     /**
      * 发起重要的页面必须的请求
      * @param useDefaultRationale 是否使用默认提示框
@@ -492,7 +491,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
         ToastUtils.show(str);
     }
     //----------------------页面管理------------------------------
-
     /**
      * 获取本页面的队列
      * @return RequestQueue 队列
@@ -518,6 +516,9 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (useButterKnife&&unbinder!=null){
+            unbinder.unbind();
+        }
         requestQueue.cancelAll();
         requestQueue.stop();
         dLog(TAG + "--->onDestroy()");
@@ -531,7 +532,13 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     public void eLog(String str) {
         L.e(TAG, str);
     }
-
+    /**
+     * 警告日志(Tag是当前Activity名字)
+     * @param str
+     */
+    public void wLog(String str) {
+        L.w(TAG, str);
+    }
     /**
      * debug日志(Tag是当前Activity名字)
      *
@@ -540,7 +547,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     public void dLog(String str) {
             L.d(TAG, str);
     }
-
     /**
      * infor日志(Tag是当前Activity名字)
      *
@@ -560,7 +566,15 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     }
     //--------------------------------------日志模块end------------------
     //--------------------------------findView-----------------
+    boolean  useButterKnife;
 
+    /**
+     * 使用注解
+     */
+   public void useButterKnife(){
+       useButterKnife=true;
+       unbinder = ButterKnife.bind(this);
+   }
     /**
      * 根据id找view
      * @param resId id资源
@@ -579,6 +593,16 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      */
     public <T extends View> T idSetOnClick(@IdRes int resId) {
         T viewById = (T) super.findViewById(resId);
+         if (useButterKnife){
+            wLog("idSetOnClick提示：\n" +
+                    "ButterKnife和idsetConclick同时使用了\n" +
+                    "请确保onClick(View v)不被ButterKnife回调重写。\n" +
+                    "如果您的ButterKnife点击回调方法为onClick(View v),\n" +
+                    "那么idSetOnClick(int resId)无法生效；\n" +
+                    "ButterKnife点击回调注解非onClick(View v)；\n" +
+                    "那么idSetOnClick(int resId)的点击事件widgetClick(View view)优先,\n" +
+                    "ButterKnife点击事件无效.");
+        }
         viewById.setOnClickListener(this);
         return viewById;
     }

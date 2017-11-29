@@ -51,6 +51,12 @@ public class L {
             Log.i(TAG, msg);
         }
     }
+    // 下面四个是默认tag的函数
+    public static void w(String msg) {
+        if (isDebug) {
+            Log.w(TAG, msg);
+        }
+    }
 
     public static void d(String msg) {
         if (isDebug) {
@@ -76,22 +82,27 @@ public class L {
             Log.i(tag, msg);
         }
     }
+    public static void w(String tag, String msg) {
+        if (isDebug) {
+            Log.w(tag, msg);
+        }
+    }
 
     public static void d(String tag, String msg) {
         if (isDebug) {
-            Log.i(tag, msg);
+            Log.d(tag, msg);
         }
     }
 
     public static void e(String tag, String msg) {
         if (isDebug) {
-            Log.i(tag, msg);
+            Log.e(tag, msg);
         }
     }
 
     public static void v(String tag, String msg) {
         if (isDebug) {
-            Log.i(tag, msg);
+            Log.v(tag, msg);
         }
     }
 }
