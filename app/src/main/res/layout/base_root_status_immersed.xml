@@ -29,12 +29,11 @@ android:orientation="vertical">
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:background="?attr/colorAccent"/>
-<LinearLayout
+<FrameLayout
     android:layout_above="@id/navigation_view"
     android:layout_below="@id/status_and_nav_layout"
     android:id="@+id/content_view_linearlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-</LinearLayout>
+    android:layout_height="match_parent">
+</FrameLayout>
 </RelativeLayout>

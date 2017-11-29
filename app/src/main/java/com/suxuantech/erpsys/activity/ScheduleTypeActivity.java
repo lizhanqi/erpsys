@@ -17,6 +17,8 @@ public class ScheduleTypeActivity extends SimpleStatusActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_type);
+        showUsetDefinedNav();
+        setTitle("排程");
         ButterKnife.bind(this);
         useButterKnife();
     }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.suxuantech.erpsys.activity.ScheduleTypeActivity">
-
     <LinearLayout android:orientation="horizontal"
         style="@style/ScheduleType">
         <ImageView
@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-
             android:src="@drawable/icon_camera_schedule" />
         <LinearLayout
             android:layout_marginLeft="@dimen/px35"
@@ -25,10 +24,10 @@
             android:orientation="vertical">
             <TextView
                 style="@style/ScheduleTypeName"
-                android:text="拍照排程" />
+                android:text="@string/camera_schedule" />
             <TextView
                 style="@style/ScheduleTypeInfromation"
-                android:text="拍照排程" />
+                android:text="@string/camera_schedule" />
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
@@ -85,10 +84,10 @@
             android:orientation="vertical">
             <TextView
                 style="@style/ScheduleTypeName"
-                android:text="看板排程" />
+                android:text="@string/look_board_schedule" />
             <TextView
                 style="@style/ScheduleTypeInfromation"
-                android:text="拍照排程" />
+                android:text="@string/look_board_schedule" />
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
@@ -115,10 +114,10 @@
             android:orientation="vertical">
             <TextView
                 style="@style/ScheduleTypeName"
-                android:text="取件排程" />
+                android:text="@string/take_pictrue_schedule" />
             <TextView
                 style="@style/ScheduleTypeInfromation"
-                android:text="拍照排程" />
+                android:text="@string/take_pictrue_schedule" />
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
@@ -145,10 +144,10 @@
             android:orientation="vertical">
             <TextView
                 style="@style/ScheduleTypeName"
-                android:text="礼服挑选排程" />
+                android:text="@string/option_dress_schedule" />
             <TextView
                 style="@style/ScheduleTypeInfromation"
-                android:text="拍照排程" />
+                android:text="@string/option_dress_schedule" />
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

@@ -261,4 +261,8 @@
     <string name="complete_piece">整件</string>
     <string name="take_piece">取件</string>
     <string name="give_back">归还</string>
+    <string name="camera_schedule">拍照排程</string>
+    <string name="look_board_schedule">看板排程</string>
+    <string name="take_pictrue_schedule">取件排程</string>
+    <string name="option_dress_schedule">礼服挑选排程</string>
 </resources>
