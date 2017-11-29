@@ -57,6 +57,7 @@
         <activity android:name=".activity.ServiceDetailListActivity" />
         <activity android:name=".activity.PayDetailActivity" />
         <activity android:name=".activity.WorkScheduleActivity" />
+        <activity android:name=".activity.ScheduleTypeActivity"></activity>
     </application>
 
 </manifest>

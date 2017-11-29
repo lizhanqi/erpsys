@@ -154,4 +154,24 @@
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
         <item name="android:textColor">@color/textHint_99</item>
     </style>
+    <style name="ScheduleTypeName">
+        <item name="android:textColor">@color/myValue_33</item>
+        <item name="android:textSize">@dimen/xs48</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="ScheduleTypeInfromation" parent="ScheduleTypeName">
+        <item name="android:textColor">@color/textHint_99</item>
+        <item name="android:textSize">@dimen/xs44</item>
+    </style>
+<style name="ScheduleType">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:paddingBottom">@dimen/px40</item>
+    <item name="android:paddingTop">@dimen/px40</item>
+    <item name="android:paddingLeft">@dimen/px55</item>
+    <item name="android:paddingRight">@dimen/px55</item>
+</style>
 </resources>

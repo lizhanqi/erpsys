@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.ScheduleTypeActivity">
+
+    <LinearLayout android:orientation="horizontal"
+        style="@style/ScheduleType">
+        <ImageView
+            android:id="@+id/icon_camera_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+
+            android:src="@drawable/icon_camera_schedule" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/px35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/icon_camera_schedule"
+            android:orientation="vertical">
+            <TextView
+                style="@style/ScheduleTypeName"
+                android:text="拍照排程" />
+            <TextView
+                style="@style/ScheduleTypeInfromation"
+                android:text="拍照排程" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout android:orientation="horizontal"
+        style="@style/ScheduleType">
+        <ImageView
+            android:id="@+id/icon_select_pictrue_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon_schedule_select_pictrue" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/px35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/icon_select_pictrue_schedule"
+            android:orientation="vertical">
+            <TextView
+                style="@style/ScheduleTypeName"
+                android:text="选片排程" />
+            <TextView
+                style="@style/ScheduleTypeInfromation"
+                android:text="选片排程" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout android:orientation="horizontal"
+        style="@style/ScheduleType">
+        <ImageView
+            android:id="@+id/icon_schedule_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon_schedule_menu" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/px35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/icon_schedule_menu"
+            android:orientation="vertical">
+            <TextView
+                style="@style/ScheduleTypeName"
+                android:text="看板排程" />
+            <TextView
+                style="@style/ScheduleTypeInfromation"
+                android:text="拍照排程" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout android:orientation="horizontal"
+        style="@style/ScheduleType">
+        <ImageView
+            android:id="@+id/icon_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon_schedule_take_pictrue" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/px35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/icon_box"
+            android:orientation="vertical">
+            <TextView
+                style="@style/ScheduleTypeName"
+                android:text="取件排程" />
+            <TextView
+                style="@style/ScheduleTypeInfromation"
+                android:text="拍照排程" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout android:orientation="horizontal"
+        style="@style/ScheduleType">
+        <ImageView
+            android:id="@+id/icon_schedule_option_dress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon_schedule_option_dress" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/px35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/icon_schedule_option_dress"
+            android:orientation="vertical">
+            <TextView
+                style="@style/ScheduleTypeName"
+                android:text="礼服挑选排程" />
+            <TextView
+                style="@style/ScheduleTypeInfromation"
+                android:text="拍照排程" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>
+    <View style="@style/line"/>
+</LinearLayout>
