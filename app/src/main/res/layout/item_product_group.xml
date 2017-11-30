@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_package_group_name"
+    android:text="xxx"
+    android:paddingTop="@dimen/px45"
+    android:paddingBottom="@dimen/px45"
+    android:paddingLeft="@dimen/px55"
+    android:textColor="@color/mainNav_66"
+    android:textSize="@dimen/xs36"
+    android:background="@color/myBackground_f7"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+</TextView>

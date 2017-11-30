@@ -40,6 +40,7 @@ import android.widget.TextView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
 import com.suxuantech.erpsys.activity.fragment.CustomerInformationFragment;
+import com.suxuantech.erpsys.activity.fragment.ProductDataFragment;
 import com.suxuantech.erpsys.activity.fragment.TakeDataFragment;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
@@ -59,6 +60,7 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
         private PopupWindow window;
     private SwipeMenuRecyclerView recycleView;
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
+    private ProductDataFragment productDataFragment;
 
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
@@ -85,6 +87,11 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 break;
             case R.id.tv_nav_left:
                 finish();
+                break;
+            case R.id.tv_nav_right:
+                if (productDataFragment!=null){
+                    productDataFragment.change();
+                }
                 break;
             default:
         }
@@ -114,6 +121,12 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                     bd.putInt("witch",3);
                     startFragment(fragment(TakeDataFragment.class,bd));
                     break;
+                case "产品资料":
+                    productDataFragment = fragment(ProductDataFragment.class);
+                    startFragment(productDataFragment);
+                    break;
+
+
             }
     }
     public void  select(){
