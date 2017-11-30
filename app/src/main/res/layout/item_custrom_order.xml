@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--搜索结果-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/px55"
+    android:paddingRight="@dimen/px55"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--上边-->
@@ -47,51 +48,66 @@
             android:layout_weight="1"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <View  style="@style/line"/>
     <!--中间详情-->
     <LinearLayout
-        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/px30"
+        android:layout_marginTop="@dimen/px30"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--左边-->
+<!--    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="552555"
+            style="@style/customer_order_detail"/>
+        <TextView
+            android:text="552555"
+            style="@style/customer_order_detail"/>
+        <TextView
+            android:text="552555"
+            style="@style/customer_order_detail"/>
+        <TextView
+            android:text="552555"
+            style="@style/customer_order_detail"/>
+    </LinearLayout>-->
+        <TextView
+            android:lineSpacingExtra="@dimen/px24"
+            android:text="552555"
+            style="@style/customer_order_detail"/>
+    <!--右边-->
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|right"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/customer_order_detail"
+            android:text="¥:3695.02\n\t\t\t\t\t总价"
+            />
+        <TextView
+            style="@style/customer_order_detail"
+            android:text="¥:3695.02\n\t\t\t\t\t总价"
+            />
+        <!--这里测试一个制表符\t代表2个字符-->
+        <TextView
+            style="@style/customer_order_detail"
+            android:text="¥:2\n\t\t\t\t\t总价"  />
+    </LinearLayout>
+</LinearLayout>
+    <View  style="@style/line"/>
+    <com.suxuantech.erpsys.views.HorizontalStepView
+        android:id="@+id/horizontalSteps"
+        android:layout_marginTop="@dimen/px30"
+        android:layout_marginBottom="@dimen/px30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <!--左边-->
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="@dimen/px0"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="552555"
-                style="@style/customer_order_detail"/>
-            <TextView
-                android:text="552555"
-                style="@style/customer_order_detail"/>
-            <TextView
-                android:text="552555"
-                style="@style/customer_order_detail"/>
-            <TextView
-                android:text="552555"
-                style="@style/customer_order_detail"/>
-        </LinearLayout>
-        <!--右边-->
-        <LinearLayout
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical|right"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="@dimen/px0"
-            android:layout_height="wrap_content">
-            <TextView
-                style="@style/customer_order_detail"
-                android:text="¥:3695.02\n\t\t\t\t\t总价"
-                />
-            <TextView
-                style="@style/customer_order_detail"
-                android:text="¥:3695.02\n\t\t\t\t\t总价"
-                />
-            <!--这里测试一个制表符\t代表2个字符-->
-            <TextView
-                style="@style/customer_order_detail"
-                android:text="¥:2\n\t\t\t\t\t总价"  />
-        </LinearLayout>
-    </LinearLayout>
+    </com.suxuantech.erpsys.views.HorizontalStepView>
 </LinearLayout>

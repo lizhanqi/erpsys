@@ -3,11 +3,11 @@ package com.suxuantech.erpsys.activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
@@ -18,13 +18,14 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
-import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
+import com.suxuantech.erpsys.views.HorizontalStepView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,14 +76,11 @@ public class SearchOrderActivity extends AppCompatActivity {
     SwipeMenuRecyclerView mSmrHistory;
     @BindView(R.id.ptr_refresh)
     PtrClassicFrameLayout mPtrRefresh;
-
     @BindView(R.id.btn_clear_search_history)
     Button mBtn_clear;
     private HistoryBeanDao historyDao;
     private BaseRecyclerAdapter<HistoryBean> historyAdapter;
     private List<HistoryBean> searchHosiery;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,13 +114,13 @@ public class SearchOrderActivity extends AppCompatActivity {
                 ToastUtils.show(position+"");
             }
         });
-         historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
-            @Override
-            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
-                TextView view = holder.getView(R.id.tv_history);
-                view.setText(item.getName());
-            }
-        };
+//         historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
+//            @Override
+//            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
+//                TextView view = holder.getView(R.id.tv_history);
+//                view.setText(item.getName());
+//            }
+//        };
 
 //        historyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
 //            @Override
@@ -130,12 +128,41 @@ public class SearchOrderActivity extends AppCompatActivity {
 //              ToastUtils.show("99==-->"+position);
 //            }
 //        });
+        BaseRecyclerAdapter<HistoryBean> searchResultAdaputer = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_custrom_order) {
+            @Override
+            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
+                final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
+                List<String> list6 = new ArrayList<>();
+                list6.add("接单");
+                list6.add("打包");  list6.add("接单");
+                list6.add("打包");
+                list6.add("出发");
+                list6.add("送单");
+                list6.add("出发");
+                list6.add("送单");
+                view.setStepsViewIndicatorComplectingPosition(2);
+                view.setTag(position);
+                view.setOnItemClickList(new HorizontalStepView.ItemClick() {
+                    @Override
+                    public void onItemClick(int position, boolean isfinish, String text) {
+                            ToastUtils.show((int)view.getTag()+text+position+isfinish);
+                    }
+                });
+                view    .setStepViewTexts(list6)//总步骤
+                        .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this,R.color.themeColor))//设置StepsViewIndicator完成线的颜色
+                        .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsViewIndicator未完成线的颜色
+                        .setStepViewComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsView text完成线的颜色
+                        .setStepViewUnComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsView text未完成线的颜色
+                        .setStepsViewIndicatorCompleteIcon(ContextCompat.getDrawable(SearchOrderActivity.this, R.drawable.icon_finished))//设置StepsViewIndicator CompleteIcon
+                        .setStepsViewIndicatorDefaultIcon(ContextCompat.getDrawable(SearchOrderActivity.this, R.drawable.icon_unfinished))//设置StepsViewIndicator DefaultIcon
+                        .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(SearchOrderActivity.this, R.drawable.icon_current));//设置StepsViewIndicator AttentionIcon
 
-            mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3)    );
-            mSmrHistory.setAdapter(historyAdapter);
-            int height = mSmrHistory.getHeight();
+            }
+        };
+
+        mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3)    );
+         //   mSmrHistory.setAdapter(historyAdapter);
               int i = mSmrHistory.computeVerticalScrollExtent();
-             L.d(i+"======"+height);
 
     }
     private void initDB() {
