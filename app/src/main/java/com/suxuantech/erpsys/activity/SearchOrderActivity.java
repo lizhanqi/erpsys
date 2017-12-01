@@ -30,6 +30,7 @@ import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -148,12 +149,6 @@ public class SearchOrderActivity extends AppCompatActivity {
                  TextView mtvInfor = holder.getView(R.id.tv_infor);
                  mtvInfor.setText( Html.fromHtml(colorText(stringStringMap,R.color.textHint_99,R.color.myValue_33)));
 //                mtvInfor.setText();
-                List<String> list6 = new ArrayList<>();
-                list6.add("礼服");
-                list6.add("拍照");
-                list6.add("选片");
-                list6.add("取件");
-                list6.add("完成");
                 view.setStepsViewIndicatorComplectingPosition(2);
                 view.setTag(position);
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
@@ -162,9 +157,10 @@ public class SearchOrderActivity extends AppCompatActivity {
                             ToastUtils.show((int)view.getTag()+text+position+isfinish);
                     }
                 });
-                view    .setStepViewTexts(list6)//总步骤
+                view    .setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤
                         .setmCircleRadius(23)
                         .setTextMarginTop(-30)
+                        .fixPointPadding(true)
                         .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this,R.color.themeColor))//设置StepsViewIndicator完成线的颜色
                         .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsViewIndicator未完成线的颜色
                         .setStepViewComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsView text完成线的颜色

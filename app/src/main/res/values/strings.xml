@@ -236,6 +236,13 @@
         <item>男</item>
         <item>女</item>
     </string-array>
+    <string-array name="steps">
+        <item>礼服</item>
+        <item>拍照</item>
+        <item>选片</item>
+        <item>取件</item>
+        <item>完成</item>
+    </string-array>
     <string-array name="order">
         <item>客户资料</item>
         <item>产品资料</item>

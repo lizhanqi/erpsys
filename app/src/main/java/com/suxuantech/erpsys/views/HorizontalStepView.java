@@ -69,10 +69,26 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
        mTextContainer = (RelativeLayout) rootView.findViewById(R.id.rl_text_container);
        mTextContainer.removeAllViews();*/
     }
+
+    /**
+     * 文字距离距离顶部距离
+     * @param top
+     * @return
+     */
     public HorizontalStepView setTextMarginTop(int top){
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0,top,0,0);
         mTextContainer.setLayoutParams(layoutParams);
+        return this;
+    }
+
+    /**
+     * 使用固定的距离（线的长度固定的）
+     * @param fix
+     * @return
+     */
+    public HorizontalStepView fixPointPadding(boolean fix){
+        mStepsViewIndicator.fixPointPadding(fix);
         return this;
     }
     @Override
@@ -241,6 +257,12 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
         mStepsViewIndicator.setCompletedLineColor(completedLineColor);
         return this;
     }
+
+    /**
+     * 圆点半径
+     * @param f
+     * @return
+     */
     public HorizontalStepView setmCircleRadius(float f){
         mStepsViewIndicator.setReservedPaddingRight((int) (mTexts.get(mTexts.size()-1).length()*textSize-mStepsViewIndicator.getCircleRadius()));
         mStepsViewIndicator.setReservedPaddingLeft(((int) (mTexts.get(0).length()*textSize-mStepsViewIndicator.getCircleRadius())));
@@ -307,7 +329,11 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
                     if (i==0){
                         textView.setX(complectedXPosition.get(i) - mStepsViewIndicator.getCircleRadius()  );//这里的-10是将文字进行调整居中，稍后再动态修改
                     }else if (i==mTexts.size()-1){
-                        textView.setX(getWidth() - (mTexts.get(i).length()* textView.getTextSize()));
+                        if (mStepsViewIndicator.fixPointPadding){
+                            textView.setX(complectedXPosition.get(i)- (mTexts.get(i).length()* textView.getTextSize()/2) );
+                        }else {
+                            textView.setX(getWidth() - (mTexts.get(i).length()* textView.getTextSize()));
+                        }
                     }else{
                         textView.setX(complectedXPosition.get(i)- (mTexts.get(i).length()* textView.getTextSize()/2) );//这里的-10是将文字进行调整居中，稍后再动态修改
                     }

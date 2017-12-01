@@ -150,8 +150,10 @@ public void imaginaryLine(boolean imaginaryLine){
         if(mStepNum==1){
             mLinePadding=0;
         }else {
-            //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
-            mLinePadding  =(width-mCircleRadius-mCircleRadius*2*mStepNum)/(mStepNum-1);
+            if (!fixPointPadding){
+                //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
+                mLinePadding  =(width-mCircleRadius-mCircleRadius*2*mStepNum)/(mStepNum-1);
+            }
         }
         int height = defaultStepIndicatorNum;
         if(MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(heightMeasureSpec))
@@ -175,7 +177,9 @@ public void imaginaryLine(boolean imaginaryLine){
             mLinePadding=0;
         }else {
             //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
-            mLinePadding = (w - reservedRigth-reservedLeft  - mCircleRadius * 2 * mStepNum) / (mStepNum - 1);
+            if (!fixPointPadding) {
+                mLinePadding = (w - reservedRigth - reservedLeft - mCircleRadius * 2 * mStepNum) / (mStepNum - 1);
+            }
         }
         super.onSizeChanged(w, h, oldw, oldh);
         //获取中间的高度,目的是为了让该view绘制的线和圆在该view垂直居中   get view centerY，keep current stepview center vertical
@@ -214,7 +218,15 @@ public void imaginaryLine(boolean imaginaryLine){
     public void setmCircleRadius(float mCircleRadius) {
         this.mCircleRadius = mCircleRadius;
     }
-
+    boolean fixPointPadding;
+    /**
+     * 使用固定的距离（线的长度固定的）
+     * @param fixPointPadding
+     * @return
+     */
+    public void fixPointPadding(boolean fixPointPadding){
+        this.fixPointPadding=fixPointPadding;
+    }
     @Override
     protected synchronized void onDraw(Canvas canvas)
     {
