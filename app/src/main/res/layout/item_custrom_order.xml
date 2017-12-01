@@ -51,6 +51,7 @@
     <View  style="@style/line"/>
     <!--中间详情-->
     <LinearLayout
+        android:gravity="center_vertical"
         android:layout_marginBottom="@dimen/px30"
         android:layout_marginTop="@dimen/px30"
     android:orientation="horizontal"
@@ -77,7 +78,8 @@
             style="@style/customer_order_detail"/>
     </LinearLayout>-->
         <TextView
-            android:lineSpacingExtra="@dimen/px24"
+            android:id="@+id/tv_infor"
+            android:lineSpacingExtra="@dimen/px48"
             android:text="552555"
             style="@style/customer_order_detail"/>
     <!--右边-->

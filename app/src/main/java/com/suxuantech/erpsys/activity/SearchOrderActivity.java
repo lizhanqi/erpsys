@@ -1,13 +1,17 @@
 package com.suxuantech.erpsys.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
@@ -27,7 +31,9 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,18 +134,26 @@ public class SearchOrderActivity extends AppCompatActivity {
 //              ToastUtils.show("99==-->"+position);
 //            }
 //        });
+
         BaseRecyclerAdapter<HistoryBean> searchResultAdaputer = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_custrom_order) {
+            @SuppressLint("ResourceType")
             @Override
             public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
                 final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
+                Map<String, String> stringStringMap = new HashMap<>();
+                stringStringMap.put("服务店面:","沈阳");
+                stringStringMap.put("消费类型:","艺术写真");
+                stringStringMap.put("开单日期:","2017-10-11");
+                stringStringMap.put("套餐名称:","1314专属");
+                 TextView mtvInfor = holder.getView(R.id.tv_infor);
+                 mtvInfor.setText( Html.fromHtml(colorText(stringStringMap,R.color.textHint_99,R.color.myValue_33)));
+//                mtvInfor.setText();
                 List<String> list6 = new ArrayList<>();
-                list6.add("接单");
-                list6.add("打包");  list6.add("接单");
-                list6.add("打包");
-                list6.add("出发");
-                list6.add("送单");
-                list6.add("出发");
-                list6.add("送单");
+                list6.add("礼服");
+                list6.add("拍照");
+                list6.add("选片");
+                list6.add("取件");
+                list6.add("完成");
                 view.setStepsViewIndicatorComplectingPosition(2);
                 view.setTag(position);
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
@@ -149,6 +163,8 @@ public class SearchOrderActivity extends AppCompatActivity {
                     }
                 });
                 view    .setStepViewTexts(list6)//总步骤
+                        .setmCircleRadius(23)
+                        .setTextMarginTop(-30)
                         .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this,R.color.themeColor))//设置StepsViewIndicator完成线的颜色
                         .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsViewIndicator未完成线的颜色
                         .setStepViewComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsView text完成线的颜色
@@ -165,6 +181,8 @@ public class SearchOrderActivity extends AppCompatActivity {
               int i = mSmrHistory.computeVerticalScrollExtent();
 
     }
+
+
     private void initDB() {
         //初始化数据库
         DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(getApplicationContext(), "myhistory.db", null);
@@ -210,7 +228,18 @@ public class SearchOrderActivity extends AppCompatActivity {
             }
         }).show();
     }
-
+        public String colorText(Map<String,String> text, @IdRes int... color){
+                StringBuffer sb = new StringBuffer();
+                int i=0;
+                for (Map.Entry<String, String> entry : text.entrySet()) {
+                    sb.append(   "<font color='"+getResources().getColor(color[0])+"'>"+entry.getKey()+"</font> <font color='"+getResources().getColor(color[1])+"'>"+entry.getValue()+"</font><br/>");
+                    if (i==text.size()){
+                        sb.append(   "<br/>");
+                    }
+                    i++;
+                }
+            return sb.toString();
+    }
     /**
      * 搜索
      */

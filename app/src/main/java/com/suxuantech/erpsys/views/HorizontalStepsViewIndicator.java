@@ -89,8 +89,15 @@ public class HorizontalStepsViewIndicator extends View
         super(context, attrs, defStyle);
         init();
     }
-
-
+boolean imaginaryLine;
+    /**
+     * 未完成的线是否使用虚线
+     * @param imaginaryLine
+     * @return
+     */
+public void imaginaryLine(boolean imaginaryLine){
+    this.imaginaryLine=imaginaryLine;
+}
 
     /**
      * init
@@ -103,18 +110,16 @@ public class HorizontalStepsViewIndicator extends View
         mCircleCenterPointPositionList = new ArrayList<>();//初始化
 
         mUnCompletedPaint = new Paint();
-        mCompletedPaint = new Paint();
         mUnCompletedPaint.setAntiAlias(true);
         mUnCompletedPaint.setColor(mUnCompletedLineColor);
         mUnCompletedPaint.setStyle(Paint.Style.STROKE);
         mUnCompletedPaint.setStrokeWidth(2);
 
+        mCompletedPaint = new Paint();
         mCompletedPaint.setAntiAlias(true);
         mCompletedPaint.setColor(mCompletedLineColor);
         mCompletedPaint.setStyle(Paint.Style.STROKE);
         mCompletedPaint.setStrokeWidth(2);
-
-        mUnCompletedPaint.setPathEffect(mEffects);
         mCompletedPaint.setStyle(Paint.Style.FILL);
 
         //已经完成线的宽高 set mCompletedLineHeight
@@ -141,8 +146,13 @@ public class HorizontalStepsViewIndicator extends View
         {
             width = MeasureSpec.getSize(widthMeasureSpec);
         }
-                        //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
-        mLinePadding  =(width-mCircleRadius-mCircleRadius*2*mStepNum)/(mStepNum-1);
+        //防止就一步，除数为0，结果是无穷大
+        if(mStepNum==1){
+            mLinePadding=0;
+        }else {
+            //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
+            mLinePadding  =(width-mCircleRadius-mCircleRadius*2*mStepNum)/(mStepNum-1);
+        }
         int height = defaultStepIndicatorNum;
         if(MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(heightMeasureSpec))
         {
@@ -150,16 +160,25 @@ public class HorizontalStepsViewIndicator extends View
         }
         setMeasuredDimension(width, height);
     }
-
+    int reservedLeft;
+    public void setReservedPaddingLeft(int reservedLeft){
+        this.reservedLeft=Math.abs(reservedLeft);
+    }
+    int reservedRigth;
+    public void setReservedPaddingRight(int reservedRigth){
+        this.reservedRigth=reservedRigth;;
+    }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
-
-                         //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
-        mLinePadding  =(w-mCircleRadius/2-mCircleRadius*2*mStepNum)/(mStepNum-1);
+        if(mStepNum==1){
+            mLinePadding=0;
+        }else {
+            //宽    -  预留区防止字体过大显示不全-圆*个数     /   线数
+            mLinePadding = (w - reservedRigth-reservedLeft  - mCircleRadius * 2 * mStepNum) / (mStepNum - 1);
+        }
         super.onSizeChanged(w, h, oldw, oldh);
         //获取中间的高度,目的是为了让该view绘制的线和圆在该view垂直居中   get view centerY，keep current stepview center vertical
-
         mCenterY = 0.5f * getHeight();
         //获取左上方Y的位置，获取该点的意义是为了方便画矩形左上的Y位置
         mLeftY = mCenterY - (mCompletedLineHeight / 2);
@@ -167,8 +186,18 @@ public class HorizontalStepsViewIndicator extends View
         mRightY = mCenterY + mCompletedLineHeight / 2;
         for(int i = 0; i < mStepNum; i++)
         {
+            float paddingLeft;
             //先计算全部最左边的padding值（getWidth()-（圆形直径+两圆之间距离）*2）
-            float paddingLeft =mCircleRadius/2;//这里有一点预留区域是左边的
+            if (mStepNum==1){//就一个步骤就在中间吧
+                paddingLeft=w/2-mCircleRadius;
+            }else {
+             if (i==mStepNum-1){
+                 paddingLeft =reservedLeft+reservedRigth;//这里有一点预留区域是左边的
+             }else {
+                 paddingLeft =reservedLeft;
+             }
+            }
+
             //add to list                           0   +圆半径      半径        +其他圆大小            +其他线
             mCircleCenterPointPositionList.add(paddingLeft + mCircleRadius + i * mCircleRadius * 2 + i * mLinePadding);
         }
@@ -180,6 +209,10 @@ public class HorizontalStepsViewIndicator extends View
         {
             mOnDrawListener.ondrawIndicator();
         }
+    }
+
+    public void setmCircleRadius(float mCircleRadius) {
+        this.mCircleRadius = mCircleRadius;
     }
 
     @Override
@@ -205,9 +238,14 @@ public class HorizontalStepsViewIndicator extends View
             if(i < mComplectingPosition)//判断在完成之前的所有点(已完成的)
             {
                 //判断在完成之前的所有点，画完成的线，这里是矩形,很细的矩形，类似线，为了做区分，好看些
+
                 canvas.drawRect(preComplectedXPosition + mCircleRadius - 10, mLeftY, afterComplectedXPosition - mCircleRadius + 10, mRightY, mCompletedPaint);
             } else//未完成
             {
+                //虚线效果
+                if (imaginaryLine){
+                    mUnCompletedPaint.setPathEffect(mEffects);
+                }
                 mPath.moveTo(preComplectedXPosition + mCircleRadius, mCenterY);
                 mPath.lineTo(afterComplectedXPosition - mCircleRadius, mCenterY);
                 canvas.drawPath(mPath, mUnCompletedPaint);
@@ -260,14 +298,6 @@ public class HorizontalStepsViewIndicator extends View
                     mCompleteIcon.setBounds(rect);
                     mCompleteIcon.draw(canvas);
                 }
-          /*      for (int st=0;st<steps.size();st++){
-                    if (steps.get(st)==i){
-
-                        break;
-                    }else {
-
-                    }
-                }*/
             }
         }
         //-----------------------画图标-----draw icon-----------------------------------------------

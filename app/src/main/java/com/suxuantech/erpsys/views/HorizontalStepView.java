@@ -69,6 +69,12 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
        mTextContainer = (RelativeLayout) rootView.findViewById(R.id.rl_text_container);
        mTextContainer.removeAllViews();*/
     }
+    public HorizontalStepView setTextMarginTop(int top){
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0,top,0,0);
+        mTextContainer.setLayoutParams(layoutParams);
+        return this;
+    }
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         //点前点击位置
@@ -84,6 +90,15 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
         return true;
     }
 
+    /**
+     * 未完成的线是否使用虚线
+     * @param imaginaryLine
+     * @return
+     */
+    public HorizontalStepView imaginaryLine(boolean imaginaryLine){
+        mStepsViewIndicator.imaginaryLine(imaginaryLine);
+        return this;
+        }
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         //抬起手的时候
@@ -105,10 +120,6 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
                 return true;
         }
         return true;
-    }
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**
@@ -136,6 +147,8 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
     public HorizontalStepView setStepViewTexts(List<String> texts)
     {
         mTexts = texts;
+        mStepsViewIndicator.setReservedPaddingRight((int) (texts.get(texts.size()-1).length()*textSize-mStepsViewIndicator.getCircleRadius()));
+        mStepsViewIndicator.setReservedPaddingLeft((int) (texts.get(0).length()*textSize-mStepsViewIndicator.getCircleRadius()));
         mStepsViewIndicator.setStepNum(mTexts.size());
         return this;
     }
@@ -228,6 +241,13 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
         mStepsViewIndicator.setCompletedLineColor(completedLineColor);
         return this;
     }
+    public HorizontalStepView setmCircleRadius(float f){
+        mStepsViewIndicator.setReservedPaddingRight((int) (mTexts.get(mTexts.size()-1).length()*textSize-mStepsViewIndicator.getCircleRadius()));
+        mStepsViewIndicator.setReservedPaddingLeft(((int) (mTexts.get(0).length()*textSize-mStepsViewIndicator.getCircleRadius())));
+        mStepsViewIndicator.setmCircleRadius(f);
+        return this;
+    }
+
     /**
      * 设置StepsViewIndicator默认图片
      *
@@ -261,6 +281,16 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
         return this;
     }
 
+    boolean finshTextIsBold;
+
+    public void setFinshTextIsBold(boolean finshTextIsBold) {
+        this.finshTextIsBold = finshTextIsBold;
+    }
+    int textSize =10;
+    public void setTextSize(int size){
+        textSize=size;
+    }
+
     /**
      * 绘制文字内容
      */
@@ -273,13 +303,22 @@ public class HorizontalStepView extends LinearLayout implements HorizontalStepsV
             for(int i = 0; i < mTexts.size(); i++)
             {
                 TextView textView = new TextView(getContext());
-                textView.setX(complectedXPosition.get(i) - mStepsViewIndicator.getCircleRadius() - 10);//这里的-10是将文字进行调整居中，稍后再动态修改
+                textView.setTextSize(textSize);
+                    if (i==0){
+                        textView.setX(complectedXPosition.get(i) - mStepsViewIndicator.getCircleRadius()  );//这里的-10是将文字进行调整居中，稍后再动态修改
+                    }else if (i==mTexts.size()-1){
+                        textView.setX(getWidth() - (mTexts.get(i).length()* textView.getTextSize()));
+                    }else{
+                        textView.setX(complectedXPosition.get(i)- (mTexts.get(i).length()* textView.getTextSize()/2) );//这里的-10是将文字进行调整居中，稍后再动态修改
+                    }
                 textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 //如果将来想抽取出来让使用者绘制，改变某些东西可以把下面的东西抽象出来
                 textView.setText(mTexts.get(i));
                 if(i <= mComplectingPosition)
                 {
-                    textView.setTypeface(null, Typeface.BOLD);
+                    if (finshTextIsBold){
+                        textView.setTypeface(null, Typeface.BOLD);
+                    }
                     textView.setTextColor(mComplectedTextColor);
                 } else
                 {
