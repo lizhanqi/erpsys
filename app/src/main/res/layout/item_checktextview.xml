@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView
+    android:paddingRight="@dimen/px55"
+    android:paddingLeft="@dimen/px55"
+    android:paddingTop="@dimen/px40"
+    android:paddingBottom="@dimen/px40"
+    android:textSize="@dimen/xs42"
+    android:textColor="@color/myValue_33"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:gravity="center_vertical"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+    android:filterTouchesWhenObscured="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="blocksDescendants"
+    android:id="@+id/tv_checked"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</CheckedTextView>
