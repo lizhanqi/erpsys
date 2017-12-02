@@ -105,11 +105,11 @@
     </LinearLayout>
 </LinearLayout>
     <View  style="@style/line"/>
-    <com.suxuantech.erpsys.views.HorizontalStepView
+    <com.lizhanqi.www.stepview.HorizontalStepView
         android:id="@+id/horizontalSteps"
         android:layout_marginTop="@dimen/px30"
         android:layout_marginBottom="@dimen/px30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.suxuantech.erpsys.views.HorizontalStepView>
+    </com.lizhanqi.www.stepview.HorizontalStepView>
 </LinearLayout>

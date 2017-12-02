@@ -18,6 +18,7 @@ import com.anye.greendao.gen.DaoSession;
 import com.anye.greendao.gen.HistoryBeanDao;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
@@ -25,7 +26,6 @@ import com.suxuantech.erpsys.bean.HistoryBean;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
-import com.suxuantech.erpsys.views.HorizontalStepView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -161,6 +161,8 @@ public class SearchOrderActivity extends AppCompatActivity {
                         .setmCircleRadius(23)
                         .setTextMarginTop(-30)
                         .fixPointPadding(true)
+                       .setComplete(1,5)//间断完成（与连续完成只有一种生效）
+                        .setStepsViewIndicatorComplectingPosition(2)//连续完成步数
                         .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this,R.color.themeColor))//设置StepsViewIndicator完成线的颜色
                         .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsViewIndicator未完成线的颜色
                         .setStepViewComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsView text完成线的颜色

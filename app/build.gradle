@@ -84,7 +84,7 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.2.0'
     compile 'com.github.lygttpod:SuperTextView:2.1.5'
-
+   compile 'com.lizhanqi:libstepview:1.0.1'
 }
 //task makeJar(type: Copy) {
 //    delete 'build/libs/mysdk.jar'
