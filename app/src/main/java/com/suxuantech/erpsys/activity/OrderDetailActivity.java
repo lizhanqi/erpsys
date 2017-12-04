@@ -29,11 +29,12 @@ package com.suxuantech.erpsys.activity;
  */
 
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -57,7 +58,7 @@ import java.util.List;
 public class OrderDetailActivity extends StatusImmersedBaseActivity {
 
     private String[] stringArray;
-        private PopupWindow window;
+        private PopupWindow mPopupWindow;
     private SwipeMenuRecyclerView recycleView;
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
@@ -129,56 +130,19 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
 
             }
     }
-    public void  select(){
-        LinearLayout ll_window = idGetView(R.id.ll_window);
-        recycleView = idGetView(R.id.smrv_select);
-        ArrayList<String> objects = new ArrayList<>(Arrays.asList(stringArray));
-        this.recycleView.setSwipeItemClickListener(new SwipeItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                current = stringArray[position];
-                window.dismiss();
-                stringBaseRecyclerAdapter.notifyDataSetChanged();
-                setUseDefinedNavTitle(current);
-                gotoFragment();
-            }
-        });
-        stringBaseRecyclerAdapter = new BaseRecyclerAdapter<String>(OrderDetailActivity.this.recycleView, objects, R.layout.item_pop_type) {
-            @Override
-            public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
-                TextView view = holder.getView(R.id.tv_type);
-                if (  current.equals(item)) {
-                    holder.getView(R.id.ll_root_bg).setBackgroundColor(getResources().getColor(R.color.translucent_black_90));
-                }
-                view.setTextSize(25);
-                view.setText(item);
-            }
-        };
-        this.recycleView.setLayoutManager(new LinearLayoutManager(this));
-        this.recycleView.setAdapter(stringBaseRecyclerAdapter);
 
-    }
-
+    /**
+     * 选择窗口
+     */
     public void showpopupwindow(){
         // 将一个布局文件填充为view
         View vw = View.inflate(this, R.layout.pop_select_information,null);
         recycleView = vw.findViewById(R.id.smrv_select);
-        TextView tvt = vw.findViewById(R.id.tv_nav_title);
-         vw.findViewById(R.id.head_nav_use_defined_root).setBackgroundColor(getResources().getColor(R.color.white));
-
-        vw.findViewById(R.id.head_nav_use_defined_root).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                window.dismiss();
-            }
-        });
-
-        tvt.setText(current);
         ArrayList<String> objects = new ArrayList<>(Arrays.asList(stringArray));
         recycleView.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                window.dismiss();
+                mPopupWindow.dismiss();
                 String temp = stringArray[position];
                 if (temp.equals(current)){
                     return;
@@ -202,15 +166,23 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
         };
         recycleView.setLayoutManager(new LinearLayoutManager(this));
         recycleView.setAdapter(stringBaseRecyclerAdapter);
-        //真坑MAT.CH_PARENT
-        window = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mPopupWindow = new PopupWindow(vw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         // 背景色
-        window.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.translucent_black_90)));
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.translucent_black_90)));
         // 设置该pop外区域可触摸
-        window.setOutsideTouchable(true);
-        window.setFocusable(true); // 设置PopupWindow可获得焦点
-        window.setTouchable(true); // 设置PopupWindow可触摸
-        window.showAsDropDown(getLineView());
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
+        mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
+        if (Build.VERSION.SDK_INT < 24) {
+            //7.0以下么问题可以使用在某一个view下展示
+            mPopupWindow.showAsDropDown(getLineView());
+        } else {
+            //7.0+就不行了使用这种方式指定
+            int[] location = new int[2];    getLineView().getLocationOnScreen(location);
+            mPopupWindow.showAtLocation(getLineView(), Gravity.NO_GRAVITY, 0, location[1]+getLineView().getHeight());
+            //一定要update不然显示的仍然不对，之前不知道，仅仅写了上边两行然后还是没作用
+            mPopupWindow.update();
+        }
     }
     @Override
     protected int fragmentLayoutId() {
