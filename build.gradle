@@ -37,7 +37,9 @@ allprojects {
         }
         //从api 26开始，support libraries 需要从google的maven仓库下载，所以需要在project的build.gradle中allprojects 添加如下配置即可
         maven { url "https://maven.google.com" }
-
+        maven {
+            url  "https://dl.bintray.com/lizhanqi/maven"
+        }
     }
 }
 

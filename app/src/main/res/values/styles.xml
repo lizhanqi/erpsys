@@ -3,8 +3,8 @@
     <!--启动页-->
     <style name="WelcomeStyle"   parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
-
-        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- Base application theme. -->
@@ -15,6 +15,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
     <!--没有默认的ActionBar,去掉可以使用Toolbar-->
     <style name="AppTheme.NoActionBar">
