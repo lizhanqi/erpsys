@@ -15,7 +15,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +92,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
+//        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
         StatusUtils.setFullToNavigationBar(this);

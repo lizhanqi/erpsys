@@ -213,7 +213,7 @@ public class SearchOrderActivity extends AppCompatActivity {
         }
     }
     public void diar(){
-        new AlertView("清除历史记录","确认清除历史记录", null, new String[]{"确定", "取消"}, null, this, AlertView.Style.Alert, new OnItemClickListener() {
+        new AlertView("清除历史记录","确认清除历史记录", null, new String[]{"确定", "取消"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
             @Override
             public void onItemClick(Object o, int position) {
                 if (position==0){

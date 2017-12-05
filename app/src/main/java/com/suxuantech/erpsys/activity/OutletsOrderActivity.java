@@ -131,7 +131,7 @@ public class OutletsOrderActivity extends BaseActivity {
             case R.id.tv_sex:
                 new AlertView(getString(R.string.please_select_sex), null, getString(R.string.cancel), null,
                         getResources().getStringArray(R.array.sex) ,
-                        this, AlertView.Style.ActionSheet, new OnItemClickListener(){
+                        this, AlertView.Style.ACTIONSHEET, new OnItemClickListener(){
                     @Override
                     public void onItemClick(Object o, int position){//position -1是取消按钮
                     toast( "点击了第" + position + "个");

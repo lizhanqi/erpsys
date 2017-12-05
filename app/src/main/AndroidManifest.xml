@@ -59,8 +59,8 @@
         <activity android:name=".activity.WorkScheduleActivity" />
         <activity android:name=".activity.ScheduleTypeActivity" />
         <activity android:name=".activity.HistoryNoticeActivity" />
-        <activity android:name=".activity.NoticeDetailActivity"/>
-        <activity android:name=".activity.OptionActivity"/>
+        <activity android:name=".activity.NoticeDetailActivity" />
+        <activity android:name=".activity.OptionActivity" />
     </application>
 
 </manifest>

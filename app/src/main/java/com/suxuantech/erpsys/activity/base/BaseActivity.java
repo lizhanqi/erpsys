@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -26,7 +25,6 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.yanzhenjie.permission.Request;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -696,27 +694,8 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     /**
      *     获取是否存在NavigationBar(也就是是否存在导航栏)
      */
-
     public  boolean checkDeviceHasNavigationBar( ) {
-        boolean hasNavigationBar = false;
-        Resources rs = getResources();
-        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
-        if (id > 0) {
-            hasNavigationBar = rs.getBoolean(id);
-        }
-        try {
-            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
-            Method m = systemPropertiesClass.getMethod("get", String.class);
-            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
-            if ("1".equals(navBarOverride)) {
-                hasNavigationBar = false;
-            } else if ("0".equals(navBarOverride)) {
-                hasNavigationBar = true;
-            }
-        } catch (Exception e) {
-
-        }
-        return hasNavigationBar;
+        return ScreenUtils.checkDeviceHasNavigationBar(getBaseContext());
     }
     /**
      //透明状态栏
@@ -742,15 +721,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      * @return
      */
     public  int getNavigationBarHeight( ) {
-        int result = 0;
-        int resourceId=0;
-        int rid = getResources().getIdentifier("config_showNavigationBar", "bool", "android");
-        if (rid!=0){
-            resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-            return getResources().getDimensionPixelSize(resourceId);
-        }else {
-            return 0;
-        }
+        return  ScreenUtils.getNavigationBarHeight(getBaseContext());
     }
 
 }

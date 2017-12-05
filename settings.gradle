@@ -1,1 +1,1 @@
-include ':app', ':libzxing', ':libswipe', ':libcalendar', ':libalertview'
+include ':app', ':libzxing', ':libswipe', ':libcalendar'
