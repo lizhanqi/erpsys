@@ -30,7 +30,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 取件资料
  */
-public class TakeDataFragment1Fragment extends NoFragment {
+public class TakeDataFragment extends NoFragment {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)

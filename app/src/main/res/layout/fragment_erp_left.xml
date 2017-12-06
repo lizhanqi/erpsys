@@ -6,9 +6,9 @@ android:clickable="true"
 clickable是防止页面穿透的点击事件的
 -->
 <!--侵入到内容的沉浸式-->
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout_content_immersed"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

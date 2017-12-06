@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.fragment.TakePictureDressDetailFragment"
 >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,7 +12,7 @@
     android:background="@color/myBackground_f7"
     android:orientation="vertical"
     android:clickable="true"
-    tools:context="com.suxuantech.erpsys.activity.fragment.TakePictureDressDetailFragment">
+ >
     <!-- TODO: Update blank fragment layout -->
         <TextView
             android:background="@color/white"

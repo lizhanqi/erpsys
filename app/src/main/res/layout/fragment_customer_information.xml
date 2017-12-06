@@ -4,7 +4,7 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.fragment.CustomerInformationFragment">
+    tools:context="com.suxuantech.erpsys.fragment.CustomerInformationFragment">
     <!--客户资料-->
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

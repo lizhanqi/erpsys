@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    tools:context=".activity.fragment.TakePictureDressFragment"
+    tools:context=".fragment.TakePictureDressFragment"
     android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/ll_take_picture_dress"

@@ -48,9 +48,9 @@ public class TabControlFragment extends NoFragment {
         fragments = new ArrayList<>();
         if (witch==0) {
             //取件资料
-            fragments.add(new TakeDataFragment1Fragment());
-            fragments.add(new TakeDataFragment1Fragment());
-            fragments.add(new TakeDataFragment1Fragment());
+            fragments.add(new TakeDataFragment());
+            fragments.add(new TakeDataFragment());
+            fragments.add(new TakeDataFragment());
         } else if (witch==1){
             //摄影资料
             fragments.add(new PhotographicDataFragment());
