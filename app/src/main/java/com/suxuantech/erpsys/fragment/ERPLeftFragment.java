@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.activity.fragment;
+package com.suxuantech.erpsys.fragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -8,13 +8,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.suxuantech.erpsys.OptionHelp;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.OptionActivity;
+import com.suxuantech.erpsys.activity.OrderDetailActivity;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
@@ -63,17 +63,11 @@ public class ERPLeftFragment extends Fragment {
         taskWaveHelper.start();
         WaveHelper scheduleWaveHelper = new WaveHelper(scheduleWave);
         scheduleWaveHelper  .start();
-        TextView viewById = view.findViewById(R.id.tv_info);
-        viewById.setSelected(true);
         StatusUtils.setFullToStatusBar(getActivity());
         view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
-                alertView.addExtView(getLayoutInflater().inflate(R.layout.pop_package_product_addbutton,null));
-                alertView.setContentContainerMargins(0,0,0,0);
-                alertView.setContentContainerPadding(0,0,0,200);
-                alertView.show();
+
 //            alertShow4();
 //              new AlertView("标题", "内容", "取消", new String[]{"确定"}, null, getContext(), AlertView.Style.ALERT, new OnItemClickListener() {
 //                    @Override
@@ -87,7 +81,7 @@ public class ERPLeftFragment extends Fragment {
 //                    }
 //                }).setDivierMargin(30).show();
 
-//     startActivity(new Intent(getActivity(),OrderDetailActivity.class));
+        startActivity(new Intent(getActivity(),OrderDetailActivity.class));
             }
         });
 

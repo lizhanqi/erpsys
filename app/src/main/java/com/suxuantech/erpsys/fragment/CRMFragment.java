@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.activity.fragment;
+package com.suxuantech.erpsys.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,40 +11,39 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
-
-public class MsgFragment extends BaseNoFragment {
+public class CRMFragment extends BaseNoFragment {
     TextView mTvFm;
-    private View view;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,    Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_msg, container, false);
+        View view= inflater.inflate(R.layout.fragment_crm, container, false);
         return view;
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         view.findViewById(R.id.tv_fm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.show("MSG");
+                ToastUtils.show("CRM");
             }
         });
         mTvFm =   view.findViewById(R.id.tv_fm);
-        mTvFm.setText("MSG");
+        mTvFm.setText("CRM");
     }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
+
 
     @Override
     protected void widgetClick(View v) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.activity.fragment;
+package com.suxuantech.erpsys.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;

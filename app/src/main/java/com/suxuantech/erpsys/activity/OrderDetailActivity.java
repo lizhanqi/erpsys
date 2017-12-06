@@ -40,9 +40,9 @@ import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
-import com.suxuantech.erpsys.activity.fragment.CustomerInformationFragment;
-import com.suxuantech.erpsys.activity.fragment.ProductDataFragment;
-import com.suxuantech.erpsys.activity.fragment.TakeDataFragment;
+import com.suxuantech.erpsys.fragment.CustomerInformationFragment;
+import com.suxuantech.erpsys.fragment.ProductDataFragment;
+import com.suxuantech.erpsys.fragment.TakeDataFragment;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
