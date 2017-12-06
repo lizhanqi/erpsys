@@ -4,18 +4,27 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/px55"
     android:paddingRight="@dimen/px55"
-    android:paddingTop="@dimen/px60"
-    android:paddingBottom="@dimen/px100"
+    android:paddingTop="@dimen/px85"
+    android:paddingBottom="@dimen/px135"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <Button
-        android:text="222"
+        android:id="@+id/btn_add_package"
+        android:textSize="@dimen/xs50"
+        android:textColor="@color/white"
+        android:clickable="false"
+        android:background="@drawable/sl_butn_gray_theme"
+        android:text="新增包套"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
+        android:textSize="@dimen/xs50"
+        android:textColor="@color/white"
+        android:background="@drawable/sl_butn_gray_theme"
         android:layout_marginTop="@dimen/px30"
         android:text="222"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 </LinearLayout>

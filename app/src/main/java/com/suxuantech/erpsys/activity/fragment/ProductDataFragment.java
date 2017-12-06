@@ -6,14 +6,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.alertview.AlertView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.OrderDetailActivity;
 import com.suxuantech.erpsys.adapter.ProductGroupAdaputer;
+import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -90,6 +93,7 @@ public class ProductDataFragment extends NoFragment {
     boolean isShowCheckBox;
 
     public void change() {
+        addPackageOrProductWindow();
         isShowCheckBox = !isShowCheckBox;
 
         if (isShowCheckBox) {
@@ -129,4 +133,19 @@ public class ProductDataFragment extends NoFragment {
         });
 
     }
+    public  void  addPackageOrProductWindow(){
+        AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
+        View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
+        Button bn = (Button) views.findViewById(R.id.btn_add_package);
+        bn.setClickable(true);
+        alertView.addExtView(views);
+        alertView.setCancelable(true);
+        alertView.setContentContainerMargins(0,0,0,0);
+        if( ScreenUtils.checkDeviceHasNavigationBar(getContext())){
+            alertView.setRootViewMarginBootom(ScreenUtils.getNavigationBarHeight(getContext()));
+            alertView.show();
+    }
+    }
+
+
 }
