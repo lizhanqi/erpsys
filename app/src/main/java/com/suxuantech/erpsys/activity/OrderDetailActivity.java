@@ -42,7 +42,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
 import com.suxuantech.erpsys.fragment.CustomerInformationFragment;
 import com.suxuantech.erpsys.fragment.ProductDataFragment;
-import com.suxuantech.erpsys.fragment.TakeDataFragment;
+import com.suxuantech.erpsys.fragment.TabControlFragment;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -108,19 +108,19 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                     break;
                 case "取件资料":
                     bd.putInt("witch",0);
-                    startFragment(fragment(TakeDataFragment.class,bd));
+                    startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "摄影资料":
                     bd.putInt("witch",1);
-                    startFragment(fragment(TakeDataFragment.class,bd));
+                    startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "选片资料":
                     bd.putInt("witch",2);
-                    startFragment(fragment(TakeDataFragment.class,bd));
+                    startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "礼服资料":
                     bd.putInt("witch",3);
-                    startFragment(fragment(TakeDataFragment.class,bd));
+                    startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "产品资料":
                     productDataFragment = fragment(ProductDataFragment.class);

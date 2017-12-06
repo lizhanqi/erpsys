@@ -19,11 +19,10 @@ import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
- * 取件资料
- *
+ * 可以滑动切换fragment带有
  */
 
-public class TakeDataFragment extends NoFragment {
+public class TabControlFragment extends NoFragment {
     private ArrayList<NoFragment> fragments;
     int witch;
     //    设置参数确定子Fragment加载
@@ -38,7 +37,7 @@ public class TakeDataFragment extends NoFragment {
                              Bundle savedInstanceState) {
         witch = getArguments().getInt("witch");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_take_data, container, false);
+        return inflater.inflate(R.layout.fragment_tab_control, container, false);
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
