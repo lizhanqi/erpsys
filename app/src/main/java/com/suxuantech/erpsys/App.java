@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+
 import com.suxuantech.erpsys.utils.L;
+import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
 import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
+import com.yanzhenjie.nohttp.cookie.DBCookieStore;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 
@@ -55,7 +61,7 @@ public class App extends Application {
         context = this.getApplicationContext();
         registerActivityListener();
         application=this;
-        initNohttp();
+        newinitNohttp();
         if (!ISDEBUG){
             initErrorPage();
         }
@@ -132,9 +138,36 @@ public class App extends Application {
                 // .setNetworkExecutor(new OkHttpNetworkExecutor())
         );
         Logger.setDebug(false);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-        Logger.setTag("NoHttpSample");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
+        Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
     }
-
+    private  void newinitNohttp(){
+        Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
+        NoHttp.initialize(context);
+        InitializationConfig.newBuilder(context) // 全局连接服务器超时时间，单位毫秒，默认10s。
+                .connectionTimeout(30 * 1000)
+                // 全局等待服务器响应超时时间，单位毫秒，默认10s。
+                .readTimeout(30 * 1000)
+                // 配置缓存，默认保存数据库DBCacheStore，保存到SD卡使用DiskCacheStore。
+                .cacheStore(
+                        // 如果不使用缓存，setEnable(false)禁用。
+                        new DBCacheStore(context).setEnable(true)
+                )
+                // 配置Cookie，默认保存数据库DBCookieStore，开发者可以自己实现CookieStore接口。
+                .cookieStore(
+                        // 如果不维护cookie，setEnable(false)禁用。
+                        new DBCookieStore(context).setEnable(true)
+                )
+                // 配置网络层，默认URLConnectionNetworkExecutor，如果想用OkHttp：OkHttpNetworkExecutor。
+                .networkExecutor(new  OkHttpNetworkExecutor())
+                // 全局通用Header，add是添加，多次调用add不会覆盖上次add。
+                //.addHeader()
+                // 全局通用Param，add是添加，多次调用add不会覆盖上次add。
+               // .addParam()
+               // .sslSocketFactory() // 全局SSLSocketFactory。
+                //.hostnameVerifier() // 全局HostnameVerifier。
+                //.retry(1)// 全局重试次数，配置后每个请求失败都会重试x次。
+                .build();
+    }
     public static Application getApplication() {
         return application;
     }

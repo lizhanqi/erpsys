@@ -61,8 +61,8 @@ dependencies {
     //compile "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}"
     compile 'com.yanzhenjie:permission:1.1.2'
     compile 'com.yanzhenjie:recyclerview-swipe:1.1.3'
-    compile 'com.yanzhenjie.nohttp:nohttp:1.1.4'
-    compile 'com.yanzhenjie.nohttp:okhttp:1.1.4'
+    compile 'com.yanzhenjie.nohttp:nohttp:1.1.+'
+    compile 'com.yanzhenjie.nohttp:okhttp:1.1.+'
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.yanzhenjie:durban:1.0.1'
     compile 'com.yanzhenjie:statusview:1.0.3'

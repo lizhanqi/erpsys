@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.nohttp;
 
+import com.suxuantech.erpsys.utils.FileUtils;
+import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.download.DownloadListener;
@@ -37,28 +39,30 @@ public class DownLoad {
     DownloadListener dl=   new DownloadListener() {
         @Override
         public void onDownloadError(int what, Exception exception) {
-
+            L.d("下载Error"+what+""+exception.getMessage());
         }
-
         @Override
         public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders, long allCount) {
-
+            L.d("开始下载"+what+"isResume："+isResume+"rangeSize:"+rangeSize+"allCount:"+allCount);
         }
-
         @Override
         public void onProgress(int what, int progress, long fileCount, long speed) {
-
+            L.d("onProgress下载"+what+"progress："+progress+"fileCount:"+fileCount+"speed:"+speed);
         }
 
         @Override
         public void onFinish(int what, String filePath) {
-
+            L.d("onFinish下载"+what+"filePath："+filePath);
         }
-
         @Override
         public void onCancel(int what) {
+            L.d("onCancel下载"+what);
         }
     };
+    public DownLoad(int what,String url){
+        download(what,url, FileUtils.getAppFolderPath(),true);
+    }
+
     public void download(int what,String url, String fileFolder, boolean isDeleteOld) {
         DownloadRequest downloadRequest = NoHttp.createDownloadRequest(url,fileFolder,isDeleteOld);
         NoHttp.getDownloadQueueInstance().add(what,downloadRequest, dl);

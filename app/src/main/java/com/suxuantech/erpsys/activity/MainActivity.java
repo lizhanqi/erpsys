@@ -12,15 +12,17 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseActivity;
+import com.suxuantech.erpsys.bean.DistrictBean;
 import com.suxuantech.erpsys.fragment.CRMFragment;
 import com.suxuantech.erpsys.fragment.ERPFragment;
 import com.suxuantech.erpsys.fragment.MsgFragment;
 import com.suxuantech.erpsys.fragment.MyFragment;
 import com.suxuantech.erpsys.fragment.WorkFragment;
-import com.suxuantech.erpsys.bean.DistrictBean;
 import com.suxuantech.erpsys.nohttp.CallServer;
+import com.suxuantech.erpsys.nohttp.DownLoad;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -47,9 +49,11 @@ public class MainActivity extends BaseActivity {
                 case 4:
                     StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.themeColor));
                     startFragment(MyFragment.class,true);
-                    send();
+//                    netsStringSample();
+                    Down();
                     break;
                 case 3:
+
                     startFragment(CRMFragment.class,true);
                     //状态栏颜色
                     StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
@@ -202,23 +206,6 @@ public class MainActivity extends BaseActivity {
         }
 
     }
-    public void get(){
-    /**
-     * 客户产品搜索JavaBean响应。
-     */
-    HttpListener<DistrictBean> searchByCustmor = new HttpListener<DistrictBean>() {
-        @Override
-        public void onSucceed(int what, Response<DistrictBean> response) {
-        }
-        @Override
-        public void onFailed(int what, Response<DistrictBean> response) {
-        }
-    };
-
-    Request<DistrictBean> request = new JavaBeanRequest<DistrictBean>("", DistrictBean.class);
-    CallServer.getInstance().add(this, request, searchByCustmor, 10, true, true);
-
-}
     @Override
     protected void widgetClick(View v) {
         switch (v.getId()) {
@@ -229,14 +216,49 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
     }
-/*    private void nets() {
-        JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>();
-        HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>();
-        CallServer.getInstance().add(this,districtBeanJavaBeanRequest,districtBeanHttpResponseListener,10,true,true);
-    }*/
+    public  void netsBeanSample() {
+        String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
+        //请求实体
+        JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>(url,DistrictBean.class);
+//        HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>(null);
+        HttpListener<DistrictBean> searchByCustmor = new HttpListener<DistrictBean>(){
+            @Override
+            public void onSucceed(int what, Response<DistrictBean> response) {
+                L.i("what = [" + what + "], response = [" + response + "]");
+            }
+            @Override
+            public void onFailed(int what, Response<DistrictBean> response) {
+                L.i("失败"+what+"\n"+response.get());
+                System.out.println("失败what = [" + what + "], response = [" + response + "]");
+            }
+        };
+        CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
+    }
+    public void Down(){
+        String u="http://sw.bos.baidu.com/sw-search-sp/software/e25c4cc36a934/QQ_8.9.6.22427_setup.exe";
+        DownLoad downLoad = new DownLoad(10, u);
+
+    }
+        public  void netsStringSample() {
+        String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
+        //请求实体
+       StringRequest districtBeanJavaBeanRequest = new StringRequest(url,RequestMethod.POST);
+        HttpListener<String> searchByCustmor = new HttpListener<String>(){
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                L.i("what = [" + what + "], response = [" + response + "]");
+            }
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                L.i("失败"+what+"\n"+response.get());
+                System.out.println("失败what = [" + what + "], response = [" + response + "]");
+            }
+        };
+        CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
+    }
+
 
     public void send() {
-
         Request<String> stringRequest = NoHttp.createStringRequest("http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0", RequestMethod.POST);
         // stringRequest.addHeader("Content-Type", "application/json");
         //stringRequest.setDefineRequestBodyForJson("{\"x\":1,\"y\":2}");

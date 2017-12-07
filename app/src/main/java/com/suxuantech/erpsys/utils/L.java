@@ -105,4 +105,10 @@ public class L {
             Log.v(tag, msg);
         }
     }
+
+    public static void e(String tag, String s, Exception e) {
+        if (isDebug) {
+            Log.e(tag,s ,e);
+        }
+    }
 }

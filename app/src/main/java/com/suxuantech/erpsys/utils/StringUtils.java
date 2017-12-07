@@ -98,4 +98,9 @@ public class StringUtils {
         Matcher matcher = pattern.matcher(ipAddress);
         return matcher.matches();
     }
+
+    public static boolean empty(String content) {
+        return content==null||content.length()==0;
+    }
+
 }
