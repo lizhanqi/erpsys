@@ -25,6 +25,8 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 import com.yanzhenjie.permission.Request;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,6 +83,11 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 如果注解的方法不是onClick(View view) 而是其他的比如onxxx(View v) 这时候如果也设置了idSetOnClick那么就会走widgetClick
  * 总结 注意这里主要的就是onClick是否被重写
  * 如果别重写了onClick，那么注解优先级高，如果没有重写onClick那么idSetOnClick高
+ *
+ * 支持 EventBus消息接收
+ *  如果使用EventBus也就是useEventBus方法
+ *  那么必须在该页面一定要有一个方法用来接收消息，
+ *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
 public abstract class BaseActivity extends SwipeBackActivity implements View.OnClickListener{
 
@@ -514,6 +521,10 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //加上判断
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         if (useButterKnife&&unbinder!=null){
             unbinder.unbind();
         }
@@ -564,7 +575,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     }
     //--------------------------------------日志模块end------------------
     //--------------------------------findView-----------------
-    boolean  useButterKnife;
+    boolean  useButterKnife ,useEventBus ;
 
     /**
      * 使用注解
@@ -573,6 +584,29 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
        useButterKnife=true;
        unbinder = ButterKnife.bind(this);
    }
+
+    /**
+     * 使用EventBus
+     *  如果使用EventBus
+     *  那么必须在在该页面有一个方法用来接收消息，
+     *  当然这个方法需要注解：@Subscribe 且方法必须是public
+     */
+   public  void  useEventBus(){
+       useEventBus=true;
+       //加上判断
+       if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
+           EventBus.getDefault().register(this);
+       }
+   }
+    @Override
+    public void onStart() {
+        super.onStart();
+        //加上判断
+        if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+        }
+    }
+
     /**
      * 根据id找view
      * @param resId id资源
