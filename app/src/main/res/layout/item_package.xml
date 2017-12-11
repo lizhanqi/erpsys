@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/item_package_root_layout"
+    android:paddingLeft="@dimen/px55"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/px55">
+
+        <!--      框在右边  android:checkMark="?android:attr/listChoiceIndicatorMultiple"-->
+        <CheckedTextView
+            android:id="@+id/tv_package_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:descendantFocusability="blocksDescendants"
+            android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+            android:filterTouchesWhenObscured="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical|left"
+            android:paddingBottom="@dimen/px40"
+            android:paddingTop="@dimen/px40"
+            android:text="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/mainNav_66"
+            android:textSize="@dimen/xs42"></CheckedTextView>
+
+        <TextView
+            android:textSize="@dimen/xs34"
+            android:textColor="@color/color_f1403b"
+            android:id="@+id/tv_right_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"></TextView>
+    </LinearLayout>
+    <View
+        android:id="@+id/item_package_line"
+       style="@style/line"/>
+</LinearLayout>

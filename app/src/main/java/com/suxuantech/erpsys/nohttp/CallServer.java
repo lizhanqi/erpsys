@@ -29,20 +29,23 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 public class CallServer {
 	private static CallServer instance;
 	private RequestQueue queue;
-	public synchronized static CallServer getInstance() {
-		if (instance == null) {
-			instance = new CallServer();
-		}
-		return instance;
-	}
-	private CallServer() {
-		queue = NoHttp.newRequestQueue();
-	}
+//	public synchronized static CallServer getInstance() {
+//		if (instance == null) {
+//			instance = new CallServer();
+//		}
+//		return instance;
+//	}
+//	private CallServer() {
+//	}
 	public  void  cancelAll(){
 		queue.cancelAll();
 	}
 	public  void  cancelBySign(Object sign){
 		queue.cancelBySign(sign);
+	}
+	public CallServer setQueue(RequestQueue queue){
+		this.queue=queue;
+		return this;
 	}
 	/**
 	 * 添加一个请求到请求队列
@@ -55,6 +58,10 @@ public class CallServer {
 	 * @param isLoading 是否显示dialog
 	 */
 	public <T> void add(Context context, Request<T> request, HttpListener<T> callback, int what,  boolean canCancel, boolean  isLoading) {
+
+		if (queue==null){
+			queue = NoHttp.getRequestQueueInstance();
+		}
 		queue.add(what, request, new HttpResponseListener<>( context, request, callback, canCancel, isLoading));
 	}
 

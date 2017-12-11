@@ -167,9 +167,12 @@
             style="@style/OpenOrderValue" />
     </LinearLayout>
     <View
+        android:visibility="gone"
+        android:id="@+id/view_package_line"
         style="@style/line"/>
         <!--新增产品-->
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_addition"
         android:paddingRight="@dimen/px55"
         android:paddingLeft="@dimen/px55"
@@ -180,10 +183,11 @@
             android:text="@string/addition"
             style="@style/DetailsKey"
         />
+
         <TextView
             android:id="@+id/tv_addition"
-            android:hint="@string/zero"
-          style="@style/OpenOrderValue" />
+            style="@style/OpenOrderValue"
+            android:hint="@string/zero" />
 
     </LinearLayout>
        <!--其他信息-->
@@ -285,9 +289,11 @@
 
          </LinearLayout>
          <View
+             android:visibility="gone"
            style="@style/line"/>
         <!--摄影备注-->
          <LinearLayout
+             android:visibility="gone"
              android:id="@+id/ll_photography_remarks"
              android:paddingRight="@dimen/px55"
              android:paddingLeft="@dimen/px55"

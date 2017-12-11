@@ -18,7 +18,6 @@ import com.suxuantech.erpsys.fragment.ERPFragment;
 import com.suxuantech.erpsys.fragment.MsgFragment;
 import com.suxuantech.erpsys.fragment.MyFragment;
 import com.suxuantech.erpsys.fragment.WorkFragment;
-import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.DownLoad;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -232,7 +231,7 @@ public class MainActivity extends BaseActivity {
                 System.out.println("失败what = [" + what + "], response = [" + response + "]");
             }
         };
-        CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
+        //CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
     public void Down(){
         String u="http://sw.bos.baidu.com/sw-search-sp/software/e25c4cc36a934/QQ_8.9.6.22427_setup.exe";
@@ -254,7 +253,8 @@ public class MainActivity extends BaseActivity {
                 System.out.println("失败what = [" + what + "], response = [" + response + "]");
             }
         };
-        CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
+//        new  CallServer().setQueue();
+     //   CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
 
 

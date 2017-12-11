@@ -1,8 +1,7 @@
 package com.suxuantech.erpsys.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.utils.ToastUtils;

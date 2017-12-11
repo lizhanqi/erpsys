@@ -141,7 +141,8 @@ public class App extends Application {
         Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
     }
     private  void newinitNohttp(){
-        Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
+        Logger.setDebug(ISDEBUG);
+        Logger.setTag("NoHttp");// 设置NoHttp打印L og的tag。这个专门打印网络请求的
         NoHttp.initialize(context);
         InitializationConfig.newBuilder(context) // 全局连接服务器超时时间，单位毫秒，默认10s。
                 .connectionTimeout(30 * 1000)

@@ -3,6 +3,9 @@ package com.suxuantech.erpsys;
 import android.content.Context;
 import android.content.Intent;
 
+import com.suxuantech.erpsys.activity.OptionActivity;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -33,55 +36,38 @@ import java.util.ArrayList;
  * @Description: 跳转到Option页面的帮助类帮助生成跳转意图并且携带一些参数意图
  */
 public class OptionHelp {
+    /**
+     * 网络接口标志
+     */
+    public  enum UrlTag implements Serializable {
+        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT
+    }
+    private UrlTag urlTag;
     boolean isMultiple;
     ArrayList<String> checkedDatas;
-    Class targetActivity;
     Context context;
-    String  url;
+    String  tag;
     String Title;
     ArrayList<String> allData;
-    public OptionHelp(Context context,Class  targetActivity){
+    public OptionHelp(Context context){
+         if (context==null){
+            throw  new IllegalArgumentException("Context不能为空");
+        }
         this.context=context;
-        this.targetActivity=targetActivity;
     }
-    public   OptionHelp isMultiple(boolean isMultiple){
-        this.isMultiple=isMultiple;
-        return  this;
-    }
-    public   OptionHelp setUrl(String url){
-        this.url=url;
-        allData=null;
-        return  this;
-    }
-    public   OptionHelp setCheckedData(ArrayList<String> checkedData){
-        checkedDatas=checkedData;
-        return  this;
-    }
-    public   OptionHelp setCheckedData(String checkedData) {
 
-        if (checkedDatas == null) {
-            checkedDatas = new ArrayList<>();
+    public Intent creat(){
+        Intent intent = new Intent(context, OptionActivity.class);
+        if (urlTag==null&&allData==null){
+            throw  new IllegalArgumentException("urlTag和allData必须有一个");
         }
-
-        checkedDatas.clear();
-        checkedDatas.add(checkedData);
-        return this;
-    }
-    public OptionHelp setAllData(ArrayList<String > allData){
-        this.allData=allData;
-        url=null;
-        return this;
-    }
-    public OptionHelp setTitle(String Title){
-        this.Title=Title;
-        return this;
-    }
-    public Intent Start(){
-        Intent intent = new Intent(context, targetActivity);
-        if (url!=null){
-            intent.putExtra("Url",url);
+        if (urlTag!=null){
+            intent.putExtra("UrlTag",urlTag);
         }
-         intent.putExtra("Multiple",isMultiple);
+        if (tag!=null){
+            intent.putExtra("Tag",tag);
+        }
+        intent.putExtra("Multiple",isMultiple);
         if (Title!=null){
             intent.putExtra("Title",Title);
         }
@@ -91,7 +77,80 @@ public class OptionHelp {
         if (allData!=null){
             intent.putExtra("All",allData);
         }
-       return intent;
+        return intent;
+    }
+
+
+    /**
+     * 设置url标志，这里会根据这个标志进行或相应的网络地址
+     * @param urlTag
+     */
+    public void setUrlTag(UrlTag urlTag) {
+        this.urlTag = urlTag;
+    }
+    /**
+     * 是否多选
+     * @param multiple
+     * @return
+     */
+    public OptionHelp setMultiple(boolean multiple) {
+        isMultiple = multiple;
+        return  this;
+    }
+    /**
+     * 可以设置一个自己的标志
+     * @param tag
+     * @return
+     */
+    public   OptionHelp setTag(String tag){
+        this.tag=tag;
+        allData=null;
+        return  this;
+    }
+
+    /**
+     *    已经选中的数据（多选）
+     * @param checkedData
+     * @return
+     */
+    public   OptionHelp setCheckedData(ArrayList<String> checkedData){
+        checkedDatas=checkedData;
+        return  this;
+    }
+
+    /**
+     * 设置当前选中的数据（单选的）
+     * @param checkedData
+     * @return
+     */
+    public   OptionHelp setCheckedData(String checkedData) {
+        if (checkedDatas == null) {
+            checkedDatas = new ArrayList<>();
+        }
+        checkedDatas.clear();
+        checkedDatas.add(checkedData);
+        return this;
+    }
+
+    /**
+     * 设置全部数据(本地的非网络)
+     * @param allData
+     * @return
+     */
+    public OptionHelp setAllData(ArrayList<String > allData){
+        this.allData=allData;
+        urlTag=null;
+        return this;
+    }
+
+    /**
+     * 设置标题（顶部中间的）
+     * @param Title
+     * @return
+     */
+    public OptionHelp setTitle(String Title){
+        this.Title=Title;
+        return this;
     }
 
 }

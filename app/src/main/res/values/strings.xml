@@ -3,6 +3,12 @@
 
     <string name="app_name">素玄科技</string>
     <string name="used">used</string>
+    <!--recy-->
+    <string name="data_empty">———找管理员哥哥添加点数据呗！———</string>
+    <string name="data_more_not">———这就是^_^底线！———</string>
+    <string name="data_click_load_more">点我加载更多</string>
+    <string name="data_load_error">———谁还能不犯点错呢！过会再试吧！———</string>
+    <string name="data_load_more_message">正在加载更多数据，请稍后</string>
     <!--封装的网络-->
     <string name="wait_dialog_title">正在请求，请稍后…</string>
     <string name="error_please_check_network">请检查网络。</string>
@@ -78,13 +84,13 @@
     <string name="vip_zone">VIP区</string>
     <string name="addition">新增产品</string>
     <string name="zero">0</string>
+    <string name="package_select">包套选择</string>
     <string name="package_set_of_names">包套名称</string>
     <string name="please_select_package_set">请选择包套</string>
     <string name="order_receiving_site">接单点</string>
     <string name="please_select_order_receiving_site">请选择接单点</string>
     <string name="outlets_reception">门市接待</string>
     <string name="please_selsect_outlets_reception">请选择门市接待</string>
-    <string name="consumption_type">消费类型</string>
     <string name="please_select_consumption_type">请选择消费类型</string>
     <string name="customer_name">客户姓名</string>
     <string name="customer_phone">客户手机</string>
@@ -276,4 +282,6 @@
     <string name="notice">公告</string>
     <string name="delete">删除</string>
     <string name="complete">完成</string>
+    <string name="consumption_type">消费类型</string>
+    <string name="product_select">产品选择</string>
 </resources>

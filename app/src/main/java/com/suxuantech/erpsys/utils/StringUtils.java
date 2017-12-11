@@ -63,15 +63,6 @@ public class StringUtils {
         return result;
     }
 
-    /**
-     * 判断字符串是否是null
-     *
-     * @param str
-     * @return
-     */
-    public static boolean strIsNull(String str) {
-        return str == null;
-    }
 
     /**
      * 改变字符串为null的值为空字符串

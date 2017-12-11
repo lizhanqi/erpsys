@@ -125,7 +125,20 @@ public class DateUtil {
             public String getValue() {
                 return "HH:mm";
             }
+        },
+
+        /**
+         * 格式："HH:mm"
+         */
+        JUST_DAY_NUMBER {
+            @Override
+            public String getValue() {
+                return "yyyyMMdd";
+            }
         };
+
+
+
 
         public abstract String getValue();
     }
@@ -161,7 +174,6 @@ public class DateUtil {
         }
         return date;
     }
-
     /**
      * 将date转换成字符串
      *

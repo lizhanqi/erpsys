@@ -18,6 +18,7 @@ package com.suxuantech.erpsys.nohttp;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.dialog.WaitDialog;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -74,6 +75,9 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      * @param isShowError  是否提示错误信息
      */
     public HttpResponseListener(Context context, Request<?> request, HttpListener<T> httpCallback, boolean canCancel, boolean isLoading, boolean isShowError) {
+        if (context instanceof App){
+            context =((App) context).getTopActivity();
+        }
         this.mContext = context;
         this.mRequest = request;
         this.isShowError = isShowError;

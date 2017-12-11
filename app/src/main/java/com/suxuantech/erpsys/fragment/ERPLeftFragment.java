@@ -11,17 +11,13 @@ import android.view.ViewGroup;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
-import com.suxuantech.erpsys.OptionHelp;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.OptionActivity;
-import com.suxuantech.erpsys.activity.OrderDetailActivity;
+import com.suxuantech.erpsys.activity.OutletsOrderActivity;
+import com.suxuantech.erpsys.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
 import com.yanzhenjie.statusview.StatusUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ERPLeftFragment extends Fragment {
 
@@ -32,6 +28,7 @@ public class ERPLeftFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view= inflater.inflate(R.layout.fragment_erp_left, container, false);
         return view;
     }
@@ -81,26 +78,27 @@ public class ERPLeftFragment extends Fragment {
 //                    }
 //                }).setDivierMargin(30).show();
 
-        startActivity(new Intent(getActivity(),OrderDetailActivity.class));
+        startActivity(new Intent(getActivity(),OutletsOrderActivity.class));
             }
         });
 
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), OptionActivity.class);
-                OptionHelp multiple = new OptionHelp(getActivity(), OptionActivity.class).isMultiple(true);
-                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-                multiple.setCheckedData("礼服");
-                multiple.setTitle("126");
-//                multiple.setUrl("11111");
-
-                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-                intent.putExtra("Title","选择");
-                intent.putExtra("Multiple",true);
-                startActivity(multiple.Start());
+                startActivity(new Intent(getActivity(),SearchOrderActivity.class));
+//                Intent intent = new Intent(getActivity(), OptionActivity.class);
+//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(true);
+//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData("礼服");
+//                multiple.setTitle("126");
+////                multiple.setUrl("11111");
+//
+//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Title","选择");
+//                intent.putExtra("Multiple",true);
+//                startActivity(multiple.creat());
             }
         });
     }
