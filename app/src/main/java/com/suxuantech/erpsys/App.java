@@ -5,12 +5,12 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.suxuantech.erpsys.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.OkHttpNetworkExecutor;
-import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.yanzhenjie.nohttp.cache.DBCacheStore;
 import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 
 
@@ -62,9 +61,8 @@ public class App extends Application {
         registerActivityListener();
         application=this;
         newinitNohttp();
-        if (!ISDEBUG){
             initErrorPage();
-        }
+
     }
 
     /**
@@ -81,65 +79,42 @@ public class App extends Application {
                 .minTimeBetweenCrashesMs(2000) //default: 3000
                 .errorDrawable(null) //default: bug image
                 .restartActivity(MainActivity.class) //default: null (your app's launch activity)
-                .errorActivity(null) //default: null (default error activity)*/
-                .eventListener(new MyEventListener()) //default: null
+              */
+               //.eventListener(new MyEventListener()) //default: null没啥屌用
+                .errorActivity(DefaultErrorActivity.class) //default: null (default error activity)
                 .apply();
     }
 
-    private static class MyEventListener implements CustomActivityOnCrash.EventListener {
-        /**
-         * 崩溃后启动错误页后回调
-         */
-        @Override
-        public void onLaunchErrorActivity() {
-            L.e("Crashes","onLaunchErrorActivity");
-        }
-        /**
-         * 重启
-         */
-        @Override
-        public void onRestartAppFromErrorActivity() {
-            L.e("Crashes", "onRestartAppFromErrorActivity");
-        }
-
-        /***
-         * 错误直接导致的关闭应用
-         */
-        @Override
-        public void onCloseAppFromErrorActivity() {
-            L.e( "Crashes","onCloseAppFromErrorActivity");
-        }
-    }
-    /**
-     * 初始化网络
-     */
-    private void initNohttp() {
-        NoHttp.initialize(this);
-//        配置超时毫秒数，默认10 * 1000ms
-        NoHttp.initialize(this, new NoHttp.Config()
-                // 设置全局连接超时时间，单位毫秒
-                .setConnectTimeout(5 * 1000)
-                // 设置全局服务器响应超时时间，单位毫秒
-                .setReadTimeout(5 * 1000)
-        );
-//        配置缓存，控制开关
-        NoHttp.initialize(this, new NoHttp.Config()
-                .setCacheStore(
-                        // 保存到数据库
-                        new DBCacheStore(this).setEnable(true) // 如果不使用缓存，设置false禁用。
-                        // 或者保存到SD卡：new DiskCacheStore(this)
-                )
-        );
-//        配置网络层
-        NoHttp.initialize(this, new NoHttp.Config()
-                        // 使用HttpURLConnection
-                        .setNetworkExecutor(new URLConnectionNetworkExecutor())
-                // 或者使用OkHttp
-                // .setNetworkExecutor(new OkHttpNetworkExecutor())
-        );
-        Logger.setDebug(false);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-        Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
-    }
+//    /**
+//     * 初始化网络
+//     */
+//    private void initNohttp() {
+//        NoHttp.initialize(this);
+////        配置超时毫秒数，默认10 * 1000ms
+//        NoHttp.initialize(this, new NoHttp.Config()
+//                // 设置全局连接超时时间，单位毫秒
+//                .setConnectTimeout(5 * 1000)
+//                // 设置全局服务器响应超时时间，单位毫秒
+//                .setReadTimeout(5 * 1000)
+//        );
+////        配置缓存，控制开关
+//        NoHttp.initialize(this, new NoHttp.Config()
+//                .setCacheStore(
+//                        // 保存到数据库
+//                        new DBCacheStore(this).setEnable(true) // 如果不使用缓存，设置false禁用。
+//                        // 或者保存到SD卡：new DiskCacheStore(this)
+//                )
+//        );
+////        配置网络层
+//        NoHttp.initialize(this, new NoHttp.Config()
+//                        // 使用HttpURLConnection
+//                        .setNetworkExecutor(new URLConnectionNetworkExecutor())
+//                // 或者使用OkHttp
+//                // .setNetworkExecutor(new OkHttpNetworkExecutor())
+//        );
+//        Logger.setDebug(false);// 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
+//        Logger.setTag("NoHttp");// 设置NoHttp打印Log的tag。这个专门打印网络请求的
+//    }
     private  void newinitNohttp(){
         Logger.setDebug(ISDEBUG);
         Logger.setTag("NoHttp");// 设置NoHttp打印L og的tag。这个专门打印网络请求的

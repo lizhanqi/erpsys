@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.suxuantech.erpsys.R;
 
@@ -43,6 +45,37 @@ import com.suxuantech.erpsys.R;
  */
 
 public class AdjustDrawableTextView extends AppCompatTextView {
+    public TextViewDrawableClickView.DrawableRightClickListener drawableRightClickListener;
+    public void setDrawableRightClick(TextViewDrawableClickView.DrawableRightClickListener drawableRightClickListener) {
+        this.drawableRightClickListener = drawableRightClickListener;
+    }
+
+    //为了方便,直接写了一个内部类的接口
+    public interface DrawableRightClickListener {
+        void onDrawableRightClickListener(View view);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (drawableRightClickListener != null) {
+                    // getCompoundDrawables获取是一个数组，数组0,1,2,3,对应着左，上，右，下 这4个位置的图片，如果没有就为null
+                    Drawable rightDrawable = getCompoundDrawables()[2];
+                    //判断的依据是获取点击区域相对于屏幕的x值比我(获取TextView的最右边界减去边界宽度)大就可以判断点击在Drawable上
+                    if (rightDrawable != null && event.getRawX() >= (getRight() - rightDrawable.getBounds().width())) {
+                        drawableRightClickListener.onDrawableRightClickListener(this);
+                    }
+                    //此处不能设置成false,否则drawable不会触发点击事件,如果设置,TextView会处理事件
+                    return false;
+                }
+
+                break;
+
+        }
+        return super.onTouchEvent(event);
+
+    } ;
     /**
      * 代码中设置drawable大小要确定是给那边的设置的
      */

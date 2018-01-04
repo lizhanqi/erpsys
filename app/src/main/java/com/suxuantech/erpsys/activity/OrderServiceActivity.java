@@ -229,7 +229,7 @@ public class OrderServiceActivity extends StatusImmersedBaseActivity {
                 }
             }
             pics.removeAll(temp);
-            baseRecyclerAdapter.notifyDataSetChanged(pics);
+            baseRecyclerAdapter.refresh(pics);
         }
     })
             .onCancel(new Action<String>() {
@@ -249,7 +249,7 @@ public class OrderServiceActivity extends StatusImmersedBaseActivity {
                     @Override
                     public void onAction(int requestCode,  ArrayList<AlbumFile> result) {
                         pics=result;
-                        baseRecyclerAdapter.notifyDataSetChanged(pics);
+                        baseRecyclerAdapter.refresh(pics);
                     }
                 })
                 .onCancel(new Action<String>() {

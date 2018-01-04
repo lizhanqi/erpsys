@@ -25,6 +25,7 @@ import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -33,56 +34,65 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 import com.yanzhenjie.statusview.StatusUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
+    private ArrayList<NoFragment> fragments =new ArrayList<>();
+    private MsgFragment msgFragment;
+    private MyFragment myFragment;
+    private ERPFragment erpFragment;
+    private WorkFragment workFragment;
+    private CRMFragment crmFragment;
     /**
      * 导航栏点击切换的事件
      */
     BottomNavigationBar.OnTabSelectedListener onTabSelectedListener=new BottomNavigationBar.OnTabSelectedListener() {
         @Override
         public void onTabSelected(int position) {
-            switch (position){
+
+        }
+        @Override
+        public void onTabUnselected(int position) {
+            if(position==bottomNavigationBar.getCurrentSelectedPosition()){
+            return;
+            }
+            dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
+            switch (bottomNavigationBar.getCurrentSelectedPosition()){
                 case 4:
                     StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.themeColor));
-                    startFragment(MyFragment.class,true);
+                    startFragment(MyFragment.class);
+                 //   startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),true, REQUEST_CODE_INVALID);
 //                    netsStringSample();
                     Down();
                     break;
                 case 3:
 
-                    startFragment(CRMFragment.class,true);
-                    //状态栏颜色
-                    StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
+                    startFragment(CRMFragment.class);
+                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
                     break;
                 case 2:
-                    startFragment(ERPFragment.class,true);
-                    //状态栏颜色
-                    StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
-                    break;
+                    startFragment(ERPFragment.class);
+                //    startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
+           break;
                 case 1:
-                    startFragment(WorkFragment.class,true);
-                    startActivity(WorkScheduleActivity.class);
-                    //状态栏颜色
-                    StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
+                    startFragment(WorkFragment.class);
+                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
                     break;
                 default:
-                    startFragment(MsgFragment.class,true);
-                    //状态栏颜色
-                    StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.translucent_black_90));
+                    startFragment(MsgFragment.class);
+                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
                     break;
             }
         }
         @Override
-        public void onTabUnselected(int position) {
-        }
-        @Override
         public void onTabReselected(int position) {
-
+            dLog("再选");
         }
     };
+
     /**
      * 监听返回键 点击2次退出
      */
@@ -109,13 +119,22 @@ public class MainActivity extends BaseActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        msgFragment = new MsgFragment();
+//        workFragment = new WorkFragment();
+//        erpFragment = new ERPFragment();
+//        crmFragment = new CRMFragment();
+//        myFragment = new MyFragment();
+//        fragments.add(msgFragment);
+//        fragments.add(workFragment);
+//        fragments.add(erpFragment);
+//        fragments.add(crmFragment);
+//        fragments.add(myFragment);
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
         StatusUtils.setFullToStatusBar(this);
         StatusUtils.setFullToNavigationBar(this);
-
 //        //设置状态栏和导航栏颜色
 //        StatusUtils.setSystemBarColor(this,getResources().getColor(R.color.translucent_black_90),getResources().getColor(R.color.translucent_black_90));
           //清空下布局文件中的导航栏颜色,因为布局文件中的颜色比较重,如果设置淡颜色可能无法着色或者着色错误
@@ -123,7 +142,7 @@ public class MainActivity extends BaseActivity {
         //状态栏颜色
         StatusUtils.setStatusBarColor(this,getResources().getColor(R.color.translucent_black_90));
         //导航栏颜色
-        StatusUtils.setNavigationBarColor(this,getResources().getColor(R.color.translucent_black_90));
+        StatusUtils.setNavigationBarColor(this,getResources().getColor(R.color.themeColor));
     }
 
     /**
@@ -159,7 +178,7 @@ public class MainActivity extends BaseActivity {
                 .setFirstSelectedPosition(2)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
-        startFragment(ERPFragment .class,true);
+        startFragment(ERPFragment.class);
     }
     /**
      * 设置底部导航栏颜色

@@ -1,13 +1,17 @@
 package com.suxuantech.erpsys;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.suxuantech.erpsys.bean.DistrictBean;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.utils.L;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -18,9 +22,27 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.suxuantech.erpsys", appContext.getPackageName());
+    }
+    @Test
+    public  void nets() {
+        String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
+        //请求实体
+        JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>(url,DistrictBean.class);
+//        HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>(null);
+
+        HttpListener<DistrictBean> searchByCustmor = new HttpListener<DistrictBean>(){
+            @Override
+            public void onSucceed(int what, Response<DistrictBean> response) {
+                System.out.println("what = [" + what + "], response = [" + response + "]");
+                assertEquals(response,null);
+            }
+            @Override
+            public void onFailed(int what, Response<DistrictBean> response) {
+                L.i("失败"+what+"\n"+response.get());
+                System.out.println("失败what = [" + what + "], response = [" + response + "]");
+            }
+        };
+//        CallServer.getInstance().add(null, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
 }

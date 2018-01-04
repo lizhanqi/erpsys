@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
@@ -44,11 +43,15 @@ android {
     }
 }
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+//    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile ( 'com.github.the-pig-of-jungle:SmartShow:v1.0.2' ){
+        //去除design包的依赖，其一，你不一定用到SmartSnackbar；其二，你项目使用的版本不一定和库中所用相同
+        exclude group: 'com.android.support'
+    }
     compile project(':libzxing')
     compile files('libs/json-lib-2.4-jdk15.jar')
     compile project(':libswipe')

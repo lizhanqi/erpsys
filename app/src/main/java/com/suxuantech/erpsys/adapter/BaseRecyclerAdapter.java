@@ -82,22 +82,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
     }
     /**
-     * 更新数据
-     * @param datas
-     */
-   public void  notifyDataSetChanged(Collection<T> datas){
-       if (datas == null) {
-           realDatas = new ArrayList<>();
-       } else if (datas instanceof List) {
-           realDatas = (List<T>) datas;
-       } else {
-           realDatas = new ArrayList<>(datas);
-       }
-       notifyDataSetChanged();
-   }
-
-
-    /**
      * Recycler适配器填充方法
      *
      * @param holder      viewholder
@@ -141,7 +125,17 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
             }
         };
     }
+    public void clear(){
+        if (realDatas!=null) {
+            realDatas.clear();
+        }
+    }
 
+    /**
+     * 更新所有数据（非追加）
+     * @param datas
+     * @return
+     */
     public BaseRecyclerAdapter<T> refresh(Collection<T> datas) {
         if (datas == null) {
             realDatas = new ArrayList<>();
@@ -152,4 +146,43 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         return this;
     }
+    /**
+     * 更新数据(追加)
+     * @param datas
+     */
+    public void  notifyAppendDataSetChanged(Collection<T> datas){
+        notifyAppendDataSetChanged(datas,false);
+    }
+
+    /**
+     * 更新数据(追加是否去重复)
+     * @param datas
+     */
+    public void  notifyAppendDataSetChanged(Collection<T> datas,boolean checkRepetition){
+        if (realDatas==null) {
+            if (datas == null) {
+                realDatas = new ArrayList<>();
+            } else if (datas instanceof List) {
+
+                realDatas = (List<T>) datas;
+            } else {
+                realDatas = new ArrayList<>(datas);
+            }
+        }else {
+            if (checkRepetition){
+            for (T t:datas){
+                if (!realDatas.contains(t)){
+                    realDatas.add(t);
+                }
+
+            }
+            }else {
+                realDatas.addAll(datas);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+
+
 }

@@ -1,43 +1,52 @@
 package com.suxuantech.erpsys.activity;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.anye.greendao.gen.DaoMaster;
-import com.anye.greendao.gen.DaoSession;
-import com.anye.greendao.gen.HistoryBeanDao;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.bigkoo.pickerview.TimePickerView;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.base.SimpleStatusActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
+import com.suxuantech.erpsys.bean.SearchOrderBean;
+import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
+import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
+import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
+import com.suxuantech.erpsys.views.DefineLoadMoreView;
+import com.suxuantech.erpsys.views.OneKeyClearAutoCompleteText;
+import com.suxuantech.erpsys.views.TextViewDrawableClickView;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -69,101 +78,407 @@ import in.srain.cube.views.ptr.PtrHandler;
  * @author Created by 李站旗 on 2017/11/18 0018 16:16 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description:  订单搜索页面
+ * @Description: 订单搜索页面
  */
-public class SearchOrderActivity extends AppCompatActivity {
-
-    @BindView(R.id.tv_nav_left)
-    AdjustDrawableTextView mTvNavLeft;
-    @BindView(R.id.tiet_nav_search)
-    TextInputEditText mTietNavSearch;
-    @BindView(R.id.tv_nav_right)
-    AdjustDrawableTextView mTvNavRight;
+public class SearchOrderActivity extends SimpleStatusActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
+     @BindView(R.id.tv_nav_search_left)
+     AdjustDrawableTextView mTvNavLeft;
+   @BindView(R.id.tiet_nav_search)
+   OneKeyClearAutoCompleteText mTietNavSearch;
+     @BindView(R.id.tv_nav_search_right)
+     AdjustDrawableTextView mTvNavRight;
+    @BindView(R.id.tv_soso_storefront)
+    TextView mTvSosoStorefront;
+    @BindView(R.id.btn_start_date)
+    Button mBtnStartDate;
+    @BindView(R.id.btn_end_date)
+    Button mBtnEndDate;
+    @BindView(R.id.tv_nearly_search)
+    TextViewDrawableClickView mTvNearlySearch;
+    @BindView(R.id.in_head_search)
+    LinearLayout mLlSearch;
     @BindView(R.id.smr_history)
     SwipeMenuRecyclerView mSmrHistory;
     @BindView(R.id.ptr_refresh)
     PtrClassicFrameLayout mPtrRefresh;
     @BindView(R.id.btn_clear_search_history)
-    Button mBtn_clear;
-    private HistoryBeanDao historyDao;
+    Button mBtnClearSearchHistory;
+    @BindView(R.id.ll_delete_histroy)
+    LinearLayout mLlDeleteHistroy;
     private BaseRecyclerAdapter<HistoryBean> historyAdapter;
-    private List<HistoryBean> searchHosiery;
+    private SearchOrderPresenter mSearchOrderPresenter;
+    private BaseRecyclerAdapter<SearchOrderBean.DataBean> searchResultAdaputer;
+    private DefaultItemDecoration histroyItemDecoration;
+    private DefaultItemDecoration searchItemDecoration;
+    private DefineLoadMoreView defineLoadMoreView;
+    boolean isShowSimple=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
-        ButterKnife.bind(this);
-        initDB();
+        useButterKnife();
+        mSearchOrderPresenter = new SearchOrderPresenter(this);
+        initView();
+        initSearchEditTextView();
+        //初始化刷新
+        initRefresh();
+        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                //有焦点的时候搜索历史的条目点击
+                if (mTietNavSearch.isFocusableInTouchMode()) {
+                    mTietNavSearch.setText(mSearchOrderPresenter.getSearchHosiery().get(position).getName());
+                    mTietNavSearch.setSelection(mSearchOrderPresenter.getSearchHosiery().get(position).getName().length());
+                    mTietNavSearch.dismissDropDown();
+                    search();
+                } else {
+                    toast(position+"");
+                }
+            }
+        });
+    }
+
+    private void initView() {
+        mTvNearlySearch.setDrawableRightClick(new TextViewDrawableClickView.DrawableRightClickListener() {
+            @Override
+            public void onDrawableRightClickListener(View view) {
+                alterDelete();
+            }
+        });
+        histroyItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7), 0, 2);
+        histroyItemDecoration.offSetX(55);
+        searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.white), 0, 30).offSetX(0);
+        defineLoadMoreView = new DefineLoadMoreView(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+        mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+    }
+
+    /**
+     * 初始化搜索文本框
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void initSearchEditTextView() {
+        mTietNavSearch.setLeftDrawableClickListen(this);
+        mTietNavSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search();
+                    return true;
+                }
+                return false;
+            }
+        });
+        mTietNavSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                search();
+            }
+        });
+        mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
+        mTietNavSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {//获取到焦点后设置搜索历史的适配器
+                    initHistoryAdapter();
+                }
+            }
+        });
+    }
+
+    /**
+     * 初始化历史适配器
+     */
+    private void initHistoryAdapter() {
+        mPtrRefresh.setEnabled(false);
+        if (mSearchOrderPresenter.getSearchHosiery().size() <= 0) {
+            mLlDeleteHistroy.setVisibility(View.GONE);
+        }
+        mLlSearch.setVisibility(View.VISIBLE);
+        //除去搜索的分割线，防止影响新设置添加的
+        mSmrHistory.removeItemDecoration(searchItemDecoration);
+        mSmrHistory.removeItemDecoration(histroyItemDecoration);
+        //设置搜索历史的分割线
+        mSmrHistory.addItemDecoration(histroyItemDecoration);
+        if (mSmrHistory.getFooterItemCount() > 0) {
+            mSmrHistory.removeFooterView(defineLoadMoreView);
+        }
+        mSmrHistory.removeAllViews();
+        mSmrHistory.setAdapter(null);
+        historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, mSearchOrderPresenter.getSearchHosiery(), R.layout.item_search_history) {
+            @Override
+            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
+                TextView view = holder.getView(R.id.tv_history);
+                view.setText(item.getName());
+            }
+        };
+    }
+
+    /**
+     * 初始化刷控件
+     */
+    private void initRefresh() {
+        mPtrRefresh.setLastUpdateTimeRelateObject(this);
+        // the following are default settings
+        mPtrRefresh.setResistance(1.7f);
+        mPtrRefresh.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrRefresh.setDurationToClose(200);
+        mPtrRefresh.setDurationToCloseHeader(1000);
+        // default mPtrRefresh.setPullToRefresh(false);
+        // default is true
+        mPtrRefresh.setKeepHeaderWhenRefresh(true);
         mPtrRefresh.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mPtrRefresh.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPtrRefresh.refreshComplete();
-                    }
-                }, 3000);
+                search();
             }
+
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-        mPtrRefresh.setPullToRefresh(true);
-        searchHosiery = getSearchHosiery();
-            if (searchHosiery.size()<=0){
-                mBtn_clear.setVisibility(View.GONE);
+    }
+
+    @OnClick({R.id.tv_nav_search_left,R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search,  R.id.btn_clear_search_history})
+    public void onClicks(View v) {
+        switch (v.getId()) {
+            case R.id.tv_nav_search_right:
+                isShowSimple = !isShowSimple;
+                if (isShowSimple) {
+                    Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+                } else {
+                    Drawable drawable = getResources().getDrawable(R.drawable.icon_all_data);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+
+                }
+
+
+                if (searchResultAdaputer != null) {
+                    searchResultAdaputer.notifyDataSetChanged();
+                }
+                break;
+            case R.id.tv_nav_search_left:
+                finish();
+                break;
+            case R.id.btn_clear_search_history:
+                alterDelete();
+                break;
+            case R.id.tiet_nav_search:
+                mTietNavSearch.setCursorVisible(true);
+                mTietNavSearch.setFocusableInTouchMode(true);
+                mTietNavSearch.setSelection(mTietNavSearch.getText().toString().length());
+                initHistoryAdapter();
+                break;
+
+            default:
+            case R.id.btn_start_date:
+                showDataSelect(mBtnStartDate);
+                break;
+            case R.id.btn_end_date:
+                showDataSelect(mBtnEndDate);
+                break;
+        }
+        }
+
+    /**
+     * 订单的详情拼接
+     *
+     * @param text
+     * @param color
+     * @return
+     */
+    public String colorText(Map<String, String> text, @IdRes int... color) {
+        StringBuffer sb = new StringBuffer();
+        int i = 0;
+        for (Map.Entry<String, String> entry : text.entrySet()) {
+            sb.append("<font color='" + getResources().getColor(color[0]) + "'>" + entry.getKey() + "</font> <font color='" + getResources().getColor(color[1]) + "'>" + entry.getValue() + "</font><br/>");
+            if (i == text.size()) {
+                sb.append("<br/>");
             }
-       mSmrHistory.setLayoutManager(new LinearLayoutManager(this));
-        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
+            i++;
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 弹窗确认删除历史
+     */
+    public void alterDelete() {
+        hideSoftKeyBoard(mTietNavSearch);
+        new AlertView("清除历史记录", "确认清除历史记录?", null, new String[]{"取消", "确定"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
             @Override
-            public void onItemClick(View itemView, int position) {
-                ToastUtils.show(position+"");
+            public void onItemClick(Object o, int position) {
+                if (position == 0) {
+                    mTvNearlySearch.setCompoundDrawables(null, null, null, null);
+                    mSearchOrderPresenter.clear();
+                    mLlDeleteHistroy.setVisibility(View.GONE);
+                    historyAdapter.refresh(mSearchOrderPresenter.clear());
+                    mTietNavSearch.setAdapter(null);
+                    mTietNavSearch.setAdapter(new ArrayAdapter<String>(SearchOrderActivity.this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
+                }
             }
-        });
-//         historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_search_history) {
-//            @Override
-//            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
-//                TextView view = holder.getView(R.id.tv_history);
-//                view.setText(item.getName());
-//            }
-//        };
+        }).setAlertRightColor(getResources().getColor(R.color.themeColor)).show();
+    }
 
-//        historyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, Object data, int position) {
-//              ToastUtils.show("99==-->"+position);
-//            }
-//        });
+    /**
+     * 搜索
+     */
+    private void search() {
+        mTietNavSearch.dismissDropDown();
+        //隐藏键盘
+        hideSoftKeyBoard(mTietNavSearch);
+        //输入框的光标不可见
+        mTietNavSearch.setCursorVisible(false);
+        //失去焦点
+        mTietNavSearch.setFocusableInTouchMode(false);
+        String trim = mTietNavSearch.getText().toString().trim();
+        //搜索内容不是空的就添加到最近搜索历史数据库中并更新页面
+        if (!trim.isEmpty()) {
+            historyAdapter.refresh(mSearchOrderPresenter.insert(trim));
+            mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
+            Drawable drawable = getResources().getDrawable(R.drawable.icon_delete_bucket);
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), (int) (drawable.getMinimumHeight()));
+            mTvNearlySearch.setCompoundDrawables(null, null, drawable, null);
+            mTvNearlySearch.postInvalidate();
+        }
+        //网络搜搜
+        mSearchOrderPresenter.sosoNetOrder(trim, mTvSosoStorefront.getText().toString(), mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true);
+    }
 
-        BaseRecyclerAdapter<HistoryBean> searchResultAdaputer = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, searchHosiery, R.layout.item_custrom_order) {
+    @Override
+    public void onClickLeftDrawable() {
+        search();
+    }
+
+    /**
+     * 时间选择
+     */
+    public void showDataSelect(final TextView showOn) {
+        hideSoftKeyBoard(mTietNavSearch);
+        TimePickerView.OnTimeSelectListener timPic = new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                showOn.setText(DateUtil.dateToString(date, DateUtil.DatePattern.ONLY_DAY));
+            }
+        };
+//                DateUtil.dateToString()
+//年月日时分秒 的显示与否，不设置则默认全部显示
+        TimePickerView.Builder timePickerView = new TimePickerView.Builder(this, timPic) //年月日时分秒 的显示与否，不设置则默认全部显示
+                .setTitleText(showOn == mBtnStartDate ? getString(R.string.start_time) : getString(R.string.end_time))
+                .setLineSpacingMultiplier(4).setType(new boolean[]{true, true, true, false, false, false})
+                .setTitleColor(getResources().getColor(R.color.textHint_99)).setTitleBgColor(getResources().getColor(R.color.white));
+        timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+        if (checkDeviceHasNavigationBar()) {
+            timePickerView.setRootMarginBootom(getNavigationBarHeight());
+        }
+        timePickerView.build().show();
+    }
+
+    @Override
+    public void searchSucceed(List<SearchOrderBean.DataBean> data, boolean isRefesh, boolean hasMore) {
+        searchResultAdapter(data, isRefesh);
+        mSmrHistory.loadMoreFinish(false, hasMore);
+    }
+
+    @Override
+    public void searchFailed(Response<SearchOrderBean> response, int pageIndex) {
+        if (response.get() != null) {
+            if (response.get().getCode().equals("0003")) {
+                if (searchResultAdaputer != null) {
+                    mLlSearch.setVisibility(View.GONE);
+                    searchResultAdaputer.refresh(null);
+                    mSmrHistory.setAdapter(searchResultAdaputer);
+
+                } else {
+                    searchResultAdapter(null, pageIndex == 0);
+                }
+                mSmrHistory.loadMoreFinish(true, false);
+            }
+        }
+    }
+
+    /**
+     * 搜索结果适配器
+     */
+    private void searchResultAdapter(List<SearchOrderBean.DataBean> data, boolean isRefesh) {
+        if (isRefesh) {
+            mSmrHistory.addFooterView(defineLoadMoreView);
+            mSmrHistory.setLoadMoreView(defineLoadMoreView);
+            mPtrRefresh.refreshComplete();
+            mPtrRefresh.setEnabled(true);
+            mSmrHistory.setAutoLoadMore(false);
+            mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    mSearchOrderPresenter.sosoNetLoadmore();
+                }
+            });
+            mLlDeleteHistroy.setVisibility(View.GONE);
+            mLlSearch.setVisibility(View.GONE);
+            mSmrHistory.setAdapter(null);
+            mSmrHistory.removeItemDecoration(histroyItemDecoration);
+            mSmrHistory.removeItemDecoration(searchItemDecoration);
+            mSmrHistory.addItemDecoration(searchItemDecoration);
+            mSmrHistory.removeAllViews();
+        }
+        if (searchResultAdaputer != null) {
+            if (isRefesh) {
+                searchResultAdaputer.refresh(data);
+                mSmrHistory.setAdapter(searchResultAdaputer);
+            } else {
+                mSmrHistory.setAdapter(searchResultAdaputer);
+                searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+            }
+            return;
+        }
+        searchResultAdaputer = new BaseRecyclerAdapter<SearchOrderBean.DataBean>(mSmrHistory, data, R.layout.item_custrom_order) {
             @SuppressLint("ResourceType")
             @Override
-            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
-                final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
-                Map<String, String> stringStringMap = new HashMap<>();
-                stringStringMap.put("服务店面:","沈阳");
-                stringStringMap.put("消费类型:","艺术写真");
-                stringStringMap.put("开单日期:","2017-10-11");
-                stringStringMap.put("套餐名称:","1314专属");
-                 TextView mtvInfor = holder.getView(R.id.tv_infor);
-                 mtvInfor.setText( Html.fromHtml(colorText(stringStringMap,R.color.textHint_99,R.color.myValue_33)));
-//                mtvInfor.setText();
+            public void convert(RecyclerHolder holder, SearchOrderBean.DataBean item, int position, boolean isScrolling) {
+                TextView mTvOrderId = holder.getView(R.id.tv_order_id);
+                TextView mTvUserName = holder.getView(R.id.tv_user_name);
+                TextView mTvConsumeType = holder.getView(R.id.tv_consume_type);
+                mTvOrderId.setText(item.getCustomerid());
+                mTvUserName.setText(item.getWname() + "\t" + item.getMname());
+                mTvConsumeType.setText(item.getConsumption_type());
+              if (isShowSimple) {
+                  holder.getView(R.id.ll_details).setVisibility(View.GONE);
+              } else {
+                  LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
+                  stringStringMap.put("服务店面:", item.getShop_name() == null ? "" : item.getShop_name());
+                  stringStringMap.put("消费类型:", item.getConsumption_type() == null ? "" : item.getConsumption_type());
+                  stringStringMap.put("开单日期:", item.getTargetdate() == null ? "" : item.getTargetdate());
+                  stringStringMap.put("套餐名称:", item.getPackage_name() == null ? "" : item.getPackage_name());
+                  TextView mtvInfor = holder.getView(R.id.tv_infor);
+                  mtvInfor.setText(Html.fromHtml(colorText(stringStringMap, R.color.textHint_99, R.color.myValue_33)));
+                  TextView mTvMoney = holder.getView(R.id.tv_money_details);
+                  mTvMoney.setText(Html.fromHtml("<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getTotal_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>总价</font><br/>"
+                          +"<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getPayment_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>已付</font><br/>"
+                       +   "<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getNopayment_money() + "</font> <font color='" + getResources().getColor(R.color.color_f1403b) + "'><br/>欠款</font><br/>"
+                  ));
+                  holder.getView(R.id.ll_details).setVisibility(View.VISIBLE);
+              }
+            final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
                 view.setStepsViewIndicatorComplectingPosition(2);
                 view.setTag(position);
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
                     @Override
                     public void onItemClick(int position, boolean isfinish, String text) {
-                            ToastUtils.show((int)view.getTag()+text+position+isfinish);
+                        ToastUtils.show((int) view.getTag() + text + position + isfinish);
                     }
                 });
-                view    .setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤
+                view.setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤
                         .setmCircleRadius(23)
                         .setTextMarginTop(-30)
-                        .fixPointPadding(true)
-                       .setComplete(1,5)//间断完成（与连续完成只有一种生效）
+                        .fixPointPadding(false)
+                        .setComplete(1, 5)//间断完成（与连续完成只有一种生效）
                         .setStepsViewIndicatorComplectingPosition(2)//连续完成步数
-                        .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this,R.color.themeColor))//设置StepsViewIndicator完成线的颜色
+                        .setStepsViewIndicatorCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsViewIndicator完成线的颜色
                         .setStepsViewIndicatorUnCompletedLineColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsViewIndicator未完成线的颜色
                         .setStepViewComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.themeColor))//设置StepsView text完成线的颜色
                         .setStepViewUnComplectedTextColor(ContextCompat.getColor(SearchOrderActivity.this, R.color.textHint_99))//设置StepsView text未完成线的颜色
@@ -173,118 +488,5 @@ public class SearchOrderActivity extends AppCompatActivity {
 
             }
         };
-
-        mSmrHistory.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7),0,3)    );
-         //   mSmrHistory.setAdapter(historyAdapter);
-              int i = mSmrHistory.computeVerticalScrollExtent();
-
-    }
-
-
-    private void initDB() {
-        //初始化数据库
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(getApplicationContext(), "myhistory.db", null);
-        //不清楚
-        DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDb());
-        //表的集合
-         DaoSession daoSession = daoMaster.newSession();
-         //历史表
-         historyDao = daoSession.getHistoryBeanDao();
-    }
-    @OnClick({R.id.btn_clear_search_history,R.id.tv_nav_left, R.id.tiet_nav_search, R.id.tv_nav_right, R.id.smr_history, R.id.ptr_refresh})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_clear_search_history:
-                diar();
-                break;
-            case R.id.tv_nav_left:
-                finish();
-                break;
-            case R.id.tiet_nav_search:
-                break;
-            case R.id.tv_nav_right:
-                search();
-                break;
-            case R.id.smr_history:
-                break;
-            case R.id.ptr_refresh:
-                break;
-                default:
-        }
-    }
-    public void diar(){
-        new AlertView("清除历史记录","确认清除历史记录", null, new String[]{"确定", "取消"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
-            @Override
-            public void onItemClick(Object o, int position) {
-                if (position==0){
-                    //删除表内数据
-                    historyDao.deleteAll();
-                    mBtn_clear.setVisibility(View.GONE);
-                    searchHosiery.clear();
-                    historyAdapter.notifyDataSetChanged(searchHosiery);
-                }
-            }
-        }).show();
-    }
-        public String colorText(Map<String,String> text, @IdRes int... color){
-                StringBuffer sb = new StringBuffer();
-                int i=0;
-                for (Map.Entry<String, String> entry : text.entrySet()) {
-                    sb.append(   "<font color='"+getResources().getColor(color[0])+"'>"+entry.getKey()+"</font> <font color='"+getResources().getColor(color[1])+"'>"+entry.getValue()+"</font><br/>");
-                    if (i==text.size()){
-                        sb.append(   "<br/>");
-                    }
-                    i++;
-                }
-            return sb.toString();
-    }
-    /**
-     * 搜索
-     */
-    private void search() {
-        String trim = mTietNavSearch.getText().toString().trim();
-        if (trim.isEmpty()){
-            Snackbar.make(mTietNavSearch,"搜索内容空",Snackbar.LENGTH_SHORT)
-                    .setAction("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    })
-                    .show();
-            return;
-        }
-        insert(trim);
-//        mPtrRefresh.setLayoutParams(new PtrFrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-        mPtrRefresh.setPullToRefresh(true);
-        //刷新
-    }
-    /**
-     *    插入搜索历史
-     */
-    public void insert(String trim){
-        //判断是否存在数据库中，如果存在则不再存储
-            for(HistoryBean h:searchHosiery){
-                    String name = h.getName();
-                    if (name.equals(trim)){
-                        return;
-                    }
-                }
-        HistoryBean studentMsgBean = new HistoryBean();
-        studentMsgBean.setName(trim);
-        historyDao.insert(studentMsgBean);
-        mBtn_clear.setVisibility(View.VISIBLE);
-        searchHosiery =getSearchHosiery();
-        historyAdapter.notifyDataSetChanged(searchHosiery);
-    }
-
-    /**
-     * 获取搜索历史
-     */
-    public List<HistoryBean> getSearchHosiery(){
-        List<HistoryBean> historyBeans = historyDao.loadAll();
-        //倒序下，因为最新的要在上面显示
-        Collections.reverse(historyBeans);
-        return   historyBeans;
     }
 }

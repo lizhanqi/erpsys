@@ -18,31 +18,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="@string/recently_search"
+            android:text="用户名"
             android:textColor="@color/myValue_33"
             android:id="@+id/tv_user_name"
             android:textSize="@dimen/xs44"
-            android:drawableLeft="@drawable/icon_consumption_type"
+            android:drawableLeft="@drawable/icon_order_item_customer_name"
             android:drawablePadding="@dimen/px40"
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <TextView
-            android:id="@+id/consume_type"
+            android:id="@+id/tv_consume_type"
             android:layout_weight="0"
             android:textSize="@dimen/xs44"
             android:textColor="@color/textHint_99"
-            android:text="@string/recently_search"
+            android:text="消费类型"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
         <TextView
             android:layout_marginTop="@dimen/px30"
-            android:text="@string/recently_search"
+            android:text="订单号"
             android:textColor="@color/mainNav_66"
             android:id="@+id/tv_order_id"
             android:textSize="@dimen/xs44"
-            android:drawableLeft="@drawable/icon_consumption_type"
+            android:drawableLeft="@drawable/icon_customer_remarks"
             android:drawablePadding="@dimen/px40"
             android:layout_width="wrap_content"
             android:layout_weight="1"
@@ -51,60 +51,38 @@
     <View  style="@style/line"/>
     <!--中间详情-->
     <LinearLayout
+        android:id="@+id/ll_details"
         android:gravity="center_vertical"
         android:layout_marginBottom="@dimen/px30"
         android:layout_marginTop="@dimen/px30"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <!--左边-->
-<!--    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_width="@dimen/px0"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <TextView
-            android:text="552555"
-            style="@style/customer_order_detail"/>
-        <TextView
-            android:text="552555"
-            style="@style/customer_order_detail"/>
-        <TextView
-            android:text="552555"
-            style="@style/customer_order_detail"/>
-        <TextView
-            android:text="552555"
-            style="@style/customer_order_detail"/>
-    </LinearLayout>-->
-        <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_infor"
             android:lineSpacingExtra="@dimen/px48"
             android:text="552555"
             style="@style/customer_order_detail"/>
     <!--右边-->
-    <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical|right"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_width="@dimen/px0"
-        android:layout_height="wrap_content">
-        <TextView
-            style="@style/customer_order_detail"
-            android:text="¥:3695.02\n\t\t\t\t\t总价"
-            />
-        <TextView
-            style="@style/customer_order_detail"
-            android:text="¥:3695.02\n\t\t\t\t\t总价"
-            />
         <!--这里测试一个制表符\t代表2个字符-->
         <TextView
+            android:lineSpacingExtra="@dimen/px15"
+            android:id="@+id/tv_money_details"
+            android:layout_gravity="right"
+            android:gravity="center_vertical|right"
             style="@style/customer_order_detail"
             android:text="¥:2\n\t\t\t\t\t总价"  />
     </LinearLayout>
+        <View  style="@style/line"/>
 </LinearLayout>
-    <View  style="@style/line"/>
+
+
+
     <com.lizhanqi.www.stepview.HorizontalStepView
         android:id="@+id/horizontalSteps"
         android:layout_marginTop="@dimen/px30"

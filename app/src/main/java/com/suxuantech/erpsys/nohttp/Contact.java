@@ -77,4 +77,8 @@ public class Contact {
      * 开婚纱单
      */
     public static String OPEN_WEDDING_ORDER = "/SXWebErpAppStaff/SX_Open_WeddingOrder?Token=%s&package_name=%s&pid=%s&pp=%s&code=%s&shopname=%s";
+    /**
+     * 订单搜索
+     */
+    public static String SEARCH_ORDER ="/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%d&pageSize=%d";
 }
