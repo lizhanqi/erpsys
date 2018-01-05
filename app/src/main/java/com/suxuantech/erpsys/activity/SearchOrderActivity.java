@@ -382,7 +382,7 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
     @Override
     public void searchSucceed(List<SearchOrderBean.DataBean> data, boolean isRefesh, boolean hasMore) {
         searchResultAdapter(data, isRefesh);
-        mSmrHistory.loadMoreFinish(false, hasMore);
+        mSmrHistory.loadMoreFinish(!(data.size()>0), hasMore);
     }
 
     @Override
@@ -393,10 +393,10 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
                     mLlSearch.setVisibility(View.GONE);
                     searchResultAdaputer.refresh(null);
                     mSmrHistory.setAdapter(searchResultAdaputer);
-
                 } else {
                     searchResultAdapter(null, pageIndex == 0);
                 }
+                mSmrHistory.loadMoreError(1,"加载失败!请稍后重试");
                 mSmrHistory.loadMoreFinish(true, false);
             }
         }
@@ -404,9 +404,14 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
 
     /**
      * 搜索结果适配器
+     * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
      */
     private void searchResultAdapter(List<SearchOrderBean.DataBean> data, boolean isRefesh) {
         if (isRefesh) {
+            if(mSmrHistory.getFooterItemCount()>0){
+                mSmrHistory.removeFooterView(defineLoadMoreView);
+            }
+            mSmrHistory.removeAllViews();
             mSmrHistory.addFooterView(defineLoadMoreView);
             mSmrHistory.setLoadMoreView(defineLoadMoreView);
             mPtrRefresh.refreshComplete();
@@ -415,6 +420,7 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
             mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
                 @Override
                 public void onLoadMore() {
+
                     mSearchOrderPresenter.sosoNetLoadmore();
                 }
             });
@@ -424,15 +430,13 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
             mSmrHistory.removeItemDecoration(histroyItemDecoration);
             mSmrHistory.removeItemDecoration(searchItemDecoration);
             mSmrHistory.addItemDecoration(searchItemDecoration);
-            mSmrHistory.removeAllViews();
         }
         if (searchResultAdaputer != null) {
             if (isRefesh) {
                 searchResultAdaputer.refresh(data);
                 mSmrHistory.setAdapter(searchResultAdaputer);
             } else {
-                mSmrHistory.setAdapter(searchResultAdaputer);
-                searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+            searchResultAdaputer.notifyAppendDataSetChanged(data, true);
             }
             return;
         }

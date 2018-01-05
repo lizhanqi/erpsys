@@ -4,7 +4,7 @@
     <!--recy-->
     <string name="data_empty">———找管理员哥哥添加点数据呗！———</string>
     <string name="data_more_not">———这就是^_^底线！———</string>
-    <string name="data_click_load_more">点我加载更多</string>
+    <string name="data_click_load_more">*点我加载更多*</string>
     <string name="data_load_error">———谁还能不犯点错呢！过会再试吧！———</string>
     <string name="data_load_more_message">正在加载更多数据，请稍后</string>
     <!--封装的网络-->

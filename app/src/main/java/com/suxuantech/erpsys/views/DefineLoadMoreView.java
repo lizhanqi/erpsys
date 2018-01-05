@@ -91,7 +91,6 @@ public class DefineLoadMoreView  extends LinearLayout implements SwipeMenuRecycl
     public void onLoadFinish(boolean dataEmpty, boolean hasMore) {
         if (!hasMore) {
             setVisibility(VISIBLE);
-
             if (dataEmpty) {
                 mLoadingView.setVisibility(GONE);
                 mTvMessage.setVisibility(VISIBLE);
@@ -113,11 +112,17 @@ public class DefineLoadMoreView  extends LinearLayout implements SwipeMenuRecycl
      */
     @Override
     public void onWaitToLoadMore(SwipeMenuRecyclerView.LoadMoreListener loadMoreListener) {
+        if (mTvMessage.getText().toString().equals(getContext().getString(R.string.data_empty))||mTvMessage.getText().toString().equals(getContext().getString(R.string.data_more_not)))
+        {
+            mLoadMoreListener=null;
+        return;
+        }
         this.mLoadMoreListener = loadMoreListener;
         setVisibility(VISIBLE);
         mLoadingView.setVisibility(GONE);
         mTvMessage.setVisibility(VISIBLE);
 //        mTvMessage.setText("点我加载更多");
+
         mTvMessage.setText(getResources().getString(R.string.data_click_load_more));
 
     }

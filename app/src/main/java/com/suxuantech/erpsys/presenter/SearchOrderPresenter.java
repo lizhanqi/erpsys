@@ -176,7 +176,7 @@ public class SearchOrderPresenter {
                     iSearchOrderPresenter.searchFailed(response,pageIndex);
                 }
             };
-            new CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 9, false, true);
+            new CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 9, false, false);
         }
     public void sosoNetLoadmore() {
         sosoNetOrder(lastSearchKey,lastShopKey,lastStartDate,lastEndDate,false);
