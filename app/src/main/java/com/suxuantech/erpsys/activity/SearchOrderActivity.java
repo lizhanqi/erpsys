@@ -206,6 +206,9 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
         }
         mSmrHistory.removeAllViews();
         mSmrHistory.setAdapter(null);
+        if (mSearchOrderPresenter.getSearchHosiery().size()<=0){
+            mTvNearlySearch.setCompoundDrawables(null, null, null, null);
+        }
         historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, mSearchOrderPresenter.getSearchHosiery(), R.layout.item_search_history) {
             @Override
             public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
@@ -256,8 +259,6 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
                     mTvNavRight.setCompoundDrawables(null, null, drawable, null);
 
                 }
-
-
                 if (searchResultAdaputer != null) {
                     searchResultAdaputer.notifyDataSetChanged();
                 }
@@ -420,7 +421,6 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
             mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
                 @Override
                 public void onLoadMore() {
-
                     mSearchOrderPresenter.sosoNetLoadmore();
                 }
             });
