@@ -1,7 +1,9 @@
 package com.suxuantech.erpsys.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.SimpleStatusActivity;
 
@@ -17,5 +19,19 @@ public class NoticeDetailActivity extends SimpleStatusActivity {
         showUsetDefinedNav();
         setUseDefinedNavRightDrawable(getResources().getDrawable(R.drawable.icon_notice_menu));
         setTitle(getString(R.string.notice));
+    }
+    @Override
+    protected void widgetClick(View v) {
+        switch (v.getId()){
+            case  R.id.tv_nav_left:
+              finish();
+                break;
+            case  R.id.tv_nav_right:
+                App.findActivity(HistoryNoticeActivity.class);
+                startActivity(HistoryNoticeActivity.class);
+                finish();
+                break;
+                default:
+        }
     }
 }

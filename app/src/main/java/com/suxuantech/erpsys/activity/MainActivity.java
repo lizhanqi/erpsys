@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.activity;
 
+import android.Manifest;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -119,6 +120,7 @@ public class MainActivity extends BaseActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
 //        msgFragment = new MsgFragment();
 //        workFragment = new WorkFragment();
 //        erpFragment = new ERPFragment();

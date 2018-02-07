@@ -63,12 +63,36 @@ clickable是防止页面穿透的点击事件的
                             android:paddingLeft="@dimen/px55"
                             android:paddingRight="@dimen/px55">
                             <TextView
+                                android:gravity="center_vertical"
+                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:focusable="true"
                                 android:text="沈阳时尚经典"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/xs55" />
+                            <RelativeLayout
+                                android:id="@+id/rl_msg"
+                                android:layout_weight="0"
+                                android:layout_width="@dimen/px65"
+                                android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_marginTop="@dimen/px15"
+                                android:layout_marginRight="@dimen/px15"
+                                android:src="@drawable/icon_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                                <TextView
+                                    android:textColor="@color/white"
+                                    android:gravity="center"
+                                    android:id="@+id/tv_msg_number"
+                                    android:layout_alignParentRight="true"
+                                    android:textSize="@dimen/xs30"
+                                    android:text="6"
+                                    android:background="@drawable/sp_msg_number"
+                                    android:layout_width="@dimen/px40"
+                                    android:layout_height="@dimen/px40" />
+                            </RelativeLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -99,6 +123,8 @@ clickable是防止页面穿透的点击事件的
                                 android:orientation="horizontal">
 
                                 <TextView
+                                    android:focusable="true"
+                                    android:scrollHorizontally="true"
                                     android:id="@+id/tv_info"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -106,21 +132,21 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_marginRight="@dimen/px10"
                                     android:layout_weight="1"
                                     android:ellipsize="marquee"
+                                    android:textIsSelectable="true"
                                     android:marqueeRepeatLimit="marquee_forever"
                                     android:padding="@dimen/px10"
                                     android:singleLine="true"
-                                    android:text="今天又领导视察各自珍重,,,重要的话讲三遍,重要的话讲三遍"
+                                    android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/xs42" />
-
                                 <TextView
-                                    android:id="@+id/textView_xq"
+                                    android:id="@+id/tv_notice_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_weight="0"
                                     android:padding="@dimen/px10"
-                                    android:text=" 详情 >>"
+                                    android:text="@string/details"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/xs42" />
                             </LinearLayout>

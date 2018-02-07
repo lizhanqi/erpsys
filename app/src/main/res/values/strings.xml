@@ -286,4 +286,5 @@
     <string name="start_time">开始时间</string>
     <string name="query_storefront">查询店面：</string>
     <string name="hint_input_phonenumber_or_ordernumber_or_name_search">输入手机号/订单号/姓名搜索</string>
+    <string name="details"><![CDATA[详情 >>]]></string>
 </resources>

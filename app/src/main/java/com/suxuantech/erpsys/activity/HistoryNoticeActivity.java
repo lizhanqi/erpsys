@@ -61,9 +61,14 @@ public class HistoryNoticeActivity extends SimpleStatusActivity {
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
 
     }
+    @Override
     @OnClick({R.id.recycler_view, R.id.rotate_header_grid_view_frame})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_nav_left:
+                finish();
+                break;
+            default:
             case R.id.recycler_view:
                 break;
             case R.id.rotate_header_grid_view_frame:

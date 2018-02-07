@@ -25,16 +25,36 @@ android {
         //开启incremental dexing,优化编译效率，这个功能android studio默认是关闭的。
         javaMaxHeapSize "8g"     //增加java堆内存大小
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 /*    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }*/
+    signingConfigs {
+        release {
+            storeFile file("/signature.jks")
+            storePassword "123456"
+            keyAlias "lizhanqi"
+            keyPassword "123456"
+            v2SigningEnabled false
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+        debug {
+            signingConfig signingConfigs.release
+        }
+
     }
     greendao {
         schemaVersion 1
@@ -86,7 +106,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8+'
     compile 'com.coldmoqiuli:banners:1.0.1'
     //   compile 'com.bigkoo:alertview:1.0.3'
-    compile 'com.lizhanqi:alertview:1.0.+'
+    compile 'com.lizhanqi:alertview:1.0.7'
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.github.bumptech.glide:glide:4.3.1'
