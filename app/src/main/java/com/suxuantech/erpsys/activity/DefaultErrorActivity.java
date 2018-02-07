@@ -46,8 +46,43 @@ public final class DefaultErrorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String errorInformation = CustomActivityOnCrash.getAllErrorDetailsFromIntent(this,getIntent());
-        MailManager.getInstance().sendMail(getApplication().getString(R.string.app_name)+"发生错误；错误版本号："+ AppUtil.getVersionCode(getApplicationContext())+"错误版本名称："+AppUtil.getVersionName(getApplicationContext()),errorInformation.replace("\n","<br/>"));
+        //BOARD 主板
+        String phoneInfo = "BOARD: " + android.os.Build.BOARD;
+        phoneInfo += "<br/>BOOTLOADER: " + android.os.Build.BOOTLOADER;
+        //BRAND 运营商
+        phoneInfo += "<br/>BRAND: " + android.os.Build.BRAND;
+        phoneInfo += "<br/>CPU_ABI: " + android.os.Build.CPU_ABI;
+        phoneInfo += "<br/>CPU_ABI2: " + android.os.Build.CPU_ABI2;
+        //DEVICE 驱动
+        phoneInfo += "<br/>DEVICE: " + android.os.Build.DEVICE;
+        //DISPLAY 显示
+        phoneInfo += "<br/>DISPLAY: " + android.os.Build.DISPLAY;
+        //指纹
+        phoneInfo += "<br/>FINGERPRINT: " + android.os.Build.FINGERPRINT;
+        //HARDWARE 硬件
+        phoneInfo += "<br/>HARDWARE: " + android.os.Build.HARDWARE;
+        phoneInfo += "<br/>HOST: " + android.os.Build.HOST;
+        phoneInfo += "<br/>ID: " + android.os.Build.ID;
+        //MANUFACTURER 生产厂家
+        phoneInfo += "<br/>MANUFACTURER: " + android.os.Build.MANUFACTURER;
+        //MODEL 机型
+        phoneInfo += "<br/>MODEL: " + android.os.Build.MODEL;
+        phoneInfo += "<br/>PRODUCT: " + android.os.Build.PRODUCT;
+        phoneInfo += "<br/>RADIO: " + android.os.Build.RADIO;
+        phoneInfo += "<br/>RADITAGSO: " + android.os.Build.TAGS;
+        phoneInfo += "<br/>TIME: " + android.os.Build.TIME;
+        phoneInfo += "<br/>TYPE: " + android.os.Build.TYPE;
+        phoneInfo += "<br/>USER: " + android.os.Build.USER;
+        //VERSION.RELEASE 固件版本
+        phoneInfo += "<br/>VERSION.RELEASE: " + android.os.Build.VERSION.RELEASE;
+        phoneInfo += "<br/> VERSION.CODENAME: " + android.os.Build.VERSION.CODENAME;
+        //VERSION.INCREMENTAL 基带版本
+        phoneInfo += "<br/>VERSION.INCREMENTAL: " + android.os.Build.VERSION.INCREMENTAL;
+        //VERSION.SDK SDK版本
+        phoneInfo += "<br/>VERSION.SDK: " + android.os.Build.VERSION.SDK;
+        phoneInfo += "<br/>VERSION.SDK_INT: " + android.os.Build.VERSION.SDK_INT+"<br/>";
+        String errorInformation = CustomActivityOnCrash.getAllErrorDetailsFromIntent(this, getIntent());
+        MailManager.getInstance().sendMail(getApplication().getString(R.string.app_name) + "发生错误；错误版本号：" + AppUtil.getVersionCode(getApplicationContext()) + "错误版本名称：" + AppUtil.getVersionName(getApplicationContext()), phoneInfo+errorInformation.replace("\n", "<br/>"));
         //This is needed to avoid a crash if the developer has not specified
         //an app-level theme that extends Theme.AppCompat
         TypedArray a = obtainStyledAttributes(cat.ereza.customactivityoncrash.R.styleable.AppCompatTheme);
@@ -136,7 +171,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
         if (clipboard != null) {
             ClipData clip = ClipData.newPlainText(getString(cat.ereza.customactivityoncrash.R.string.customactivityoncrash_error_activity_error_details_clipboard_label), errorInformation);
             clipboard.setPrimaryClip(clip);
-           Toast.makeText(DefaultErrorActivity.this, cat.ereza.customactivityoncrash.R.string.customactivityoncrash_error_activity_error_details_copied, Toast.LENGTH_SHORT).show();
+            Toast.makeText(DefaultErrorActivity.this, cat.ereza.customactivityoncrash.R.string.customactivityoncrash_error_activity_error_details_copied, Toast.LENGTH_SHORT).show();
         }
     }
 }
