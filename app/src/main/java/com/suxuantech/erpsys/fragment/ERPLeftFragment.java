@@ -75,6 +75,7 @@ public class ERPLeftFragment extends Fragment {
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
         NoticeDialog.Builder nb =  new NoticeDialog.Builder(getContext());
+
         nb.setTitleLeftDrawable(getResources().getDrawable(R.drawable.icon_msg_task));
         nb.setDigestText("消息简介\n日期那年月日");
         nb.setTitleText("新任务:");

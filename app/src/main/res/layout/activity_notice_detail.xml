@@ -10,6 +10,7 @@
     android:layout_height="match_parent"
     tools:context="com.suxuantech.erpsys.activity.NoticeDetailActivity">
     <TextView
+        android:id="@+id/tv_notice_title"
         android:layout_marginTop="@dimen/px40"
         android:layout_marginBottom="@dimen/px40"
         android:textColor="@color/myValue_33"

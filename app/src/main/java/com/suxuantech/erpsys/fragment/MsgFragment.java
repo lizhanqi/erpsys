@@ -28,7 +28,6 @@ public class MsgFragment extends BaseNoFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         view.findViewById(R.id.tv_fm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

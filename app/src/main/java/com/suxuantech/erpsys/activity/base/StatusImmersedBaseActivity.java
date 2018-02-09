@@ -73,11 +73,6 @@ import com.yanzhenjie.statusview.StatusView;
     //当前Activity渲染用户的主要内容
     private View mContextView;
     private View lineView;
-
-    public FrameLayout getContentViewLinearlayout() {
-        return mContentViewLinearlayout;
-    }
-
     @Override
     public void setTitle(CharSequence title) {
         if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){

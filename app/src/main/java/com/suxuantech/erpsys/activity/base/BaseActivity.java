@@ -737,7 +737,6 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      //透明导航栏
      *getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
      * 获取状态栏高度
-
      * @return
      */
     public  int getStatusBarHeight( ) {

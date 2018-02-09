@@ -32,7 +32,6 @@ public class MyFragment extends BaseNoFragment {
             }
         });
     }
-
     @Override
     protected void widgetClick(View v) {
 

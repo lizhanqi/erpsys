@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -26,6 +27,7 @@ public class CRMFragment extends BaseNoFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImmersionBar.with(getActivity()).fitsSystemWindows(true).barColor(R.color.themeColor).fullScreen(false).init();
         view.findViewById(R.id.tv_fm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +9,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/navigation_haed_user_defined"/>
+        <!--<include layout="@layout/navigation_haed_user_defined"/>-->
         <!--订单编号-->
     <LinearLayout
         android:id="@+id/ll_order_id"
@@ -317,12 +314,13 @@
              android:layout_height="@dimen/px2"/>
      </LinearLayout>
         <Button
+
             android:id="@+id/btn_submint_order"
             android:textSize="@dimen/xs42"
             android:textColor="@color/white"
             android:background="@drawable/login_button_sp"
             android:layout_marginTop="@dimen/px100"
-            android:layout_marginBottom="@dimen/px33"
+            android:layout_marginBottom="@dimen/px110"
             android:layout_marginLeft="@dimen/px55"
             android:layout_marginRight="@dimen/px55"
             android:text="@string/submit"

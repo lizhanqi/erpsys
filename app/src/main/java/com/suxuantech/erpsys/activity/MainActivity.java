@@ -1,9 +1,7 @@
 package com.suxuantech.erpsys.activity;
 
 import android.Manifest;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.view.View;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
+import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseActivity;
 import com.suxuantech.erpsys.bean.DistrictBean;
@@ -24,7 +23,6 @@ import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.utils.L;
-import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -33,7 +31,6 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,29 +60,26 @@ public class MainActivity extends BaseActivity {
             dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
             switch (bottomNavigationBar.getCurrentSelectedPosition()){
                 case 4:
-                    StatusUtils.setStatusBarColor(MainActivity.this,getResources().getColor(R.color.themeColor));
                     startFragment(MyFragment.class);
-                 //   startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),true, REQUEST_CODE_INVALID);
-//                    netsStringSample();
+                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+ //                    netsStringSample();
                     Down();
                     break;
                 case 3:
-
                     startFragment(CRMFragment.class);
-                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
-                    break;
+                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+              break;
                 case 2:
                     startFragment(ERPFragment.class);
-                //    startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
-           break;
+          break;
                 case 1:
                     startFragment(WorkFragment.class);
-                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
-                    break;
+                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+                              break;
                 default:
+                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
                     startFragment(MsgFragment.class);
-                    //startFragment(fragments.get(position),fragments.get(  bottomNavigationBar.getCurrentSelectedPosition()),false, REQUEST_CODE_INVALID);
-                    break;
+                                break;
             }
         }
         @Override
@@ -135,18 +129,8 @@ public class MainActivity extends BaseActivity {
         setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
-        StatusUtils.setFullToStatusBar(this);
-        StatusUtils.setFullToNavigationBar(this);
-//        //设置状态栏和导航栏颜色
-//        StatusUtils.setSystemBarColor(this,getResources().getColor(R.color.translucent_black_90),getResources().getColor(R.color.translucent_black_90));
-          //清空下布局文件中的导航栏颜色,因为布局文件中的颜色比较重,如果设置淡颜色可能无法着色或者着色错误
-        findViewById(R.id.navigation_view_main).setBackground(null);
-        //状态栏颜色
-        StatusUtils.setStatusBarColor(this,getResources().getColor(R.color.translucent_black_90));
-        //导航栏颜色
-        StatusUtils.setNavigationBarColor(this,getResources().getColor(R.color.themeColor));
+        ImmersionBar.with(MainActivity.this).barColor(R.color.themeColor);
     }
-
     /**
      * 初始化页面的导航
      */
@@ -182,49 +166,10 @@ public class MainActivity extends BaseActivity {
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
         startFragment(ERPFragment.class);
     }
-    /**
-     * 设置底部导航栏颜色
-     * @param color
-     */
-    public void setNavColor(@ColorInt int color){
-           // 方式一
-        //这个是清空主页面的底部导航栏颜色的,防止上次颜色比较重,新设置的值无法生效,或者颜色偏
-        findViewById(R.id.navigation_view_main).setBackground(null);
-        /**
-         * 有效的设置底部颜色
-         */
-        StatusUtils.setNavigationBarColor(this,color);
-        //
-      //findViewById(R方式二:.id.navigation_view_main).setBackground(new ColorDrawable(getResources().getColor(R.color.green)));
-    }
+
     @Override
     protected int fragmentLayoutId() {
         return   R.id.main_content;
-    }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        bottomNavigationBar.postInvalidate();
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            int screenWidth = ScreenUtils.getScreenWidth(this);
-            try {
-//                ReflexUtils.setNotAccessibleProperty(mStatusView, "screenWidth", screenWidth);
-//                ReflexUtils.setNotAccessibleProperty(mNavigationView, "screenWidth", screenWidth);
-                findViewById(R.id.navigation_view_main).setVisibility(View.GONE);//隐藏,因为测试发现导航栏不会横过来
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            int screenWidth = ScreenUtils.getScreenWidth(this);
-            findViewById(R.id.navigation_view_main).setVisibility(View.VISIBLE);
-            try {
-//                ReflexUtils.setNotAccessibleProperty(mStatusView, "screenWidth", screenWidth);
-//                ReflexUtils.setNotAccessibleProperty(mNavigationView, "screenWidth", screenWidth);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
     }
     @Override
     protected void widgetClick(View v) {

@@ -12,7 +12,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.suxuantech.erpsys.OptionHelp;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.bean.ConsumptionTypeBean;
 import com.suxuantech.erpsys.bean.CustomerZoneBean;
 import com.suxuantech.erpsys.bean.OpenOrderTempBean;
@@ -37,13 +37,12 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 门市开单
  */
-public class OutletsOrderActivity extends BaseActivity implements IOutletsOrderPresenter {
+public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutletsOrderPresenter {
     @BindView(R.id.tv_nav_left)
     AdjustDrawableTextView mTvNavLeft;
     @BindView(R.id.tv_nav_title)
@@ -101,12 +100,12 @@ public class OutletsOrderActivity extends BaseActivity implements IOutletsOrderP
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         useEventBus();
+//        useButterKnife();
         setContentView(R.layout.activity_outlets_order);
         mTvNavTitle =  idSetOnClick(R.id.tv_nav_title);
         idSetOnClick(R.id.tv_sex);
         idSetOnClick(R.id.tv_nav_left);
         mTvNavTitle.setText("门市开单");
-        ButterKnife.bind(this);
         outletsOrderPresenter = new OutletsOrderPresenter(this,getRequestQueue());
         outletsOrderPresenter.getOrderNum();
     }

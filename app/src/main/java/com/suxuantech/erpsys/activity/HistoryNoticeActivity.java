@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.SimpleStatusActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
@@ -14,21 +14,28 @@ import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 
-public class HistoryNoticeActivity extends SimpleStatusActivity {
+public class HistoryNoticeActivity extends ImmersedBaseActivity {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
     PtrClassicFrameLayout mRotateHeaderGridViewFrame;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
-        showUsetDefinedNav();
+        showUserDefinedNav();
         useButterKnife();
         setTitle(getString(R.string.history_notice));
         ArrayList<String> strings = new ArrayList<>();
@@ -61,6 +68,12 @@ public class HistoryNoticeActivity extends SimpleStatusActivity {
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
 
     }
+
+    @Override
+    protected void widgetClick(View v) {
+
+    }
+
     @Override
     @OnClick({R.id.recycler_view, R.id.rotate_header_grid_view_frame})
     public void onClick(View v) {

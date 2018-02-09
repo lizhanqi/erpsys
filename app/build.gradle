@@ -4,6 +4,7 @@ android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
+        multiDexEnabled true
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
@@ -19,6 +20,7 @@ android {
 
     //multiDex的一些相关配置，这样配置可以让你的编译速度更快
     dexOptions {
+
         preDexLibraries = false
         //让它不要对Lib做preDexing
 //        incremental true(已经弃用)
@@ -116,7 +118,8 @@ dependencies {
     compile 'com.lizhanqi:groupedadapter:1.0.0'
     compile 'com.github.lygttpod:SuperTextView:2.1.5'
     compile 'com.lizhanqi:libstepview:1.0.1'
-
+    compile 'com.gyf.barlibrary:barlibrary:2.3.0'
+    compile 'com.android.support:multidex:1.+'
 
 }
 //task makeJar(type: Copy) {

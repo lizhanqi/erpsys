@@ -63,7 +63,7 @@ public class NoticeDialog {
         alertView = new AlertView.Builder(context).setStyle(AlertView.Style.SYSTEMTOP).build();
         alertView.setCancelable(true);
         alertView.autoDismiss(5000);
-//        alertView.setRootBackgroundResource(0);
+        alertView.setRootBackgroundResource(0);
         alertView.setSystemDialogHeight(300);
         alertView.setContentContainerPadding(0, 0,0,0);
         alertView.addExtView(inflate);
