@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.oragee.banners.BannerView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseNoFragment;
@@ -51,9 +52,13 @@ View view;
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if (position==0){
+                    ImmersionBar.with(ERPFragment.this).reset().fitsSystemWindows(false).statusBarDarkFont(true).navigationBarColor(R.color.themeColor).init();
+                }else {
+                    ImmersionBar.with(ERPFragment.this).reset().navigationBarColor(R.color.themeColor).fitsSystemWindows(true).statusBarDarkFont(true, 0.1f).init();
+                    //ImmersionBar.with(ERPFragment.this).reset().fitsSystemWindows(true).statusBarDarkFont(true).navigationBarColor(R.color.themeColor).init();
+                }
             }
-
             @Override
             public void onPageSelected(int position) {
                for (int i=0;i<mRadioGroup.getChildCount();i++){
@@ -77,14 +82,17 @@ View view;
         });
         mViewPager.setAdapter(myFragmentAdapter);
         mViewPager.setCurrentItem(0);
+        ImmersionBar.with(ERPFragment.this).reset().statusBarDarkFont(false).init();
         mRadioGroup = view.findViewById(R.id.rg_vp);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId==R.id.radio_1){
                     mViewPager.setCurrentItem(0);
+                 ImmersionBar.with(ERPFragment.this).reset().statusBarColorTransformEnable(true).init();
                 }else {
                     mViewPager.setCurrentItem(1);
+                   ImmersionBar.with(ERPFragment.this).reset().navigationBarColor(R.color.themeColor).fitsSystemWindows(true).statusBarDarkFont(true, 0.5f).init();
                 }
             }
         });

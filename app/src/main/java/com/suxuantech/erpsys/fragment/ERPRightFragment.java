@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.utils.TextUtils;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,17 +57,12 @@ public class ERPRightFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        StatusUtils.setFullToStatusBar(getActivity());
-        view.findViewById(R.id.status_view).setBackground(null);
         TextView tv_revenue = view.findViewById(R.id.tv_revenue);
-
-TextUtils.setColorText(tv_revenue,"￥","10000 ",R.color.noticeOrange);
+        TextUtils.setColorText(tv_revenue,"￥","10000 ",R.color.noticeOrange);
 //       String tmp = "价格 ：<font color=\""+getResources().getColor(R.color.noticeOrange)+"\">%s";
 //       String str1=String.format(tmp, String.format("￥%1$.2f元", 6000));
 //       tv_revenue.setText(Html.fromHtml(str1));
-        StatusUtils.setStatusBarColor(getActivity(),getResources().getColor(R.color.translucent_black_80));
-        StatusUtils.setStatusBarDarkFont(getActivity(),true);
-        TextView viewById = view.findViewById(R.id.tv_nav_left);
+        TextView viewById = view.findViewById   (R.id.tv_nav_left);
         viewById .setCompoundDrawables(null,null,null,null);
         viewById.setText(getString(R.string.app_name));
         lineChart = view.findViewById(R.id.linechart);

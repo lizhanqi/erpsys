@@ -10,20 +10,7 @@ clickable是防止页面穿透的点击事件的
     android:id="@+id/root_layout_status_immersed"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--状态栏和导航栏-->
-    <LinearLayout
-        android:id="@+id/status_and_nav_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <com.yanzhenjie.statusview.StatusView
-            android:id="@+id/status_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:fitsView="@id/root_layout_status_immersed"/>
         <include layout="@layout/navigation_haed_user_defined"/>
-    </LinearLayout>
     <LinearLayout
         android:background="@color/myBackground_f7"
         android:layout_above="@id/navigation_view"

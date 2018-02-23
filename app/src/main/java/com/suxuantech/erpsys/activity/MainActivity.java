@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity {
               break;
                 case 2:
                     startFragment(ERPFragment.class);
+                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
           break;
                 case 1:
                     startFragment(WorkFragment.class);
@@ -89,7 +90,7 @@ public class MainActivity extends BaseActivity {
     };
 
     /**
-     * 监听返回键 点击2次退出
+     * 监听返回键 点击2次退出--
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity {
         setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
-        ImmersionBar.with(MainActivity.this).barColor(R.color.themeColor);
+        ImmersionBar.with(MainActivity.this).barColor(R.color.themeColor).init();
     }
     /**
      * 初始化页面的导航
