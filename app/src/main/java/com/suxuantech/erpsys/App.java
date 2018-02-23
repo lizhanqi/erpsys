@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 
 import com.suxuantech.erpsys.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.L;
@@ -61,8 +62,16 @@ public class App extends Application {
         registerActivityListener();
         application=this;
         newinitNohttp();
-            initErrorPage();
-
+       initErrorPage();
+    }
+    /**
+     * dex 分包个别手机如果不在这里init还是会报错,经常报错找不到某某.class
+     * @param base
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this) ;
     }
 
     /**
