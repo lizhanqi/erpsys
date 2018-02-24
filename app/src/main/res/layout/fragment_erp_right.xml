@@ -10,7 +10,6 @@ clickable是防止页面穿透的点击事件的
     android:id="@+id/root_layout_status_immersed"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <include layout="@layout/navigation_haed_user_defined"/>
     <LinearLayout
         android:background="@color/myBackground_f7"
         android:layout_above="@id/navigation_view"

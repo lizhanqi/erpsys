@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
-        setSwipeBackEnable(false);
+        //setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
         StatusUtils.setFullToNavigationBar(this);
         StatusUtils.setFullToStatusBar(this);

@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.OrderDetailActivity;
 import com.yanzhenjie.fragment.NoFragment;
 
 import butterknife.BindView;
@@ -53,7 +52,7 @@ public class TakePictureDressFragment extends NoFragment {
             case R.id.tv_take_picture_dress:
                 break;
             case R.id.ll_take_picture_dress:
-                (( OrderDetailActivity)getActivity()).startFragment(TakePictureDressDetailFragment.class);
+              //  (( OrderDetailActivity)getActivity()).startFragment(TakePictureDressDetailFragment.class);
                 break;
             case R.id.tv_single_rent_dress:
                 break;

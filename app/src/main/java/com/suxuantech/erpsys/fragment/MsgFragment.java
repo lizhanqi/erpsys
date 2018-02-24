@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
+import me.yokeyword.fragmentation.SupportFragment;
 
-public class MsgFragment extends BaseNoFragment {
+
+public class MsgFragment extends SupportFragment {
     TextView mTvFm;
     private View view;
     @Override
@@ -41,9 +42,9 @@ public class MsgFragment extends BaseNoFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
-
-    @Override
-    protected void widgetClick(View v) {
-
-    }
+//
+//    @Override
+//    protected void widgetClick(View v) {
+//
+//    }
 }

@@ -9,17 +9,18 @@ import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
-public class CRMFragment extends BaseNoFragment {
+import me.yokeyword.fragmentation.SupportFragment;
+
+public class CRMFragment extends SupportFragment {
     TextView mTvFm;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,    Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_crm, container, false);
         return view;
@@ -37,12 +38,22 @@ public class CRMFragment extends BaseNoFragment {
         mTvFm =   view.findViewById(R.id.tv_fm);
         mTvFm.setText("CRM");
     }
+    public static CRMFragment newInstance() {
+        Bundle args = new Bundle();
+        CRMFragment fragment = new CRMFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+/*    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_crm;
+    }*/
 
-    @Override
+/*    @Override
     protected void widgetClick(View v) {
 
-    }
+    }*/
 
     @Override
     public void onDestroyView() {

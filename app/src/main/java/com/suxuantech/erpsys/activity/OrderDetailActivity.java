@@ -40,11 +40,9 @@ import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
-import com.suxuantech.erpsys.fragment.CustomerInformationFragment;
-import com.suxuantech.erpsys.fragment.ProductDataFragment;
-import com.suxuantech.erpsys.fragment.TabControlFragment;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
+import com.suxuantech.erpsys.fragment.ProductDataFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -101,30 +99,30 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
     public void gotoFragment(){
             switch (current){
                 default:
-                    startFragment(CustomerInformationFragment.class,false);
+                    //startFragment(CustomerInformationFragment.class,false);
                 break;
                 case "服务费用":
-                    startFragment(ServiceFeeFragment.class);
+                    //startFragment(ServiceFeeFragment.class);
                     break;
                 case "取件资料":
                     bd.putInt("witch",0);
-                    startFragment(fragment(TabControlFragment.class,bd));
+                    //startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "摄影资料":
                     bd.putInt("witch",1);
-                    startFragment(fragment(TabControlFragment.class,bd));
+                  //  startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "选片资料":
                     bd.putInt("witch",2);
-                    startFragment(fragment(TabControlFragment.class,bd));
+                  //  startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "礼服资料":
                     bd.putInt("witch",3);
-                    startFragment(fragment(TabControlFragment.class,bd));
+                  //  startFragment(fragment(TabControlFragment.class,bd));
                     break;
                 case "产品资料":
-                    productDataFragment = fragment(ProductDataFragment.class);
-                    startFragment(productDataFragment);
+                  //  productDataFragment = fragment(ProductDataFragment.class);
+                   // startFragment(productDataFragment);
                     break;
 
 
@@ -184,8 +182,8 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
             mPopupWindow.update();
         }
     }
-    @Override
-    protected int fragmentLayoutId() {
-        return R.id.container;
-    }
+//    @Override
+//    protected int fragmentLayoutId() {
+//        return R.id.container;
+//    }
 }

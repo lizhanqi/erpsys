@@ -119,6 +119,9 @@ dependencies {
     compile 'com.lizhanqi:libstepview:1.0.1'
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
     compile 'com.android.support:multidex:1.+'
+    // Fragment框架
+    compile 'me.yokeyword:fragmentation:1.2.6'
+    compile 'me.yokeyword:fragmentation-swipeback:1.2.6'
 
 }
 //task makeJar(type: Copy) {

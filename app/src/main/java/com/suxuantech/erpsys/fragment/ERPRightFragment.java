@@ -4,14 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -27,50 +27,60 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class ERPRightFragment extends Fragment {
+public class ERPRightFragment extends BaseLazyFragment {
     TextView mTvFm;
     ArrayList<Fragment> fragmentrs;
     private LineChartView lineChart;
-
     private LineChart mLineChart;
+    private List<PointValue> mPointValues = new ArrayList<PointValue>();
+    private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
+    //X轴
+    String[] date = {"5-23", "5-22", "6-22", "5-23", "5-22", "2-22", "5-22", "4-22", "9-22", "10-22", "11-22", "12-22", "1-22", "6-22", "5-23", "5-22", "2-22", "5-22", "4-22", "9-22", "10-22", "11-22", "12-22", "4-22", "9-22", "10-22", "11-22", "zxc"};//X轴的标注
+    //标记点
+    int[] score = {74, 22, 18, 79, 20, 74, 20, 74, 42, 90, 74, 42, 90, 50, 42, 90, 33, 10, 74, 22, 18, 79, 20, 74, 22, 18, 79, 20};//图表的数据
+    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_erp_right, container, false);
-        return view;
+//    @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//            // Inflate the layout for this fragment
+////            view = inflater.inflate(R.layout.fragment_erp_right, container, false);
+////            return view;
+//        }
+  @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_erp_right;
     }
-    private List<PointValue> mPointValues = new ArrayList<PointValue>();
-    private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
-    //X轴
-    String[] date = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
 
-    //标记点
-    int[] score= {74,22,18,79,20,74,20,74,42,90,74,42,90,50,42,90,33,10,74,22,18,79,20,74,22,18,79,20};//图表的数据
-
+    @Override
+    public void initImmersionBar() {
+        super.initImmersionBar();
+        mImmersionBar.statusBarDarkFont(true,0.15f).navigationBarColor(R.color.themeColor).init();
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //这个不能重复设置,否则会多次下移,导致视图问题
+        ImmersionBar.setTitleBar(getActivity(),mRootView);
         TextView tv_revenue = view.findViewById(R.id.tv_revenue);
-        TextUtils.setColorText(tv_revenue,"￥","10000 ",R.color.noticeOrange);
+        TextUtils.setColorText(tv_revenue, "￥", "10000 ", R.color.noticeOrange);
 //       String tmp = "价格 ：<font color=\""+getResources().getColor(R.color.noticeOrange)+"\">%s";
 //       String str1=String.format(tmp, String.format("￥%1$.2f元", 6000));
 //       tv_revenue.setText(Html.fromHtml(str1));
-        TextView viewById = view.findViewById   (R.id.tv_nav_left);
-        viewById .setCompoundDrawables(null,null,null,null);
-        viewById.setText(getString(R.string.app_name));
+//        TextView viewById = view.findViewById   (R.id.tv_nav_left);
+//        viewById .setCompoundDrawables(null,null,null,null);
+//        viewById.setText(getString(R.string.app_name));
         lineChart = view.findViewById(R.id.linechart);
         lineChart.requestFocusFromTouch();
         lineChart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-              v. getParent().requestDisallowInterceptTouchEvent(true);
+                v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
         });
@@ -80,23 +90,10 @@ public class ERPRightFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 初始化LineChart的一些设置
      */
-    private void initLineChart(){
+    private void initLineChart() {
 
         Line line = new Line(mPointValues).setColor(Color.parseColor("#FFCD41"));  //折线的颜色
         List<Line> lines = new ArrayList<Line>();
@@ -151,34 +148,27 @@ public class ERPRightFragment extends Fragment {
          */
         Viewport v = new Viewport(lineChart.getMaximumViewport());
         v.left = 0;
-        v.right= 7;
+        v.right = 7;
         lineChart.setCurrentViewport(v);
     }
 
     /**
      * X 轴的显示
      */
-    private void getAxisXLables(){
+    private void getAxisXLables() {
         for (int i = 0; i < date.length; i++) {
             mAxisXValues.add(new AxisValue(i).setLabel(date[i]));
         }
     }
+
     /**
      * 图表的每个点的显示
      */
-    private void getAxisPoints(){
+    private void getAxisPoints() {
         for (int i = 0; i < score.length; i++) {
             mPointValues.add(new PointValue(i, score[i]));
         }
     }
-
-
-
-
-
-
-
-
 
 
     @Override

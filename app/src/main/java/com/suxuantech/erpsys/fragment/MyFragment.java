@@ -7,10 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
-public class MyFragment extends BaseNoFragment {
+import me.yokeyword.fragmentation.SupportFragment;
+
+public class MyFragment extends SupportFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +33,8 @@ public class MyFragment extends BaseNoFragment {
             }
         });
     }
-    @Override
-    protected void widgetClick(View v) {
-
-    }
+//    @Override
+//    protected void widgetClick(View v) {
+//
+//    }
 }

@@ -34,7 +34,11 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import me.yokeyword.fragmentation.SupportActivity;
+import me.yokeyword.fragmentation.SwipeBackLayout;
+import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
+import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -89,7 +93,8 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  *  那么必须在该页面一定要有一个方法用来接收消息，
  *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
-public abstract class BaseActivity extends SwipeBackActivity implements View.OnClickListener{
+public abstract class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity {
+    final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
 
     /**
      * 按钮快速点击时间(多少毫秒内点击同一个算快速点击)
@@ -507,6 +512,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionSet.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         requestQueue = NoHttp.newRequestQueue();
@@ -755,6 +761,48 @@ public abstract class BaseActivity extends SwipeBackActivity implements View.OnC
      */
     public  int getNavigationBarHeight( ) {
         return  ScreenUtils.getNavigationBarHeight(getBaseContext());
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDelegate.onPostCreate(savedInstanceState);
+    }
+
+
+    @Override
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mDelegate.getSwipeBackLayout();
+    }
+
+    /**
+     * 是否可滑动
+     * @param enable
+     */
+    @Override
+    public void setSwipeBackEnable(boolean enable) {
+        mDelegate.setSwipeBackEnable(enable);
+    }
+
+    @Override
+    public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
+        mDelegate.setEdgeLevel(edgeLevel);
+    }
+
+    @Override
+    public void setEdgeLevel(int widthPixel) {
+        mDelegate.setEdgeLevel(widthPixel);
+    }
+
+    /**
+     * 限制SwipeBack的条件,默认栈内Fragment数 <= 1时 , 优先滑动退出Activity , 而不是Fragment
+     *
+     * @return true: Activity优先滑动退出;  false: Fragment优先滑动退出
+     */
+    @Override
+    public boolean swipeBackPriority() {
+        return mDelegate.swipeBackPriority();
     }
 
 }

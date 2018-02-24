@@ -1,25 +1,23 @@
 package com.suxuantech.erpsys.fragment;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.activity.SearchOrderActivity;
+import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.dialog.NoticeDialog;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.views.WaveHelper;
@@ -27,11 +25,9 @@ import com.suxuantech.erpsys.views.WaveView;
 import com.yanzhenjie.statusview.StatusUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
-public class ERPLeftFragment extends Fragment {
+public class ERPLeftFragment extends BaseLazyFragment {
 
     @BindView(R.id.tv_msg_number)
     TextView mTvMsgNumber;
@@ -39,20 +35,20 @@ public class ERPLeftFragment extends Fragment {
     RelativeLayout mRlMsg;
     @BindView(R.id.tv_notice_details)
     TextView mTvNoticeDetails;
-    private View view;
-    private Unbinder unbinder;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_erp_left, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+    protected int setLayoutId() {
+        return R.layout.fragment_erp_left;
+    }
+    @Override
+    public void initImmersionBar() {
+        if (getActivity()!=null){
+            super.initImmersionBar();
+            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.themeColor).init();
+        }
     }
 
     public void alertShow4() {
@@ -70,28 +66,31 @@ public class ERPLeftFragment extends Fragment {
         }
         alertView.show();
     }
-        Handler hd = new  Handler (){
-    @Override
-    public void handleMessage(Message msg) {
-        super.handleMessage(msg);
-        NoticeDialog.Builder nb =  new NoticeDialog.Builder(getContext());
 
-        nb.setTitleLeftDrawable(getResources().getDrawable(R.drawable.icon_msg_task));
-        nb.setDigestText("消息简介\n日期那年月日");
-        nb.setTitleText("新任务:");
-        nb.setOnClickDetails(new NoticeDialog.OnClickDetails() {
-            @Override
-            public void onClickDetails() {
-                startActivity(new Intent(getActivity(), com.suxuantech.erpsys.activity.NoticeDetailActivity.class));
-            }
-        });
-        nb.build().show();
+    Handler hd = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            NoticeDialog.Builder nb = new NoticeDialog.Builder(getContext());
 
-    }
-};
+            nb.setTitleLeftDrawable(getResources().getDrawable(R.drawable.icon_msg_task));
+            nb.setDigestText("消息简介\n日期那年月日");
+            nb.setTitleText("新任务:");
+            nb.setOnClickDetails(new NoticeDialog.OnClickDetails() {
+                @Override
+                public void onClickDetails() {
+                    startActivity(new Intent(getActivity(), com.suxuantech.erpsys.activity.NoticeDetailActivity.class));
+                }
+            });
+            nb.build().show();
+
+        }
+    };
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         WaveView taskWave = view.findViewById(R.id.task_wave);
         WaveView scheduleWave = view.findViewById(R.id.schedule_wave);
         taskWave.setWaveColor(getResources().getColor(R.color.wavel), getResources().getColor(R.color.wave), getResources().getColor(R.color.wavebg));
@@ -104,7 +103,7 @@ public class ERPLeftFragment extends Fragment {
         taskWave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hd.sendEmptyMessageDelayed(0,5000);
+                hd.sendEmptyMessageDelayed(0, 5000);
             }
         });
         view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
@@ -124,14 +123,14 @@ public class ERPLeftFragment extends Fragment {
 //                    }
 //                }).setDivierMargin(30).show();
 
-        startActivity(new Intent(getActivity(),OutletsOrderActivity.class));
+                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
             }
         });
 
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),SearchOrderActivity.class));
+                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
 //                Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(true);
 //                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
@@ -148,25 +147,12 @@ public class ERPLeftFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
     @OnClick({R.id.tv_msg_number, R.id.rl_msg, R.id.tv_notice_details})
     public void onClick(View v) {
         switch (v.getId()) {
             default:
                 break;
             case R.id.tv_msg_number:
-
                 break;
             case R.id.rl_msg:
                 startActivity(new Intent(getActivity(), HistoryNoticeActivity.class));

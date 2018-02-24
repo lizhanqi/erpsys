@@ -13,16 +13,19 @@ import android.widget.RadioGroup;
 import com.gyf.barlibrary.ImmersionBar;
 import com.oragee.banners.BannerView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseNoFragment;
+import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.adapter.DefaultFragmentAdapter;
 
 import java.util.ArrayList;
 
+import me.yokeyword.fragmentation.SupportFragment;
 
-public class ERPFragment extends BaseNoFragment {
+
+public class ERPFragment extends SupportFragment {
 
     private BannerView bannersView;
     private RadioGroup mRadioGroup;
+    private ViewPager mViewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,11 +37,10 @@ public class ERPFragment extends BaseNoFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_erp, container, false);
-
         return view;
     }
-    private ArrayList<Fragment> fragmentrs;//视频故事界面,图片故事界面集合
-View view;
+    private ArrayList<BaseLazyFragment> fragmentrs;
+   View view;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -48,16 +50,10 @@ View view;
         ERPRightFragment erpRightFragment = new ERPRightFragment();
         fragmentrs.add(erpLeftFragment);
         fragmentrs.add(erpRightFragment);
-        final ViewPager mViewPager = view.findViewById(R.id.view_pager);
+        mViewPager = view.findViewById(R.id.view_pager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position==0){
-                    ImmersionBar.with(ERPFragment.this).reset().fitsSystemWindows(false).statusBarDarkFont(true).navigationBarColor(R.color.themeColor).init();
-                }else {
-                    ImmersionBar.with(ERPFragment.this).reset().navigationBarColor(R.color.themeColor).fitsSystemWindows(true).statusBarDarkFont(true, 0.1f).init();
-                    //ImmersionBar.with(ERPFragment.this).reset().fitsSystemWindows(true).statusBarDarkFont(true).navigationBarColor(R.color.themeColor).init();
-                }
             }
             @Override
             public void onPageSelected(int position) {
@@ -70,10 +66,10 @@ View view;
                    }
                }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+        ImmersionBar.with(getActivity()).navigationBarColor(R.color.themeColor).init();
         DefaultFragmentAdapter myFragmentAdapter = new DefaultFragmentAdapter(getChildFragmentManager(), 2, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
@@ -82,21 +78,36 @@ View view;
         });
         mViewPager.setAdapter(myFragmentAdapter);
         mViewPager.setCurrentItem(0);
-        ImmersionBar.with(ERPFragment.this).reset().statusBarDarkFont(false).init();
         mRadioGroup = view.findViewById(R.id.rg_vp);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId==R.id.radio_1){
                     mViewPager.setCurrentItem(0);
-                 ImmersionBar.with(ERPFragment.this).reset().statusBarColorTransformEnable(true).init();
                 }else {
                     mViewPager.setCurrentItem(1);
-                   ImmersionBar.with(ERPFragment.this).reset().navigationBarColor(R.color.themeColor).fitsSystemWindows(true).statusBarDarkFont(true, 0.5f).init();
                 }
             }
         });
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (mViewPager.getCurrentItem() == 0) {
+             fragmentrs.get(0).initImmersionBar();
+            } else {
+             fragmentrs.get(1).initImmersionBar();
+            }
+        }
+    }
+
+
+    /*    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_erp;
+    }*/
 
     @Override
     public void onPause() {
@@ -108,10 +119,10 @@ View view;
 
 
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
+//    @Override
+//    protected void widgetClick(View v) {
+//
+//    }
 
 
     @Override

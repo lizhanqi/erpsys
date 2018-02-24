@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseNoFragment;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
+import me.yokeyword.fragmentation.SupportFragment;
 
-public class WorkFragment extends BaseNoFragment {
+
+public class WorkFragment extends SupportFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,8 @@ public class WorkFragment extends BaseNoFragment {
         mTvFm.setText("WORK");
     }
 
-    @Override
+/*    @Override
     protected void widgetClick(View v) {
 
-    }
+    }*/
 }

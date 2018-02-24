@@ -1,7 +1,8 @@
 package com.suxuantech.erpsys.activity;
 
-import android.Manifest;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,7 +25,6 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ToastUtils;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -35,10 +35,13 @@ import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation.SupportHelper;
+
 public class MainActivity extends BaseActivity {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
-    private ArrayList<NoFragment> fragments =new ArrayList<>();
+    private ArrayList<Fragment> fragments =new ArrayList<>();
     private MsgFragment msgFragment;
     private MyFragment myFragment;
     private ERPFragment erpFragment;
@@ -50,7 +53,6 @@ public class MainActivity extends BaseActivity {
     BottomNavigationBar.OnTabSelectedListener onTabSelectedListener=new BottomNavigationBar.OnTabSelectedListener() {
         @Override
         public void onTabSelected(int position) {
-
         }
         @Override
         public void onTabUnselected(int position) {
@@ -58,30 +60,9 @@ public class MainActivity extends BaseActivity {
             return;
             }
             dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
-            switch (bottomNavigationBar.getCurrentSelectedPosition()){
-                case 4:
-                    startFragment(MyFragment.class);
-                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
- //                    netsStringSample();
-                    Down();
-                    break;
-                case 3:
-                    startFragment(CRMFragment.class);
-                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
-              break;
-                case 2:
-                    startFragment(ERPFragment.class);
-                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
-          break;
-                case 1:
-                    startFragment(WorkFragment.class);
-                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
-                              break;
-                default:
-                    ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.themeColor).init();
-                    startFragment(MsgFragment.class);
-                                break;
-            }
+            //selectedFragment( bottomNavigationBar.getCurrentSelectedPosition());
+            showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
+            ImmersionBar.with(MainActivity.this).statusBarDarkFont(false).fitsSystemWindows(true).barColor(R.color.themeColor).init();
         }
         @Override
         public void onTabReselected(int position) {
@@ -115,23 +96,103 @@ public class MainActivity extends BaseActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
-//        msgFragment = new MsgFragment();
-//        workFragment = new WorkFragment();
-//        erpFragment = new ERPFragment();
-//        crmFragment = new CRMFragment();
-//        myFragment = new MyFragment();
-//        fragments.add(msgFragment);
-//        fragments.add(workFragment);
-//        fragments.add(erpFragment);
-//        fragments.add(crmFragment);
-//        fragments.add(myFragment);
+       // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
-        setSwipeBackEnable(false);
+       setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
+        //selectedFragment(2);
         ImmersionBar.with(MainActivity.this).barColor(R.color.themeColor).init();
+        initFragement();
     }
+    public static final int FIRST = 0;
+    public static final int SECOND = 1;
+    public static final int THIRD = 2;
+    public static final int FOUR = 3;
+    //public static final int FIVE = 4;
+    private SupportFragment[] mFragments = new SupportFragment[5];
+       private  void initFragement(){
+            SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
+            if (firstFragment == null) {
+                mFragments[FIRST] =new  MsgFragment();
+                mFragments[SECOND] = new  WorkFragment();
+                mFragments[THIRD] = new ERPFragment();
+               // mFragments[FOUR] = new CRMFragment();
+                mFragments[FOUR] = new MyFragment();
+                loadMultipleRootFragment(R.id.main_content, FIRST,
+                        mFragments[FIRST],
+                        mFragments[SECOND],
+                        mFragments[THIRD],
+                        mFragments[FOUR]);
+            } else {
+                // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
+                // 这里我们需要拿到mFragments的引用
+                mFragments[FIRST] = firstFragment;
+                mFragments[SECOND] =SupportHelper.findFragment(getSupportFragmentManager(),WorkFragment.class);
+                mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(),ERPFragment.class);
+                //mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),CRMFragment.class);
+                mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),MyFragment.class);
+            }
+            showHideFragment(mFragments[2]);
+        }
+
+
+    //-----------方式一------
+    private void selectedFragment(int position) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        hideFragment(transaction);
+        switch (position) {
+            case 0:
+                if (msgFragment == null) {
+                    msgFragment = new MsgFragment();
+                    transaction.add(R.id.main_content, msgFragment);
+                } else
+                    transaction.show(msgFragment);
+                break;
+            case 1:
+                if (workFragment == null) {
+                    workFragment = new WorkFragment();
+                    transaction.add(R.id.main_content, workFragment);
+                } else
+                    transaction.show(workFragment);
+                break;
+            case 2:
+                if (erpFragment == null) {
+                    erpFragment = new ERPFragment();
+                    transaction.add(R.id.main_content, erpFragment);
+                } else
+                    transaction.show(erpFragment);
+                break;
+            case 3:
+                if (crmFragment == null) {
+                    crmFragment = new CRMFragment();
+                    transaction.add(R.id.main_content, crmFragment);
+                } else
+                    transaction.show(crmFragment);
+                break;
+            case 4:
+                if (myFragment == null) {
+                    myFragment = new MyFragment();
+                    transaction.add(R.id.main_content, myFragment);
+                } else
+                    transaction.show(myFragment);
+                break;
+        }
+        transaction.commit();
+    }
+    private void hideFragment(FragmentTransaction transaction) {
+        if (msgFragment != null)
+            transaction.hide(msgFragment);
+        if (workFragment != null)
+            transaction.hide(workFragment);
+        if (erpFragment != null)
+            transaction.hide(erpFragment);
+        if (crmFragment != null)
+            transaction.hide(crmFragment);
+        if (myFragment != null)
+            transaction.hide(myFragment);
+    }
+    //-----------方式一end------
     /**
      * 初始化页面的导航
      */
@@ -148,8 +209,8 @@ public class MainActivity extends BaseActivity {
         workItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem erpItem = new BottomNavigationItem(R.drawable.icon_erp_pressed, getString(R.string.erp));
         erpItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_erp_normal));//非选中的图片
-        BottomNavigationItem crmItem = new BottomNavigationItem(R.drawable.icon_crm_pressed, getString(R.string.crm));
-        crmItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_crm_normal));//非选中的图片
+     //   BottomNavigationItem crmItem = new BottomNavigationItem(R.drawable.icon_crm_pressed, getString(R.string.crm));
+     //   crmItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_crm_normal));//非选中的图片
         BottomNavigationItem myItem = new BottomNavigationItem(R.drawable.icon_my_pressed, getString(R.string.my));
         myItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_my_normal));//非选中的图片
         bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottomNavigationBar);
@@ -160,18 +221,18 @@ public class MainActivity extends BaseActivity {
         bottomNavigationBar.addItem(msgItem)
                 .addItem(workItem)
                 .addItem(erpItem)
-                .addItem(crmItem)
+              //  .addItem(crmItem)
                 .addItem(myItem)
                 .setFirstSelectedPosition(2)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
-        startFragment(ERPFragment.class);
+        //startFragment(ERPFragment.class);
     }
 
-    @Override
-    protected int fragmentLayoutId() {
-        return   R.id.main_content;
-    }
+//    @Override
+//    protected int fragmentLayoutId() {
+//        return   R.id.main_content;
+//    }
     @Override
     protected void widgetClick(View v) {
         switch (v.getId()) {
@@ -184,7 +245,7 @@ public class MainActivity extends BaseActivity {
     }
     public  void netsBeanSample() {
         String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
-        //请求实体
+        //请求实体         // STOPSHIP: 2018/2/23 0023
         JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>(url,DistrictBean.class);
 //        HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>(null);
         HttpListener<DistrictBean> searchByCustmor = new HttpListener<DistrictBean>(){
