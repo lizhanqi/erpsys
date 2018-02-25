@@ -16,22 +16,16 @@ clickable是防止页面穿透的点击事件的
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.widget.NestedScrollView>
-    <!--状态栏和导航栏-->
-    <LinearLayout
-        android:id="@+id/status_and_nav_layout"
+        android:layout_height="match_parent">
+
+    </android.support.v4.widget.NestedScrollView>
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        xmlns:gyf="http://schemas.android.com/tools"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <com.yanzhenjie.statusview.StatusView
-            android:id="@+id/status_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:fitsView="@id/root_layout_content_immersed"/>
-        <!--导航栏-->
-        <include layout="@layout/navigation_heads"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        gyf:tr_head_height="100dp"
+        gyf:tr_wave_height="100dp">
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -77,12 +71,12 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_weight="0"
                                 android:layout_width="@dimen/px65"
                                 android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_marginTop="@dimen/px15"
-                                android:layout_marginRight="@dimen/px15"
-                                android:src="@drawable/icon_email"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                <ImageView
+                                    android:layout_marginTop="@dimen/px15"
+                                    android:layout_marginRight="@dimen/px15"
+                                    android:src="@drawable/icon_email"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
                                 <TextView
                                     android:textColor="@color/white"
                                     android:gravity="center"
@@ -127,7 +121,7 @@ clickable是防止页面穿透的点击事件的
                                     android:focusable="true"
                                     android:scrollHorizontally="true"
                                     android:id="@+id/tv_info"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="300dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/px10"
                                     android:layout_marginRight="@dimen/px10"
@@ -309,6 +303,7 @@ clickable是防止页面穿透的点击事件的
                 </RelativeLayout>
             </ScrollView>
         </RelativeLayout>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 </FrameLayout>
 
 

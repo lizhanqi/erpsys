@@ -102,6 +102,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         useEventBus();
 //        useButterKnife();
         setContentView(R.layout.activity_outlets_order);
+        showUserDefinedNav();
         mTvNavTitle =  idSetOnClick(R.id.tv_nav_title);
         idSetOnClick(R.id.tv_sex);
         idSetOnClick(R.id.tv_nav_left);

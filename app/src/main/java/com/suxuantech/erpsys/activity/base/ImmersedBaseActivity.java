@@ -92,7 +92,6 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
         mImmersionBar = ImmersionBar.with(this);
         //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
         mImmersionBar.titleBar(rootViews);
-        showUserDefinedNav();
         mImmersionBar.fullScreen(false);
         mImmersionBar .barColor(R.color.themeColor) ;
         mImmersionBar.init();

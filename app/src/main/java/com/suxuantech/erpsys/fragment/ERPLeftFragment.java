@@ -12,17 +12,22 @@ import android.widget.TextView;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.gyf.barlibrary.ImmersionBar;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.suxuantech.erpsys.OptionHelp;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.activity.OutletsOrderActivity;
-import com.suxuantech.erpsys.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.dialog.NoticeDialog;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
 import com.yanzhenjie.statusview.StatusUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,6 +40,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
     RelativeLayout mRlMsg;
     @BindView(R.id.tv_notice_details)
     TextView mTvNoticeDetails;
+    @BindView(R.id.refreshLayout)
+    TwinklingRefreshLayout refreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +57,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
             mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.themeColor).init();
         }
     }
-
     public void alertShow4() {
         AlertView alertView = new AlertView("标题", null, "取消",
                 new String[]{"高亮按钮1"},
@@ -66,7 +72,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         }
         alertView.show();
     }
-
     Handler hd = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -91,6 +96,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
+
+        initRefresh();
         WaveView taskWave = view.findViewById(R.id.task_wave);
         WaveView scheduleWave = view.findViewById(R.id.schedule_wave);
         taskWave.setWaveColor(getResources().getColor(R.color.wavel), getResources().getColor(R.color.wave), getResources().getColor(R.color.wavebg));
@@ -130,23 +137,51 @@ public class ERPLeftFragment extends BaseLazyFragment {
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-//                Intent intent = new Intent(getActivity(), OptionActivity.class);
-//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(true);
-//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData("礼服");
-//                multiple.setTitle("126");
-////                multiple.setUrl("11111");
-//
+               // startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+          // Intent intent = new Intent(getActivity(), OptionActivity.class);
+                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
+                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+                multiple.setCheckedData("礼服");
+                multiple.setTitle("选择");
+               // multiple.setUrl("11111");
+
 //                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Title","选择");
-//                intent.putExtra("Multiple",true);
-//                startActivity(multiple.creat());
+//                intent.putExtra("Multiple",false);
+                startActivity(multiple.creat());
             }
         });
     }
+
+    private void initRefresh() {
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishRefreshing();
+                    }
+                }, 2000);
+            }
+
+            @Override
+            public void onPullingDown(TwinklingRefreshLayout refreshLayout, float fraction) {
+            }
+
+            @Override
+            public void onPullDownReleasing(TwinklingRefreshLayout refreshLayout, float fraction) {
+                if (Math.abs(fraction - 1.0f) > 0) {
+                } else {
+                }
+            }
+        });
+
+    }
+
     @OnClick({R.id.tv_msg_number, R.id.rl_msg, R.id.tv_notice_details})
     public void onClick(View v) {
         switch (v.getId()) {

@@ -20,7 +20,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.SimpleStatusActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.HistoryBean;
@@ -80,7 +80,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  *         E-mail:lizhanqihd@163.com
  * @Description: 订单搜索页面
  */
-public class SearchOrderActivity extends SimpleStatusActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
+public class SearchOrderActivity extends ImmersedBaseActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
      @BindView(R.id.tv_nav_search_left)
      AdjustDrawableTextView mTvNavLeft;
    @BindView(R.id.tiet_nav_search)
@@ -112,6 +112,12 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
     private DefaultItemDecoration searchItemDecoration;
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple=true;
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +142,12 @@ public class SearchOrderActivity extends SimpleStatusActivity implements ISearch
                 }
             }
         });
+        hideUserDefinedNav();
+    }
+
+    @Override
+    protected void widgetClick(View v) {
+
     }
 
     private void initView() {

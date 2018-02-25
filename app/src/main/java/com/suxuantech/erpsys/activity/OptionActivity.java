@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.suxuantech.erpsys.OptionHelp;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.SimpleStatusActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.ConsumptionTypeBean;
@@ -44,7 +44,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 跳转选择的页面这里
  */
-public class OptionActivity extends SimpleStatusActivity {
+public class OptionActivity extends ImmersedBaseActivity {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
@@ -95,7 +95,6 @@ public class OptionActivity extends SimpleStatusActivity {
 
     @Override
     protected void widgetClick(View v) {
-        super.widgetClick(v);
         switch (v.getId()){
             default:
             case R.id.tv_nav_right://多选确定时候关闭页面的
@@ -129,12 +128,18 @@ public class OptionActivity extends SimpleStatusActivity {
                 break;
         }
     }
+
+    @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
         useButterKnife();
-        showUsetDefinedNav();
+        showUserDefinedNav();
         //初始化传过来的IntentData
         initIntentData( getIntent());
         //初始化recycleview
