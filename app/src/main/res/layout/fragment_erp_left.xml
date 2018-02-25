@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--重要说明:
+<?xml version="1.0" encoding="utf-8"?><!--重要说明:
 android:background="@color/white"
 android:clickable="true"
 必须要有background防止fragment页面穿透的,
 clickable是防止页面穿透的点击事件的
 -->
-<!--侵入到内容的沉浸式-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout_content_immersed"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <android.support.v4.widget.NestedScrollView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v4.widget.NestedScrollView>
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-        xmlns:gyf="http://schemas.android.com/tools"
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout xmlns:gyf="http://schemas.android.com/tools"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         gyf:tr_head_height="100dp"
         gyf:tr_wave_height="100dp">
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -34,13 +34,16 @@ clickable是防止页面穿透的点击事件的
             android:background="@color/gray_f9"
             android:clickable="true"
             tools:context="com.suxuantech.erpsys.activity.fragment.ERPLeftFragment">
+
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/gray_f9">
+
                     <RelativeLayout
                         android:id="@+id/left_top"
                         android:layout_width="match_parent"
@@ -49,6 +52,7 @@ clickable是防止页面穿透的点击事件的
                         android:layout_alignParentTop="true"
                         android:background="@drawable/bg_work"
                         android:gravity="center">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px144"
@@ -56,37 +60,41 @@ clickable是防止页面穿透的点击事件的
                             android:gravity="center_vertical"
                             android:paddingLeft="@dimen/px55"
                             android:paddingRight="@dimen/px55">
+
                             <TextView
                                 android:id="@+id/tv_company_name"
-                                android:gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:focusable="true"
+                                android:gravity="center_vertical"
                                 android:text="沈阳时尚经典"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/xs55" />
+
                             <RelativeLayout
                                 android:id="@+id/rl_msg"
-                                android:layout_weight="0"
                                 android:layout_width="@dimen/px65"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0">
+
                                 <ImageView
-                                    android:layout_marginTop="@dimen/px15"
-                                    android:layout_marginRight="@dimen/px15"
-                                    android:src="@drawable/icon_email"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/px15"
+                                    android:layout_marginTop="@dimen/px15"
+                                    android:src="@drawable/icon_email" />
+
                                 <TextView
-                                    android:textColor="@color/white"
-                                    android:gravity="center"
                                     android:id="@+id/tv_msg_number"
-                                    android:layout_alignParentRight="true"
-                                    android:textSize="@dimen/xs30"
-                                    android:text="6"
-                                    android:background="@drawable/sp_msg_number"
                                     android:layout_width="@dimen/px40"
-                                    android:layout_height="@dimen/px40" />
+                                    android:layout_height="@dimen/px40"
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/sp_msg_number"
+                                    android:gravity="center"
+                                    android:text="6"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/xs30" />
                             </RelativeLayout>
                         </LinearLayout>
 
@@ -117,23 +125,41 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <TextView
-                                    android:focusable="true"
-                                    android:scrollHorizontally="true"
+                                <com.suxuantech.erpsys.views.MarqueTextView
                                     android:id="@+id/tv_info"
-                                    android:layout_width="300dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/px10"
                                     android:layout_marginRight="@dimen/px10"
                                     android:layout_weight="1"
                                     android:ellipsize="marquee"
-                                    android:textIsSelectable="true"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
                                     android:marqueeRepeatLimit="marquee_forever"
                                     android:padding="@dimen/px10"
+                                    android:scrollHorizontally="true"
                                     android:singleLine="true"
                                     android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/xs42" />
+                                <!--                <TextView
+                                                    android:id="@+id/tv_info"
+                                                    android:layout_width="300dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginLeft="@dimen/px10"
+                                                    android:layout_marginRight="@dimen/px10"
+                                                    android:layout_weight="1"
+                                                    android:ellipsize="marquee"
+                                                    android:focusable="true"
+                                                    android:focusableInTouchMode="true"
+                                                    android:marqueeRepeatLimit="marquee_forever"
+                                                    android:padding="@dimen/px10"
+                                                    android:scrollHorizontally="true"
+                                                    android:singleLine="true"
+                                                    android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
+                                                    android:textColor="@color/white"
+                                                    android:textSize="@dimen/xs42" />-->
+
                                 <TextView
                                     android:id="@+id/tv_notice_details"
                                     android:layout_width="wrap_content"
@@ -304,6 +330,8 @@ clickable是防止页面穿透的点击事件的
             </ScrollView>
         </RelativeLayout>
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
 </FrameLayout>
 
 
