@@ -7,7 +7,13 @@ android:clickable="true"
 clickable是防止页面穿透的点击事件的
 -->
 
-
+<com.suxuantech.erpsys.views.DampView
+    android:id="@+id/dampView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,18 +34,29 @@ clickable是防止页面穿透的点击事件的
             android:clickable="true"
             tools:context="com.suxuantech.erpsys.activity.fragment.MsgFragment">
             <!--顶部-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_top"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+  <!--          android:background="@color/themeColor"-->
             <LinearLayout
                 android:orientation="vertical"
-                android:background="@color/themeColor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px475">
+
                 <TextView
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:textSize="@dimen/xs50"
-                    android:text="@string/my"
+                    android:id="@+id/tv_mine"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/px144" />
+                    android:layout_height="@dimen/px144"
+                    android:gravity="center"
+                    android:text="@string/my"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/xs50" />
                 <LinearLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -63,15 +80,17 @@ clickable是防止页面穿透的点击事件的
                         android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            </FrameLayout>
+
+
+                <!--<ScrollView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/myBackground_f7"
                         android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px125"
@@ -333,8 +352,8 @@ clickable是防止页面穿透的点击事件的
                         </RelativeLayout>
 
                     </LinearLayout>
-                </ScrollView>
+                <!--</ScrollView>-->
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
-
+</com.suxuantech.erpsys.views.DampView>

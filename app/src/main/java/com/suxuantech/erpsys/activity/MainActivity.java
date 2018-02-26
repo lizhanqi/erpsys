@@ -62,7 +62,10 @@ public class MainActivity extends BaseActivity {
             dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
             //selectedFragment( bottomNavigationBar.getCurrentSelectedPosition());
             showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
-            ImmersionBar.with(MainActivity.this).statusBarDarkFont(false).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+            if (   bottomNavigationBar.getCurrentSelectedPosition()!=2&&bottomNavigationBar.getCurrentSelectedPosition()!=3){
+                ImmersionBar.with(MainActivity.this).statusBarDarkFont(false).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+            }
+
         }
         @Override
         public void onTabReselected(int position) {
