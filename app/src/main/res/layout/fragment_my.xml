@@ -36,7 +36,7 @@ clickable是防止页面穿透的点击事件的
             <!--顶部-->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/img_top"
                     android:scaleType="centerCrop"
