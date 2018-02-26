@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -65,7 +66,7 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
         mLeftDrawable = getCompoundDrawables()[0];
         mClearDrawable = getCompoundDrawables()[2];// 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
         if (mClearDrawable == null) {
-            mClearDrawable = getResources().getDrawable(R.drawable.icon_clear, context.getTheme());
+            mClearDrawable =  ContextCompat.getDrawable(context,R.drawable.icon_clear);;
         }
         DrawableCompat.setTint(mClearDrawable, colorAccent);//设置删除按钮的颜色和TextColor的颜色一致
         mClearDrawable.setBounds(0, 0, (int) getTextSize(), (int) getTextSize());//设置Drawable的宽高和TextSize的大小一致
