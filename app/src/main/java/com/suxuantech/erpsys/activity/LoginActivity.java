@@ -29,7 +29,6 @@ import android.widget.TextView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,11 +94,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         //setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
-        StatusUtils.setFullToNavigationBar(this);
-        StatusUtils.setFullToStatusBar(this);
         hideStatus();
-        StatusUtils.setStatusBarColor(this,getResources().getColor(R.color.transparency));
-        StatusUtils.setSystemBarColor(this,getResources().getColor(R.color.transparency),getResources().getColor(R.color.transparency));
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright)+" V"+ AppUtil.getVersionName(this));
         // Set up the login form.

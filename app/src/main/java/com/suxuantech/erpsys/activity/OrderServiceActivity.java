@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.yanzhenjie.album.Action;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
 /**
  * 订单服务
  */
-public class OrderServiceActivity extends StatusImmersedBaseActivity {
+public class OrderServiceActivity extends ImmersedBaseActivity {
 
     @BindView(R.id.tv_store_name)
     TextView mTvStoreName;
@@ -97,7 +97,7 @@ public class OrderServiceActivity extends StatusImmersedBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_service);
         ButterKnife.bind(this);
-        showUsetDefinedNav();
+        showUserDefinedNav();
          setTitle("订单服务");
         getNavTitleView().setTextColor(getResources().getColor(R.color.myValue_33));
         ImageView imageView = new ImageView(this);

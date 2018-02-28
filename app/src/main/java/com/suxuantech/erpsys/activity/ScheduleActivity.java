@@ -14,7 +14,7 @@ import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleLayout;
 import com.jeek.calendar.widget.calendar.week.WeekCalendarView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.GroupAdaputer;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
@@ -59,7 +59,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  * @Description: 排程页面
  */
 
-public class ScheduleActivity extends StatusImmersedBaseActivity {
+public class ScheduleActivity extends ImmersedBaseActivity {
     private MonthCalendarView monthCalendarView;
     private ScheduleLayout schedule_layout;
     private TextView viewById;

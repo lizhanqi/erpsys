@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
 import java.util.List;
 
 /**
  * 服务详情
  */
-public class ServiceDetailsActivity extends StatusImmersedBaseActivity {
+public class ServiceDetailsActivity extends ImmersedBaseActivity {
 
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
@@ -21,7 +21,7 @@ public class ServiceDetailsActivity extends StatusImmersedBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
-        showUsetDefinedNav();
+        showUserDefinedNav();
     }
 
     @Override

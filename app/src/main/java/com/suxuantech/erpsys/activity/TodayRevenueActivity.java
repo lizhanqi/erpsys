@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.AdjustDrawableTextView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ import butterknife.OnClick;
  *         E-mail:lizhanqihd@163.com
  * @Description: 当日营收
  */
-public class TodayRevenueActivity extends BaseActivity {
+public class TodayRevenueActivity extends ImmersedBaseActivity {
 
     @BindView(R.id.tv_nav_left)
     AdjustDrawableTextView mTvNavLeft;
@@ -77,8 +76,6 @@ public class TodayRevenueActivity extends BaseActivity {
         mTvNavRight.setText("20171104");
         mVLine.setBackgroundColor(getResources().getColor(R.color.themeColor));
         mTvNavTitle.setTextColor(getResources().getColor(R.color.white));
-        StatusUtils.setNavigationBarColor(this, getResources().getColor(R.color.mainNavline_e7));
-        StatusUtils.setStatusBarColor(this, getResources().getColor(R.color.themeColor));
         ArrayList<String> objects = new ArrayList<>();
         objects.add("经典11");
         objects.add("经典11");

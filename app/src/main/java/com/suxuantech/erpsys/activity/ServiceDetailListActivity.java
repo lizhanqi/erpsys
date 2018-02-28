@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
@@ -25,7 +25,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 服务详情列表
  */
-public class ServiceDetailListActivity extends StatusImmersedBaseActivity {
+public class ServiceDetailListActivity extends ImmersedBaseActivity {
 
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
@@ -39,7 +39,7 @@ public class ServiceDetailListActivity extends StatusImmersedBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
         ButterKnife.bind(this);
-        showUsetDefinedNav();
+        showUserDefinedNav();
         setUseDefinedNavTitle("11111");
         init();
     }

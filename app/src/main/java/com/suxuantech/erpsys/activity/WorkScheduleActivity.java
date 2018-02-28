@@ -10,7 +10,7 @@ import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleLayout;
 import com.jeek.calendar.widget.calendar.week.WeekCalendarView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
@@ -30,7 +30,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 工作排程
  */
-public class WorkScheduleActivity extends StatusImmersedBaseActivity {
+public class WorkScheduleActivity extends ImmersedBaseActivity {
 
     @BindView(R.id.tv_in_service)
     TextView mTvInService;
@@ -57,7 +57,7 @@ public class WorkScheduleActivity extends StatusImmersedBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_schedule);
         ButterKnife.bind(this);
-        showUsetDefinedNav();
+        showUserDefinedNav();
         setTitle("工作排程");
         int currentSelectDay = mScheduleLayout.getCurrentSelectDay();
         setUseDefinedNavRightText(currentSelectDay+"");

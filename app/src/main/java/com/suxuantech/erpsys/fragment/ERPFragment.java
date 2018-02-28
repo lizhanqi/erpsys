@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.oragee.banners.BannerView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
@@ -69,7 +68,7 @@ public class ERPFragment extends SupportFragment {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-        ImmersionBar.with(getActivity()).navigationBarColor(R.color.themeColor).init();
+       // ImmersionBar.with(getActivity()).navigationBarColor(R.color.white).init();
         DefaultFragmentAdapter myFragmentAdapter = new DefaultFragmentAdapter(getChildFragmentManager(), 2, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {

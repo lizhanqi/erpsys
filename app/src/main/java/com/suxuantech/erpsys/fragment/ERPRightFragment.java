@@ -60,7 +60,7 @@ public class ERPRightFragment extends BaseLazyFragment {
     @Override
     public void initImmersionBar() {
         super.initImmersionBar();
-        mImmersionBar.statusBarDarkFont(true,0.15f).navigationBarColor(R.color.themeColor).init();
+        mImmersionBar.statusBarDarkFont(true,0.15f).navigationBarColor(R.color.translucent_black_90).init();
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

@@ -3,21 +3,28 @@ package com.suxuantech.erpsys.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-import com.yanzhenjie.statusview.StatusUtils;
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashScreenActivity extends AppCompatActivity {
-
+public class SplashScreenActivity extends ImmersedBaseActivity {
 
 
     @Override
+    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StatusUtils.setFullToNavigationBar(this);
         super.onCreate(savedInstanceState);
+        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_BAR).init();
         TimerTask task = new TimerTask(){
             @Override
             public void run(){
@@ -38,5 +45,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         }else {
           //  overridePendingTransition (R.anim.anim_enter,R.anim.anim_exit);
         }
+    }
+
+    @Override
+    protected void widgetClick(View v) {
+
     }
 }

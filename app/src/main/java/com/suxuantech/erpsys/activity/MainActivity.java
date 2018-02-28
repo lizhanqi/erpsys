@@ -63,9 +63,8 @@ public class MainActivity extends BaseActivity {
             //selectedFragment( bottomNavigationBar.getCurrentSelectedPosition());
             showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
             if (   bottomNavigationBar.getCurrentSelectedPosition()!=2&&bottomNavigationBar.getCurrentSelectedPosition()!=3){
-                ImmersionBar.with(MainActivity.this).statusBarDarkFont(false).fitsSystemWindows(true).barColor(R.color.themeColor).init();
+                ImmersionBar.with(MainActivity.this).statusBarDarkFont(true,0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
             }
-
         }
         @Override
         public void onTabReselected(int position) {
@@ -105,7 +104,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
         //selectedFragment(2);
-        ImmersionBar.with(MainActivity.this).barColor(R.color.themeColor).init();
+        ImmersionBar.with(MainActivity.this).navigationBarColor(R.color.translucent_black_90).init();
         initFragement();
     }
     public static final int FIRST = 0;

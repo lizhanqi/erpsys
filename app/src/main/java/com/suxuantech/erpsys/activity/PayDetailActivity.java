@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ import java.util.List;
  *  E-mail:lizhanqihd@163.com
  * @Description: 付款明细页面
  */
-public class PayDetailActivity extends StatusImmersedBaseActivity {
+public class PayDetailActivity extends ImmersedBaseActivity {
 
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
@@ -44,7 +44,7 @@ public class PayDetailActivity extends StatusImmersedBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_detail);
-        showUsetDefinedNav();
+        showUserDefinedNav();
         setTitle("付款详情");
     }
 

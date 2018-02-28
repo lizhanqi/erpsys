@@ -24,7 +24,6 @@ import com.suxuantech.erpsys.dialog.NoticeDialog;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.views.WaveHelper;
 import com.suxuantech.erpsys.views.WaveView;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,7 +52,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     public void initImmersionBar() {
         if (getActivity()!=null){
             super.initImmersionBar();
-            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.themeColor).init();
+            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.translucent_black_90).init();
         }
     }
     public void alertShow4() {
@@ -104,7 +103,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         taskWaveHelper.start();
         WaveHelper scheduleWaveHelper = new WaveHelper(scheduleWave);
         scheduleWaveHelper.start();
-        StatusUtils.setFullToStatusBar(getActivity());
         taskWave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

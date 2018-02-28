@@ -30,7 +30,7 @@ public class MyFragment extends SupportFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).navigationBarColor(R.color.themeColor).init();
+            ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
         }
     }
     @Override
