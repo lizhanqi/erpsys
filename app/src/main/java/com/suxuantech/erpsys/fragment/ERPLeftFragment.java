@@ -95,7 +95,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
-
         initRefresh();
         WaveView taskWave = view.findViewById(R.id.task_wave);
         WaveView scheduleWave = view.findViewById(R.id.schedule_wave);

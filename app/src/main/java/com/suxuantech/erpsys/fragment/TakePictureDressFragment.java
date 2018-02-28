@@ -8,17 +8,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.yanzhenjie.fragment.NoFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  *  拍照礼服(礼服资料)
  */
-public class TakePictureDressFragment extends NoFragment {
+public class TakePictureDressFragment extends SupportFragment {
     @BindView(R.id.tv_take_picture_dress)
     TextView mTvTakePictureDress;
     @BindView(R.id.ll_take_picture_dress)

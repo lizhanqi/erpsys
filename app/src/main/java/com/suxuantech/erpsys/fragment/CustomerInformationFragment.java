@@ -13,7 +13,6 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.dialog.TimeDialog;
 import com.suxuantech.erpsys.utils.DateUtil;
-import com.yanzhenjie.fragment.NoFragment;
 
 import java.util.Date;
 
@@ -21,11 +20,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomerInformationFragment extends NoFragment {
+public class CustomerInformationFragment extends SupportFragment {
     @BindView(R.id.tv_store_name)
     TextView mTvStoreName;
     @BindView(R.id.customer_id)

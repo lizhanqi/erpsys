@@ -34,7 +34,7 @@ import android.widget.Scroller;
  * E-mail:lizhanqihd@163.com
  * @Description: 阻尼效果的scrollview
  */
-public class DampView extends ScrollView {
+public class BounceScrollView extends ScrollView {
     private static final int LEN = 0xc8;
     private static final int DURATION = 500;
     private static final int MAX_DY = 200;
@@ -47,17 +47,17 @@ public class DampView extends ScrollView {
     ImageView imageView;
     boolean scrollerType;
 
-    public DampView(Context context, AttributeSet attrs, int defStyle) {
+    public BounceScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
     }
 
-    public DampView(Context context, AttributeSet attrs) {
+    public BounceScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScroller = new Scroller(context);
     }
 
-    public DampView(Context context) {
+    public BounceScrollView(Context context) {
         super(context);
 
     }

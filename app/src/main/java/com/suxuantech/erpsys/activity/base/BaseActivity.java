@@ -513,6 +513,7 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
+        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionSet.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         requestQueue = NoHttp.newRequestQueue();

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
-        android:textSize="@dimen/xs44"
+        android:textSize="@dimen/xs25"
         android:layout_marginTop="@dimen/px40"
         android:layout_marginBottom="@dimen/px40"
         android:id="@+id/tv_type"

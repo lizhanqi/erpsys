@@ -4,6 +4,7 @@ package com.suxuantech.erpsys.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.views.DefaultItemDecoration;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -26,11 +26,12 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 取件资料
  */
-public class TakeDataFragment extends NoFragment {
+public class TakeDataFragment extends SupportFragment {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
@@ -50,6 +51,7 @@ public class TakeDataFragment extends NoFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i("创建", "onViewCreated: ");
         mRotateHeaderGridViewFrame.setRatioOfHeaderHeightToRefresh(1.2f);
         mRotateHeaderGridViewFrame.setDurationToClose(200);
         mRotateHeaderGridViewFrame.setDurationToCloseHeader(1000);
@@ -74,17 +76,6 @@ public class TakeDataFragment extends NoFragment {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-
-
-
-
-
-
-
-
-
-
-
         ArrayList<String> objects = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.order)));
         objects.add("1111");        objects.add("1111");        objects.add("1111");        objects.add("1111");        objects.add("1111");
         BaseRecyclerAdapter<String> baseRecyclerAdapter = new BaseRecyclerAdapter<String>(mRecyclerView, objects, R.layout.item_takedata) {
@@ -103,11 +94,10 @@ public class TakeDataFragment extends NoFragment {
         });
           mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
     }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 }

@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -101,10 +102,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     SwipeMenuRecyclerView mSmrHistory;
     @BindView(R.id.ptr_refresh)
     PtrClassicFrameLayout mPtrRefresh;
-    @BindView(R.id.btn_clear_search_history)
-    Button mBtnClearSearchHistory;
-    @BindView(R.id.ll_delete_histroy)
-    LinearLayout mLlDeleteHistroy;
     private BaseRecyclerAdapter<HistoryBean> historyAdapter;
     private SearchOrderPresenter mSearchOrderPresenter;
     private BaseRecyclerAdapter<SearchOrderBean.DataBean> searchResultAdaputer;
@@ -137,7 +134,11 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                     mTietNavSearch.setSelection(mSearchOrderPresenter.getSearchHosiery().get(position).getName().length());
                     mTietNavSearch.dismissDropDown();
                     search();
+                    mTietNavSearch.setFocusableInTouchMode(true);
+                    mTietNavSearch.setFocusable(true);
                 } else {
+                    Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
+                    startActivity(intent);
                     toast(position+"");
                 }
             }
@@ -204,9 +205,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      */
     private void initHistoryAdapter() {
         mPtrRefresh.setEnabled(false);
-        if (mSearchOrderPresenter.getSearchHosiery().size() <= 0) {
-            mLlDeleteHistroy.setVisibility(View.GONE);
-        }
         mLlSearch.setVisibility(View.VISIBLE);
         //除去搜索的分割线，防止影响新设置添加的
         mSmrHistory.removeItemDecoration(searchItemDecoration);
@@ -256,7 +254,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         });
     }
 
-    @OnClick({R.id.tv_nav_search_left,R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search,  R.id.btn_clear_search_history})
+    @OnClick({R.id.tv_nav_search_left,R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search})
     public void onClicks(View v) {
         switch (v.getId()) {
             case R.id.tv_nav_search_right:
@@ -277,9 +275,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 break;
             case R.id.tv_nav_search_left:
                 finish();
-                break;
-            case R.id.btn_clear_search_history:
-                alterDelete();
                 break;
             case R.id.tiet_nav_search:
                 mTietNavSearch.setCursorVisible(true);
@@ -329,7 +324,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 if (position == 0) {
                     mTvNearlySearch.setCompoundDrawables(null, null, null, null);
                     mSearchOrderPresenter.clear();
-                    mLlDeleteHistroy.setVisibility(View.GONE);
                     historyAdapter.refresh(mSearchOrderPresenter.clear());
                     mTietNavSearch.setAdapter(null);
                     mTietNavSearch.setAdapter(new ArrayAdapter<String>(SearchOrderActivity.this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
@@ -394,8 +388,9 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
 
     @Override
     public void searchSucceed(List<SearchOrderBean.DataBean> data, boolean isRefesh, boolean hasMore) {
+        mTietNavSearch.setFocusableInTouchMode(false);
+        mTietNavSearch.setFocusable(false);
         searchResultAdapter(data, isRefesh);
-        mSmrHistory.loadMoreFinish(!(data.size()>0), hasMore);
     }
 
     @Override
@@ -404,13 +399,14 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             if (response.get().getCode().equals("0003")) {
                 if (searchResultAdaputer != null) {
                     mLlSearch.setVisibility(View.GONE);
-                    searchResultAdaputer.refresh(null);
                     mSmrHistory.setAdapter(searchResultAdaputer);
+                    if (response.get().getData().size()<=0){
+                        searchResultAdapter(null, pageIndex == 0);
+                    }
                 } else {
                     searchResultAdapter(null, pageIndex == 0);
                 }
                 mSmrHistory.loadMoreError(1,"加载失败!请稍后重试");
-                mSmrHistory.loadMoreFinish(true, false);
             }
         }
     }
@@ -419,36 +415,21 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 搜索结果适配器
      * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
      */
-    private void searchResultAdapter(List<SearchOrderBean.DataBean> data, boolean isRefesh) {
+    private void searchResultAdapter(List<SearchOrderBean.DataBean> data,    boolean isRefesh) {
         if (isRefesh) {
-            if(mSmrHistory.getFooterItemCount()>0){
-                mSmrHistory.removeFooterView(defineLoadMoreView);
-            }
-            mSmrHistory.removeAllViews();
-            mSmrHistory.addFooterView(defineLoadMoreView);
-            mSmrHistory.setLoadMoreView(defineLoadMoreView);
-            mPtrRefresh.refreshComplete();
-            mPtrRefresh.setEnabled(true);
-            mSmrHistory.setAutoLoadMore(false);
-            mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
-                @Override
-                public void onLoadMore() {
-                    mSearchOrderPresenter.sosoNetLoadmore();
-                }
-            });
-            mLlDeleteHistroy.setVisibility(View.GONE);
-            mLlSearch.setVisibility(View.GONE);
-            mSmrHistory.setAdapter(null);
-            mSmrHistory.removeItemDecoration(histroyItemDecoration);
-            mSmrHistory.removeItemDecoration(searchItemDecoration);
-            mSmrHistory.addItemDecoration(searchItemDecoration);
+            reset();
         }
         if (searchResultAdaputer != null) {
             if (isRefesh) {
                 searchResultAdaputer.refresh(data);
                 mSmrHistory.setAdapter(searchResultAdaputer);
+                mSmrHistory.loadMoreFinish(data!=null,true);
             } else {
-            searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+                if (data==null){
+                    mSmrHistory.loadMoreFinish(true,false);
+                }else {
+                    searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+                }
             }
             return;
         }
@@ -490,7 +471,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 });
                 view.setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤
                         .setmCircleRadius(23)
-                        .setTextMarginTop(-30)
+                        .setTextMarginTop(-10)
                         .fixPointPadding(false)
                         .setComplete(1, 5)//间断完成（与连续完成只有一种生效）
                         .setStepsViewIndicatorComplectingPosition(2)//连续完成步数
@@ -504,5 +485,28 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
 
             }
         };
+    }
+
+    private void reset() {
+        if(mSmrHistory.getFooterItemCount()>0){
+            mSmrHistory.removeFooterView(defineLoadMoreView);
+        }
+        mSmrHistory.removeAllViews();
+        mSmrHistory.addFooterView(defineLoadMoreView);
+        mSmrHistory.setLoadMoreView(defineLoadMoreView);
+        mPtrRefresh.refreshComplete();
+        mPtrRefresh.setEnabled(true);
+        mSmrHistory.setAutoLoadMore(false);
+        mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mSearchOrderPresenter.sosoNetLoadmore();
+            }
+        });
+        mLlSearch.setVisibility(View.GONE);
+        mSmrHistory.setAdapter(null);
+        mSmrHistory.removeItemDecoration(histroyItemDecoration);
+        mSmrHistory.removeItemDecoration(searchItemDecoration);
+        mSmrHistory.addItemDecoration(searchItemDecoration);
     }
 }

@@ -1,16 +1,19 @@
 package com.suxuantech.erpsys.fragment;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.suxuantech.erpsys.R;
-import com.yanzhenjie.fragment.NoFragment;
+
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhotographicDataFragment extends NoFragment {
+public class PhotographicDataFragment extends SupportFragment {
     public PhotographicDataFragment() {
         // Required empty public constructor
     }

@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.suxuantech.erpsys.R;
-import com.yanzhenjie.fragment.NoFragment;
+
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  *选片
  */
-public class SelectedPictureInformationFragment extends NoFragment {
+public class SelectedPictureInformationFragment extends SupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

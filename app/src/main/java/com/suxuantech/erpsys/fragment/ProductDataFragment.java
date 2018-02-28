@@ -17,17 +17,17 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.OrderDetailActivity;
 import com.suxuantech.erpsys.adapter.ProductGroupAdaputer;
 import com.suxuantech.erpsys.utils.ScreenUtils;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 产品资料
  */
-public class ProductDataFragment extends NoFragment {
+public class ProductDataFragment extends SupportFragment {
     @BindView(R.id.recycler_one_product)
     SwipeMenuRecyclerView mRecyclerOneProduct;
     @BindView(R.id.recycler_two_product)

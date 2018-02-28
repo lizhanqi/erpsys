@@ -11,7 +11,6 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.ToastUtils;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
@@ -21,11 +20,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 服务费用
  */
-public class ServiceFeeFragment extends NoFragment {
+public class ServiceFeeFragment extends SupportFragment {
     @BindView(R.id.smrv_service_fee)
     SwipeMenuRecyclerView mSmrvServiceFee;
     private View view;

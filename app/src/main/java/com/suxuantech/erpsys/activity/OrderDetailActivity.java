@@ -25,24 +25,26 @@ package com.suxuantech.erpsys.activity;
  * @author Created by 李站旗 on 2017/11/23 0023 10:40 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description:订单详情，整个订单的所有信息都在这里了
  */
 
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.StatusImmersedBaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
+import com.suxuantech.erpsys.fragment.CustomerInformationFragment;
 import com.suxuantech.erpsys.fragment.ProductDataFragment;
+import com.suxuantech.erpsys.fragment.TabControlFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -50,10 +52,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * 订单详情，整个订单的所有信息都在这里了
- */
-public class OrderDetailActivity extends StatusImmersedBaseActivity {
+import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.SupportFragment;
+
+public class OrderDetailActivity extends ImmersedBaseActivity {
 
     private String[] stringArray;
         private PopupWindow mPopupWindow;
@@ -63,21 +65,20 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
 
     @Override
     protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
     }
     String current;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
-        showUsetDefinedNav();
+        showUserDefinedNav();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
         current=stringArray[0];
         setUseDefinedNavTitle(current);
         gotoFragment();
     }
+    private SupportFragment[] mFragments = new SupportFragment[5];
     @Override
     protected void widgetClick(View v) {
         switch (v.getId()){
@@ -88,45 +89,74 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 finish();
                 break;
             case R.id.tv_nav_right:
-                if (productDataFragment!=null){
+                if (mFragments[3]!=null){
                     productDataFragment.change();
                 }
                 break;
             default:
         }
     }
-    Bundle bd=  new Bundle();
+
+
     public void gotoFragment(){
             switch (current){
                 default:
-                    //startFragment(CustomerInformationFragment.class,false);
+                    if (findFragment(CustomerInformationFragment.class)==null){
+                        CustomerInformationFragment customerInformationFragment = new CustomerInformationFragment();
+                        mFragments[0]=customerInformationFragment;
+                        loadRootFragment(R.id.container,  mFragments[0],false,true);
+                    }else {
+                        start(mFragments[0], ISupportFragment.SINGLETASK);
+                    }
                 break;
                 case "服务费用":
-                    //startFragment(ServiceFeeFragment.class);
+                    if (findFragment(ServiceFeeFragment.class)==null){
+                        ServiceFeeFragment serviceFeeFragment = new ServiceFeeFragment();
+                       // loadRootFragment(R.id.container, serviceFeeFragment);
+                        mFragments[1]=serviceFeeFragment;
+                        loadRootFragment(R.id.container,  mFragments[1],false,true);
+                    }else {
+                        start(mFragments[1], ISupportFragment.SINGLETASK);
+                    }
                     break;
                 case "取件资料":
-                    bd.putInt("witch",0);
-                    //startFragment(fragment(TabControlFragment.class,bd));
+                    toTabFragement(0);
                     break;
                 case "摄影资料":
-                    bd.putInt("witch",1);
-                  //  startFragment(fragment(TabControlFragment.class,bd));
+                    toTabFragement(1);
                     break;
                 case "选片资料":
-                    bd.putInt("witch",2);
-                  //  startFragment(fragment(TabControlFragment.class,bd));
+                    toTabFragement(2);
                     break;
                 case "礼服资料":
-                    bd.putInt("witch",3);
-                  //  startFragment(fragment(TabControlFragment.class,bd));
+                    toTabFragement(3);
                     break;
                 case "产品资料":
-                  //  productDataFragment = fragment(ProductDataFragment.class);
-                   // startFragment(productDataFragment);
+                    if (findFragment(ProductDataFragment.class)==null){
+                        productDataFragment = new ProductDataFragment();
+                        // loadRootFragment(R.id.container, serviceFeeFragment);
+                        mFragments[3]= productDataFragment;
+                        loadRootFragment(R.id.container,  mFragments[3],false,true);
+                    }else {
+                        start(mFragments[3], ISupportFragment.SINGLETASK);
+                    }
                     break;
-
-
             }
+    }
+    private void toTabFragement(int witch){
+        Bundle bd=  new Bundle();
+        bd.putInt("witch",witch);
+        if (findFragment(TabControlFragment.class)==null){
+            TabControlFragment tabControlFragment = new TabControlFragment();
+            // loadRootFragment(R.id.container, serviceFeeFragment);
+            tabControlFragment.setArguments(bd);
+            mFragments[2]=tabControlFragment;
+            loadRootFragment(R.id.container,  mFragments[2],false,true);
+        }else {
+            // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
+            mFragments[2].putNewBundle(bd);
+            start(mFragments[2], ISupportFragment.SINGLETASK);
+        }
     }
 
     /**
@@ -158,7 +188,7 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
                 if (  current.equals(item)) {
                     holder.getView(R.id.ll_root_bg).setBackgroundColor(getResources().getColor(R.color.translucent_black_90));
                 }
-                view.setTextSize(25);
+                view.setTextSize(15);
                 view.setText(item);
             }
         };
@@ -171,15 +201,24 @@ public class OrderDetailActivity extends StatusImmersedBaseActivity {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
         mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
-        if (Build.VERSION.SDK_INT < 24) {
-            //7.0以下么问题可以使用在某一个view下展示
-            mPopupWindow.showAsDropDown(getLineView());
+        showAsDropDown(mPopupWindow,getLineView(),0,0);
+    }
+    /**
+     *popupWindow 兼容7.0以下以及7.0,7.1,8.0
+     * @param pw     popupWindow
+     * @param anchor v
+     * @param xoff   x轴偏移
+     * @param yoff   y轴偏移
+     */
+    public static void showAsDropDown(final PopupWindow pw, final View anchor, final int xoff, final int yoff) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            Rect visibleFrame = new Rect();
+            anchor.getGlobalVisibleRect(visibleFrame);
+            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            pw.setHeight(height);
+            pw.showAsDropDown(anchor, xoff, yoff);
         } else {
-            //7.0+就不行了使用这种方式指定
-            int[] location = new int[2];    getLineView().getLocationOnScreen(location);
-            mPopupWindow.showAtLocation(getLineView(), Gravity.NO_GRAVITY, 0, location[1]+getLineView().getHeight());
-            //一定要update不然显示的仍然不对，之前不知道，仅仅写了上边两行然后还是没作用
-            mPopupWindow.update();
+            pw.showAsDropDown(anchor, xoff, yoff);
         }
     }
 //    @Override

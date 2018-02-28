@@ -3,7 +3,8 @@ package com.suxuantech.erpsys.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2016/11/30.
  * 通用的配合Viewpager使用的适配器，也可以和Viewpagerindeace搭配，不用管PageTitle
  */
-public class DefaultFragmentAdapter extends FragmentPagerAdapter {
+public class DefaultFragmentAdapter extends FragmentStatePagerAdapter {
     FragmentShow fragmentShow;
     int mCount;
     ArrayList<String> titleArray;
@@ -29,6 +30,10 @@ public class DefaultFragmentAdapter extends FragmentPagerAdapter {
         this.  mCount=  mCount;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return PagerAdapter.POSITION_NONE;
+    }
     /**
      *
      * @param fm
@@ -63,8 +68,13 @@ public class DefaultFragmentAdapter extends FragmentPagerAdapter {
         this.fragmentShow=fragmentShow;
         this.  titleArray=titleArray;
         mCount=    titleArray==null? 0:titleArray.size();
+        notifyDataSetChanged();
     }
 
+    public void notifyFragementsSetChanged(FragmentManager fm, ArrayList<String> titleArray, Fragment mFragments) {
+        this.  titleArray=titleArray;
+        mCount=    titleArray==null? 0:titleArray.size();
+    }
 
     /**
      * 设置Fragment
