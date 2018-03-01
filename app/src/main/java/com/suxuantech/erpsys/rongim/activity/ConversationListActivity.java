@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.activity;
+package com.suxuantech.erpsys.rongim.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.suxuantech.erpsys.activity.LoginActivity;
+import com.suxuantech.erpsys.activity.MainActivity;
 import com.suxuantech.erpsys.dialog.LoadingDialog;
 import com.suxuantech.erpsys.utils.NLog;
 

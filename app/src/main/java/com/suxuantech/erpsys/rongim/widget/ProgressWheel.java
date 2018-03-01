@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.rongim.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

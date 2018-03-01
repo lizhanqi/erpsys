@@ -289,5 +289,16 @@
     <string name="private_chat">发起聊天</string>
     <string name="group_chat">创建群组</string>
     <string name="add_contacts">添加好友</string>
+    <string name="de_actionbar_system">"系统消息"</string>
+    <string name="main_customer">意见反馈</string>
+    <string name="de_actionbar_sub_defult">"聊天"</string>
+    <!--actionbar title -->
+    <string name="de_actionbar_myacc">"个人账号"</string>
+    <string name="de_actionbar_sub_group">"群组"</string>
+    <string name="de_actionbar_sub_private">"我的私人会话"</string>
+    <string name="de_actionbar_sub_discussion">"我的讨论组"</string>
+    <string name="de_actionbar_sub_system">"系统消息"</string>
+    <string name="de_actionbar_set_public">"公众号"</string>
+
     <string name="layout_dialog_loading">正在加载</string>
 </resources>

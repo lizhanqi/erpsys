@@ -21,6 +21,8 @@ import java.util.List;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import io.rong.imkit.RongIM;
+import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 import me.yokeyword.fragmentation.Fragmentation;
 
 
@@ -72,6 +74,11 @@ public class App extends Application {
                  .install();
         if (!ISDEBUG) {
             initErrorPage();
+            try {
+                RongPushClient.checkManifest(this);
+            } catch (RongException e) {
+                e.printStackTrace();
+            }
         }
     }
     /**
@@ -353,5 +360,4 @@ public class App extends Application {
                 }
             });
     }
-
 }

@@ -93,4 +93,7 @@
     <color name="translucent_black_90">#26000000</color>
     <color name="translucent_black_95">#0d000000</color>
     <color name="rong_text_color">#353535</color>
+    <color name="seal_bg">#f0f0f6</color>
+    <color name="de_title_bg">#0195ff</color>
+    <color name="press">#e8e8e8</color>
 </resources>

@@ -17,7 +17,7 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.BaseActivity;
+import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.bean.DistrictBean;
 import com.suxuantech.erpsys.dialog.LoadDialog;
@@ -52,7 +52,7 @@ import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
 
-public class MainActivity extends BaseActivity implements IUnReadMessageObserver {
+public class MainActivity extends ImmersedBaseActivity implements IUnReadMessageObserver {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private ArrayList<Fragment> fragments =new ArrayList<>();
@@ -85,6 +85,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
             dLog("再选");
         }
     };
+    private TextBadgeItem badgeItem;
+    private BottomNavigationItem msgItem;
 
     /**
      * 监听返回键 点击2次退出--
@@ -167,11 +169,11 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
             if (App.ISDEBUG) {
                 uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversationlist")
-                        .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "true") //设置私聊会话是否聚合显示
+                        .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
                         .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")//群组
                         .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
                         .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
-                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
+                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
                         .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "true")
                         .build();
                 mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
@@ -188,7 +190,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                         .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
                         .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
                         .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
-                        .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
+                        .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "true")//订阅号
                         .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
                         .build();
                 mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
@@ -206,9 +208,19 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         }
     }
 
+    /**
+     * 重写,禁用统一的
+     */
+    @Override
+    protected void initImmersionBar() {
+//        super.initImmersionBar();
+    }
+
     //-----------方式一------
     private void selectedFragment(int position) {
-
+        if (position!=0){
+            hideToolbar();
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
@@ -219,6 +231,9 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                 } else {
                     transaction.show(mConversationListFragment);
                 }
+                setSupportToolbar();
+                getToolbar().setTitle("我的会话");
+                getToolbar().setBackground(null);
                 break;
             case 1:
                 if (workFragment == null) {
@@ -268,10 +283,10 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
      * 初始化页面的导航
      */
     private void initMyBottomNavigation() {
-        TextBadgeItem badgeItem=new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setText("2").setHideOnSelect(true);
-        BottomNavigationItem msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
+        badgeItem = new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setText("2").setHideOnSelect(true);
+        msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
         msgItem.setBadgeItem(badgeItem);
-        msgItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_msg_normal));//非选中的图片
+        msgItem.setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_msg_normal));//非选中的图片
         msgItem.setInActiveColor(getResources().getColor(R.color.mainNav_66));
         msgItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem workItem = new BottomNavigationItem(R.drawable.icon_work_pressed, getString(R.string.work));
@@ -453,7 +468,15 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     }
     @Override
     public void onCountChanged(int i) {
-
+        if (badgeItem!=null){
+            if (i<=0){
+                badgeItem.setText(i+"");
+            }else if (i<99){
+                badgeItem.setText("99+");
+            }else {
+                badgeItem.setText(null);
+            }
+        }
     }
 }
 

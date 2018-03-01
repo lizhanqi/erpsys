@@ -126,7 +126,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                }).setDivierMargin(30).show();
 
               //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
-                RongIM.getInstance().startPrivateChat(getActivity(), "u1", "标题u2");
+                RongIM.getInstance().startPrivateChat(getActivity(), "u1", "名字");
             }
         });
 

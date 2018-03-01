@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.ConversationListActivity">
+    tools:context="com.suxuantech.erpsys.rongim.activity.ConversationListActivity">
 
 </android.support.constraint.ConstraintLayout>
