@@ -92,5 +92,5 @@
     <color name="translucent_black_80">#33000000</color>
     <color name="translucent_black_90">#26000000</color>
     <color name="translucent_black_95">#0d000000</color>
-
+    <color name="rong_text_color">#353535</color>
 </resources>

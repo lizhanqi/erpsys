@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import io.rong.imkit.RongIM;
 import me.yokeyword.fragmentation.Fragmentation;
 
 
@@ -59,6 +60,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        RongIM.init(this);
         context = this.getApplicationContext();
         registerActivityListener();
         application=this;

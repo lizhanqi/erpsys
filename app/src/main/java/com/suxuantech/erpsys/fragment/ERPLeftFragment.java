@@ -17,8 +17,6 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.activity.NoticeDetailActivity;
-import com.suxuantech.erpsys.activity.OutletsOrderActivity;
-import com.suxuantech.erpsys.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.dialog.NoticeDialog;
 import com.suxuantech.erpsys.utils.ScreenUtils;
@@ -27,6 +25,7 @@ import com.suxuantech.erpsys.views.WaveView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 
 public class ERPLeftFragment extends BaseLazyFragment {
 
@@ -126,14 +125,16 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                    }
 //                }).setDivierMargin(30).show();
 
-                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+              //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+                RongIM.getInstance().startPrivateChat(getActivity(), "u1", "标题u2");
             }
         });
 
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+           //    startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+                RongIM.getInstance().startPrivateChat(getActivity(), "u2", "标题u2");
           // Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
 //                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));

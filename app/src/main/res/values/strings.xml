@@ -17,7 +17,7 @@
     <string name="error_data_analysis">数据解析异常.</string>
     <string name="error_unknow">未知错误。</string>
     <!--Bug崩溃工具-->
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation">出现意外错误。\n为您带来的不便敬请谅解\n本次错误已通知开发人员\n您还可以点击错误详情\n复制<fount/>内容联系我们。\n攻城狮微信:lizhanqi999</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">出现意外错误。\n为您带来的不便敬请谅解\n本次错误已通知开发人员\n您还可以点击错误详情\n复制<fount />内容联系我们。\n攻城狮微信:lizhanqi999</string>
     <string name="customactivityoncrash_error_activity_restart_app">重新启动应用</string>
     <string name="customactivityoncrash_error_activity_close_app">关闭应用</string>
     <string name="customactivityoncrash_error_activity_error_details">错误详情</string>
@@ -286,4 +286,8 @@
     <string name="query_storefront">查询店面：</string>
     <string name="hint_input_phonenumber_or_ordernumber_or_name_search">输入手机号/订单号/姓名搜索</string>
     <string name="details"><![CDATA[详情 >>]]></string>
+    <string name="private_chat">发起聊天</string>
+    <string name="group_chat">创建群组</string>
+    <string name="add_contacts">添加好友</string>
+    <string name="layout_dialog_loading">正在加载</string>
 </resources>

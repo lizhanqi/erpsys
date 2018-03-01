@@ -5,12 +5,13 @@
     必须要有background防止fragment页面穿透的,
     clickable是防止页面穿透的点击事件的
     -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:clickable="true"
+    android:orientation="vertical"
     tools:context="com.suxuantech.erpsys.fragment.CRMFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -19,4 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crm" />
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_fm2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="链接2" />
+</LinearLayout>

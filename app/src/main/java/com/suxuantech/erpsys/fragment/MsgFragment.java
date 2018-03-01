@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.utils.ToastUtils;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -29,14 +28,6 @@ public class MsgFragment extends SupportFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.tv_fm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.show("MSG");
-            }
-        });
-        mTvFm =   view.findViewById(R.id.tv_fm);
-        mTvFm.setText("MSG");
     }
     @Override
     public void onDestroyView() {
