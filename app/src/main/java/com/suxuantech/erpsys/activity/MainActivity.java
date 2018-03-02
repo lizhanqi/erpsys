@@ -22,6 +22,7 @@ import com.suxuantech.erpsys.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.bean.DistrictBean;
 import com.suxuantech.erpsys.dialog.LoadDialog;
 import com.suxuantech.erpsys.fragment.CRMFragment;
+import com.suxuantech.erpsys.fragment.ContactsFragment;
 import com.suxuantech.erpsys.fragment.ERPFragment;
 import com.suxuantech.erpsys.fragment.MsgFragment;
 import com.suxuantech.erpsys.fragment.MyFragment;
@@ -76,7 +77,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
             selectedFragment( bottomNavigationBar.getCurrentSelectedPosition());
           //  showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
-            if (   bottomNavigationBar.getCurrentSelectedPosition()!=2&&bottomNavigationBar.getCurrentSelectedPosition()!=3){
+            if (   bottomNavigationBar.getCurrentSelectedPosition()!=2&&bottomNavigationBar.getCurrentSelectedPosition()!=4){
                 ImmersionBar.with(MainActivity.this).statusBarDarkFont(true,0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
             }
         }
@@ -87,6 +88,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     };
     private TextBadgeItem badgeItem;
     private BottomNavigationItem msgItem;
+    private ContactsFragment contactsFragment;
 
     /**
      * 监听返回键 点击2次退出--
@@ -242,6 +244,15 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 } else
                     transaction.show(workFragment);
                 break;
+
+            case 3:
+                if ( contactsFragment== null) {
+                contactsFragment = new ContactsFragment();
+                transaction.add(R.id.main_content, contactsFragment);
+                } else
+                    transaction.show(contactsFragment);
+                break;
+
             case 2:
                 if (erpFragment == null) {
                     erpFragment = new ERPFragment();
@@ -249,11 +260,12 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 } else
                     transaction.show(erpFragment);
                 break;
-            case 3:
+            case 10:
                 if (crmFragment == null) {
                     crmFragment = new CRMFragment();
                     transaction.add(R.id.main_content, crmFragment);
                 } else
+
                     transaction.show(crmFragment);
                 break;
             case 4:
@@ -263,8 +275,16 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 } else
                     transaction.show(myFragment);
                 break;
+
         }
         transaction.commit();
+        if (position!=3){
+            hideUserDefinedNav();
+        }else {
+            showUserDefinedNav();
+            setUseDefinedNavLeftDrawable(null);
+            setTitle("通讯录");
+        }
     }
     private void hideFragment(FragmentTransaction transaction) {
         if (mConversationListFragment != null)
@@ -273,8 +293,8 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             transaction.hide(workFragment);
         if (erpFragment != null)
             transaction.hide(erpFragment);
-        if (crmFragment != null)
-            transaction.hide(crmFragment);
+        if (contactsFragment != null)
+            transaction.hide(contactsFragment);
         if (myFragment != null)
             transaction.hide(myFragment);
     }
@@ -295,11 +315,11 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         workItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem erpItem = new BottomNavigationItem(R.drawable.icon_erp_pressed, getString(R.string.erp));
         erpItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_erp_normal));//非选中的图片
-     //   BottomNavigationItem crmItem = new BottomNavigationItem(R.drawable.icon_crm_pressed, getString(R.string.crm));
-     //   crmItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_crm_normal));//非选中的图片
+           BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_pressed, getString(R.string.crm));
+        contactItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_contact_normal));//非选中的图片
         BottomNavigationItem myItem = new BottomNavigationItem(R.drawable.icon_my_pressed, getString(R.string.my));
         myItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_my_normal));//非选中的图片
-        bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottomNavigationBar);
+        bottomNavigationBar = findViewById(R.id.bottomNavigationBar);
         bottomNavigationBar.clearAll();
         bottomNavigationBar.initialise();
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -307,7 +327,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         bottomNavigationBar.addItem(msgItem)
                 .addItem(workItem)
                 .addItem(erpItem)
-              //  .addItem(crmItem)
+               .addItem(contactItem)
                 .addItem(myItem)
                 .setFirstSelectedPosition(2)
                 .initialise();

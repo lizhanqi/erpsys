@@ -4,21 +4,42 @@ android:clickable="true"
 必须要有background防止fragment页面穿透的,
 clickable是防止页面穿透的点击事件的
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:clickable="true"
-    tools:context="com.suxuantech.erpsys.fragment.ContactsFragment">
-    <me.yokeyword.indexablerv.IndexableLayout
-        android:id="@+id/indexableLayout"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        app:indexBar_selectedTextColor="#f33737"
-        app:indexBar_textColor="@android:color/black"
-        app:indexBar_textSize="14sp"
-        app:indexBar_textSpace="4dp" />
-</FrameLayout>
+        android:background="@color/white"
+        android:clickable="true"
+        android:orientation="vertical"
+        tools:context="com.suxuantech.erpsys.fragment.ContactsFragment">
+
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/rl_organization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ll_recent_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="近期联系人"
+                android:textSize="@dimen/xs44" />
+
+            <View style="@style/line" />
+
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:id="@+id/rl_recent_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
