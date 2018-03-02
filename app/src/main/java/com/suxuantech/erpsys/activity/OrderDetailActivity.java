@@ -50,7 +50,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -63,9 +62,6 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-    }
     String current;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

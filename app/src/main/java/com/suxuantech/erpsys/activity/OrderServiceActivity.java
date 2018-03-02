@@ -19,7 +19,6 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,10 +87,6 @@ public class OrderServiceActivity extends ImmersedBaseActivity {
     TextView mTvTime;
     private ArrayList<AlbumFile> pics;
     private BaseRecyclerAdapter<AlbumFile> baseRecyclerAdapter;
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

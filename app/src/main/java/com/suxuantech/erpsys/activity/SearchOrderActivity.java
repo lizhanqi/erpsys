@@ -111,11 +111,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     boolean isShowSimple=true;
 
     @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
@@ -349,7 +344,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             historyAdapter.refresh(mSearchOrderPresenter.insert(trim));
             mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
             Drawable drawable = getResources().getDrawable(R.drawable.icon_delete_bucket);
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), (int) (drawable.getMinimumHeight()));
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getMinimumHeight());
             mTvNearlySearch.setCompoundDrawables(null, null, drawable, null);
             mTvNearlySearch.postInvalidate();
         }
@@ -466,7 +461,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
                     @Override
                     public void onItemClick(int position, boolean isfinish, String text) {
-                        ToastUtils.show((int) view.getTag() + text + position + isfinish);
+                        ToastUtils.show(view.getTag() + text + position + isfinish);
                     }
                 });
                 view.setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤

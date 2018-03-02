@@ -42,7 +42,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
@@ -345,10 +344,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         switch (v.getId()) {
             default:
         }
-    }
-    //请求权限后结果
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
     }
     public  void netsBeanSample() {
         String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";

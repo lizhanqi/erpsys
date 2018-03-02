@@ -352,7 +352,7 @@
         <TextView            android:drawableRight="@drawable/arrows_right_gray"
             android:id="@+id/tv_mv"
             style="@style/CustomerInformationValue"
-            android:text="@string/no" />
+            android:text="@string/deny" />
     </LinearLayout>
     <View style="@style/line"/>
     <LinearLayout

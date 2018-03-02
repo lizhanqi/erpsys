@@ -94,9 +94,6 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
     private OutletsOrderPresenter outletsOrderPresenter;
 
     @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-    }
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         useEventBus();

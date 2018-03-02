@@ -13,7 +13,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +30,6 @@ public class ServiceDetailListActivity extends ImmersedBaseActivity {
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
     PtrClassicFrameLayout mRotateHeaderGridViewFrame;
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

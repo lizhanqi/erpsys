@@ -13,7 +13,6 @@ import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,10 +60,7 @@ public class ApprovalActivity extends ImmersedBaseActivity {
     SwipeMenuRecyclerView mRvApplyOther;
     @BindView(R.id.ll_apply_other)
     LinearLayout mLlApplyOther;
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
 
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

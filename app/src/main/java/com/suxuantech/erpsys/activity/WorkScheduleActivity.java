@@ -17,7 +17,6 @@ import com.suxuantech.erpsys.views.DefaultItemDecoration;
 import com.suxuantech.erpsys.views.ScheduleSwipeMenuRecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,12 +45,6 @@ public class WorkScheduleActivity extends ImmersedBaseActivity {
     RelativeLayout mRlScheduleList;
     @BindView(R.id.schedule_layout)
     ScheduleLayout mScheduleLayout;
-
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

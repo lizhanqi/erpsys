@@ -129,10 +129,7 @@ public class OptionActivity extends ImmersedBaseActivity {
         }
     }
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
 
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

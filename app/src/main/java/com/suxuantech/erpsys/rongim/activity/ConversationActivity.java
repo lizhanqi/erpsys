@@ -8,7 +8,6 @@ import android.view.View;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
-import java.util.List;
 import java.util.Locale;
 
 import io.rong.imkit.RongIM;
@@ -20,10 +19,6 @@ import io.rong.imlib.model.PublicServiceProfile;
 import io.rong.imlib.model.UserInfo;
 
 public class ConversationActivity extends ImmersedBaseActivity {
-
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-    }
     /**
      * 对方id
      */

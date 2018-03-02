@@ -1,7 +1,6 @@
 package com.suxuantech.erpsys.activity.base;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -13,22 +12,21 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.dialog.DefaultRationale;
+import com.suxuantech.erpsys.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
-import com.yanzhenjie.permission.Request;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -129,289 +127,64 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
      * 网络队列,默认每个Activity都应该有一个队列,用这个队列在页面销毁可以全部取消major
      */
     private RequestQueue requestQueue;
-    /**
-     * 去设置页面设置权限临时存储的,防止多次去设置,分不清回来的是那个
-     */
-    private HashMap<Integer ,HashSet<String>> gotoSettingPermission=new HashMap<>();
-    /**
-     * 请求权限的监听
-     * 结果监听
-     */
-    private PermissionListener permissionListener=new PermissionListener(){
-        @Override
-        public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
-            permissionResult(true,requestCode,grantPermissions);
-        }
-        @Override
-        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-            if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this,deniedPermissions)){
-                gotoSettingPermission.put(requestCode,new HashSet<String>(deniedPermissions));
-                goToSetting=requestCode;
-                alwaysDeniedPermissionDiaLog(requestCode,deniedPermissions);
-            }else {
-                permissionResult(false,requestCode,deniedPermissions);
-            }
-
-        }
-    };
-    /**
-     * 授权前的告知对话框
-     */
-    private   RationaleListener  rationaleListener = new RationaleListener() {
-        @Override
-        public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-            rationaleDialog(requestCode,rationale);
-        }
-    };
     private Unbinder unbinder;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
 
     /**
-     * 询问弹窗(可以重写)
-     * 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
-     * @param requestCode 请求码
-     * @param rationale
-     */
-   public void  rationaleDialog(int requestCode,Rationale rationale){
-       AndPermission.rationaleDialog(this, rationale).show();
-    }
-    /**
-     * 总是拒绝弹窗(切记如果这里重写后自定义弹窗那么取消按钮一定要调用下resetGotoSettings,确定按钮必须管,那个你需要跳转到设置页面)
-     * restGeotoSettings();进行重置,移除去设置页面的请求权限,权限请求失败了
-     * @param deniedPermissions 设置权限
-     */
-    public  void alwaysDeniedPermissionDiaLog(final int requestSettingCode, final List<String> deniedPermissions) {
-        AndPermission.defaultSettingDialog(this, requestSettingCode).setNegativeButton("不要", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                resetGotoSettings(requestSettingCode,deniedPermissions);
-            }
-        }).show();
-
-    }
-    /**
-     * 当提示用户进行去设置页面给权限时候,用户点击了取消,移除去设置的码,并回调给结果
-     * @param requestSettingCode
-     * @param deniedPermissions
-     */
-    public  final  void resetGotoSettings (final int requestSettingCode, final List<String> deniedPermissions){
-        //移除
-        gotoSettingPermission.remove(requestSettingCode);
-        //重置设置
-        goToSetting=-66;
-        permissionResult(false,requestSettingCode,deniedPermissions);
-    }
-//---------------对话的框end-----------------------------------------
-// -------------------权限请求-------------------
-    /**
-     * 添加必须的权限
-     * @param isNowRequest 是否现在发起权限请求
-     * @param useDefaultRationale 是否使用默认Rationale弹窗
-     * @param permission 权限
-     */
-    public final void addMustPermission(boolean isNowRequest,boolean useDefaultRationale,String... permission) {
-        for (String per : permission) {
-            permissionSet.add(per);
-        }
-        if (isNowRequest ) {
-            requestMustPermission(useDefaultRationale);
-        }
-    }
-    /**
-     *   添加必须的权限(没有Rationale)
-     * @param isNowRequest 是否现在请求
-     * @param permission
-     *
-     */
-    public final void addMustPermission(boolean isNowRequest,String... permission) {
-        for (String per : permission) {
-            permissionSet.add(per);
-        }
-        if (isNowRequest ) {
-            requestMustPermission(false);
-        }
-    }
-    /**
-     * 仅仅添加必须权限
-     * @param permission
-     */
-    public final void addMustPermission(String... permission) {
-        for (String per : permission) {
-            permissionSet.add(per);
-        }
-    }
-    /**
-     * 发起重要的页面必须的请求
-     * @param useDefaultRationale 是否使用默认提示框
-     */
-    public void requestMustPermission(boolean useDefaultRationale){
-        requstPermissions(MUSTPERMISSIONCODE,true,null,null,new ArrayList<String>(permissionSet));
-    }
-
-    /**
-     * 获取本页面必须的权限
-     * @return
-     */
-    public HashSet<String> getPermissionSet(){
-        return permissionSet;
-    }
-    /**
-     * 移除一个页面必须的权限(一般不会用)
-     * @param permission
-     */
-    public void removeMustPermission(String... permission) {
-        for (String per : permission) {
-            permissionSet.remove(per);
-        }
-    }
-    /**
-     * 权限最终结果
-     * @param hasPermission 是否有权限
-     * @param requsetcode 请求码 (通过addMustPermission中的权限) 请求码是MUSTPERMISSIONCODE
-     * @param permission 请求的权限列表
-     */
-    protected abstract void permissionResult(boolean hasPermission, int requsetcode, List<String> permission);
-
-    /**
-     * 请求权限(没有Rationale,回调用我的)
-     * @param requsetCode 请求码
-     * @param permissions 请求的权限
-     */
-    public void requstPermissions(int requsetCode,List<String> permissions) {
-        requstPermissions(requsetCode,false,null,permissionListener,permissions);
-    }
-
-    /**
-     * 请求权限(没有Rationale提示,回调使用我提供的)
-     * @param requsetCode
+     * 权限授予结果
      * @param permissions
      */
-    public void requstPermissions(int requsetCode,String... permissions) {
-        requstPermissions( requsetCode,false, permissions);
-    }
-    /**
-     * 请求权限(请求权限,是否使用默认的提示框回调用我的)
-     * @param requsetCode 请求码
-     * @param useRationale 是否使用默认的提示框
-     * @param permissions 权限
-     */
-    public void requstPermissions(int requsetCode,boolean useRationale,String... permissions) {
-        //添加使用Hash过滤一遍重复的
-        HashSet<String> objects = new HashSet<>();
-        for (String per : permissions) {
-            objects.add(per);
-        }
-        requstPermissions(requsetCode,useRationale,null,permissionListener,new ArrayList<String>(objects){});
+     public void  permissionGrantedResult(List<String> permissions ){
+
+     }
+    public void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        permissionGrantedResult(permissions);
+                    }
+                })
+                .onDenied(new Action() {
+                    @Override
+                    public void onAction(@NonNull List<String> permissions) {
+                        if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
+                            mSetting.showSetting(permissions);
+                        }else {
+                            toast(R.string.failure_permission);
+                        }
+                    }
+                })
+                .start();
     }
 
-    /**
-     * 请求权限(自定义Rationale,回调用我的)
-     * @param requsetCode
-     * @param userRationale
-     * @param permissions
-     */
-    public void requstPermissions(RationaleListener userRationale,int requsetCode,String... permissions) {
-        //添加使用Hash过滤一遍重复的
-       HashSet<String> objects = new HashSet<>();
-        for (String per : permissions) {
-            objects.add(per);
-        }
-        requstPermissions(requsetCode,false,userRationale,permissionListener,new ArrayList<String>(objects){});
-   }
-    /***
-     * 请求权限(自定义的Rationale和回调)
-     * @param requsetCode 请求码
-     * @param userRationale 用户自定义Rationale (null则不进行设置Rationale包括我提供的)
-     * @param permissionListener 权限结果回调(null则就是我的,如果不是permissionListener那么就是注解方式回调自己写注解)
-     * @param permissions  权限
-     */
-    public void requstPermissions(RationaleListener userRationale, Object permissionListener ,int requsetCode, String... permissions) {
-        HashSet<String> objects = new HashSet<>();//添加使用Hash过滤一遍重复的
-        for (String per : permissions) {
-            objects.add(per);
-        }
-        requstPermissions(requsetCode,false,userRationale,permissionListener,new ArrayList<String>(objects){});
+
+    private void requestPermission(String[]... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        permissionGrantedResult(permissions);
+                    }
+                })
+                .onDenied(new Action() {
+                    @Override
+                    public void onAction(@NonNull List<String> permissions) {
+                        if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
+                            mSetting.showSetting(permissions);
+                        }else {
+                            toast(R.string.failure_permission);
+                        }
+                    }
+                })
+                .start();
     }
 
-    /** 请求权限 (是否使用默认Rationale和自定义回调)
-     * @param requsetCode 请求码
-     * @param useDefaultRationale 是否使用我提供的Rationale,
-     * @param permissionListener   你的回调(如果是null则用我的)
-     * @param permissions 权限
-     */
-    public void requstPermissions(int requsetCode, Object permissionListener , boolean useDefaultRationale, String... permissions) {
-        //添加使用Hash过滤一遍重复的
-        HashSet<String> objects = new HashSet<>();
-        for (String per : permissions) {
-            objects.add(per);
-        }
-        requstPermissions(requsetCode,useDefaultRationale,null,permissionListener,new ArrayList<String>(objects){});
-    }
-    /**
-     * 最终进行权限请求的方方法(如果不设置Rationale,默认的给flase,rationale给null)
-     * @param requsetCode 请求码
-     * @param permissions 权限
-     * @param useDefaultRationale 是否使用默认的Rationale
-     * @param rationale 用户的 rationale
-     * @param permissionListener 用户的结果回调(为什么是Object因为用户使用注解进行的时候方便)如果为空就用我的
-     */
-    public void requstPermissions(int requsetCode,boolean useDefaultRationale,RationaleListener rationale,Object permissionListener,List<String> permissions) {
-//        String[] tempPermission = permissionList.toArray(new String[]{});//关键语句
-        if (!hasPermission(permissions)) {
-            Request mRequest = AndPermission.with(this);
-            mRequest.requestCode(requsetCode);
-            mRequest.permission(permissions.toArray(new String[]{}));
-            //这里不进行null检查,如果是null那么用户有可能自己进行注解方式回调
-            if (permissionListener!=null){
-                mRequest.callback(permissionListener);
-            }else {
-                mRequest.callback(this.permissionListener);
-            }
-            //用户自定义接管对话框
-            if (rationale!=null){
-                mRequest.rationale(rationale);
-                //使用我们自己默认的
-            }else if (useDefaultRationale){
-                mRequest.rationale(rationaleListener);
-            }
-            mRequest.start();
-        }else if (permissionListener==null){
-         permissionResult(true,requsetCode,permissions);
-        }
-    }
-//-------------------权限请求-------------------
-    /**
-     * 检查是否有权限
-     * @param permissions
-     * @return
-     */
-    public boolean hasPermission(String... permissions) {
-        return AndPermission.hasPermission(this, permissions);
-    }
-    /**
-     * 检查是否有权限
-     * @param permissions
-     * @return
-     */
-    public boolean hasPermission(List permissions) {
-        return AndPermission.hasPermission(this, permissions);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==goToSetting){
-            boolean b = hasPermission(new ArrayList(gotoSettingPermission.get(requestCode)));
-            ArrayList arrayList = new ArrayList(gotoSettingPermission.get(requestCode));
-            //移除
-            gotoSettingPermission.remove(requestCode);
-            if (b){
-                permissionResult(true,requestCode,arrayList);
-            }else {
-                permissionResult(false,requestCode,arrayList);
-            }
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
     //----------------------页面管理------------------------------
     /**
      * 禁止截屏
@@ -518,7 +291,8 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
         permissionSet.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         requestQueue = NoHttp.newRequestQueue();
         dLog(TAG + "-->onCreate()");
-//        requstPermissions(MUSTPERMISSIONCODE,new ArrayList<String>(permissionList),true);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(this);
     }
     @Override
     protected void onResume() {
@@ -631,7 +405,7 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
      * @return
      */
     public <T extends View> T idSetOnClick(@IdRes int resId) {
-        T viewById = (T) super.findViewById(resId);
+        T viewById = super.findViewById(resId);
          if (useButterKnife){
             wLog("idSetOnClick提示：\n" +
                     "ButterKnife和idsetConclick同时使用了\n" +

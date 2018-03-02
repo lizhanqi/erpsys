@@ -6,14 +6,8 @@ import android.view.View;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.fragment.ContactsFragment;
 
-import java.util.List;
-
 public class ContactsActivity extends ImmersedBaseActivity {
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

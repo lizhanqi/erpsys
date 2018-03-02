@@ -6,17 +6,11 @@ import android.view.View;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
-import java.util.List;
-
 /**
  * 服务详情
  */
 public class ServiceDetailsActivity extends ImmersedBaseActivity {
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-        setTitle("服务详情");
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

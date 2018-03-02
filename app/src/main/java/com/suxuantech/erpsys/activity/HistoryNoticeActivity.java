@@ -14,7 +14,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,10 +25,6 @@ public class HistoryNoticeActivity extends ImmersedBaseActivity {
     @BindView(R.id.rotate_header_grid_view_frame)
     PtrClassicFrameLayout mRotateHeaderGridViewFrame;
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

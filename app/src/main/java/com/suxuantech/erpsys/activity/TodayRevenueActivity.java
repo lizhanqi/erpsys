@@ -15,7 +15,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,9 +60,6 @@ public class TodayRevenueActivity extends ImmersedBaseActivity {
     @BindView(R.id.head_nav_use_defined_root)
     View head;
 
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-    }
 
     @SuppressLint("ResourceType")
     @Override

@@ -7,13 +7,7 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 
-import java.util.List;
-
 public class NoticeDetailActivity extends ImmersedBaseActivity {
-    @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
 
     /**
      * 通知详情

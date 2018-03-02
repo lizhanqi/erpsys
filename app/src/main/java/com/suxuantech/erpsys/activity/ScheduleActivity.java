@@ -132,16 +132,11 @@ public class ScheduleActivity extends ImmersedBaseActivity {
     };
 
     @Override
-    protected void permissionResult(boolean hasPermission, int requsetcode, List<String> permission) {
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         initView();
-        SwipeMenuRecyclerView mRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.rvScheduleList);
+        SwipeMenuRecyclerView mRecyclerView = findViewById(R.id.rvScheduleList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.useDefaultLoadMore();
         mRecyclerView.loadMoreFinish(false, true);
@@ -159,7 +154,7 @@ public class ScheduleActivity extends ImmersedBaseActivity {
         mRecyclerView.setSwipeMenuItemClickListener(mMenuItemClickListener);
         mRecyclerView.setItemViewSwipeEnabled(false);
         mRecyclerView.setAdapter(groupAdaputer);
-        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_grid_view_frame);
+        mPtrFrame = findViewById(R.id.rotate_header_grid_view_frame);
         mPtrFrame.setMinimumHeight(100);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -206,12 +201,12 @@ public class ScheduleActivity extends ImmersedBaseActivity {
         }
     };
     private void initView() {
-        weekCalendarView = (WeekCalendarView) findViewById(R.id.week_calendar);
+        weekCalendarView = findViewById(R.id.week_calendar);
 
-        monthCalendarView = (MonthCalendarView) findViewById(R.id.month_calendar);
+        monthCalendarView = findViewById(R.id.month_calendar);
         monthCalendarView.setTodayToView();
 
-        schedule_layout = (ScheduleLayout) findViewById(R.id.schedule_layout);
+        schedule_layout = findViewById(R.id.schedule_layout);
         schedule_layout.setOnCalendarClickListener(new OnCalendarClickListener() {
             @Override
             public void onClickDate(int year, int month, int day) {
