@@ -11,27 +11,10 @@ clickable是防止页面穿透的点击事件的
     android:clickable="true"
     android:background="@color/white"
     tools:context="com.suxuantech.erpsys.fragment.WorkFragment">
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_centerInParent="true"
-        android:id="@+id/tv_fm"
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/rv_works"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/work" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_fm2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tv_fm"
-        android:layout_marginTop="50dp"
-        android:text="******链接2*****" />
-
-
-    <TextView
-        android:id="@+id/tv_fm3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="==========链接3=============" />
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
 </RelativeLayout>

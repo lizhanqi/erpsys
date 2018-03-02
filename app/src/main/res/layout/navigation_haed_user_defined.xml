@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/head_nav_use_defined_root"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="@dimen/px144">
     <com.suxuantech.erpsys.views.AdjustDrawableTextView
             android:paddingRight="@dimen/px55"

@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -219,11 +220,20 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     }
 
     //-----------方式一------
+    @SuppressLint("ResourceAsColor")
     private void selectedFragment(int position) {
-        if (position!=0){
-            hideToolbar();
+//        if (position!=0){
+//            hideToolbar();
+//        }
+        if (position==2||position==4) {
+            hideUserDefinedNav();
+        }else {
+            showUserDefinedNav();
+            setUseDefinedNavLeftDrawable(null);
+            getHeadNavUseDefinedRootView().setBackground(null);
+            getHeadNavUseDefinedRootView().setBackgroundColor(R.color.white);
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
             case 0:
@@ -233,9 +243,11 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 } else {
                     transaction.show(mConversationListFragment);
                 }
-                setSupportToolbar();
-                getToolbar().setTitle("我的会话");
-                getToolbar().setBackground(null);
+
+                setTitle("我的会话");
+//                setSupportToolbar();
+//                getToolbar().setTitle("我的会话");
+//                getToolbar().setBackground(null);
                 break;
             case 1:
                 if (workFragment == null) {
@@ -243,6 +255,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                     transaction.add(R.id.main_content, workFragment);
                 } else
                     transaction.show(workFragment);
+                setTitle("OA办公");
                 break;
 
             case 3:
@@ -251,6 +264,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 transaction.add(R.id.main_content, contactsFragment);
                 } else
                     transaction.show(contactsFragment);
+                setTitle("联系人");
                 break;
 
             case 2:
@@ -278,13 +292,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
         }
         transaction.commit();
-        if (position!=3){
-            hideUserDefinedNav();
-        }else {
-            showUserDefinedNav();
-            setUseDefinedNavLeftDrawable(null);
-            setTitle("通讯录");
-        }
     }
     private void hideFragment(FragmentTransaction transaction) {
         if (mConversationListFragment != null)
