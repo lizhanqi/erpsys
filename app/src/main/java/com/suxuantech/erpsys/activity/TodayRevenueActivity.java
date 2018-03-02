@@ -95,11 +95,6 @@ public class TodayRevenueActivity extends ImmersedBaseActivity {
     }
 
     @Override
-    protected void widgetClick(View v) {
-
-    }
-
-    @Override
     @OnClick({R.id.tv_nav_left, R.id.tv_nav_title, R.id.tv_nav_right, R.id.v_line})
     public void onClick(View v) {
         switch (v.getId()) {

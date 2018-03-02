@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -338,12 +337,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
         //startFragment(ERPFragment.class);
-    }
-    @Override
-    protected void widgetClick(View v) {
-        switch (v.getId()) {
-            default:
-        }
     }
     public  void netsBeanSample() {
         String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";

@@ -39,9 +39,6 @@ public class ServiceDetailListActivity extends ImmersedBaseActivity {
         setUseDefinedNavTitle("11111");
         init();
     }
-    @Override
-    protected void widgetClick(View v) {
-    }
     private void init() {
         mRotateHeaderGridViewFrame.setRatioOfHeaderHeightToRefresh(1.2f);
         mRotateHeaderGridViewFrame.setDurationToClose(200);

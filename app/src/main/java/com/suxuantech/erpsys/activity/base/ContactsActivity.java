@@ -19,7 +19,7 @@ public class ContactsActivity extends ImmersedBaseActivity {
     }
 
     @Override
-    protected void widgetClick(View v) {
+    public void widgetClick(View v) {
         finish();
     }
 }

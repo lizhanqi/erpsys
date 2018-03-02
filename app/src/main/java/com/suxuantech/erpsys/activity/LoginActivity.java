@@ -118,11 +118,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 //        mLoginFormView = findViewById(R.id.login_form);
     }
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
-
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;

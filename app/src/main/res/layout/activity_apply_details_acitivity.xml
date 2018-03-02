@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/translucent_black_95"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.ApplyDetailsAcitivity">
+    <LinearLayout
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/px20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_approvals"
+            android:layout_width="392dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:text="审批进度" />
+        <View style="@style/line"/>
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
+  <LinearLayout
+      android:layout_marginTop="@dimen/px30"
+      android:background="@android:color/white"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:textColor="@color/textHint_99"
+              android:padding="@dimen/px30"
+              android:text="请假类型"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:text="病假"
+              android:padding="@dimen/px30"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:textColor="@color/textHint_99"
+              android:padding="@dimen/px30"
+              android:text="开始时间"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:text="2018/03/06"
+              android:padding="@dimen/px30"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:textColor="@color/textHint_99"
+              android:padding="@dimen/px30"
+              android:text="结束时间"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:text="2018/03/06"
+              android:padding="@dimen/px30"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:textColor="@color/textHint_99"
+              android:padding="@dimen/px30"
+              android:text="请假时长\n(小时)"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:text="病假"
+              android:padding="@dimen/px30"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+      </LinearLayout>
+      <LinearLayout
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:textColor="@color/textHint_99"
+              android:padding="@dimen/px30"
+              android:text="请假事由"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:maxLines="3"
+              android:text="吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast吧啦吧啦一大堆,管他什么理由呢,fast"
+              android:padding="@dimen/px30"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+      </LinearLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/px30"
+            android:text="抄送"
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View style="@style/line"/>
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
+</LinearLayout>

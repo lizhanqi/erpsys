@@ -302,7 +302,7 @@
 
     <string name="layout_dialog_loading">正在加载</string>
 
-<!--权限的-->
+    <!--权限的-->
     <string name="setting">设置</string>
     <string name="resume">继续</string>
     <string name="ok">好</string>

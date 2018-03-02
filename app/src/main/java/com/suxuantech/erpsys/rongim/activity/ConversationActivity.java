@@ -44,7 +44,7 @@ public class ConversationActivity extends ImmersedBaseActivity {
     }
 
     @Override
-    protected void widgetClick(View v) {
+    public void widgetClick(View v) {
         if (v.getId()==R.id.tv_nav_left){
             finish();
         }

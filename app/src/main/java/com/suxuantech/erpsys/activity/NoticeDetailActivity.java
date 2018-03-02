@@ -28,7 +28,7 @@ public class NoticeDetailActivity extends ImmersedBaseActivity {
     }
 
     @Override
-    protected void widgetClick(View v) {
+     public  void widgetClick(View v) {
         switch (v.getId()){
             case  R.id.tv_nav_left:
               finish();

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.suxuantech.erpsys.R;
@@ -95,10 +94,5 @@ public class SplashScreenActivity extends BaseActivity {
                 alertDialog.show();
             }
         }
-    }
-
-    @Override
-    protected void widgetClick(View v) {
-
     }
 }

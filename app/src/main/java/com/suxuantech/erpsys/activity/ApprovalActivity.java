@@ -101,16 +101,13 @@ public class ApprovalActivity extends ImmersedBaseActivity {
         };
     }
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
     @OnClick({R.id.tv_apply_my, R.id.tv_approval_my, R.id.tv_cc_me, R.id.ll_apply_common, R.id.rv_apply_for, R.id.rv_apply_other, R.id.ll_apply_other})
     public void onClicks(View v) {
         switch (v.getId()) {
             default:
                 break;
             case R.id.tv_apply_my:
+                startActivity(ApplyDetailsAcitivity.class);
                 break;
             case R.id.tv_approval_my:
                 break;

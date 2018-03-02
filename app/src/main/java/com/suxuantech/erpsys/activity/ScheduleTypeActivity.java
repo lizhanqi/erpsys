@@ -1,7 +1,6 @@
 package com.suxuantech.erpsys.activity;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
@@ -24,8 +23,4 @@ public class ScheduleTypeActivity extends ImmersedBaseActivity {
         useButterKnife();
     }
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
 }

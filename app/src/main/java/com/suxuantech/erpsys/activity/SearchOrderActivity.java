@@ -141,11 +141,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         hideUserDefinedNav();
     }
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
-
     private void initView() {
         mTvNearlySearch.setDrawableRightClick(new TextViewDrawableClickView.DrawableRightClickListener() {
             @Override

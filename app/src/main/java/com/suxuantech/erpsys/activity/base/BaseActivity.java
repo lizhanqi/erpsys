@@ -97,7 +97,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  *  那么必须在该页面一定要有一个方法用来接收消息，
  *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
-public abstract class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity {
+public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity {
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
 
     /**
@@ -511,7 +511,7 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
      * view点击事件
      * @param v 点击的view
      */
-     protected abstract void widgetClick(View v);
+     public  void widgetClick(View v){}
 
     /**
      * 多少毫秒以内的点击同一个View都是快速点击

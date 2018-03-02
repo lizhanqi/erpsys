@@ -125,10 +125,6 @@ public class OrderServiceActivity extends ImmersedBaseActivity {
             }
         });
     }
-    @Override
-    protected void widgetClick(View v) {
-
-    }
 
     @Override
     @OnClick({R.id.tv_store_name, R.id.customer_id, R.id.tv_order_type, R.id.tv_subscribe_date, R.id.tv_consume_type, R.id.et_man_name, R.id.et_woman_name, R.id.tv_customer_source, R.id.tv_customer_zone, R.id.tv_order_receiving_site, R.id.tv_outlets_reception, R.id.tv_reception, R.id.et_outlets_for_three, R.id.tv_card_number, R.id.tv_member_type, R.id.et_man_phone, R.id.et_woman_phone, R.id.tv_manager, R.id.tv_support_staff, R.id.tv_engagement_date, R.id.tv_marriage_date, R.id.et_customer_remarks, R.id.img_fold, R.id.et_say_something,  R.id.btn_start_service, R.id.service_complete})

@@ -108,7 +108,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         outletsOrderPresenter.getOrderNum();
     }
     @Override
-    protected void widgetClick(View v) {
+    public void widgetClick(View v) {
         switch (v.getId()) {
             default:
                 break;

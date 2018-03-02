@@ -63,12 +63,6 @@ public class HistoryNoticeActivity extends ImmersedBaseActivity {
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
 
     }
-
-    @Override
-    protected void widgetClick(View v) {
-
-    }
-
     @Override
     @OnClick({R.id.recycler_view, R.id.rotate_header_grid_view_frame})
     public void onClick(View v) {

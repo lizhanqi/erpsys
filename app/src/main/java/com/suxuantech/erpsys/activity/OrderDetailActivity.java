@@ -76,7 +76,7 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
     }
     private SupportFragment[] mFragments = new SupportFragment[5];
     @Override
-    protected void widgetClick(View v) {
+    public void widgetClick(View v) {
         switch (v.getId()){
             case R.id.tv_nav_title:
                 showpopupwindow();

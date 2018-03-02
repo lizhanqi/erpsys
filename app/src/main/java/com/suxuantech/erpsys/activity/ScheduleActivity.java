@@ -188,10 +188,6 @@ public class ScheduleActivity extends ImmersedBaseActivity {
         }, 100);
     }
 
-    @Override
-    protected void widgetClick(View v) {
-
-    }
 
     BingText bt = new BingText() {
 

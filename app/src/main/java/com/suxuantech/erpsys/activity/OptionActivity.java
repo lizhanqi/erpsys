@@ -94,7 +94,7 @@ public class OptionActivity extends ImmersedBaseActivity {
     private BaseRecyclerAdapter<ProductBean.DataBean> productAdapter;
 
     @Override
-    protected void widgetClick(View v) {
+    public void widgetClick(View v) {
         switch (v.getId()){
             default:
             case R.id.tv_nav_right://多选确定时候关闭页面的

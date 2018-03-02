@@ -95,8 +95,6 @@ public class WorkScheduleActivity extends ImmersedBaseActivity {
     }
 
     @Override
-    protected void widgetClick(View v) {
-    }
     @OnClick({R.id.tv_in_service, R.id.month_calendar, R.id.week_calendar, R.id.rvScheduleList, R.id.rotate_header_grid_view_frame, R.id.rlScheduleList, R.id.schedule_layout})
     public void onClick(View v) {
         switch (v.getId()) {
