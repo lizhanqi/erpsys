@@ -3,11 +3,16 @@ package com.suxuantech.erpsys.activity.base;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.AppOpsManagerCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -27,6 +32,7 @@ import com.yanzhenjie.permission.Rationale;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -183,6 +189,38 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
                     }
                 })
                 .start();
+    }
+
+
+    /**
+     * Check if the calling context has a set of permissions.
+     *
+     * @param permissions one or more permissions.
+     * @return true, other wise is false.
+     */
+    public   boolean hasPermission(  @NonNull String... permissions) {
+        return hasPermission(Arrays.asList(permissions));
+    }
+
+    /**
+     * Check if the calling context has a set of permissions.
+     *
+     * @param permissions one or more permissions.
+     * @return true, other wise is false.
+     */
+    public  boolean hasPermission(  @NonNull List<String> permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(this, permission);
+            if (result == PackageManager.PERMISSION_DENIED) return false;
+
+            String op = AppOpsManagerCompat.permissionToOp(permission);
+            if (TextUtils.isEmpty(op)) continue;
+            result = AppOpsManagerCompat.noteProxyOp(this, op, this.getPackageName());
+            if (result != AppOpsManagerCompat.MODE_ALLOWED) return false;
+
+        }
+        return true;
     }
 
     //----------------------页面管理------------------------------
@@ -579,5 +617,6 @@ public abstract class BaseActivity extends SupportActivity implements View.OnCli
     public boolean swipeBackPriority() {
         return mDelegate.swipeBackPriority();
     }
+
 
 }
