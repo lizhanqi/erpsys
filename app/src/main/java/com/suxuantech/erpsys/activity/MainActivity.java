@@ -231,7 +231,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             showUserDefinedNav();
             setUseDefinedNavLeftDrawable(null);
             getHeadNavUseDefinedRootView().setBackground(null);
-            getHeadNavUseDefinedRootView().setBackgroundColor(R.color.white);
         }
          FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);

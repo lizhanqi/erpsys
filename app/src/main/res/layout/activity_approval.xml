@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.activity.ApprovalActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:drawablePadding="@dimen/px35"
+            android:padding="@dimen/px50"
+            android:id="@+id/tv_apply_my"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_my_head"
+            android:text="我的申请"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:drawablePadding="@dimen/px35"
+            android:padding="@dimen/px50"
+            android:id="@+id/tv_approval_my"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/icon_my_head"
+            android:text="我的审批"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView    android:padding="@dimen/px50"
+            android:id="@+id/tv_cc_me"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/px35"
+            android:drawableTop="@drawable/icon_my_head"
+            android:text="抄送给我"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/ll_apply_common"
+            android:padding="@dimen/px20"
+            android:background="@color/translucent_black_80"
+            android:layout_weight="1"
+            android:text="常用申请"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:padding="@dimen/px20"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/rv_apply_for"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_apply_other"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:padding="@dimen/px20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/translucent_black_80"
+            android:text="其他申请" />
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:padding="@dimen/px20"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/rv_apply_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
+</LinearLayout>
+    </android.support.v4.widget.NestedScrollView>

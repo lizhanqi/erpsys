@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -146,7 +147,7 @@ public class WorkFragment extends SupportFragment {
         mRvWorks = (SwipeMenuRecyclerView) view.findViewById(R.id.rv_works);
         Set<String> strings1 = strings.keySet();
         ArrayList<String> strings2 = new ArrayList<>(strings1);
-        new BaseRecyclerAdapter<String>(mRvWorks, strings2, R.layout.item_work) {
+        BaseRecyclerAdapter baseRecyclerAdapter=  new BaseRecyclerAdapter<String>(mRvWorks, strings2, R.layout.item_work) {
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
                 CardView cardView = holder.getView(R.id.cardview);
@@ -155,6 +156,17 @@ public class WorkFragment extends SupportFragment {
                 textView.setText(item);
             }
         };
+
+        baseRecyclerAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Object data, int position) {
+                Intent intent = new Intent();
+                intent.setAction("com.suxuantech.action.VIEW"); //对应于action
+//                intent.addCategory("android.intent.category.DEFAULT");//对应于category
+//                intent.setData(Uri.parse("suxuantech:"));//对应于data下的scheme(rocky)
+                getActivity().startActivity(intent);
+            }
+        });
     }
 /*    @Override
     protected void widgetClick(View v) {
