@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.text.TextPaint;
 
 /**
  * ......................我佛慈悲....................
@@ -167,6 +170,46 @@ public class Text2Bitmap {
 
         return Color.argb(0xff,red,green,blue);
     }
+    public static Bitmap getNewBitMap(@NonNull String text,@ColorInt int color,int bitmapHeight ) {
+        int height = bitmapHeight, width = bitmapHeight;
+        Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawBitmap(newBitmap, 0, 0, null);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(height * 2 /5);
+        textPaint.setColor(color);
+        canvas.translate((width-textPaint.measureText(text))/2, height/2+textPaint.measureText(text)/3/text.length());
+        canvas.drawText(text, 0, 0, textPaint);
+        return newBitmap;
+    }
+
+    public static Bitmap getNewBitMap(@NonNull String text,@ColorInt int color) {
+        return getNewBitMap(text,color,150);
+    }
+    public static Bitmap getNameBitMap(@NonNull String text, @ColorInt int color) {
+        if (text.length() >= 3) {
+            text= text.substring(text.length() - 2,text.length());
+        } else if (text.length() == 2) {
+            text= text.substring(text.length() - 1,text.length());
+        } else  {
+            text= text.substring(0);
+        }
+        return getNewBitMap(text,color);
+    }
+
+    public static Bitmap getNameBitMap(@NonNull String text, @ColorInt int color,int bitmapHeight ) {
+        if (text.length() >= 3) {
+            text= text.substring(text.length() - 2,text.length());
+        } else if (text.length() == 2) {
+            text= text.substring(text.length() - 1,text.length());
+        } else  {
+            text= text.substring(0);
+        }
+        return getNewBitMap(text,color,bitmapHeight);
+    }
+
+
 
     private static  void log(String log)
     {

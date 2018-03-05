@@ -157,7 +157,9 @@
                 <!-- android:scheme="suxuantech" /> -->
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ApplyDetailsAcitivity"></activity>
+        <activity android:name=".activity.ApplyDetailsAcitivity" />
+        <activity android:name=".LeaveRequestActivity" />
+        <activity android:name=".activity.MyApproveActivity"></activity>
     </application>
 
 </manifest>

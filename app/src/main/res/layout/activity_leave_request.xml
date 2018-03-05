@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/translucent_black_95"
+    tools:context="com.suxuantech.erpsys.LeaveRequestActivity">
+    <Button
+        android:id="@+id/btn_submint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30px"
+        android:background="@color/themeColor"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/xs44" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_above="@id/btn_submint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_leave_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:id="@+id/tv_leave_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_asterisk"
+                android:drawablePadding="@dimen/px30"
+                android:text="请假类型" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/arrows_right_gray" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_leave_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+                <TextView
+                    android:id="@+id/tv_leave_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_asterisk"
+                    android:drawablePadding="@dimen/px30"
+                    android:text="开始时间" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/arrows_right_gray" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+                <TextView
+                    android:id="@+id/tv_leave_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_asterisk"
+                    android:drawablePadding="@dimen/px30"
+                    android:text="结束时间" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/arrows_right_gray" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+                <TextView
+                    android:id="@+id/tv_leave_sum_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_asterisk"
+                    android:drawablePadding="@dimen/px30"
+                    android:text="时长(小时)" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/arrows_right_gray" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:background="@color/white"
+            android:id="@+id/ll_leave_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:padding="@dimen/px30"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_leave_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_asterisk"
+                android:drawablePadding="@dimen/px30"
+                android:text="请假事由" />
+
+            <EditText
+                android:gravity="left"
+                android:id="@+id/et_leave_reason"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px350"
+                android:background="@null"
+                android:drawablePadding="@dimen/px30"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:text="开始时间" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:id="@+id/ll_leave_flow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+            <TextView
+                android:id="@+id/tv_leave_flow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_asterisk"
+                android:drawablePadding="@dimen/px30"
+                android:text="审批流程" />
+            <LinearLayout
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_marginRight="@dimen/px30"
+                        android:background="@drawable/sl_butn_gray_theme"
+                        android:id="@+id/image_flow_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+            <TextView
+                android:drawablePadding="30px"
+                android:text="dehua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/arrows_right_gray" />
+            </LinearLayout>
+        </LinearLayout>
+        <include layout="@layout/in_cc"/>
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

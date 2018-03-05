@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.suxuantech.erpsys.LeaveRequestActivity;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
@@ -110,8 +111,10 @@ public class ApprovalActivity extends ImmersedBaseActivity {
                 startActivity(ApplyDetailsAcitivity.class);
                 break;
             case R.id.tv_approval_my:
+                startActivity(LeaveRequestActivity.class);
                 break;
             case R.id.tv_cc_me:
+                startActivity(MyApproveActivity.class);
                 break;
             case R.id.ll_apply_common:
                 break;

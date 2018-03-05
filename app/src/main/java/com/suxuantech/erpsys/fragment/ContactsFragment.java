@@ -1,11 +1,8 @@
 package com.suxuantech.erpsys.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +20,7 @@ import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.bean.ContactBean;
 import com.suxuantech.erpsys.utils.GlideRoundTransform;
+import com.suxuantech.erpsys.utils.Text2Bitmap;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -50,22 +48,7 @@ public class ContactsFragment extends SupportFragment {
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
-    public Bitmap getNewBitMap(String text) {
-        int height = 400, width = 400;
-        Bitmap newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(newBitmap);
-        canvas.drawBitmap(newBitmap, 0, 0, null);
-        TextPaint textPaint = new TextPaint();
-        textPaint.setAntiAlias(true);
-        textPaint.setTextSize(height * 2 /5);
-//        if (text.length()>1){
-//            textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-//        }
-        textPaint.setColor(getResources().getColor(R.color.white));
-        canvas.translate((width-textPaint.measureText(text))/2, height/2+textPaint.measureText(text)/3/text.length());
-        canvas.drawText(text, 0, 0, textPaint);
-        return newBitmap;
-    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -100,15 +83,9 @@ public class ContactsFragment extends SupportFragment {
                 TextView contanTextView = holder.getView(R.id.tv_contact_name);
                 contanTextView.setText(item.getName());
                 if (android.text.TextUtils.isEmpty(item.getHead())&&!android.text.TextUtils.isEmpty(item.getName())) {
-                    if (item.getName().toString().length() >= 3) {
-                        imagHead.setImageBitmap(getNewBitMap(item.getName().substring(item.getName().length() - 2, item.getName().length())));
-                    } else if (item.getName().toString().length() == 2) {
-                        imagHead.setImageBitmap(getNewBitMap(item.getName().substring(item.getName().length() - 1, item.getName().length())));
-                    } else  {
-                        imagHead.setImageBitmap(getNewBitMap(item.getName().substring(0)));
-                    }
+                    imagHead.setImageBitmap(Text2Bitmap.getNameBitMap(item.getName(),getResources().getColor(R.color.white)));
                 }else  if (android.text.TextUtils.isEmpty(item.getHead())&&android.text.TextUtils.isEmpty(item.getName())){
-                    imagHead.setImageBitmap(getNewBitMap("未知"));
+                    imagHead.setImageBitmap(Text2Bitmap.getNewBitMap("未知",getResources().getColor(R.color.white)));
                 }else {
                     RequestOptions options2 = new RequestOptions()
                             .centerCrop()

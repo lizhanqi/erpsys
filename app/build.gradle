@@ -137,6 +137,7 @@ dependencies {
     compile 'com.github.huzenan:EasyTransition:v1.0.0'
     /*通讯录侧边滑动*/
     compile 'me.yokeyword:indexablerecyclerview:1.3.0'
+    compile 'com.github.chaychan:BottomBarLayout:1.1.1' //建议使用最新版本
     compile project(':IMLib')
     compile project(':IMKit')
 }

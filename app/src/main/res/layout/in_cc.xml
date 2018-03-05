@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="@dimen/px30"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="@dimen/px30"
+            android:text="抄送"
+            android:drawableRight="@drawable/arrows_right_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View style="@style/line"/>
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:paddingTop="@dimen/px30"
+            android:paddingBottom="@dimen/px30"
+            android:id="@+id/rv_cc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
