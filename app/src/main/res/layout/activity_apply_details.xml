@@ -111,7 +111,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" />
 
-          <com.suxuantech.erpsys.views.ScrollTextView
+          <com.suxuantech.erpsys.widget.ScrollTextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:maxLines="3"

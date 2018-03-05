@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -83,5 +83,5 @@ public class TextViewDrawableClickView extends AdjustDrawableTextView {
         }
         return super.onTouchEvent(event);
 
-    } ;
+    }
 }

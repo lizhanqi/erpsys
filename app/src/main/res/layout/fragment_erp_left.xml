@@ -125,7 +125,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <com.suxuantech.erpsys.views.MarqueTextView
+                                <com.suxuantech.erpsys.widget.MarqueTextView
                                     android:id="@+id/tv_info"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -242,7 +242,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_marginTop="@dimen/px40"
                                     android:gravity="center">
 
-                                    <com.suxuantech.erpsys.views.WaveView
+                                    <com.suxuantech.erpsys.widget.WaveView
                                         android:id="@+id/schedule_wave"
                                         android:layout_width="@dimen/px282"
                                         android:layout_height="@dimen/px282"
@@ -296,7 +296,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_marginTop="@dimen/px40"
                                     android:gravity="center">
 
-                                    <com.suxuantech.erpsys.views.WaveView
+                                    <com.suxuantech.erpsys.widget.WaveView
                                         android:id="@+id/task_wave"
                                         android:layout_width="@dimen/px282"
                                         android:layout_height="@dimen/px282"

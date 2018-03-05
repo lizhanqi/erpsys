@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.widget;
 
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;

@@ -26,7 +26,7 @@ import com.suxuantech.erpsys.presenter.connector.IOutletsOrderPresenter;
 import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
-import com.suxuantech.erpsys.views.AdjustDrawableTextView;
+import com.suxuantech.erpsys.widget.AdjustDrawableTextView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

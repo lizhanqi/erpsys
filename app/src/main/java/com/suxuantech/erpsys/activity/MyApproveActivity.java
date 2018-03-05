@@ -12,7 +12,7 @@ import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
-import com.suxuantech.erpsys.views.OneKeyClearAutoCompleteText;
+import com.suxuantech.erpsys.widget.OneKeyClearAutoCompleteText;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;

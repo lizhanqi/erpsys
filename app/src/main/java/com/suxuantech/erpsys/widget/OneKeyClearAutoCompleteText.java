@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -66,7 +66,7 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
         mLeftDrawable = getCompoundDrawables()[0];
         mClearDrawable = getCompoundDrawables()[2];// 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
         if (mClearDrawable == null) {
-            mClearDrawable =  ContextCompat.getDrawable(context,R.drawable.icon_clear);;
+            mClearDrawable =  ContextCompat.getDrawable(context,R.drawable.icon_clear);
         }
         DrawableCompat.setTint(mClearDrawable, colorAccent);//设置删除按钮的颜色和TextColor的颜色一致
         mClearDrawable.setBounds(0, 0, (int) getTextSize(), (int) getTextSize());//设置Drawable的宽高和TextSize的大小一致

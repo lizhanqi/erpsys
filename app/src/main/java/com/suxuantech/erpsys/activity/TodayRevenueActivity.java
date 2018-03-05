@@ -10,7 +10,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
-import com.suxuantech.erpsys.views.AdjustDrawableTextView;
+import com.suxuantech.erpsys.widget.AdjustDrawableTextView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 

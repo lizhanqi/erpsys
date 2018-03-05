@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px144">
-    <com.suxuantech.erpsys.views.AdjustDrawableTextView
+    <com.suxuantech.erpsys.widget.AdjustDrawableTextView
              android:layout_weight="0"
             android:paddingRight="@dimen/px55"
             android:paddingLeft="@dimen/px55"
@@ -19,7 +19,7 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
-    <com.suxuantech.erpsys.views.OneKeyClearAutoCompleteText
+    <com.suxuantech.erpsys.widget.OneKeyClearAutoCompleteText
         android:singleLine="true"
         android:imeOptions="actionSearch"
         android:paddingRight="@dimen/px10"
@@ -38,7 +38,7 @@
         android:id="@+id/tiet_nav_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <com.suxuantech.erpsys.views.AdjustDrawableTextView
+    <com.suxuantech.erpsys.widget.AdjustDrawableTextView
         android:layout_weight="0"
         android:id="@+id/tv_nav_search_right"
         android:layout_width="wrap_content"

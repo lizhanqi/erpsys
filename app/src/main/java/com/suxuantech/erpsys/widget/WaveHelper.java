@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

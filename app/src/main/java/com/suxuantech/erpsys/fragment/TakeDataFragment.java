@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.adapter.RecyclerHolder;
-import com.suxuantech.erpsys.views.DefaultItemDecoration;
+import com.suxuantech.erpsys.widget.DefaultItemDecoration;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;

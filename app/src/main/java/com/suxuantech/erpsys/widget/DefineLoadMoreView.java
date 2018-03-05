@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.views;
+package com.suxuantech.erpsys.widget;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -59,8 +59,8 @@ public class DefineLoadMoreView  extends LinearLayout implements SwipeMenuRecycl
         setMinimumHeight(minHeight);
 
         inflate(context, R.layout.layout_fotter_loadmore, this);
-        mLoadingView = (LoadingView) findViewById(R.id.loading_view);
-        mTvMessage = (TextView) findViewById(R.id.tv_message);
+        mLoadingView = findViewById(R.id.loading_view);
+        mTvMessage = findViewById(R.id.tv_message);
 
         int color1 = ContextCompat.getColor(getContext(), R.color.colorPrimary);
         int color2 = ContextCompat.getColor(getContext(), R.color.colorPrimaryDark);

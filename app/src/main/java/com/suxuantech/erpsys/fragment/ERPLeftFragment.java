@@ -20,8 +20,8 @@ import com.suxuantech.erpsys.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.dialog.NoticeDialog;
 import com.suxuantech.erpsys.utils.ScreenUtils;
-import com.suxuantech.erpsys.views.WaveHelper;
-import com.suxuantech.erpsys.views.WaveView;
+import com.suxuantech.erpsys.widget.WaveHelper;
+import com.suxuantech.erpsys.widget.WaveView;
 
 import butterknife.BindView;
 import butterknife.OnClick;

@@ -7,7 +7,7 @@ android:clickable="true"
 clickable是防止页面穿透的点击事件的
 -->
 
-<com.suxuantech.erpsys.views.BounceScrollView
+<com.suxuantech.erpsys.widget.BounceScrollView
     android:id="@+id/dampView"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -358,4 +358,4 @@ clickable是防止页面穿透的点击事件的
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
-</com.suxuantech.erpsys.views.BounceScrollView>
+</com.suxuantech.erpsys.widget.BounceScrollView>

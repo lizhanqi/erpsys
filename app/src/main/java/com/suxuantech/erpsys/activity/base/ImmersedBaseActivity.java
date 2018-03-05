@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.views.AdjustDrawableTextView;
+import com.suxuantech.erpsys.widget.AdjustDrawableTextView;
 
 /**
  * ......................我佛慈悲....................
