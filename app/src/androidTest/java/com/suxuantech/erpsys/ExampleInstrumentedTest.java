@@ -2,7 +2,7 @@ package com.suxuantech.erpsys;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.suxuantech.erpsys.bean.DistrictBean;
+import com.suxuantech.erpsys.beans.DistrictBean;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.utils.L;

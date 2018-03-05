@@ -13,7 +13,7 @@ clickable是防止页面穿透的点击事件的
     android:id="@+id/container_erp"
     android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.suxuantech.erpsys.fragment.ERPFragment">
+    tools:context=".ui.fragment.ERPFragment">
     <RadioGroup
         android:id="@+id/rg_vp"
         android:layout_alignParentBottom="true"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/myBackground_f7"
-    tools:context="com.suxuantech.erpsys.activity.TodayRevenueActivity">
+    tools:context=".ui.activity.TodayRevenueActivity">
     <include layout="@layout/navigation_haed_user_defined"></include>
     <LinearLayout
         android:gravity="center"

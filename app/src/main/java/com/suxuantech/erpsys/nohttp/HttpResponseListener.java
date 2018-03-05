@@ -20,7 +20,7 @@ import android.content.DialogInterface;
 
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.dialog.WaitDialog;
+import com.suxuantech.erpsys.ui.dialog.WaitDialog;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;

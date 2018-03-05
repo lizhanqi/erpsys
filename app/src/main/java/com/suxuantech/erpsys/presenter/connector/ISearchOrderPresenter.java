@@ -1,6 +1,6 @@
 package com.suxuantech.erpsys.presenter.connector;
 
-import com.suxuantech.erpsys.bean.SearchOrderBean;
+import com.suxuantech.erpsys.beans.SearchOrderBean;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;

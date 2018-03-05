@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/myBackground_f7"
-    tools:context=".fragment.SelectedPictureInformationFragment"
+    tools:context=".ui.fragment.SelectedPictureInformationFragment"
     android:layout_height="match_parent">
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    tools:context="activity.fragment.SelectedPictureInformationFragment"
+    tools:context=".ui.activity.fragment.SelectedPictureInformationFragment"
     android:layout_height="match_parent">
     <LinearLayout
         style="@style/CustomerInformationContain">

@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.suxuantech.erpsys.activity.LoginActivity;
-import com.suxuantech.erpsys.activity.MainActivity;
-import com.suxuantech.erpsys.dialog.LoadingDialog;
+import com.suxuantech.erpsys.ui.activity.LoginActivity;
+import com.suxuantech.erpsys.ui.activity.MainActivity;
+import com.suxuantech.erpsys.ui.dialog.LoadingDialog;
 import com.suxuantech.erpsys.utils.NLog;
 
 import org.json.JSONException;

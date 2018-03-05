@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 
 public class SubConversationListActivtiy extends ImmersedBaseActivity {
     @Override

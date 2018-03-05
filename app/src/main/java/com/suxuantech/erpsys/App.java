@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
-import com.suxuantech.erpsys.activity.DefaultErrorActivity;
+import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;

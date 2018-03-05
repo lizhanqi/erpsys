@@ -12,7 +12,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context="com.suxuantech.erpsys.fragment.CRMFragment">
+    tools:context=".ui.fragment.CRMFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

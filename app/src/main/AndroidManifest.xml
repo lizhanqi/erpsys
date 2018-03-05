@@ -87,10 +87,10 @@
         </receiver>
         <!-- 融云end -->
         <activity
-            android:name=".activity.DefaultErrorActivity"
+            android:name=".ui.activity.DefaultErrorActivity"
             android:process=":error_activity" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -108,16 +108,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.QRCodeScanActivity"
+            android:name=".ui.activity.QRCodeScanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".activity.OutletsOrderActivity" />
+        <activity android:name=".ui.activity.OutletsOrderActivity" />
         <activity
-            android:name=".activity.SplashScreenActivity"
+            android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -125,21 +125,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchOrderActivity" />
-        <activity android:name=".activity.ScheduleActivity" />
-        <activity android:name=".activity.TodayRevenueActivity" />
-        <activity android:name=".activity.OrderDetailActivity" />
-        <activity android:name=".activity.ServiceDetailsActivity" />
-        <activity android:name=".activity.OrderServiceActivity" />
-        <activity android:name=".activity.ServiceDetailListActivity" />
-        <activity android:name=".activity.PayDetailActivity" />
-        <activity android:name=".activity.WorkScheduleActivity" />
-        <activity android:name=".activity.ScheduleTypeActivity" />
-        <activity android:name=".activity.HistoryNoticeActivity" />
-        <activity android:name=".activity.NoticeDetailActivity" />
-        <activity android:name=".activity.OptionActivity" />
-        <activity android:name=".activity.base.ContactsActivity" />
-        <activity android:name=".activity.ApprovalActivity">
+        <activity android:name=".ui.activity.SearchOrderActivity" />
+        <activity android:name=".ui.activity.ScheduleActivity" />
+        <activity android:name=".ui.activity.TodayRevenueActivity" />
+        <activity android:name=".ui.activity.OrderDetailActivity" />
+        <activity android:name=".ui.activity.ServiceDetailsActivity" />
+        <activity android:name=".ui.activity.OrderServiceActivity" />
+        <activity android:name=".ui.activity.ServiceDetailListActivity" />
+        <activity android:name=".ui.activity.PayDetailActivity" />
+        <activity android:name=".ui.activity.WorkScheduleActivity" />
+        <activity android:name=".ui.activity.ScheduleTypeActivity" />
+        <activity android:name=".ui.activity.HistoryNoticeActivity" />
+        <activity android:name=".ui.activity.NoticeDetailActivity" />
+        <activity android:name=".ui.activity.OptionActivity" />
+        <activity android:name=".ui.activity.base.ContactsActivity" />
+        <activity android:name=".ui.activity.ApprovalActivity">
 
             <!--
                 intent.setAction("android.intent.action.testActivity"); //对应于action
@@ -157,9 +157,9 @@
                 <!-- android:scheme="suxuantech" /> -->
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ApplyDetailsAcitivity" />
-        <activity android:name=".LeaveRequestActivity" />
-        <activity android:name=".activity.MyApproveActivity"></activity>
+        <activity android:name=".ui.activity.ApplyDetailsAcitivity" />
+        <activity android:name=".ui.activity.LeaveRequestActivity" />
+        <activity android:name=".ui.activity.MyApproveActivity"></activity>
     </application>
 
 </manifest>

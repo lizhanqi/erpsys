@@ -7,7 +7,7 @@ android:clickable="true"
 clickable是防止页面穿透的点击事件的
 -->
 
-<com.suxuantech.erpsys.widget.BounceScrollView
+<com.suxuantech.erpsys.ui.widget.BounceScrollView
     android:id="@+id/dampView"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,7 +34,7 @@ clickable是防止页面穿透的点击事件的
             android:orientation="vertical"
             android:background="@color/white"
             android:clickable="true"
-            tools:context="com.suxuantech.erpsys.activity.fragment.MsgFragment">
+            tools:context=".ui.activity.fragment.MsgFragment">
             <!--顶部-->
             <FrameLayout
                 android:layout_width="match_parent"
@@ -358,4 +358,4 @@ clickable是防止页面穿透的点击事件的
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
-</com.suxuantech.erpsys.widget.BounceScrollView>
+</com.suxuantech.erpsys.ui.widget.BounceScrollView>

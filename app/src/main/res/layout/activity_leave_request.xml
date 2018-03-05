@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/translucent_black_95"
-    tools:context="com.suxuantech.erpsys.LeaveRequestActivity">
+    tools:context="com.suxuantech.erpsys.ui.activity.LeaveRequestActivity">
     <Button
         android:id="@+id/btn_submint"
         android:layout_width="match_parent"

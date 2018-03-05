@@ -33,7 +33,7 @@ clickable是防止页面穿透的点击事件的
             android:layout_height="match_parent"
             android:background="@color/gray_f9"
             android:clickable="true"
-            tools:context="com.suxuantech.erpsys.activity.fragment.ERPLeftFragment">
+            tools:context=".ui.activity.fragment.ERPLeftFragment">
 
             <ScrollView
                 android:layout_width="wrap_content"
@@ -125,7 +125,7 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
-                                <com.suxuantech.erpsys.widget.MarqueTextView
+                                <com.suxuantech.erpsys.ui.widget.MarqueTextView
                                     android:id="@+id/tv_info"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -242,7 +242,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_marginTop="@dimen/px40"
                                     android:gravity="center">
 
-                                    <com.suxuantech.erpsys.widget.WaveView
+                                    <com.suxuantech.erpsys.ui.widget.WaveView
                                         android:id="@+id/schedule_wave"
                                         android:layout_width="@dimen/px282"
                                         android:layout_height="@dimen/px282"
@@ -296,7 +296,7 @@ clickable是防止页面穿透的点击事件的
                                     android:layout_marginTop="@dimen/px40"
                                     android:gravity="center">
 
-                                    <com.suxuantech.erpsys.widget.WaveView
+                                    <com.suxuantech.erpsys.ui.widget.WaveView
                                         android:id="@+id/task_wave"
                                         android:layout_width="@dimen/px282"
                                         android:layout_height="@dimen/px282"

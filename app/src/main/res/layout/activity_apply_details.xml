@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.ApplyDetailsAcitivity">
+    tools:context=".ui.activity.ApplyDetailsAcitivity">
     <LinearLayout
         android:background="@android:color/white"
         android:orientation="vertical"
@@ -111,7 +111,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" />
 
-          <com.suxuantech.erpsys.widget.ScrollTextView
+          <com.suxuantech.erpsys.ui.widget.ScrollTextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:maxLines="3"

@@ -18,7 +18,7 @@ clickable是防止页面穿透的点击事件的
         android:layout_height="wrap_content"
         android:orientation="vertical"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.suxuantech.erpsys.activity.fragment.ERPFragment"
+        tools:context=".ui.activity.fragment.ERPFragment"
         >
         <TextView
             android:background="@color/white"

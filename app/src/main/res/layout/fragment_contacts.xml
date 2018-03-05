@@ -15,7 +15,7 @@ clickable是防止页面穿透的点击事件的
         android:background="@color/white"
         android:clickable="true"
         android:orientation="vertical"
-        tools:context="com.suxuantech.erpsys.fragment.ContactsFragment">
+        tools:context=".ui.fragment.ContactsFragment">
 
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rl_organization"

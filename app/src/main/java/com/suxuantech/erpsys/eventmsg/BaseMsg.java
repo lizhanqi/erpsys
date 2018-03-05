@@ -1,6 +1,6 @@
 package com.suxuantech.erpsys.eventmsg;
 
-import com.suxuantech.erpsys.OptionHelp;
+import com.suxuantech.erpsys.common.OptionHelp;
 
 import java.util.ArrayList;
 import java.util.List;

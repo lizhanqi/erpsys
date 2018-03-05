@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.ScheduleActivity">
+    tools:context=".ui.activity.ScheduleActivity">
     <!--显示标题-->
     <com.jeek.calendar.widget.calendar.WeekBarView
         android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     cube_ptr:ptr_pull_to_fresh="false"
                     cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
                     cube_ptr:ptr_resistance="1.7">
-                    <com.suxuantech.erpsys.widget.ScheduleSwipeMenuRecyclerView
+                    <com.suxuantech.erpsys.ui.widget.ScheduleSwipeMenuRecyclerView
                         android:background="@color/white"
                         android:id="@+id/rvScheduleList"
                         android:layout_width="match_parent"

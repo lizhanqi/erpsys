@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/px55"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.NoticeDetailActivity">
+    tools:context=".ui.activity.NoticeDetailActivity">
     <TextView
         android:id="@+id/tv_notice_title"
         android:layout_marginTop="@dimen/px40"

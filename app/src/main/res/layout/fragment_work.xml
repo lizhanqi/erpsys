@@ -10,7 +10,7 @@ clickable是防止页面穿透的点击事件的
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="@color/white"
-    tools:context="com.suxuantech.erpsys.fragment.WorkFragment">
+    tools:context=".ui.fragment.WorkFragment">
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/rv_works"
         android:layout_width="match_parent"

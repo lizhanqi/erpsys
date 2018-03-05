@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:background="@drawable/bg_login"
-    tools:context="com.suxuantech.erpsys.activity.LoginActivity">
+    tools:context=".ui.activity.LoginActivity">
     <TextView
     android:textSize="@dimen/xs32"
     android:id="@+id/copyright"

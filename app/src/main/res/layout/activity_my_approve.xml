@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.suxuantech.erpsys.activity.MyApproveActivity">
+    tools:context=".ui.activity.MyApproveActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="@dimen/px30">
-            <com.suxuantech.erpsys.widget.OneKeyClearAutoCompleteText
+            <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
                 android:id="@+id/tiet_nav_search"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
