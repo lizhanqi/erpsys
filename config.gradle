@@ -94,6 +94,7 @@ ext {
             utilcode               : 'com.blankj:utilcode:1.13.1',
             //Toast弹窗但是更好用(使用不多)
             SmartShow              : 'com.github.the-pig-of-jungle:SmartShow:v1.0.3',
+            design:  'com.android.support:design:27.1.0',
             //   我的
             //步骤流程
             libstepview            : 'com.lizhanqi:libstepview:1.0.1',
@@ -104,6 +105,7 @@ ext {
             //compile 'com.contrarywind:Android-PickerView:3.2.6'
             //时间,地址选择弹窗等
             pickerview             : 'com.lizhanqi:pickerview:1.0.2',
+
     ]
     bintray = [
             // library

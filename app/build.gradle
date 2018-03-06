@@ -84,7 +84,7 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     implementation rootProject.ext.dependencies.hellocharts
     implementation rootProject.ext.dependencies.glide
-    annotationProcessor  rootProject.ext.dependencies.glide_compiler
+    annotationProcessor rootProject.ext.dependencies.glide_compiler
     implementation rootProject.ext.dependencies.greendao
     implementation rootProject.ext.dependencies.multidex
     implementation rootProject.ext.dependencies.fragmentation
@@ -107,15 +107,17 @@ dependencies {
     implementation rootProject.ext.dependencies.hellocharts
     implementation rootProject.ext.dependencies.MPAndroidChart
     implementation rootProject.ext.dependencies.SmartShow
-//    implementation (rootProject.ext.dependencies.SmartShow){
-//        //去除design包的依赖，其一，你不一定用到SmartSnackbar；其二，你项目使用的版本不一定和库中所用相同
-////        exclude group: 'com.android.support'
-//    }
+    implementation rootProject.ext.dependencies.design
+    //    implementation (rootProject.ext.dependencies.SmartShow){
+    //        //去除design包的依赖，其一，你不一定用到SmartSnackbar；其二，你项目使用的版本不一定和库中所用相同
+    ////        exclude group: 'com.android.support'
+    //    }
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libzxing')
     compile project(':IMLib')
     compile project(':IMKit')
     compile project(':libcalendar')
+
 }
 //删除release文件夹
 task releaseDel(type: Delete) {
