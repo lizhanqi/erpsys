@@ -364,7 +364,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
     }
         public  void netsStringSample() {
-        String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
+        String url="http://192.168.0.187:8734/api/fnTest/asd/ads/gh";
         //请求实体
        StringRequest districtBeanJavaBeanRequest = new StringRequest(url,RequestMethod.POST);
         HttpListener<String> searchByCustmor = new HttpListener<String>(){
@@ -384,11 +384,11 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
 
     public void send() {
-        Request<String> stringRequest = NoHttp.createStringRequest("http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0", RequestMethod.POST);
+        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.187:8734/api/fnTest/asd/ads/gh", RequestMethod.POST);
         // stringRequest.addHeader("Content-Type", "application/json");
         //stringRequest.setDefineRequestBodyForJson("{\"x\":1,\"y\":2}");
-/*        stringRequest.add("x",1);
-        stringRequest.add("y",4);*/
+        stringRequest.add("Token","sio");
+        stringRequest.add("Message","111");
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
         requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
                     @Override

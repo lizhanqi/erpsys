@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/translucent_black_95"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.ApplyDetailsAcitivity">
+    tools:context=".ui.activity.ApplyDetailsAcitivity"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     <LinearLayout
         android:background="@android:color/white"
         android:orientation="vertical"
@@ -19,12 +22,12 @@
             android:layout_width="392dp"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="TextView"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp"
-            tools:text="审批进度" />
+            android:text="审批进度" />
         <View style="@style/line"/>
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/rv_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
@@ -122,3 +125,4 @@
         </LinearLayout>
     <include layout="@layout/in_cc"/>
 </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
