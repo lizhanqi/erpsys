@@ -15,6 +15,7 @@
  */
 package com.suxuantech.erpsys.ui.dialog;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.Window;
@@ -37,4 +38,21 @@ public class WaitDialog extends ProgressDialog {
         setMessage(context.getText(R.string.wait_dialog_title));
     }
 
+    @Override
+    public void show() {
+        Activity activity = getOwnerActivity();
+        if ( activity != null && !activity.isFinishing() ) {
+            super.show();
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        if (isShowing()) {
+            Activity activity = getOwnerActivity();
+            if ( activity != null && !activity.isFinishing()) {
+                super.dismiss();
+            }
+        }
+    }
 }

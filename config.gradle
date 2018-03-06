@@ -1,0 +1,137 @@
+ext {
+    plugins = [
+            java       : 'java',
+            library    : 'com.android.library',
+            application: 'com.android.application',
+            maven      : 'com.github.dcendents.android-maven',
+            bintray    : 'com.jfrog.bintray'
+    ]
+    android = [
+            applicationId          : "com.suxuantech.erpsys",
+            compileSdkVersion      : 26,
+            buildToolsVersion      : '26.0.2',
+            minSdkVersion          : 19,
+            targetSdkVersion       : 26,
+            versionCode            : 1,
+            versionName            : "1.0",
+            support_library_version: '25.0+',
+            libraryMinSdkVersion   : 9,
+            libraryTargetSdkVersion: 25,
+    ]
+    println "版本名称:==========${rootProject.ext.android.versionName}==========="
+    dependencies = [
+            // constraint             : "com.android.support.constraint:constraint-layout:1.0.2",
+            //v7兼容包不解释
+            v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
+            //权限
+            permission             : 'com.yanzhenjie:permission:2.0.0-rc2',
+            //权限弹窗
+            alertdialog            : 'com.yanzhenjie.alertdialog:alertdialog:1.0.1',
+            //可侧滑的recyclerview
+            recyclerview_swipe     : 'com.yanzhenjie:recyclerview-swipe:1.1.3',
+            //网络nohttp
+            nohttp                 : 'com.yanzhenjie.nohttp:nohttp:1.1.+',
+            //网络nohttp基于okhttp为底层
+            okhttp                 : 'com.yanzhenjie.nohttp:okhttp:1.1.+',
+            //裁剪图片
+            durban                 : 'com.yanzhenjie:durban:1.0.1',
+            //相册选择
+            album                  : 'com.yanzhenjie:album:2.0.2',
+            //相机
+            camera                 : 'com.yanzhenjie.zbar:camera:1.0.0',
+            //二维码的一种(c为底层的)
+            zbar                   : 'com.yanzhenjie.zbar:zbar:1.0.0',
+            //阿里gson解析
+            fastjson               : 'com.alibaba:fastjson:1.1.54.android',
+            //rxandroid
+            rxandroid              : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+            //rxjava
+            rxjava                 : 'io.reactivex.rxjava2:rxjava:2.1.5',
+            //事件消息发送
+            eventbus               : 'org.greenrobot:eventbus:3.1.1',
+            //崩溃页面
+            customactivityoncrash  : 'cat.ereza:customactivityoncrash:2.1.0',
+            //解析gson与fastgson一样
+            gson                   : 'com.google.code.gson:gson:2.7',
+            //经典的下拉刷新
+            ultra                  : 'in.srain.cube:ultra-ptr:1.0.11',
+            //  testCompile 'junit:junit:4.12'
+            //注解
+            butterknife            : 'com.jakewharton:butterknife:8.4.0',
+            butterknife_compiler   : 'com.jakewharton:butterknife-compiler:8+',
+            // 广告轮播
+            BannerView                : 'com.coldmoqiuli:banners:1.0.1',
+            //图表一种(在用)
+            hellocharts            : 'com.github.lecho:hellocharts-android:v1.5.8',
+            //图表一种(未用)
+            MPAndroidChart         : 'com.github.PhilJay:MPAndroidChart:v3.0.2',
+            //图片加载
+            glide                  : 'com.github.bumptech.glide:glide:4.3.1',
+            glide_compiler               : 'com.github.bumptech.glide:compiler:4.3.1',//annotationProcessor
+            //轻量级的数据库操作
+            greendao               : 'org.greenrobot:greendao:3.2.0',
+            //超级TextView
+            SuperTextView          : 'com.github.lygttpod:SuperTextView:2.1.5',
+            //导航栏,状态栏沉浸
+            ImmersedBar             : 'com.gyf.barlibrary:barlibrary:2.3.0',
+            //dex分包
+            multidex               : 'com.android.support:multidex:1.+',
+            // Fragment框架
+            fragmentation          : 'me.yokeyword:fragmentation:1.2.6',
+            //Fragement侧滑关闭,以及activity侧滑关闭
+            fragmentation_swipeback: 'me.yokeyword:fragmentation-swipeback:1.2.6',
+            //下拉刷新上拉加载(ERP左边的)
+            tkrefreshlayout        : 'com.lcodecorex:tkrefreshlayout:1.0.7',
+            //共享元素(暂未使用)
+            EasyTransition         : 'com.github.huzenan:EasyTransition:v1.0.0',
+            //通讯录侧边快速滑动(暂未使用)
+            indexablerecyclerview  : 'me.yokeyword:indexablerecyclerview:1.3.0',
+            //底部导航一种(未使用)
+            BottomBarLayout        : 'com.github.chaychan:BottomBarLayout:1.1.1',
+            //底部导航1
+            navigationbar          : 'com.ashokvarma.android:bottom-navigation-bar:2.0.3',
+            //吊炸天的工具类,使用详情地址:https://github.com/Blankj/AndroidUtilCode/blob/master/utilcode/README-CN.md
+            utilcode               : 'com.blankj:utilcode:1.13.1',
+            //Toast弹窗但是更好用(使用不多)
+            SmartShow              : 'com.github.the-pig-of-jungle:SmartShow:v1.0.3',
+            //   我的
+            //步骤流程
+            libstepview            : 'com.lizhanqi:libstepview:1.0.1',
+            //    compile 'com.github.donkingliang:GroupedRceyclerViewAdapter:1.2.0'(RceyclerViewAdapter二级分组适配器)
+            groupedadapter         : 'com.lizhanqi:groupedadapter:1.0.0',
+            //   compile 'com.bigkoo:alertview:1.0.3' 弹窗(仿ios,这里我自定义了下,可以系统级)
+            alertview              : 'com.lizhanqi:alertview:1.0.8',
+            //compile 'com.contrarywind:Android-PickerView:3.2.6'
+            //时间,地址选择弹窗等
+            pickerview             : 'com.lizhanqi:pickerview:1.0.2',
+    ]
+    bintray = [
+            // library
+            version       : "1.1.1",
+
+            siteUrl       : 'https://github.com/yanzhenjie/AndServer',
+            gitUrl        : 'git@github.com:yanzhenjie/AndServer.git',
+
+            group         : "com.yanzhenjie",
+
+            // project
+            packaging     : 'aar',
+            name          : 'AndServer',
+            description   : 'Android web server',
+
+            // project.license
+            licenseName   : 'The Apache Software License, Version 2.0',
+            licenseUrl    : 'http://www.apache.org/licenses/LICENSE-2.0.txt',
+
+            // project.developers
+            developerId   : 'yanzhenjie',
+            developerName : 'yanzhenjie',
+            developerEmail: 'smallajax@foxmail.com',
+
+            // bintray
+            binrayLibrary : "andserver",
+            bintrayRepo   : "maven",
+            bintrayUser   : 'yolanda',
+            bintrayLicense: "Apache-2.0"
+    ]
+}
