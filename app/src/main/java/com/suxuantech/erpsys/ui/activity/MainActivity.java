@@ -17,9 +17,13 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.beans.DistrictBean;
+import com.suxuantech.erpsys.nohttp.DownLoad;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
-import com.suxuantech.erpsys.beans.DistrictBean;
 import com.suxuantech.erpsys.ui.dialog.LoadDialog;
 import com.suxuantech.erpsys.ui.fragment.CRMFragment;
 import com.suxuantech.erpsys.ui.fragment.ContactsFragment;
@@ -27,10 +31,6 @@ import com.suxuantech.erpsys.ui.fragment.ERPFragment;
 import com.suxuantech.erpsys.ui.fragment.MsgFragment;
 import com.suxuantech.erpsys.ui.fragment.MyFragment;
 import com.suxuantech.erpsys.ui.fragment.WorkFragment;
-import com.suxuantech.erpsys.nohttp.DownLoad;
-import com.suxuantech.erpsys.nohttp.HttpListener;
-import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -70,6 +70,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         }
         @Override
         public void onTabUnselected(int position) {
+            send();
             if(position==bottomNavigationBar.getCurrentSelectedPosition()){
             return;
             }
@@ -384,11 +385,13 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
 
     public void send() {
-        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.187:8734/api/fnTest/asd/ads/gh", RequestMethod.POST);
+        Request<String> stringRequest = NoHttp.createStringRequest("http://www.google.com", RequestMethod.POST);
         // stringRequest.addHeader("Content-Type", "application/json");
         //stringRequest.setDefineRequestBodyForJson("{\"x\":1,\"y\":2}");
-        stringRequest.add("Token","sio");
-        stringRequest.add("Message","111");
+//        stringRequest.add("Token","sio");
+//        stringRequest.add("Message","111");
+      // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
+       // stringRequest.setProxy(proxy);
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
         requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
                     @Override

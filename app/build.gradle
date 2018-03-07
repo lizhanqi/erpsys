@@ -108,6 +108,7 @@ dependencies {
     implementation rootProject.ext.dependencies.MPAndroidChart
     implementation rootProject.ext.dependencies.SmartShow
     implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.kotlin_stdlib_jre7
     //    implementation (rootProject.ext.dependencies.SmartShow){
     //        //去除design包的依赖，其一，你不一定用到SmartSnackbar；其二，你项目使用的版本不一定和库中所用相同
     ////        exclude group: 'com.android.support'
@@ -149,3 +150,4 @@ task releaseDel(type: Delete) {
         }
     }
 }*/
+apply plugin: 'kotlin-android-extensions'

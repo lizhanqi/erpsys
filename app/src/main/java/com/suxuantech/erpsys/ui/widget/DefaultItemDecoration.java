@@ -54,7 +54,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
     private int mDividerWidth;
     private int mDividerHeight;
     private List<Integer> mViewTypeList = new ArrayList<>();
-
+    int leftOffsetX=0;
     /**
      * @param color decoration line color.
      */
@@ -76,7 +76,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
             mViewTypeList.add(i);
         }
     }
-        int offsetX;
+     int offsetX;
 
     /**
      * 设置偏移量（这里设置的偏移量相当于padingleft和padingright，包括内容都会缩进）
@@ -192,6 +192,13 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
         drawVertical(c, parent);
     }
 
+    /**
+     * 设置X轴左边一栋多少
+     * @param leftOffsetX
+     */
+    public void setJustLeftOffsetX(int leftOffsetX){
+        this.leftOffsetX=leftOffsetX;
+    }
     public void drawHorizontal(Canvas c, RecyclerView parent) {
         c.save();
         int childCount = parent.getChildCount();
@@ -205,7 +212,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
             final int top = child.getBottom();
             final int right = child.getRight();
             final int bottom = top + mDividerHeight;
-            mDivider.setBounds(left, top, right, bottom);
+            mDivider.setBounds(left+leftOffsetX, top, right, bottom);
             mDivider.draw(c);
         }
         c.restore();

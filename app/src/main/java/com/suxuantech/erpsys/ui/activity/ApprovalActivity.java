@@ -10,6 +10,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
+import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -79,6 +80,12 @@ public class ApprovalActivity extends ImmersedBaseActivity {
         string2.add("其他申请1");
         string2.add("其他申请2");
         string2.add("其他申请3");
+        mRvApplyFor.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                startActivity(PunchCardActivity.class);
+            }
+        });
         mRvApplyFor.setLayoutManager(new GridLayoutManager(this,3));
         new BaseRecyclerAdapter<String>(mRvApplyFor,strings,R.layout.item_approval){
 

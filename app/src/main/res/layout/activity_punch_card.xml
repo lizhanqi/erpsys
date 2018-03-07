@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/translucent_black_95"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.ui.activity.PunchCardActivity">
+    <Button
+        android:layout_margin="@dimen/px30"
+        android:background="@drawable/sl_butn_gray_theme"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btn_sign_in"
+        android:text="签到"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_above="@id/btn_sign_in"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/translucent_black_95"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.ui.activity.PunchCardActivity">
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:background="@color/white"
+        android:id="@+id/rv_punch_type"
+        android:layout_marginTop="@dimen/px30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/px30"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:padding="@dimen/px30"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="签到时间:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="xxx年嘻嘻嘻月:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <View style="@style/line" android:layout_marginLeft="@dimen/px30" />
+        <LinearLayout
+            android:padding="@dimen/px30"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="签到时间:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="xxx年嘻嘻嘻月:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+</RelativeLayout>

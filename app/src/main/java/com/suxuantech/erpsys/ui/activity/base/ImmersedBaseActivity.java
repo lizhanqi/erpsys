@@ -58,6 +58,15 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
     private View mContextView;
     private View lineView;
     protected ImmersionBar mImmersionBar;
+
+    @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        if (v.getId()==R.id.tv_nav_left){
+            onBackPressed();
+        }
+    }
+
     @Override
     protected void onRestart() {
         initImmersionBar();
