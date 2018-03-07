@@ -138,10 +138,15 @@ public class WorkFragment extends SupportFragment {
 
     private void initView(View view) {
         Map<String, Integer> strings = new LinkedHashMap<String, Integer>();
+        strings.put("登录融云1", 1);
+        strings.put("登录融云2", 1);
+        strings.put("与融云1对话", 1);
+        strings.put("与融云2对话", 1);
+        strings.put("图书", 1);
         strings.put("审批", 1);
         strings.put("考勤", 1);
         strings.put("任务", 1);
-        strings.put("图书", 1);
+
         mRvWorks = view.findViewById(R.id.rv_works);
         Set<String> strings1 = strings.keySet();
         ArrayList<String> strings2 = new ArrayList<>(strings1);
@@ -157,7 +162,16 @@ public class WorkFragment extends SupportFragment {
         baseRecyclerAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Object data, int position) {
-                if (position==3){
+                if(position==0){
+                    connect(Token1);
+                    //nameandhead();
+                }else if(position==1){
+                    connect(Token2);
+                }else   if(position==2){
+                    RongIM.getInstance().startPrivateChat(getActivity(), "u1", "名字");
+                }else if(position==3){
+                    RongIM.getInstance().startPrivateChat(getActivity(), "u2", "标题u2");
+                }else   if (position==4){
                     getActivity().startActivity(new Intent(getActivity(), BookManageActivity.class));
                 }else {
                     Intent intent = new Intent();

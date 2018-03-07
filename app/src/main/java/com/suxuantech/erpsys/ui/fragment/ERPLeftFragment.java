@@ -17,15 +17,15 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
+import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
-import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
+import com.suxuantech.erpsys.utils.ScreenUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.rong.imkit.RongIM;
 
 public class ERPLeftFragment extends BaseLazyFragment {
 
@@ -112,7 +112,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             @Override
             public void onClick(View v) {
 
-//            alertShow4();
+                alertShow4();
 //              new AlertView("标题", "内容", "取消", new String[]{"确定"}, null, getContext(), AlertView.Style.ALERT, new OnItemClickListener() {
 //                    @Override
 //                    public void onItemClick(Object o, int position) {
@@ -126,15 +126,14 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                }).setDivierMargin(30).show();
 
               //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
-                RongIM.getInstance().startPrivateChat(getActivity(), "u1", "名字");
+
             }
         });
 
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           //    startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-                RongIM.getInstance().startPrivateChat(getActivity(), "u2", "标题u2");
+            startActivity(new Intent(getActivity(), SearchOrderActivity.class));
           // Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
 //                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));

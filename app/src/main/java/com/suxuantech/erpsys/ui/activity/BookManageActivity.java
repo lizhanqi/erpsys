@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 图书管理
+ */
 public class BookManageActivity extends ImmersedBaseActivity {
 
     @BindView(R.id.tiet_nav_search)

@@ -2,7 +2,6 @@ package com.suxuantech.erpsys.ui.activity.base;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -15,12 +14,10 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
-import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -231,44 +228,6 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
     /**
-     * 隐藏状态栏
-     */
-    public void hideStatus() {
-        this.getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-    /**
-     * 显示状态栏
-     */
-    public void showStatus() {
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        /**
-         * 下边代码会5.0以下系统被切掉一块
-         * 下面是强制有标题的,这样就会导致再次设置FLAG_FULLSCREEN无效
-         */
-//        this.getWindow().setFlags(
-//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);;//取消ActionBar
-    }
-    /**
-     * 强制屏幕方向
-     *
-     * @param forceHorizontalScreen 横屏还是竖屏
-     */
-    public void screenMustOrientation(boolean forceHorizontalScreen) {
-        if (forceHorizontalScreen) {
-            //横屏
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            //竖屏
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-    }
-
-    /**
      * 获取屏幕
      * @param isContainStatusBar 是否包含状态栏
      * @return
@@ -279,21 +238,6 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         }else {
             return ScreenUtils.snapShotWithoutStatusBar(this);
         }
-    }
-
-    /**
-     * 隐藏软键盘
-     * @param et
-     */
-    public void hideSoftKeyBoard(EditText et){
-        KeyBoardUtils.closeKeybord(et,this);
-    }
-    /**
-     * 打开软键盘
-     * @param et
-     */
-    public void showSoftKeyBoard(EditText et){
-        KeyBoardUtils.openKeybord(et,this);
     }
     /**
      * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
@@ -504,7 +448,6 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     }
 
 //  ------------------------------页面跳转end---------------
-
     //---------------------------------View点击----------------
 
     /**
@@ -540,55 +483,15 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         }
     }
     //--------------------------------------View点击end------------------
-
-    public void hideSystemNavigation(){
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-    }
-    /**
-     *     获取是否存在NavigationBar(也就是是否存在导航栏)
-     */
-    public  boolean checkDeviceHasNavigationBar( ) {
-        return ScreenUtils.checkDeviceHasNavigationBar(getBaseContext());
-    }
-    /**
-     //透明状态栏
-     getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-     //透明导航栏
-     *getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-     * 获取状态栏高度
-     * @return
-     */
-    public  int getStatusBarHeight( ) {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen",
-                "android");
-        if (resourceId > 0) {
-            result =getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    /**
-     * 获取导航栏高度
-     * @return
-     */
-    public  int getNavigationBarHeight( ) {
-        return  ScreenUtils.getNavigationBarHeight(getBaseContext());
-    }
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
     }
-
-
     @Override
     public SwipeBackLayout getSwipeBackLayout() {
         return mDelegate.getSwipeBackLayout();
     }
-
     /**
      * 是否可滑动
      * @param enable
@@ -597,12 +500,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     public void setSwipeBackEnable(boolean enable) {
         mDelegate.setSwipeBackEnable(enable);
     }
-
     @Override
     public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
         mDelegate.setEdgeLevel(edgeLevel);
     }
-
     @Override
     public void setEdgeLevel(int widthPixel) {
         mDelegate.setEdgeLevel(widthPixel);
@@ -617,6 +518,4 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     public boolean swipeBackPriority() {
         return mDelegate.swipeBackPriority();
     }
-
-
 }

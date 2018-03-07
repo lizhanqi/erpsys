@@ -20,7 +20,7 @@ ext {
     ]
     println "版本名称:==========${rootProject.ext.android.versionName}==========="
     dependencies = [
-            // constraint             : "com.android.support.constraint:constraint-layout:1.0.2",
+           constraint             : "com.android.support.constraint:constraint-layout:1.0.2",
             //v7兼容包不解释
             v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
             //权限

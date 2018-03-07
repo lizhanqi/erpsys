@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.blankj.utilcode.util.Utils;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -62,6 +63,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Utils.init(this);
         RongIM.init(this);
         context = this.getApplicationContext();
         registerActivityListener();

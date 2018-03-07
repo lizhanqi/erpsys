@@ -70,7 +70,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         }
         @Override
         public void onTabUnselected(int position) {
-            //send();
+            send();
             if(position==bottomNavigationBar.getCurrentSelectedPosition()){
             return;
             }
@@ -86,6 +86,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             dLog("再选");
         }
     };
+
     private TextBadgeItem badgeItem;
     private BottomNavigationItem msgItem;
     private ContactsFragment contactsFragment;
@@ -383,15 +384,18 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
      //   CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
 
-
     public void send() {
-
-        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.187:8734/api/TestPost", RequestMethod.POST);
+        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.175:8734/api/SX_CustomerInfo", RequestMethod.POST);
      //  stringRequest.addHeader("Content-Type", "application/json");
-      //   stringRequest.setDefineRequestBodyForJson("{\"Token\":sio,\"Message\":2}");
-    stringRequest.add("Token","sio");
-      stringRequest.add("Message",111);
+        // stringRequest.setDefineRequestBodyForJson("{\"Token\":sio,\"Message\":2}");
 
+   stringRequest.add("Token","sio");
+        stringRequest.add("orderid","0");
+        stringRequest.add("ckey","小飞");
+        stringRequest.add("bTime","");
+        stringRequest.add("eTime","");
+        stringRequest.add("pageIndex",0);
+        stringRequest.add("pageSize","41414acbcsdfd");
       // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
        // stringRequest.setProxy(proxy);
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();

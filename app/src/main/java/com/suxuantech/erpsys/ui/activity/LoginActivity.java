@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         //setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
-        hideStatus();
+        //hideStatus();
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright)+" V"+ AppUtil.getVersionName(this));
         // Set up the login form.

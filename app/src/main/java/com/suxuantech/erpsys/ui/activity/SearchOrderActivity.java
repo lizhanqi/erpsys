@@ -21,20 +21,21 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
-import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
-import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.beans.HistoryBean;
 import com.suxuantech.erpsys.beans.SearchOrderBean;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
-import com.suxuantech.erpsys.utils.DateUtil;
-import com.suxuantech.erpsys.utils.ToastUtils;
+import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
+import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.DefineLoadMoreView;
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
 import com.suxuantech.erpsys.ui.widget.TextViewDrawableClickView;
+import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.KeyBoardUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -307,7 +308,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 弹窗确认删除历史
      */
     public void alterDelete() {
-        hideSoftKeyBoard(mTietNavSearch);
+        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
         new AlertView("清除历史记录", "确认清除历史记录?", null, new String[]{"取消", "确定"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
             @Override
             public void onItemClick(Object o, int position) {
@@ -328,7 +329,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     private void search() {
         mTietNavSearch.dismissDropDown();
         //隐藏键盘
-        hideSoftKeyBoard(mTietNavSearch);
+        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
         //输入框的光标不可见
         mTietNavSearch.setCursorVisible(false);
         //失去焦点
@@ -356,7 +357,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 时间选择
      */
     public void showDataSelect(final TextView showOn) {
-        hideSoftKeyBoard(mTietNavSearch);
+        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
         TimePickerView.OnTimeSelectListener timPic = new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
@@ -370,12 +371,8 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 .setLineSpacingMultiplier(4).setType(new boolean[]{true, true, true, false, false, false})
                 .setTitleColor(getResources().getColor(R.color.textHint_99)).setTitleBgColor(getResources().getColor(R.color.white));
         timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
-        if (checkDeviceHasNavigationBar()) {
-            timePickerView.setRootMarginBootom(getNavigationBarHeight());
-        }
         timePickerView.build().show();
     }
-
     @Override
     public void searchSucceed(List<SearchOrderBean.DataBean> data, boolean isRefesh, boolean hasMore) {
         mTietNavSearch.setFocusableInTouchMode(false);

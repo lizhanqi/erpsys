@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.yanzhenjie.alertdialog.AlertDialog;
@@ -38,13 +39,11 @@ public class SplashScreenActivity extends BaseActivity {
             alertDialog.show();
         }
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-        hideStatus();
-        hideSystemNavigation();
+        ScreenUtils.setFullScreen(this);
         PackageManager pm =getPackageManager();
         String appName = getApplicationInfo().loadLabel(pm).toString();
         alertDialog = AlertDialog.newBuilder(SplashScreenActivity.this)
@@ -76,6 +75,7 @@ public class SplashScreenActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ScreenUtils.setFullScreen(this);
         if(! hasPermission(Permission.Group.STORAGE)){
             requestPermission(Permission.Group.STORAGE);
         }else {
