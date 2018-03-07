@@ -33,7 +33,7 @@ import android.text.TextPaint;
  * @author Created by 李站旗 on 2018/3/1 0001 21:08 .
  * QQ:1032992210
  * E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: 文字转Bitmap
  */
 
 /**

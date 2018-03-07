@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:gravity="center_vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="@dimen/px30">
+<com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+    android:id="@+id/tiet_nav_search"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_alignLeft="@id/tv_nav_search_right"
+    android:layout_centerInParent="true"
+    android:layout_weight="1"
+    android:background="@drawable/sp_search"
+    android:drawableLeft="@drawable/icon_soso"
+    android:gravity="center_vertical"
+    android:hint="申请人/申请内容"
+    android:imeOptions="actionSearch"
+    android:paddingLeft="@dimen/px30"
+    android:paddingRight="@dimen/px10"
+    android:singleLine="true"
+    android:textSize="@dimen/xs40" />
+<TextView
+    android:padding="@dimen/px30"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/soso"
+    android:textColor="@color/themeColor"
+    android:textSize="@dimen/xs44" />
+</LinearLayout>

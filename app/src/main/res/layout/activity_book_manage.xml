@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/translucent_black_95"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.ui.activity.BookManageActivity">
+    <FrameLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <include layout="@layout/in_search"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/xs44"
+            android:padding="@dimen/px30"
+            android:text="最近上架"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View style="@style/line"/>
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/rv_book_recently_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+        <TextView
+            android:background="@color/line"
+            android:gravity="center"
+            android:padding="@dimen/px30"
+            android:text="查看更多"
+            android:textColor="@color/themeColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:layout_marginTop="@dimen/px30"
+        android:id="@+id/rv_book_type"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+</LinearLayout>

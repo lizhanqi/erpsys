@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.ui.activity.BookManageActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,8 +58,6 @@ public class WorkFragment extends SupportFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
  ///Uri.parse("http://rongcloud-web.qiniudn.com/docs_demo_rongcloud_logo.png")
-
-
     }
 
     private void action2() {
@@ -95,7 +94,7 @@ public class WorkFragment extends SupportFragment {
     }
 
     /**
-     * <p>连接服务器，在整个应用程序全局，只需要调用一次，需在 {@link #init(Context)} 之后调用。</p>
+     * <p>连接服务器，在整个应用程序全局，只需要调用一次，需在 {@link # init(Context)} 之后调用。</p>
      * <p>如果调用此接口遇到连接失败，SDK 会自动启动重连机制进行最多10次重连，分别是1, 2, 4, 8, 16, 32, 64, 128, 256, 512秒后。
      * 在这之后如果仍没有连接成功，还会在当检测到设备网络状态变化时再次进行重连。</p>
      *
@@ -138,12 +137,11 @@ public class WorkFragment extends SupportFragment {
     }
 
     private void initView(View view) {
-        Map<String, Integer> strings = new HashMap<String, Integer>();
+        Map<String, Integer> strings = new LinkedHashMap<String, Integer>();
         strings.put("审批", 1);
         strings.put("考勤", 1);
         strings.put("任务", 1);
-        strings.put("日志", 1);
-        strings.put("备忘录", 1);
+        strings.put("图书", 1);
         mRvWorks = view.findViewById(R.id.rv_works);
         Set<String> strings1 = strings.keySet();
         ArrayList<String> strings2 = new ArrayList<>(strings1);
@@ -156,15 +154,18 @@ public class WorkFragment extends SupportFragment {
                 textView.setText(item);
             }
         };
-
         baseRecyclerAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Object data, int position) {
-                Intent intent = new Intent();
-                intent.setAction("com.suxuantech.action.VIEW"); //对应于action
+                if (position==3){
+                    getActivity().startActivity(new Intent(getActivity(), BookManageActivity.class));
+                }else {
+                    Intent intent = new Intent();
+                    intent.setAction("com.suxuantech.action.VIEW"); //对应于action
 //                intent.addCategory("android.intent.category.DEFAULT");//对应于category
 //                intent.setData(Uri.parse("suxuantech:"));//对应于data下的scheme(rocky)
-                getActivity().startActivity(intent);
+                    getActivity().startActivity(intent);
+                }
             }
         });
     }

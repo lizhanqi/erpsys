@@ -70,7 +70,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         }
         @Override
         public void onTabUnselected(int position) {
-            send();
+            //send();
             if(position==bottomNavigationBar.getCurrentSelectedPosition()){
             return;
             }
@@ -385,11 +385,13 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
 
     public void send() {
-        Request<String> stringRequest = NoHttp.createStringRequest("http://www.google.com", RequestMethod.POST);
-        // stringRequest.addHeader("Content-Type", "application/json");
-        //stringRequest.setDefineRequestBodyForJson("{\"x\":1,\"y\":2}");
-//        stringRequest.add("Token","sio");
-//        stringRequest.add("Message","111");
+
+        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.187:8734/api/TestPost", RequestMethod.POST);
+     //  stringRequest.addHeader("Content-Type", "application/json");
+      //   stringRequest.setDefineRequestBodyForJson("{\"Token\":sio,\"Message\":2}");
+    stringRequest.add("Token","sio");
+      stringRequest.add("Message",111);
+
       // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
        // stringRequest.setProxy(proxy);
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
