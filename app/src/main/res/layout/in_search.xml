@@ -10,7 +10,6 @@ android:padding="@dimen/px30">
     android:id="@+id/tiet_nav_search"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_alignLeft="@id/tv_nav_search_right"
     android:layout_centerInParent="true"
     android:layout_weight="1"
     android:background="@drawable/sp_search"
