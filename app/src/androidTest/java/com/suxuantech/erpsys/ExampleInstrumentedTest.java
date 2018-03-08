@@ -1,7 +1,5 @@
 package com.suxuantech.erpsys;
 
-import android.support.test.runner.AndroidJUnit4;
-
 import com.suxuantech.erpsys.beans.DistrictBean;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -9,7 +7,6 @@ import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,11 +15,8 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() throws Exception {
-
+    private  void Json(){
     }
     @Test
     public  void nets() {
@@ -45,4 +39,6 @@ public class ExampleInstrumentedTest {
         };
 //        CallServer.getInstance().add(null, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
+
+
 }

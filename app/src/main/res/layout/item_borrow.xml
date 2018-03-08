@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/px30">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/px150"
+            android:layout_height="@dimen/px200"
+            android:background="@color/themeColor" />
+        <TextView
+            android:lineSpacingExtra="@dimen/px20"
+            android:text="名称:xxx\n编号:xxxx\n 类目:xxx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:lineSpacingExtra="@dimen/px20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未归\n x1" />
+    </LinearLayout>
+    <TextView
+        android:lineSpacingExtra="@dimen/px20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="借阅日期:xxxx年\n 归还日期:xxx月" />
+</LinearLayout>

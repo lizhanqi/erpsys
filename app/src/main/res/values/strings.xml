@@ -262,6 +262,11 @@
         <item>孕妇写真</item>
     </string-array>
 
+    <string-array name="book_status">
+        <item>未归还</item>
+        <item>已归还</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="selected_time">挑选时间</string>

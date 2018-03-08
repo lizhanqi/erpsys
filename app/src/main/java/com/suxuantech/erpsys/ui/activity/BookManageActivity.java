@@ -32,6 +32,16 @@ public class BookManageActivity extends ImmersedBaseActivity {
     SwipeMenuRecyclerView mRvBookType;
 
     @Override
+    public void widgetClick(View v) {
+        super.widgetClick(v);
+        String [] s=new String[5];
+        new ArrayList<>();
+        if ( v.getId()==R.id.tv_nav_right){
+          startActivity(MyBorrowActivity.class);
+      }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_manage);

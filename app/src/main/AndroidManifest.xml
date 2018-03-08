@@ -161,7 +161,8 @@
         <activity android:name=".ui.activity.LeaveRequestActivity" />
         <activity android:name=".ui.activity.MyApproveActivity" />
         <activity android:name=".ui.activity.PunchCardActivity" />
-        <activity android:name=".ui.activity.BookManageActivity"></activity>
+        <activity android:name=".ui.activity.BookManageActivity" />
+        <activity android:name=".ui.activity.MyBorrowActivity"></activity>
     </application>
 
 </manifest>
