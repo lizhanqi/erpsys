@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.suxuantech.erpsys.R
+import com.suxuantech.erpsys.ui.activity.MyBorrowActivity
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
@@ -61,14 +62,23 @@ class BorrowFragment : SupportFragment() {
     }
 
     fun setText(  text: String){
-      var vs = ArrayList<String>()
+        var vs = ArrayList<String>()
         for (x in 1..10 step 1) {
             vs.add(text+x)
         }
-       object : BaseRecyclerAdapter<String>(re, vs, R.layout.item_borrow) {
-            override fun convert(holder: RecyclerHolder, item: String, position: Int, isScrolling: Boolean) {
-               // val imageView = holder.getView<ImageView>(R.id.tv_item) as  TextView
-                //imageView.setText(item)
+        if (activity is  MyBorrowActivity){
+            object : BaseRecyclerAdapter<String>(re, vs, R.layout.item_borrow) {
+                override fun convert(holder: RecyclerHolder, item: String, position: Int, isScrolling: Boolean) {
+                    // val imageView = holder.getView<ImageView>(R.id.tv_item) as  TextView
+                    //imageView.setText(item)
+                }
+            }
+        }else{
+            object : BaseRecyclerAdapter<String>(re, vs, R.layout.item_notices) {
+                override fun convert(holder: RecyclerHolder, item: String, position: Int, isScrolling: Boolean) {
+                    // val imageView = holder.getView<ImageView>(R.id.tv_item) as  TextView
+                    //imageView.setText(item)
+                }
             }
         }
     }

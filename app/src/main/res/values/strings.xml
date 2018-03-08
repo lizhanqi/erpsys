@@ -263,8 +263,13 @@
     </string-array>
 
     <string-array name="book_status">
-        <item>未归还</item>
-        <item>已归还</item>
+        <item>未 归 还</item>
+        <item>已 归 还</item>
+    </string-array>
+
+    <string-array name="notice_status">
+        <item>未 读</item>
+        <item>已 读</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -329,4 +334,5 @@
     <string name="message_permission_always_failed">我们需要以下权限，请在设置中为我们开启：\n\n%1$s</string>
     <string name="permission_setting">权限设置</string>
     <string name="soso">搜索</string>
+    <string name="longtext">虞美人·槐阴别院宜清昼 金朝：元好问 槐阴别院宜清昼，入座春风秀。美人图子阿谁留。都是宣和名笔，内家收。 莺莺燕燕分飞后，粉淡梨花瘦。只除苏小不风流。斜插一枝萱草，凤钗头。</string>
 </resources>
