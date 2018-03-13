@@ -96,4 +96,15 @@
     <color name="seal_bg">#f0f0f6</color>
     <color name="de_title_bg">#0195ff</color>
     <color name="press">#e8e8e8</color>
+    <color name="jmui_chat_detail_split_line_color">#d4d4d4</color>
+
+
+    <color name="litte_red">#EF3B4F</color>
+    <color name="black">#000000</color>
+    <color name="base_shallow_black">#818181</color>
+    <color name="text_tab_title_def">@color/base_shallow_black</color>
+    <color name="base_bg_gray">#EBEBEB</color>
+    <color name="edit_text">@color/black</color>
+    <color name="edit_hint_text">#ffacacac</color>
+    <color name="spilt_line">#CFCFCF</color>
 </resources>

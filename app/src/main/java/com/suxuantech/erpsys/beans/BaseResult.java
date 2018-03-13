@@ -31,7 +31,7 @@ package com.suxuantech.erpsys.beans;
 public abstract class BaseResult {
     public String Code;
     public boolean isOK() {
-        return Code.equals("666");
+        return Code.equals("200");
     }
 
     public String getCode() {

@@ -1,1 +1,1 @@
-include ':app', ':libzxing', ':libcalendar', ':IMLib', ':IMKit'
+include ':app', ':libzxing', ':libcalendar', ':IMLib', ':IMKit', ':reclib-qq', ':reclib-testemoticons'

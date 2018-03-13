@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.JLoginActivity;
 import com.suxuantech.erpsys.ui.activity.BookManageActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
@@ -143,9 +144,11 @@ public class WorkFragment extends SupportFragment {
         strings.put("与融云1对话", 1);
         strings.put("与融云2对话", 1);
         strings.put("图书", 1);
+        strings.put("极光IM", 1);
         strings.put("审批", 1);
         strings.put("考勤", 1);
         strings.put("任务", 1);
+
 
         mRvWorks = view.findViewById(R.id.rv_works);
         Set<String> strings1 = strings.keySet();
@@ -173,7 +176,9 @@ public class WorkFragment extends SupportFragment {
                     RongIM.getInstance().startPrivateChat(getActivity(), "u2", "标题u2");
                 }else   if (position==4){
                     getActivity().startActivity(new Intent(getActivity(), BookManageActivity.class));
-                }else {
+                }else    if (position==5){
+                    getActivity().startActivity(new Intent(getActivity(), JLoginActivity.class));
+                }else{
                     Intent intent = new Intent();
                     intent.setAction("com.suxuantech.action.VIEW"); //对应于action
 //                intent.addCategory("android.intent.category.DEFAULT");//对应于category

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.suxuantech.erpsys.chat.JLoginActivity">
+    <EditText
+        android:text="123456"
+        android:textColor="@color/themeColor"
+        android:textColorHint="@color/themeColor"
+        android:hint="请输入用户名"
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:text="123456"
+        android:textColorHint="@color/themeColor"
+        android:hint="请输入密码"
+        android:id="@+id/et_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="注册"
+        android:id="@+id/bt_regist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="登录"
+        android:id="@+id/bt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="与10086"
+        android:id="@+id/bt_10086"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="与123456"
+        android:id="@+id/bt_123456"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

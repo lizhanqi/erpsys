@@ -96,7 +96,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter>
+    <!--        <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -105,7 +105,7 @@
                     android:host="com.suxuantech.erpsys"
                     android:path="/conversationlist"
                     android:scheme="rong" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.activity.QRCodeScanActivity"
@@ -119,11 +119,11 @@
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">
-            <intent-filter>
+       <!--     <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".ui.activity.SearchOrderActivity" />
         <activity android:name=".ui.activity.ScheduleActivity" />
@@ -162,7 +162,20 @@
         <activity android:name=".ui.activity.MyApproveActivity" />
         <activity android:name=".ui.activity.PunchCardActivity" />
         <activity android:name=".ui.activity.BookManageActivity" />
-        <activity android:name=".ui.activity.MyBorrowActivity"></activity>
+        <activity android:name=".ui.activity.MyBorrowActivity" />
+        <activity android:name=".chat.JLoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--adjustPan是把整个界面向上平移，使输入框露出，不会改变界面的布局；
+
+adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
+-->
+        <activity android:name=".chat.ConversationActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+        </activity>
     </application>
 
 </manifest>

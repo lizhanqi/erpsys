@@ -86,7 +86,7 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        //在销毁释放内存
+           //在销毁释放内存
         if (mImmersionBar != null) {
             mImmersionBar.destroy();
         }
@@ -103,7 +103,7 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
         mImmersionBar.fitsSystemWindows(true);
         mImmersionBar.statusBarDarkFont(true,0.15f);
         mImmersionBar .statusBarColor(R.color.white) ;
-        mImmersionBar.keyboardEnable(true);
+        mImmersionBar.keyboardEnable(false);
         mImmersionBar .navigationBarColor(R.color.translucent_black_90) ;
         mImmersionBar.init();
     }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="id" name="line">false</item>
+    <item type="id" name="nimei">false</item>
+    <item type="id" name="id_autolayout" />
 </resources>

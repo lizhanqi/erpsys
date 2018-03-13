@@ -2508,7 +2508,22 @@
     <dimen name="xs298">99.333336sp</dimen>
     <dimen name="xs299">99.666664sp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <!--生成的，标准的end-->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!--生成的，标准的end-->
+    <dimen name="dimension_50">50dp</dimen>
+    <dimen name="common_bar_height">@dimen/dimension_50</dimen>
+    <dimen name="margin_nomal">10dp</dimen>
+    <dimen name="margin_middle">15dp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_17">17sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_nomal">@dimen/text_14</dimen>
+    <dimen name="text_big">@dimen/text_17</dimen>
+    <dimen name="item_emoticon_size_big">60dp</dimen>
+    <dimen name="bar_height_userdef">@dimen/dimension_50</dimen>
+    <dimen name="bar_icon_height_userdef">28dp</dimen>
+
+
+    <dimen name="horizontalspit_view_height">0.6dp</dimen>
 </resources>

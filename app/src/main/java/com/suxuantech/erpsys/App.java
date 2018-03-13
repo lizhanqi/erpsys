@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import cn.jpush.im.android.api.JMessageClient;
 import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
@@ -82,6 +83,8 @@ public class App extends Application {
                 e.printStackTrace();
             }
         }
+        JMessageClient.setDebugMode(ISDEBUG);
+        JMessageClient.init(this);
     }
     /**
      * dex 分包个别手机如果不在这里init还是会报错,经常报错找不到某某.class
