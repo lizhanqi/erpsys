@@ -39,15 +39,14 @@ class JLoginActivity : ChatBaseActivity() {
         })
         val bt10086 = findViewById<Button>(R.id.bt_10086)
         bt10086.setOnClickListener(View.OnClickListener { v ->
-            var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
-            v.putExtra("name","10086")
-            startActivity( v)
+            login("123456","123456")
         })
         val bt123456 = findViewById<Button>(R.id.bt_123456)
         bt123456.setOnClickListener(View.OnClickListener { v ->
+            login("10086","10086")
             var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
             v.putExtra("name","123456")
-            startActivity( v)
+            //startActivity( v)
         })
     }
 
@@ -87,6 +86,11 @@ class JLoginActivity : ChatBaseActivity() {
 
         return buf.toString()
     }
+    fun  tochat(who :String){
+        var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
+        v.putExtra("name",who)
+        startActivity( v)
+    }
     /**
      * 登录
      */
@@ -97,9 +101,13 @@ class JLoginActivity : ChatBaseActivity() {
             override fun gotResult(status: Int, desc: String) {
                 loadingDialog.dismiss()
                 if (status == 0) {
+                    if(tname.equals("123456")){
+                        tochat("10086")
+                    }else{
+                        tochat("123456")
+                    }
                     Toast.makeText(mContext, "登录成功!", Toast.LENGTH_SHORT).show()
                     Log.d("DemoActivity", "Login success")
-
                 } else {
                     HandleResponseCode.onHandle(mContext, status, false)
                 }

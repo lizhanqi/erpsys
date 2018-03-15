@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.chat.keyboard.weight;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.keyboard.EmotionKeyboard;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -115,6 +117,7 @@ public class KeyBoardView  extends AutoHeightLayout {
       //  recyclerView = new RecyclerView(context);//gif
      //   recyclerView.setLayoutParams(linParams);
      //   linearLayout. addView(recyclerView);
+
        input = (RelativeLayout) inflate(context, R.layout.rc_ext_extension_bar, null);
         extMainBar = input. findViewById(R.id.ext_main_bar);
         rcSwitchLayout = input. findViewById(R.id.rc_switch_layout);
@@ -145,6 +148,7 @@ public class KeyBoardView  extends AutoHeightLayout {
         linearLayout.setBackgroundColor(getResources().getColor(R.color.noticeOrange));
         addView(linearLayout);
         setAdaputer();
+        EmotionKeyboard.with((Activity) getContext()).bindToContent(container).setEmotionView(vpEmotion).bindToEditText(rcEditText);
     }
 
     @Override
@@ -157,6 +161,7 @@ public class KeyBoardView  extends AutoHeightLayout {
         return rcEditText;
     }
     private void setAdaputer() {
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvEmotionType.setLayoutManager(linearLayoutManager);
