@@ -93,7 +93,7 @@ public class KeyBoardView  extends AutoHeightLayout {
     }
     //发送按钮
     public   interface   SendListen {
-        void   send(String s);
+        void   send(Editable s);
     }
     SendListen sendListen;
     public void setSendListen(SendListen sendListen) {
@@ -103,8 +103,6 @@ public class KeyBoardView  extends AutoHeightLayout {
     public void setAudioInput(AudioInput audioInput) {
         this.audioInput = audioInput;
     }
-
-
     public KeyBoardView(Context context) {
         this(context,null);
     }
@@ -117,7 +115,6 @@ public class KeyBoardView  extends AutoHeightLayout {
       //  recyclerView = new RecyclerView(context);//gif
      //   recyclerView.setLayoutParams(linParams);
      //   linearLayout. addView(recyclerView);
-
        input = (RelativeLayout) inflate(context, R.layout.rc_ext_extension_bar, null);
         extMainBar = input. findViewById(R.id.ext_main_bar);
         rcSwitchLayout = input. findViewById(R.id.rc_switch_layout);
@@ -161,7 +158,6 @@ public class KeyBoardView  extends AutoHeightLayout {
         return rcEditText;
     }
     private void setAdaputer() {
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvEmotionType.setLayoutManager(linearLayoutManager);
@@ -227,7 +223,7 @@ public class KeyBoardView  extends AutoHeightLayout {
             @Override
             public void onClick(View v) {
                 if (sendListen!=null){
-                    sendListen.send(rcEditText.getText().toString());
+                    sendListen.send(rcEditText.getText());
                 }
                 rcEditText.setText("");
             }

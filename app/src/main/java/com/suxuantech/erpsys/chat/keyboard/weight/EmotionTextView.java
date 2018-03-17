@@ -1,9 +1,4 @@
-package com.suxuantech.erpsys.chat;
-
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-
-import cn.jpush.im.android.api.enums.MessageDirect;
-import cn.jpush.im.android.api.model.Message;
+package com.suxuantech.erpsys.chat.keyboard.weight;
 
 /**
  * ......................我佛慈悲....................
@@ -27,41 +22,11 @@ import cn.jpush.im.android.api.model.Message;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2018/3/13 0013 16:27 .
+ * @author Created by 李站旗 on 2018/3/16 0016 11:00 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 消息实体....
+ * @Description: todo(用一句话描述该文件做什么)
  */
 
-public class MessageEntity implements MultiItemEntity {
-    public static final int OTHER_PEOPLE = 1;
-    public static final int ONESELF = 2;
-    Message message;
-
-    public Message getMsag() {
-        return message;
-    }
-
-    public MessageEntity(Message message) {
-        this.message = message;
-    }
-
-    public void setMsag(Message message) {
-        this.message = message;
-    }
-
-    @Override
-    public int getItemType() {
-  /*      if (message.getFromUser().getUserName().equals(JMessageClient.getMyInfo().getUserName())) {
-            return ONESELF;
-        } else {
-            return OTHER_PEOPLE;
-        }*/
-        if (message .getDirect() == MessageDirect.send){
-            return ONESELF;
-        }else {
-            return OTHER_PEOPLE;
-        }
-    }
+public class EmotionTextView {
 }
-

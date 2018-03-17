@@ -1,13 +1,62 @@
 package com.suxuantech.erpsys.chat;
 
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.keyboard.adaputer.SimpleAppsGridView;
+import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
+import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
+import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
+import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
+import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumFile;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.TextContent;
+import cn.jpush.im.android.api.enums.ContentType;
+import cn.jpush.im.android.api.enums.MessageDirect;
+import cn.jpush.im.android.api.event.ConversationRefreshEvent;
+import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
+import cn.jpush.im.android.api.event.MessageRetractEvent;
+import cn.jpush.im.android.api.event.OfflineMessageEvent;
+import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.options.MessageSendingOptions;
+import cn.jpush.im.api.BasicCallback;
+import sj.qqkeyboard.DefQqEmoticons;
 
 /**
  * ......................我佛慈悲....................
@@ -34,15 +83,371 @@ import com.suxuantech.erpsys.R;
  * @author Created by 李站旗 on 2018/3/15 0015 14:24 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: 聊天界面
+ * <p>
+ * 1.单聊
+ * 1.1文字及表情
+ * 1.2 图片(包含照相)
+ * 1.3 位置
+ * 1.4 文件
+ * 1.5语音
+ * 1.6 失败消息重发
+ * 1.7已读,未读
+ * 1.8 长按复制
+ * 1.9删除,撤回
+ * 2.群聊
+ * 2.1  邀请加群,创建
+ * 2.2  退群 ,踢人
+ * 2.3 @ 某人,@全体 (最后再说)
  */
 
 public class JConversationFragment extends Fragment {
+    String UserID = "123456";
+    private RecyclerView msgList;
+    private MultipleItemQuickAdapter multipleItemQuickAdapter;
+    private ArrayList<MessageEntity> allMessage;
+    private Conversation singleConversation;
+    private RelativeLayout mRootView;
+    private KeyBoardView keyBoardView;
+    private boolean isGrop;
+    private Dialog mDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.activity_conversation2, container, false);
+        mRootView = (RelativeLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
         return mRootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        UserID = getActivity().getIntent().getStringExtra("name");
+        singleConversation = JMessageClient.getSingleConversation(UserID);
+        if (singleConversation == null) {
+            singleConversation = Conversation.createSingleConversation(UserID);
+        }
+        List<Message> conversation = singleConversation.getAllMessage();
+        allMessage = new ArrayList<>();
+        for (Message ms : conversation) {
+            allMessage.add(new MessageEntity(ms));
+        }
+
+        initView();
+    }
+
+    private void initView() {
+        msgList = mRootView.findViewById(R.id.rv_msg);
+        multipleItemQuickAdapter = new MultipleItemQuickAdapter(allMessage);
+        multipleItemQuickAdapter.setUpFetchEnable(true);
+        msgList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        msgList.setAdapter(multipleItemQuickAdapter);
+        msgList.scrollToPosition(allMessage.size() - 1);
+        multipleItemQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+
+        multipleItemQuickAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+//                KeyboardUtils.hideSoftInput(view);
+                MessageEntity msgenty = (MessageEntity) adapter.getData().get(position);
+                ContentType messageType = msgenty.getMsag().getContentType();
+                int[] location = new int[2];
+                view.getLocationOnScreen(location);
+                float OldListY = (float) location[1];
+                float OldListX = (float) location[0];
+                TipView.Builder builder = new TipView.Builder(getActivity(), getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT), (int) OldListX + view.getWidth() / 2, (int) OldListY + view.getHeight());
+                if (msgenty.getMsag().getContentType() == ContentType.text) {
+                    builder.addItem(new TipItem("复制"));
+                }
+                builder.addItem(new TipItem("删除"));
+                if (msgenty.getMsag().getDirect() == MessageDirect.send) {
+                    builder.addItem(new TipItem("撤回"));
+                }
+
+                builder.setOnItemClickListener(new TipView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(String str, final int position) {
+                        if (str.equals("复制")) {
+                            final String content = ((TextContent) msgenty.getMsag().getContent()).getText();
+                            if (Build.VERSION.SDK_INT > 11) {
+                                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("Simple text", content);
+                                clipboard.setPrimaryClip(clip);
+                            } else {
+                                android.text.ClipboardManager clip = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                if (clip.hasText()) {
+                                    clip.getText();
+                                }
+                            }
+                            Toast.makeText(getActivity(), "已复制", Toast.LENGTH_SHORT).show();
+                        } else if (str.equals("撤回")) {
+                            //撤回
+                            singleConversation.retractMessage(msgenty.getMsag(), new BasicCallback() {
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    if (i == 855001) {
+                                        Toast.makeText(getActivity(), "发送时间过长，不能撤回", Toast.LENGTH_SHORT).show();
+                                    } else if (i == 0) {
+                                        multipleItemQuickAdapter.delMsgRetract(msgenty.getMsag());
+                                    }
+                                }
+                            });
+                        } else {
+                            //删除
+                            singleConversation.deleteMessage(msgenty.getMsag().getId());
+                            multipleItemQuickAdapter.removeMessage(msgenty.getMsag());
+                        }
+                    }
+
+                    @Override
+                    public void dismiss() {
+                    }
+                });
+                builder.create();
+                return false;
+            }
+        });
+
+        multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
+                Message content = messageEntity.getMsag();
+                showResendDialog(content, position);
+            }
+        });
+        keyBoardView = mRootView.findViewById(R.id.keyboard);
+        keyBoardView.setSendListen(new KeyBoardView.SendListen() {
+            @Override
+            public void send(Editable s) {
+                sendMssageText(s);
+            }
+        });
+        keyBoardView.setAudioInput(new KeyBoardView.AudioInput() {
+            @Override
+            public void onClick() {
+            }
+        });
+        SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(getActivity());
+        simpleAppsGridView.setOnItemClickListener(new SimpleAppsGridView.OnItemClickListener() {
+            @Override
+            public void onItemClick(ArrayList<AppBean> mAppBeanList, int position, AdapterView<?> parent, View view) {
+                if (position == 0) {
+                    gotoSelectImage();
+                } else if (position == 1) {
+                    gotoCamera();
+                }
+            }
+        });
+
+        keyBoardView.setPluginViews(simpleAppsGridView);
+        EmotionSinglePageView emotionView = new EmotionSinglePageView(getActivity());
+        emotionView.withText(keyBoardView.getRcEditText());
+        Set<String> strings1 = DefQqEmoticons.sQqEmoticonHashMap.keySet();
+        ArrayList<EmotionBean> strings = new ArrayList<>();
+        for (String eb : strings1) {
+            strings.add(new EmotionBean(DefQqEmoticons.sQqEmoticonHashMap.get(eb), eb, EmotionBean.type.mimap));
+        }
+        emotionView.setColumns(7);
+        emotionView.setUseDelete(false);
+        emotionView.setEmotion(strings);
+        keyBoardView.addEmotionView(emotionView, getResources().getDrawable(strings.get(0).icon));
+    }
+
+    //重发对话框
+    public void showResendDialog(Message content, int position) {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == R.id.jmui_cancel_btn) {
+                    mDialog.dismiss();
+                } else {
+                    mDialog.dismiss();
+                    switch (content.getContentType()) {
+                        case image:
+                        case text:
+                            //设置需要已读回执
+                            MessageSendingOptions options = new MessageSendingOptions();
+                            options.setNeedReadReceipt(true);
+                            //手动设置,最低需要1个人读,不然刚发送的,在列表中有问题
+                            content.setUnreceiptCnt(1);
+                            content.setOnSendCompleteCallback(new BasicCallback() {
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    multipleItemQuickAdapter.notifyItemChanged(position);
+                                }
+                            });
+                            JMessageClient.sendMessage(content, options);
+                            //更新页面
+                            multipleItemQuickAdapter.notifyItemChanged(position);
+                        case voice:
+                            //     resendTextOrVoice(holder, msg);
+                            break;
+                        //  case image:
+                        // resendImage(holder, msg);
+                        //   break;
+                        case file:
+                            //    resendFile(holder, msg);
+                            break;
+                    }
+                }
+            }
+        };
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mDialog = DialogCreator.createResendDialog(getActivity(), listener);
+        mDialog.getWindow().setLayout((int) (0.8 * dm.widthPixels), WindowManager.LayoutParams.WRAP_CONTENT);
+        mDialog.show();
+    }
+
+
+    /***
+     *拍照发送图片
+     */
+    private void gotoCamera() {
+        Album.camera(this) // 相机功能。
+                .image() // 拍照。
+                // .filePath() // 文件保存路径，非必须。
+                .requestCode(666)
+                .onResult(new Action<String>() {
+                    @Override
+                    public void onAction(int requestCode, @NonNull String result) {
+                        if (666 == requestCode) {
+                            sendImage(result);
+                        }
+                    }
+                })
+                .start();
+    }
+
+    /**
+     * 图库发送图片
+     */
+    private void gotoSelectImage() {
+        Album.image(this) // 选择图片。
+                .multipleChoice()
+                .requestCode(888)
+                .camera(false)
+                .columnCount(3)
+                .selectCount(10)
+                .checkedList(null)
+                //.filterSize(5)
+                //.filterMimeType()
+                // .afterFilterVisibility() // 显示被过滤掉的文件，但它们是不可用的。
+                .onResult(new Action<ArrayList<AlbumFile>>() {
+                    @Override
+                    public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                        if (requestCode == 888) {
+                            for (AlbumFile f : result) {
+                                if (f.getMediaType() == AlbumFile.TYPE_IMAGE) {
+                                    String path = f.getPath();
+                                    sendImage(path);
+                                }
+                            }
+                        }
+                    }
+                })
+                .start();
+    }
+    void sendMssageText(Editable text) {
+        Message sendTextMessage = singleConversation.createSendTextMessage(String.valueOf(new SpannableString(text)));
+        //设置需要已读回执
+        MessageSendingOptions options = new MessageSendingOptions();
+        options.setNeedReadReceipt(true);
+        //手动设置,最低需要1个人读,不然刚发送的,在列表中有问题
+        sendTextMessage.setUnreceiptCnt(1);
+        JMessageClient.sendMessage(sendTextMessage, options);
+        //更新页面
+        MessageEntity messageEntity = new MessageEntity(sendTextMessage);
+        allMessage.add(messageEntity);
+        msgList.scrollToPosition(allMessage.size() - 1);
+        multipleItemQuickAdapter.notifyDataSetChanged();
+    }
+    void sendImage(String file) {
+        //方式二
+        try {
+            ImageContent content = new ImageContent(new File(file));
+            Message sendMessage = singleConversation.createSendMessage(content);
+            sendMessage.setUnreceiptCnt(1);
+            //设置需要已读回执
+            MessageSendingOptions options = new MessageSendingOptions();
+            options.setNeedReadReceipt(true);
+            JMessageClient.sendMessage(sendMessage, options);
+            //更新页面
+            MessageEntity messageEntity = new MessageEntity(sendMessage);
+            allMessage.add(messageEntity);
+            msgList.scrollToPosition(allMessage.size() - 1);
+            multipleItemQuickAdapter.notifyDataSetChanged();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 如果在JMessageClient.init时启用了消息漫游功能，则每当一个会话的漫游消息同步完成时
+     * sdk会发送此事件通知上层。
+     **/
+    public void onEvent(ConversationRefreshEvent event) {
+        //获取事件发生的会话对象
+        Conversation conversation = event.getConversation();
+        //获取事件发生的原因，对于漫游完成触发的事件，此处的reason应该是
+        //MSG_ROAMING_COMPLETE
+        ConversationRefreshEvent.Reason reason = event.getReason();
+        Log.i("JIM", String.format(Locale.SIMPLIFIED_CHINESE, "收到ConversationRefreshEvent事件,待刷新的会话是%s.\n", conversation.getTargetId()));
+        Log.i("JIM", "事件发生的原因 : " + reason);
+    }
+
+    /**
+     * 类似MessageEvent事件的接收，上层在需要的地方增加OfflineMessageEvent事件的接收
+     * 即可实现离线消息的接收。
+     **/
+    public void onEvent(OfflineMessageEvent event) {
+        //获取事件发生的会话对象
+        Conversation conversation = event.getConversation();
+        List<Message> newMessageList = event.getOfflineMessageList();//获取此次线期间会话收到的新消息列表
+        Log.i("JIM", String.format(Locale.SIMPLIFIED_CHINESE, "收到%d条来自%s的离线消息。\n", newMessageList.size(), conversation.getTargetId()));
+    }
+//    /**
+//     * 收到消息(在线的)
+//     */
+//    public void onEvent(MessageEvent event) {//子线程
+//        event.getMessage().getContent();
+//        ToastUtils.show(event.getMessage().getContent().toJson());
+//    }
+
+    /**
+     * 接受消息的事件 收到消息(在线的)主线程
+     */
+    public void onEventMainThread(MessageEvent event) {
+        if (event.getMessage().getFromUser().getUserName().equals(UserID)) {
+            event.getMessage().getContent();
+            allMessage.add(new MessageEntity(event.getMessage()));
+            msgList.scrollToPosition(allMessage.size() - 1);
+            multipleItemQuickAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 对方读取消息后的状态更新
+     *
+     * @param event
+     */
+    public void onEventMainThread(MessageReceiptStatusChangeEvent event) {
+        List<MessageReceiptStatusChangeEvent.MessageReceiptMeta> messageReceiptMetas = event.getMessageReceiptMetas();
+        for (MessageReceiptStatusChangeEvent.MessageReceiptMeta meta : messageReceiptMetas) {
+            long serverMsgId = meta.getServerMsgId();
+            int unReceiptCnt = meta.getUnReceiptCnt();
+            multipleItemQuickAdapter.setUpdateReceiptCount(serverMsgId, unReceiptCnt);
+        }
+    }
+
+    /**
+     * 消息撤回
+     *
+     * @param event
+     */
+    public void onEventMainThread(MessageRetractEvent event) {
+        Message retractedMessage = event.getRetractedMessage();
+        multipleItemQuickAdapter.delMsgRetract(retractedMessage);
     }
 }
 

@@ -9,15 +9,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="time" />
-
+    <TextView
+        android:background="@color/translucent_black_90"
+        android:textColor="@color/white"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"
+        android:id="@+id/tv_msg_recall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="消息撤回" />
     <RelativeLayout
+        android:paddingRight="@dimen/px150"
+        android:id="@+id/rl_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:padding="@dimen/px30">
 
         <ImageView
-            android:id="@+id/imag_user_head1"
+            android:id="@+id/imag_user_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
@@ -27,7 +37,7 @@
             android:id="@+id/ll_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imag_user_head1"
+            android:layout_toRightOf="@+id/imag_user_head"
             android:gravity="left"
             android:orientation="vertical">
             <TextView

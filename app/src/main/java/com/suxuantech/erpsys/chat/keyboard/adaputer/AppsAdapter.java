@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
@@ -60,12 +59,6 @@ public class AppsAdapter extends BaseAdapter {
         if (appBean != null) {
             viewHolder.iv_icon.setBackgroundResource(appBean.getIcon());
             viewHolder.tv_name.setText(appBean.getFuncName());
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,appBean.getFuncName(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
         return convertView;
     }
