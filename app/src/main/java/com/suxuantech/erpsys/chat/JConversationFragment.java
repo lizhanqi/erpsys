@@ -1,18 +1,30 @@
 package com.suxuantech.erpsys.chat;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.AppOpsManagerCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,13 +43,19 @@ import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
 import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
 import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
+import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
+import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -101,22 +119,115 @@ import sj.qqkeyboard.DefQqEmoticons;
  * 2.3 @ 某人,@全体 (最后再说)
  */
 
-public class JConversationFragment extends Fragment {
+public class JConversationFragment extends Fragment implements KeyBoardView.AudioInput  , SensorEventListener {
     String UserID = "123456";
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
-    private ArrayList<MessageEntity> allMessage;
     private Conversation singleConversation;
     private RelativeLayout mRootView;
     private KeyBoardView keyBoardView;
     private boolean isGrop;
     private Dialog mDialog;
+    int pageOffset, limit = 10;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Rationale mRationale;
+    PermissionSetting mSetting;
+    Handler hd = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    };
 
+    public void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new com.yanzhenjie.permission.Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        permissionGrantedResult(permissions);
+                    }
+                })
+                .onDenied(new com.yanzhenjie.permission.Action() {
+                    @Override
+                    public void onAction(@NonNull List<String> permissions) {
+                        if (AndPermission.hasAlwaysDeniedPermission(JConversationFragment.this, permissions)) {
+                            mSetting.showSetting(permissions);
+                        } else {
+                            ToastUtils.show(R.string.failure_permission);
+                        }
+                    }
+                })
+                .start();
+    }
+
+    /**
+     * 权限授予结果
+     *
+     * @param permissions
+     */
+    public void permissionGrantedResult(List<String> permissions) {
+
+    }
+
+    /**
+     * Check if the calling context has a set of permissions.
+     *
+     * @param permissions one or more permissions.
+     * @return true, other wise is false.
+     */
+    public boolean hasPermission(@NonNull List<String> permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(getContext(), permission);
+            if (result == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+            String op = AppOpsManagerCompat.permissionToOp(permission);
+            if (TextUtils.isEmpty(op)) {
+                continue;
+            }
+            result = AppOpsManagerCompat.noteProxyOp(getActivity(), op, getActivity().getPackageName());
+            if (result != AppOpsManagerCompat.MODE_ALLOWED) {
+                return false;
+            }
+
+        }
+        return true;
+    }
+    //调用距离传感器，控制屏幕
+
+    private SensorManager mManager;//传感器管理对象
+    //屏幕开关
+    private PowerManager localPowerManager = null;//电源管理对象
+    private PowerManager.WakeLock localWakeLock = null;//电源锁
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = (RelativeLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getActivity());
+        mManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        localPowerManager = (PowerManager)getActivity(). getSystemService(Context.POWER_SERVICE);
+        localWakeLock =  localPowerManager.newWakeLock(32, "MyPower");
+//        AudioModeManger audioModeManger = new AudioModeManger();
+//        if (audioModeManger == null) {
+//            audioModeManger = new AudioModeManger();
+//        }
+//        audioModeManger.register();
         return mRootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+            mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
+             SensorManager.SENSOR_DELAY_NORMAL);//注册传感器，第一个参数为距离监听器，第二个是传感器类型，第三个是延迟类型
+
     }
 
     @Override
@@ -127,24 +238,48 @@ public class JConversationFragment extends Fragment {
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);
         }
-        List<Message> conversation = singleConversation.getAllMessage();
-        allMessage = new ArrayList<>();
-        for (Message ms : conversation) {
-            allMessage.add(new MessageEntity(ms));
-        }
-
+        
         initView();
+    }
+
+    public List<MessageEntity> loadMessage() {
+        //List<Message> allMessage = singleConversation.getAllMessage();
+        List<Message> conversation = singleConversation.getMessagesFromNewest(pageOffset * limit, limit);
+        if (conversation != null && conversation.size() == limit) {
+            pageOffset++;
+        } else {
+            if (mSwipeRefreshLayout != null) {
+                mSwipeRefreshLayout.setEnabled(false);
+            }
+        }
+        List<MessageEntity> messages = new ArrayList<>();
+        for (Message ms : conversation) {
+            messages.add(new MessageEntity(ms));
+        }
+        Collections.reverse(messages);
+        hd.sendEmptyMessageDelayed(0, 3000);
+        return messages;
     }
 
     private void initView() {
         msgList = mRootView.findViewById(R.id.rv_msg);
-        multipleItemQuickAdapter = new MultipleItemQuickAdapter(allMessage);
-        multipleItemQuickAdapter.setUpFetchEnable(true);
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.srl_load);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.de_title_bg, R.color.themeColor, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                List<MessageEntity> messageEntities = loadMessage();
+                multipleItemQuickAdapter.appendTopData(messageEntities);
+            }
+        });
+        mSwipeRefreshLayout.setRefreshing(true);
+        multipleItemQuickAdapter = new MultipleItemQuickAdapter(loadMessage());
         msgList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        msgList.setAdapter(multipleItemQuickAdapter);
-        msgList.scrollToPosition(allMessage.size() - 1);
+        //这里请用:bindToRecyclerView 因为需要使用到getViewByPosition
+        //   msgList.setAdapter(multipleItemQuickAdapter);
+        multipleItemQuickAdapter.bindToRecyclerView(msgList);
+        msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
         multipleItemQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-
         multipleItemQuickAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
             @Override
             public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
@@ -207,7 +342,6 @@ public class JConversationFragment extends Fragment {
                 return false;
             }
         });
-
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -223,11 +357,7 @@ public class JConversationFragment extends Fragment {
                 sendMssageText(s);
             }
         });
-        keyBoardView.setAudioInput(new KeyBoardView.AudioInput() {
-            @Override
-            public void onClick() {
-            }
-        });
+        keyBoardView.setAudioInput(this);
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(getActivity());
         simpleAppsGridView.setOnItemClickListener(new SimpleAppsGridView.OnItemClickListener() {
             @Override
@@ -252,7 +382,39 @@ public class JConversationFragment extends Fragment {
         emotionView.setUseDelete(false);
         emotionView.setEmotion(strings);
         keyBoardView.addEmotionView(emotionView, getResources().getDrawable(strings.get(0).icon));
+        keyBoardView.setRecordListener(new KeyBoardView.RecordListener() {
+            @Override
+            public void onRecordFinished(int duration, String path) {
+                sendVoice(duration, path);
+            }
+        });
     }
+
+    /**
+     * 发送语音
+     *
+     * @param duration
+     * @param path
+     */
+    private void sendVoice(int duration, String path) {
+        try {
+            Message singleVoiceMessage = JMessageClient.createSingleVoiceMessage(UserID, new File(path), duration);
+            singleVoiceMessage.setUnreceiptCnt(1);
+            //设置需要已读回执
+            MessageSendingOptions options = new MessageSendingOptions();
+            options.setNeedReadReceipt(true);
+            JMessageClient.sendMessage(singleVoiceMessage, options);
+            //更新页面
+            MessageEntity messageEntity = new MessageEntity(singleVoiceMessage);
+            multipleItemQuickAdapter.appendData(messageEntity);
+            //allMessage.add(messageEntity);
+            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+//            multipleItemQuickAdapter.notifyDataSetChanged();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //重发对话框
     public void showResendDialog(Message content, int position) {
@@ -349,6 +511,7 @@ public class JConversationFragment extends Fragment {
                 })
                 .start();
     }
+
     void sendMssageText(Editable text) {
         Message sendTextMessage = singleConversation.createSendTextMessage(String.valueOf(new SpannableString(text)));
         //设置需要已读回执
@@ -359,10 +522,12 @@ public class JConversationFragment extends Fragment {
         JMessageClient.sendMessage(sendTextMessage, options);
         //更新页面
         MessageEntity messageEntity = new MessageEntity(sendTextMessage);
-        allMessage.add(messageEntity);
-        msgList.scrollToPosition(allMessage.size() - 1);
+//        allMessage.add(messageEntity);
+        multipleItemQuickAdapter.appendData(messageEntity);
+        msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
         multipleItemQuickAdapter.notifyDataSetChanged();
     }
+
     void sendImage(String file) {
         //方式二
         try {
@@ -375,13 +540,14 @@ public class JConversationFragment extends Fragment {
             JMessageClient.sendMessage(sendMessage, options);
             //更新页面
             MessageEntity messageEntity = new MessageEntity(sendMessage);
-            allMessage.add(messageEntity);
-            msgList.scrollToPosition(allMessage.size() - 1);
-            multipleItemQuickAdapter.notifyDataSetChanged();
+            multipleItemQuickAdapter.appendData(messageEntity);
+            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+            // multipleItemQuickAdapter.notifyDataSetChanged();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
     /**
      * 如果在JMessageClient.init时启用了消息漫游功能，则每当一个会话的漫游消息同步完成时
      * sdk会发送此事件通知上层。
@@ -420,9 +586,8 @@ public class JConversationFragment extends Fragment {
     public void onEventMainThread(MessageEvent event) {
         if (event.getMessage().getFromUser().getUserName().equals(UserID)) {
             event.getMessage().getContent();
-            allMessage.add(new MessageEntity(event.getMessage()));
-            msgList.scrollToPosition(allMessage.size() - 1);
-            multipleItemQuickAdapter.notifyDataSetChanged();
+            multipleItemQuickAdapter.appendData(new MessageEntity(event.getMessage()));
+            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
         }
     }
 
@@ -448,6 +613,64 @@ public class JConversationFragment extends Fragment {
     public void onEventMainThread(MessageRetractEvent event) {
         Message retractedMessage = event.getRetractedMessage();
         multipleItemQuickAdapter.delMsgRetract(retractedMessage);
+    }
+
+    /**
+     * 录制音频按钮
+     */
+    @Override
+    public void onAudioInputClick() {
+        ArrayList<String> objects = new ArrayList<>();
+        objects.add(Manifest.permission.RECORD_AUDIO);
+        objects.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        objects.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        boolean b = hasPermission(objects);
+        if (!b){
+            requestPermission(Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        multipleItemQuickAdapter.stopVoice(null);
+        if(mManager != null){
+             localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
+            mManager.unregisterListener(this);//注销传感器监听
+        }
+    }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float[] its = event.values;
+        if (its != null && event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+            //经过测试，当手贴近距离感应器的时候its[0]返回值为0.0，当手离开时返回1.0
+            if (its[0] == 0.0) {//
+
+                if (localWakeLock.isHeld()) {
+                    Log.i("11", "onSensorChanged: 贴近返回");
+                    return;
+                } else{
+                    Log.i("11", "onSensorChanged: 申请锁定");
+                    localWakeLock.acquire();// 申请设备电源锁
+                    multipleItemQuickAdapter.soundSourceFromSpeakerphone(false);
+                }
+            } else {// 远离手机
+
+                if (localWakeLock.isHeld()) {
+                    Log.i("11", "onSensorChanged: 远离返回");
+                    return;
+                } else{
+                    Log.i("11", "onSensorChanged: 释放设备电源锁");
+                    localWakeLock.setReferenceCounted(false);
+                    localWakeLock.release(); // 释放设备电源锁
+                    multipleItemQuickAdapter.soundSourceFromSpeakerphone(true);
+                }
+            }
+        }
+    }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
 

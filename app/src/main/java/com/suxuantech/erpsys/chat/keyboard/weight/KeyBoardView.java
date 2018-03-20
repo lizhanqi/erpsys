@@ -12,9 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -31,7 +31,10 @@ import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.utils.DensityUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import cn.jmessage.android.uikit.recordvoice.RecordVoiceButton;
 
 
 /**
@@ -76,7 +79,7 @@ public class KeyBoardView  extends AutoHeightLayout {
     private ImageView rcPluginToggle;
     private FrameLayout container;
     private RecyclerView recyclerView;
-    private Button btnAudioInput;
+    private RecordVoiceButton btnAudioInput;
     private LinearLayout llInputText;
     private TextView tvSend;
     private  View  pluginViews;
@@ -89,7 +92,7 @@ public class KeyBoardView  extends AutoHeightLayout {
     private LinearLayout linearLayout;
     //语音录入中
     public interface   AudioInput{
-        void   onClick();
+        void   onAudioInputClick();
     }
     //发送按钮
     public   interface   SendListen {
@@ -103,6 +106,15 @@ public class KeyBoardView  extends AutoHeightLayout {
     public void setAudioInput(AudioInput audioInput) {
         this.audioInput = audioInput;
     }
+    RecordListener recordListener;
+    public void setRecordListener(RecordListener recordListener) {
+        this.recordListener = recordListener;
+    }
+
+    public interface  RecordListener{
+       void onRecordFinished(int duration, String path);
+    }
+
     public KeyBoardView(Context context) {
         this(context,null);
     }
@@ -141,6 +153,10 @@ public class KeyBoardView  extends AutoHeightLayout {
         vpEmotion = emotionPage.findViewById(R.id.vp_emotion);
         btnFitEmotion = emotionPage.findViewById(R.id.btn_fit_emotion);
         rvEmotionType = emotionPage.findViewById(R.id.rv_emotion_type);
+        //设置录音文件存放位置
+        File rootDir = getContext().getFilesDir();
+        String fileDir = rootDir.getAbsolutePath() + "/voice";
+        btnAudioInput.setFilePath(fileDir);
         setOnclick();
         linearLayout.setBackgroundColor(getResources().getColor(R.color.noticeOrange));
         addView(linearLayout);
@@ -201,6 +217,14 @@ public class KeyBoardView  extends AutoHeightLayout {
     }
     int keyBoardHeight=800;
     private void setOnclick() {
+        btnAudioInput.setRecordListener(new RecordVoiceButton.OnRecordVoiceListener() {
+            @Override
+            public void onRecordFinished(int duration, String path) {
+                if (recordListener!=null){
+                    recordListener.onRecordFinished(duration,path);
+                }
+            }
+        });
         rcEditText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,12 +276,15 @@ public class KeyBoardView  extends AutoHeightLayout {
                 showPlugins();
             }
         });
-        btnAudioInput.setOnClickListener(new OnClickListener() {
+        btnAudioInput.setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (audioInput!=null){
-                    audioInput.onClick();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()==MotionEvent.ACTION_DOWN){
+                    if (audioInput!=null){
+                        audioInput.onAudioInputClick();
+                    }
                 }
+                return false;
             }
         });
         //到文字

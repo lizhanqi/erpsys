@@ -3,4 +3,5 @@
     <item type="id" name="line">false</item>
     <item type="id" name="nimei">false</item>
     <item type="id" name="id_autolayout" />
+    <item type="id" name="id_voice_image" />
 </resources>

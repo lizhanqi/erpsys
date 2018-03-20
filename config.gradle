@@ -105,6 +105,7 @@ ext {
             //compile 'com.contrarywind:Android-PickerView:3.2.6'
             //时间,地址选择弹窗等
             pickerview             : 'com.lizhanqi:pickerview:1.0.2',
+
             kotlin_stdlib_jre7:"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
            AdapterHelper :'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30',
            AndroidEmoji :'com.github.w446108264:AndroidEmoji:1.3',
