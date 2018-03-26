@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.chat.keyboard.weight;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,6 +87,7 @@ public class KeyBoardView extends AutoHeightLayout {
     private RecyclerView rvEmotionType;
     private BaseRecyclerAdapter typeAdaputer;
     private RelativeLayout input;
+    private Editable tempText;
 
     //语音录入中
     public interface AudioInput {
@@ -158,7 +161,46 @@ public class KeyBoardView extends AutoHeightLayout {
         init();
     }
     /**
+     * 判断是否显示了键盘
+     */
+    private boolean isSoftKeyboardShown() {
+        return getSoftKeyboardHeight() != 0;
+    }
+
+
+    /**
+     * 获取键盘的高度
+     */
+    private int getSoftKeyboardHeight() {
+        Rect rect = new Rect();
+        ((Activity)  getContext() ).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        //屏幕当前可见高度，不包括状态栏
+        int displayHeight = rect.bottom - rect.top;
+        //屏幕可用高度
+        int availableHeight = getAvailableScreenHeight((Activity) getContext());//ScreenUtils.getAvailableScreenHeight(activity);
+        //用于计算键盘高度
+        int softInputHeight = availableHeight - displayHeight -getStatusBarHeight((Activity) getContext());// ScreenUtils.getStatusBarHeight(activity);
+        return softInputHeight;
+    }
+    /**
+     * 状态栏高度
+     */
+    public static int getStatusBarHeight(Activity activity) {
+        int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return activity.getResources().getDimensionPixelSize(resourceId);
+    }
+    /**
+     * 返回屏幕可用高度
+     * 当显示了虚拟按键时，会自动减去虚拟按键高度
+     */
+    public static int getAvailableScreenHeight(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
+    }
+    /**
      * 点击返回键时先隐藏表情布局
+     *
      * @return
      */
     public boolean interceptBackPress() {
@@ -171,11 +213,11 @@ public class KeyBoardView extends AutoHeightLayout {
 
     public void init() {
         //监听返回按键,前提是  rcEditText.requestFocus();,已经获得到了光标焦点
-       rcEditText. setOnKeyListener(new OnKeyListener() {
+        rcEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode==event.getKeyCode()){
-                return     interceptBackPress();
+                if (keyCode == event.getKeyCode()) {
+                    return interceptBackPress();
                 }
                 return false;
             }
@@ -183,29 +225,27 @@ public class KeyBoardView extends AutoHeightLayout {
         rcPluginToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = container.indexOfChild(pluginViews);
-                int i1= container.indexOfChild(emotionPage);
                 if (pluginViews.isShown()) {
                     lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
                     hideEmotionLayout(true);//隐藏表情布局，显示软件盘
                     unlockContentHeightDelayed();//软件盘显示后，释放内容高度
                 } else {
                     switchMode(false);
-
-                 //   lockContentHeight();
-                    showPlugins();
-               //     unlockContentHeightDelayed();
-//                    if (isSoftInputShown()) {//同上
-//                        lockContentHeight();
-//                        showEmotionLayout();
-//                        unlockContentHeightDelayed();
-//                    } else {
-//                        showEmotionLayout();//两者都没显示，直接显示表情布局
-//                    }
+                    if (tempText!=null){
+                        rcEditText.setText(tempText);
+                        rcEditText.setSelection(rcEditText.getText().length());
+                        tempText=null;
+                    }
+                    if (isSoftKeyboardShown()) {//同上
+                        lockContentHeight();
+                        showPlugins();
+                        unlockContentHeightDelayed();
+                    } else {
+                        showPlugins();//两者都没显示，直接显示表情布局
+                    }
                 }
             }
         });
-
         rcEmoticonToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,16 +255,13 @@ public class KeyBoardView extends AutoHeightLayout {
                     hideEmotionLayout(true);//隐藏表情布局，显示软件盘
                     unlockContentHeightDelayed();//软件盘显示后，释放内容高度
                 } else {
-                   // lockContentHeight();
-                    showEmotionKeyBoard();
-                  //  unlockContentHeightDelayed();
-//                    if (isSoftInputShown()) {//同上
-//                           lockContentHeight();
-//                          showEmotionLayout();
-//                          unlockContentHeightDelayed();
-//                    } else {
-//                        showEmotionLayout();//两者都没显示，直接显示表情布局
-//                    }
+                    if (isSoftKeyboardShown()) {//同上
+                        lockContentHeight();
+                        showEmotionKeyBoard();
+                        unlockContentHeightDelayed();
+                    } else {
+                        showEmotionKeyBoard();//两者都没显示，直接显示表情布局
+                    }
                 }
             }
         });
@@ -257,11 +294,10 @@ public class KeyBoardView extends AutoHeightLayout {
         if (container.isShown()) {
             container.setVisibility(View.GONE);
             if (showSoftInput) {
-                    showSoftInput();
+                showSoftInput();
             }
         }
     }
-
 
 
     /**
@@ -396,6 +432,11 @@ public class KeyBoardView extends AutoHeightLayout {
         rcSwitchToMenu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (tempText!=null){
+                    rcEditText.setText(tempText);
+                    rcEditText.setSelection(rcEditText.getText().length());
+                    tempText=null;
+                }
                 switchMode(false);
                 getRootView().requestLayout();
                 KeyboardUtils.showSoftInput(rcEditText);
@@ -405,19 +446,22 @@ public class KeyBoardView extends AutoHeightLayout {
         rcVoiceToggle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                tempText = rcEditText.getText();
+                rcEditText.setText("");
                 switchMode(true);
                 hideEmotionKeyBoard();
                 KeyboardUtils.hideSoftInput(getRootView());
             }
         });
     }
-    private void switchMode(boolean isAudio){
-        if (isAudio){
+
+    private void switchMode(boolean isAudio) {
+        if (isAudio) {
             rcSwitchToMenu.setVisibility(VISIBLE);
             llInputText.setVisibility(GONE);
             rcVoiceToggle.setVisibility(GONE);
             btnAudioInput.setVisibility(VISIBLE);
-        }else {
+        } else {
             rcSwitchToMenu.setVisibility(GONE);
             llInputText.setVisibility(VISIBLE);
             rcVoiceToggle.setVisibility(VISIBLE);
@@ -425,6 +469,7 @@ public class KeyBoardView extends AutoHeightLayout {
             rcEditText.requestFocus();
         }
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
