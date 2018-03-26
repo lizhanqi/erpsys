@@ -62,7 +62,7 @@ public class EmotionGridViewAdapter extends BaseAdapter {
 		iv_emotion.setLayoutParams(params);
 		//判断是否为最后一个item
 		if(position == getCount() - 1) {
-			iv_emotion.setImageResource(R.drawable.rc_mebmer_delete);
+			iv_emotion.setImageResource(R.drawable.icon_backspace);
 		} else {
 			iv_emotion.setImageDrawable(context.getResources().getDrawable(emotionNames.get(position).icon));
 			//Glide.with(context).load(emotionNames.get(position).emoji).into(iv_emotion);

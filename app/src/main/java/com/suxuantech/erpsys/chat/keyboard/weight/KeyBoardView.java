@@ -87,6 +87,7 @@ public class KeyBoardView extends AutoHeightLayout {
     private BaseRecyclerAdapter typeAdaputer;
     private RelativeLayout input;
     private Editable tempText;
+    private ImageView btnFitDelete;
 
     //语音录入中
     public interface AudioInput {
@@ -147,6 +148,7 @@ public class KeyBoardView extends AutoHeightLayout {
         emotionPage = inflate(getContext(), R.layout.emotion_page, null);
         vpEmotion = emotionPage.findViewById(R.id.vp_emotion);
         btnFitEmotion = emotionPage.findViewById(R.id.btn_fit_emotion);
+        btnFitDelete = emotionPage.findViewById(R.id.btn_fit_delete);
         rvEmotionType = emotionPage.findViewById(R.id.rv_emotion_type);
         //设置录音文件存放位置
         File rootDir = getContext().getFilesDir();
@@ -215,7 +217,7 @@ public class KeyBoardView extends AutoHeightLayout {
         rcEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == event.getKeyCode()) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     return interceptBackPress();
                 }
                 return false;
@@ -370,8 +372,13 @@ public class KeyBoardView extends AutoHeightLayout {
     }
 
     int keyBoardHeight = 850;
-
     private void setOnclick() {
+        btnFitDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rcEditText.dispatchKeyEvent(new KeyEvent(  KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            }
+        });
         btnAudioInput.setRecordListener(new RecordVoiceButton.OnRecordVoiceListener() {
             @Override
             public void onRecordFinished(int duration, String path) {

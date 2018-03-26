@@ -1,7 +1,9 @@
 package com.suxuantech.erpsys.chat.keyboard.weight;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -55,18 +57,33 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
         }
             if (position == parent.getCount()-1) {
             if (editText!=null) {
-                editText.dispatchKeyEvent(new KeyEvent(
-                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                editText.dispatchKeyEvent(new KeyEvent(  KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             }
         } else {
+
             if (editText != null) {
-                ImageSpan imageSpan = new ImageSpan(getContext(), BitmapFactory.decodeResource(getResources(),emotion.get(position).icon));
+                //修改大小,不然输入上的表情过大,输入文字后边直接缩小问题
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), emotion.get(position).icon);
+                int fontHeight = getFontHeight(editText);
+                bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                if (fontHeight/2>0&&  bitmap.isMutable()){
+                    bitmap.setHeight(fontHeight/2);
+                    bitmap.setWidth(fontHeight/2);
+                }
+                ImageSpan imageSpan = new ImageSpan(getContext(),bitmap);
                 SpannableString spannableString = new SpannableString(emotion.get(position).emoji);
                 spannableString.setSpan(imageSpan, 0, spannableString.length(),SpannableString.SPAN_MARK_MARK);
                 editText.append(spannableString);
             }
             Toast.makeText(getContext(), editText.getText(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static int getFontHeight(EditText textView) {
+        Paint paint = new Paint();
+        paint.setTextSize(textView.getTextSize());
+        Paint.FontMetrics fm = paint.getFontMetrics();
+        return (int)Math.ceil((double)(fm.bottom - fm.top));
     }
     EditText editText;
     EmotionClick emotionClick;

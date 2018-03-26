@@ -114,12 +114,24 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 
             } else if (messageStatus == MessageStatus.send_going) {
                 //发送中
-                helper.getView(R.id.img_msg_status).setVisibility(View.VISIBLE);
+                ImageView sendView = helper.getView(R.id.img_msg_status);
+                sendView     .setVisibility(View.VISIBLE);
+                sendView.setImageDrawable(mContext.getDrawable(R.drawable.jmui_message_sending));
+//                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
+//                if (!sendingDrawable.isRunning()){
+//                    sendingDrawable.start();
+//                }
+
                 helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
                 ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_sending_img));
             } else if (messageStatus == MessageStatus.send_fail) {
                 //发送失败
-                helper.getView(R.id.img_msg_status).setVisibility(View.VISIBLE);
+                ImageView sendView =   helper.getView(R.id.img_msg_status);
+                sendView  .setVisibility(View.VISIBLE);
+                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
+                if (sendingDrawable.isRunning()){
+                    sendingDrawable.stop();
+                }
                 ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_msg_send_failed));
                 helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
                 helper.addOnClickListener(R.id.img_msg_status);
