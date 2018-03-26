@@ -1,6 +1,8 @@
 package com.suxuantech.erpsys.chat.keyboard.weight;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.keyboard.EmotionKeyboard;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -115,9 +117,11 @@ public class KeyBoardView extends AutoHeightLayout {
     public interface RecordListener {
         void onRecordFinished(int duration, String path);
     }
+
     public KeyBoardView(Context context) {
         this(context, null);
     }
+
     public KeyBoardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LinearLayout linearLayout = new LinearLayout(context);
@@ -151,7 +155,128 @@ public class KeyBoardView extends AutoHeightLayout {
         linearLayout.addView(input);
         linearLayout.addView(container);
         addView(linearLayout);
+        init();
     }
+    /**
+     * 点击返回键时先隐藏表情布局
+     * @return
+     */
+    public boolean interceptBackPress() {
+        if (container.isShown()) {
+            hideEmotionLayout(false);
+            return true;
+        }
+        return false;
+    }
+
+    public void init() {
+        //监听返回按键,前提是  rcEditText.requestFocus();,已经获得到了光标焦点
+       rcEditText. setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.getKeyCode()){
+                return     interceptBackPress();
+                }
+                return false;
+            }
+        });
+        rcPluginToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = container.indexOfChild(pluginViews);
+                int i1= container.indexOfChild(emotionPage);
+                if (pluginViews.isShown()) {
+                    lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
+                    hideEmotionLayout(true);//隐藏表情布局，显示软件盘
+                    unlockContentHeightDelayed();//软件盘显示后，释放内容高度
+                } else {
+                    switchMode(false);
+
+                 //   lockContentHeight();
+                    showPlugins();
+               //     unlockContentHeightDelayed();
+//                    if (isSoftInputShown()) {//同上
+//                        lockContentHeight();
+//                        showEmotionLayout();
+//                        unlockContentHeightDelayed();
+//                    } else {
+//                        showEmotionLayout();//两者都没显示，直接显示表情布局
+//                    }
+                }
+            }
+        });
+
+        rcEmoticonToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rcEditText.requestFocus();//获取焦点 光标出现
+                if (emotionPage.isShown()) {
+                    lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
+                    hideEmotionLayout(true);//隐藏表情布局，显示软件盘
+                    unlockContentHeightDelayed();//软件盘显示后，释放内容高度
+                } else {
+                   // lockContentHeight();
+                    showEmotionKeyBoard();
+                  //  unlockContentHeightDelayed();
+//                    if (isSoftInputShown()) {//同上
+//                           lockContentHeight();
+//                          showEmotionLayout();
+//                          unlockContentHeightDelayed();
+//                    } else {
+//                        showEmotionLayout();//两者都没显示，直接显示表情布局
+//                    }
+                }
+            }
+        });
+
+        rcEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP && container.isShown()) {
+                    lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
+                    hideEmotionLayout(true);//隐藏表情布局，显示软件盘
+                    //软件盘显示后，释放内容高度
+                    rcEditText.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            unlockContentHeightDelayed();
+                        }
+                    }, 200L);
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 隐藏表情布局
+     *
+     * @param showSoftInput 是否显示软件盘
+     */
+    private void hideEmotionLayout(boolean showSoftInput) {
+        if (container.isShown()) {
+            container.setVisibility(View.GONE);
+            if (showSoftInput) {
+                    showSoftInput();
+            }
+        }
+    }
+
+
+
+    /**
+     * 编辑框获取焦点，并显示软件盘
+     */
+    private void showSoftInput() {
+        rcEditText.requestFocus();
+        rcEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                KeyboardUtils.showSoftInput(rcEditText);
+            }
+        });
+    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -208,24 +333,10 @@ public class KeyBoardView extends AutoHeightLayout {
     public void onSoftKeyboardHeightChanged(int i) {
         keyBoardHeight = i;
     }
+
     int keyBoardHeight = 850;
+
     private void setOnclick() {
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                ViewGroup parent = (ViewGroup) getParent();
-                ViewGroup viewGroup= (ViewGroup) parent.getChildAt(0);
-                viewGroup.getChildAt(0)
-                        .setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                       // hideEmotionKeyBoard();
-                  //      KeyboardUtils.hideSoftInput(rcEditText);
-                        return false;
-                    }
-                });
-            }
-        });
         btnAudioInput.setRecordListener(new RecordVoiceButton.OnRecordVoiceListener() {
             @Override
             public void onRecordFinished(int duration, String path) {
@@ -238,20 +349,6 @@ public class KeyBoardView extends AutoHeightLayout {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "添加表情", Toast.LENGTH_SHORT).show();
-            }
-        });
-        rcEmoticonToggle.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showEmotionKeyBoard();
-            }
-        });
-
-        rcEditText.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                        hideEmotionKeyBoard();
-                        return false;
             }
         });
 
@@ -284,12 +381,6 @@ public class KeyBoardView extends AutoHeightLayout {
                 }
             }
         });
-        rcPluginToggle.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPlugins();
-            }
-        });
         btnAudioInput.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -305,10 +396,7 @@ public class KeyBoardView extends AutoHeightLayout {
         rcSwitchToMenu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                rcSwitchToMenu.setVisibility(GONE);
-                llInputText.setVisibility(VISIBLE);
-                rcVoiceToggle.setVisibility(VISIBLE);
-                btnAudioInput.setVisibility(GONE);
+                switchMode(false);
                 getRootView().requestLayout();
                 KeyboardUtils.showSoftInput(rcEditText);
             }
@@ -317,19 +405,33 @@ public class KeyBoardView extends AutoHeightLayout {
         rcVoiceToggle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                rcSwitchToMenu.setVisibility(VISIBLE);
-                llInputText.setVisibility(GONE);
-                rcVoiceToggle.setVisibility(GONE);
-                btnAudioInput.setVisibility(VISIBLE);
+                switchMode(true);
                 hideEmotionKeyBoard();
                 KeyboardUtils.hideSoftInput(getRootView());
             }
         });
     }
-
+    private void switchMode(boolean isAudio){
+        if (isAudio){
+            rcSwitchToMenu.setVisibility(VISIBLE);
+            llInputText.setVisibility(GONE);
+            rcVoiceToggle.setVisibility(GONE);
+            btnAudioInput.setVisibility(VISIBLE);
+        }else {
+            rcSwitchToMenu.setVisibility(GONE);
+            llInputText.setVisibility(VISIBLE);
+            rcVoiceToggle.setVisibility(VISIBLE);
+            btnAudioInput.setVisibility(GONE);
+            rcEditText.requestFocus();
+        }
+    }
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        ViewGroup parent = (ViewGroup) getParent();
+        EmotionKeyboard.with((Activity) getContext())
+                .setEmotionView(container).bindToEditText(rcEditText).bindToEmotionButton(rcEmoticonToggle)
+                .bindToContent(parent.getChildAt(0)).bu();
     }
 
     private void hideEmotionKeyBoard() {
@@ -424,24 +526,28 @@ public class KeyBoardView extends AutoHeightLayout {
             return emotionView.get(position);
         }
     }
+
     /**
-     * 锁定内容View以防止跳闪
-     * 直接设置为当前高度(不适用于先点击输入框,也就是表情并没有展示)
+     * 锁定内容高度，防止跳闪
      */
-    private void lockContentViewHeight() {
+    private void lockContentHeight() {
         ViewGroup parent = (ViewGroup) getParent();
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) parent.getChildAt(0).getLayoutParams();
-        layoutParams.height = parent.getChildAt(0).getHeight();
-        layoutParams.weight = 0;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) parent.getChildAt(0).getLayoutParams();
+        params.height = parent.getChildAt(0).getHeight();
+        params.weight = 0.0F;
     }
 
     /**
-     * 释放锁定的内容View
-     * 直接占满
+     * 释放被锁定的内容高度
      */
-    private void unlockContentViewHeight() {
-        ViewGroup parent = (ViewGroup) getParent();
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) parent.getChildAt(0).getLayoutParams();
-        layoutParams.weight = 1;
+    private void unlockContentHeightDelayed() {
+        rcEditText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ViewGroup parent = (ViewGroup) getParent();
+                ((LinearLayout.LayoutParams) parent.getChildAt(0).getLayoutParams()).weight = 1.0F;
+            }
+        }, 100L);
     }
+
 }

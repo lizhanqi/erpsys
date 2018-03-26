@@ -48,6 +48,15 @@ class JLoginActivity : ChatBaseActivity() {
             v.putExtra("name","123456")
             //startActivity( v)
         })
+        val bthello = findViewById<Button>(R.id.bt_hello)
+        bthello.setOnClickListener(View.OnClickListener { v ->
+            login("10086","10086")
+            var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
+            v.putExtra("name","123456")
+            //startActivity( v)
+        })
+
+      //  与hello
     }
 
     private fun regist(tname: CharSequence, passtext: CharSequence) {
@@ -104,7 +113,7 @@ class JLoginActivity : ChatBaseActivity() {
                     if(tname.equals("123456")){
                         tochat("10086")
                     }else{
-                        tochat("123456")
+                        tochat("hello")
                     }
                     Toast.makeText(mContext, "登录成功!", Toast.LENGTH_SHORT).show()
                     Log.d("DemoActivity", "Login success")
