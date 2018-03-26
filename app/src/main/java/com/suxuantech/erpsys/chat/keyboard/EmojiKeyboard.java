@@ -92,6 +92,7 @@ public class EmojiKeyboard {
                 return false;
             }
         });
+
         this.contentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

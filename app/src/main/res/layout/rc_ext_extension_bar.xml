@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:hapticFeedbackEnabled="true"
+    android:soundEffectsEnabled="true"
     android:minHeight="48dp">
     <LinearLayout
         android:id="@+id/ext_main_bar"
@@ -47,7 +50,7 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/rc_voice_toggle_selector" />
         </LinearLayout>
-
+        <!--语音-->
         <cn.jmessage.android.uikit.recordvoice.RecordVoiceButton
             android:visibility="gone"
             android:id="@+id/rc_audio_input"
@@ -61,20 +64,13 @@
             android:text="@string/rc_audio_input"
             android:textColor="#737373"
             android:textSize="16sp"/>
-        <include layout="@layout/rc_ext_input_edit_text"
+        <!--文本输入-->
+        <include
+            layout="@layout/rc_ext_input_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-  <!--      &lt;!&ndash; 文本，表情输入容器，通过控制“语音”，容器中填充不同的内容 &ndash;&gt;
-        <FrameLayout
-            android:id="@+id/rc_container_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp" />-->
-        <!-- 扩展栏 “+号” 布局-->
+            android:layout_weight="1" />
+        <!--发送-->
         <LinearLayout
             android:id="@+id/rc_plugin_layout"
             android:layout_width="wrap_content"
@@ -88,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/rc_plugin_toggle_selector" />
             <TextView
+
                 android:visibility="gone"
                 android:background="@drawable/sl_butn_gray_theme"
                 android:padding="5dp"
@@ -101,7 +98,7 @@
     <!-- 底部分割线 -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="1dp"
         android:layout_alignParentTop="true"
         android:background="@color/rc_divider_color"/>
 </RelativeLayout>

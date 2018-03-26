@@ -3,11 +3,10 @@ package com.suxuantech.erpsys.chat.keyboard.weight;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
-import android.text.Editable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,40 +53,17 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
         if (emotionClick != null) {
             emotionClick.onClick(position);
         }
-
-        if (position == parent.getCount()-1) {
-            Toast.makeText(getContext(), "删除", Toast.LENGTH_SHORT).show();
-            // 获取文本框信息中所有的表情
-            String text = editText.getText().toString();
-            Spanned content = editText.getEditableText();
-            ImageSpan[] spans = content.getSpans(0, content.length(),ImageSpan.class);
-            // 取出最后一个表情
-            if (spans.length >= 1) {
-                ImageSpan span = spans[spans.length - 1];
-                int start = content.getSpanStart(span);
-                int end = content.getSpanEnd(span);
-                if (end == text.length()) {
-                    Editable edit = editText.getText();
-                    edit.delete(start, end);
-                    editText.invalidate();
-                }
+            if (position == parent.getCount()-1) {
+            if (editText!=null) {
+                editText.dispatchKeyEvent(new KeyEvent(
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             }
-//            String s = editText.getText().toString();
-//            if (editText != null && s.length() > 0) {
-//                int index = editText.getSelectionStart();
-//                Editable editable = editText.getText();
-//                editable.delete(index - 1, index);
-//            }
         } else {
             if (editText != null) {
                 ImageSpan imageSpan = new ImageSpan(getContext(), BitmapFactory.decodeResource(getResources(),emotion.get(position).icon));
                 SpannableString spannableString = new SpannableString(emotion.get(position).emoji);
                 spannableString.setSpan(imageSpan, 0, spannableString.length(),SpannableString.SPAN_MARK_MARK);
                 editText.append(spannableString);
-//                SpannableString ss = new SpannableString(" ");
-//                ImageSpan is = new ImageSpan(getContext(),emotion.get(position).icon);
-//                ss.setSpan(is, 0, 1, 0);
-//                editText.append(ss);
             }
             Toast.makeText(getContext(), editText.getText(), Toast.LENGTH_SHORT).show();
         }

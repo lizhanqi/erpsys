@@ -8,13 +8,13 @@ ext {
     ]
     android = [
             applicationId          : "com.suxuantech.erpsys",
-            compileSdkVersion      : 26,
-            buildToolsVersion      : '26.0.2',
+            compileSdkVersion      : 27,
+            buildToolsVersion      : '27.0.2',
             minSdkVersion          : 19,
-            targetSdkVersion       : 26,
+            targetSdkVersion       : 27,
             versionCode            : 1,
             versionName            : "1.0",
-            support_library_version: '25.0+',
+            support_library_version: '27.0+',
             libraryMinSdkVersion   : 9,
             libraryTargetSdkVersion: 25,
     ]

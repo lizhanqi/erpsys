@@ -558,7 +558,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         mData.addAll(0, messageEntities);
         notifyItemRangeInserted(0, messageEntities.size());
     }
-
     public void soundSourceFromSpeakerphone(boolean isSpeakerphoneOn) {
 //        if(audioManager!=null&&mediaPlayer != null) {
 //            if (isSpeakerphoneOn){

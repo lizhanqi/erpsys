@@ -174,8 +174,7 @@
 adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
 -->
         <activity android:name=".chat.ConversationActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
+            android:windowSoftInputMode="adjustResize" >
         </activity>
     </application>
-
 </manifest>

@@ -3,10 +3,10 @@ package com.suxuantech.erpsys.chat.keyboard.weight;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -63,12 +63,10 @@ public class EmotionView extends LinearLayout  implements AdapterView.OnItemClic
             emotionClick.onClick(sum);
         }
         if (position== (limt.get(tag).size())){
-            Toast.makeText(getContext(),"删除",Toast.LENGTH_SHORT).show();
-            String s = editText.getText().toString();
-            if (editText!=null&&s.length()>0){
-                int index = editText.getSelectionStart();
-                Editable editable = editText.getText();
-                editable.delete(index-1, index);
+            // 如果点击了最后一个回退按钮,则调用删除键事件
+            if (editText!=null) {
+                editText.dispatchKeyEvent(new KeyEvent(
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             }
         }else {
             if (editText!=null){

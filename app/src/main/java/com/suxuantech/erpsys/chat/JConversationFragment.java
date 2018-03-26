@@ -33,7 +33,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -124,7 +124,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
     private Conversation singleConversation;
-    private RelativeLayout mRootView;
+    private LinearLayout mRootView;
     private KeyBoardView keyBoardView;
     private boolean isGrop;
     private Dialog mDialog;
@@ -208,7 +208,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = (RelativeLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
+        mRootView = (LinearLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getActivity());
         mManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -238,12 +238,11 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);
         }
-        
+
         initView();
     }
 
     public List<MessageEntity> loadMessage() {
-        //List<Message> allMessage = singleConversation.getAllMessage();
         List<Message> conversation = singleConversation.getMessagesFromNewest(pageOffset * limit, limit);
         if (conversation != null && conversation.size() == limit) {
             pageOffset++;
@@ -257,12 +256,13 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             messages.add(new MessageEntity(ms));
         }
         Collections.reverse(messages);
-        hd.sendEmptyMessageDelayed(0, 3000);
+        hd.sendEmptyMessageDelayed(0, 2000);
+
         return messages;
     }
 
     private void initView() {
-        msgList = mRootView.findViewById(R.id.rv_msg);
+        msgList = mRootView.findViewById( R.id.rv_msg);
         mSwipeRefreshLayout = mRootView.findViewById(R.id.srl_load);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.de_title_bg, R.color.themeColor, R.color.colorPrimary, R.color.colorPrimaryDark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -273,8 +273,10 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             }
         });
         mSwipeRefreshLayout.setRefreshing(true);
-        multipleItemQuickAdapter = new MultipleItemQuickAdapter(loadMessage());
-        msgList.setLayoutManager(new LinearLayoutManager(getActivity()));
+           multipleItemQuickAdapter = new MultipleItemQuickAdapter(loadMessage());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager  .setStackFromEnd(true);
+        msgList.setLayoutManager(linearLayoutManager);
         //这里请用:bindToRecyclerView 因为需要使用到getViewByPosition
         //   msgList.setAdapter(multipleItemQuickAdapter);
         multipleItemQuickAdapter.bindToRecyclerView(msgList);
@@ -631,13 +633,19 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if(mManager != null){
+            localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
+            mManager.unregisterListener(this);//注销传感器监听
+        }
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
         multipleItemQuickAdapter.stopVoice(null);
-        if(mManager != null){
-             localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
-            mManager.unregisterListener(this);//注销传感器监听
-        }
+
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -645,22 +653,16 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         if (its != null && event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             //经过测试，当手贴近距离感应器的时候its[0]返回值为0.0，当手离开时返回1.0
             if (its[0] == 0.0) {//
-
                 if (localWakeLock.isHeld()) {
-                    Log.i("11", "onSensorChanged: 贴近返回");
                     return;
                 } else{
-                    Log.i("11", "onSensorChanged: 申请锁定");
                     localWakeLock.acquire();// 申请设备电源锁
                     multipleItemQuickAdapter.soundSourceFromSpeakerphone(false);
                 }
             } else {// 远离手机
-
                 if (localWakeLock.isHeld()) {
-                    Log.i("11", "onSensorChanged: 远离返回");
                     return;
                 } else{
-                    Log.i("11", "onSensorChanged: 释放设备电源锁");
                     localWakeLock.setReferenceCounted(false);
                     localWakeLock.release(); // 释放设备电源锁
                     multipleItemQuickAdapter.soundSourceFromSpeakerphone(true);
