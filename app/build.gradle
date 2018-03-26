@@ -134,8 +134,6 @@ dependencies {
     compile project(':IMLib')
     compile project(':IMKit')
     compile project(':libcalendar')
-    implementation project(':reclib-qq')
-    implementation project(':reclib-testemoticons')
     implementation project(':RecordVoice')
 }
 

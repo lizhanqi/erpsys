@@ -40,7 +40,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.keyboard.adaputer.SimpleAppsGridView;
 import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
-import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
 import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
@@ -58,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.content.ImageContent;
@@ -74,7 +72,6 @@ import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
-import sj.qqkeyboard.DefQqEmoticons;
 
 /**
  * ......................我佛慈悲....................
@@ -214,11 +211,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         mManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
         localPowerManager = (PowerManager)getActivity(). getSystemService(Context.POWER_SERVICE);
         localWakeLock =  localPowerManager.newWakeLock(32, "MyPower");
-//        AudioModeManger audioModeManger = new AudioModeManger();
-//        if (audioModeManger == null) {
-//            audioModeManger = new AudioModeManger();
-//        }
-//        audioModeManger.register();
         return mRootView;
     }
 
@@ -227,7 +219,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         super.onResume();
             mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
              SensorManager.SENSOR_DELAY_NORMAL);//注册传感器，第一个参数为距离监听器，第二个是传感器类型，第三个是延迟类型
-
     }
 
     @Override
@@ -375,15 +366,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         keyBoardView.setPluginViews(simpleAppsGridView);
         EmotionSinglePageView emotionView = new EmotionSinglePageView(getActivity());
         emotionView.withText(keyBoardView.getRcEditText());
-        Set<String> strings1 = DefQqEmoticons.sQqEmoticonHashMap.keySet();
-        ArrayList<EmotionBean> strings = new ArrayList<>();
-        for (String eb : strings1) {
-            strings.add(new EmotionBean(DefQqEmoticons.sQqEmoticonHashMap.get(eb), eb, EmotionBean.type.mimap));
-        }
-        emotionView.setColumns(7);
-        emotionView.setUseDelete(false);
-        emotionView.setEmotion(strings);
-        keyBoardView.addEmotionView(emotionView, getResources().getDrawable(strings.get(0).icon));
+
         keyBoardView.setRecordListener(new KeyBoardView.RecordListener() {
             @Override
             public void onRecordFinished(int duration, String path) {
