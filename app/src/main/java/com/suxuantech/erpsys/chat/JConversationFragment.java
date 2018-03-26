@@ -37,9 +37,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.sj.emoji.DefEmoticons;
+import com.sj.emoji.EmojiBean;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.keyboard.adaputer.SimpleAppsGridView;
 import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
+import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
 import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
@@ -350,6 +353,19 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 sendMssageText(s);
             }
         });
+        EmotionSinglePageView emotionView = new EmotionSinglePageView(getActivity());
+        emotionView.withText(keyBoardView.getRcEditText());
+        ArrayList<EmojiBean> emojiBeans = new ArrayList<>();
+        Collections.addAll(emojiBeans, DefEmoticons.getDefEmojiArray());
+        ArrayList<EmotionBean> strings = new ArrayList<>();
+        for (EmojiBean eb : emojiBeans) {
+            strings.add(new EmotionBean(eb.icon, eb.emoji, EmotionBean.type.mimap));
+        }
+        emotionView.setColumns(7);
+        emotionView.setUseDelete(false);
+        emotionView.setEmotion(strings);
+        keyBoardView.addEmotionView(emotionView, getResources().getDrawable(strings.get(0).icon));
+
         keyBoardView.setAudioInput(this);
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(getActivity());
         simpleAppsGridView.setOnItemClickListener(new SimpleAppsGridView.OnItemClickListener() {
@@ -362,11 +378,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 }
             }
         });
-
         keyBoardView.setPluginViews(simpleAppsGridView);
-        EmotionSinglePageView emotionView = new EmotionSinglePageView(getActivity());
-        emotionView.withText(keyBoardView.getRcEditText());
-
         keyBoardView.setRecordListener(new KeyBoardView.RecordListener() {
             @Override
             public void onRecordFinished(int duration, String path) {
@@ -374,6 +386,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             }
         });
     }
+
 
     /**
      * 发送语音

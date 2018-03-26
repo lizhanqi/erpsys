@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.chat.keyboard.EmotionKeyboard;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -474,9 +473,9 @@ public class KeyBoardView extends AutoHeightLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         ViewGroup parent = (ViewGroup) getParent();
-        EmotionKeyboard.with((Activity) getContext())
-                .setEmotionView(container).bindToEditText(rcEditText).bindToEmotionButton(rcEmoticonToggle)
-                .bindToContent(parent.getChildAt(0)).bu();
+//        EmotionKeyboard.with((Activity) getContext())
+//                .setEmotionView(container).bindToEditText(rcEditText).bindToEmotionButton(rcEmoticonToggle)
+//                .bindToContent(parent.getChildAt(0)).bu();
     }
 
     private void hideEmotionKeyBoard() {

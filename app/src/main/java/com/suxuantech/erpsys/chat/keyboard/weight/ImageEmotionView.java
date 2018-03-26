@@ -44,7 +44,6 @@ import java.util.ArrayList;
  *         E-mail:lizhanqihd@163.com
  * @Description: 图片表情View
  */
-
 public class ImageEmotionView  extends LinearLayout implements AdapterView.OnItemClickListener {
     //    ArrayList pagerGrid =new    ArrayList<GridView>();
     ArrayList<ArrayList<ImageBean>> limt = new ArrayList<ArrayList<ImageBean>>();
