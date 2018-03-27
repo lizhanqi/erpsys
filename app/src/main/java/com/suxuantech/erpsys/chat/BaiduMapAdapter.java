@@ -55,6 +55,7 @@ public class BaiduMapAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
     }
     public void upData(List<PoiInfo>  poiList) {
         mData=poiList;
+        posstionChecked=0;
         notifyDataSetChanged();
     }
     int  posstionChecked ;
