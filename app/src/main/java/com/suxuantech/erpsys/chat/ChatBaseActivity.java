@@ -32,7 +32,6 @@ package com.suxuantech.erpsys.chat;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
@@ -61,7 +60,7 @@ public class ChatBaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         JMessageClient.init(this);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //订阅接收消息,子类只要重写onEvent就能收到
         JMessageClient.registerEventReceiver(this);
         DisplayMetrics dm = new DisplayMetrics();

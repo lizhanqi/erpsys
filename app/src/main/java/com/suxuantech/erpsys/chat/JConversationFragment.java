@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -45,6 +46,7 @@ import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
 import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
 import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
+import com.suxuantech.erpsys.chat.location.activity.MapPickerActivity;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -375,6 +377,16 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                     gotoSelectImage();
                 } else if (position == 1) {
                     gotoCamera();
+                }else if (position==3){
+
+                     startActivityForResult(new Intent(getActivity(),BaiduMapActivity.class),60);
+                }else {
+                    Intent     intent = new Intent(getActivity(), MapPickerActivity.class);
+                    intent.putExtra("targetId", UserID);
+                    intent.putExtra("targetAppKey", 0);
+                    intent.putExtra("groupId", 0);
+                    intent.putExtra("sendLocation", true);
+                   startActivityForResult(intent, 25);
                 }
             }
         });

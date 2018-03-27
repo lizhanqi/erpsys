@@ -3,6 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.suxuantech.erpsys">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+   <!-- //获取设备网络状态，禁用后无法获取网络状态-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+<!--    //网络权限，当禁用后，无法进行检索等相关业务-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<!--    //读取设备硬件信息，统计数据-->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+<!--    //读取系统信息，包含系统版本等信息，用作统计-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<!--    //获取设备的网络状态，鉴权所需网络代理-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<!--    //允许sd卡写权限，需写入地图数据，禁用后无法显示地图-->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+<!--    //获取统计数据-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+<!--    //鉴权所需该权限获取进程列表-->
+    <uses-permission android:name="android.permission.CAMERA" />
+<!--    //使用步行AR导航，配置Camera权限-->
+
+    <!--百度地图end-->
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -17,6 +38,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -86,6 +108,11 @@
             </intent-filter>
         </receiver>
         <!-- 融云end -->
+        <!-- 百度地图 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="T9TsG6qTjrWIGPV5zUxpSTgGqY2gLvfo" />
+        <!-- 百度地图end -->
         <activity
             android:name=".ui.activity.DefaultErrorActivity"
             android:process=":error_activity" />
@@ -96,7 +123,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
-    <!--        <intent-filter>
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -105,7 +134,8 @@
                     android:host="com.suxuantech.erpsys"
                     android:path="/conversationlist"
                     android:scheme="rong" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".ui.activity.QRCodeScanActivity"
@@ -119,11 +149,14 @@
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">
-       <!--     <intent-filter>
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".ui.activity.SearchOrderActivity" />
         <activity android:name=".ui.activity.ScheduleActivity" />
@@ -163,18 +196,29 @@
         <activity android:name=".ui.activity.PunchCardActivity" />
         <activity android:name=".ui.activity.BookManageActivity" />
         <activity android:name=".ui.activity.MyBorrowActivity" />
-        <activity android:name=".chat.JLoginActivity" >
+        <activity android:name=".chat.JLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <!--adjustPan是把整个界面向上平移，使输入框露出，不会改变界面的布局；
+        <!--
+adjustPan是把整个界面向上平移，使输入框露出，不会改变界面的布局；
 
 adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
--->
-        <activity android:name=".chat.ConversationActivity"
-            android:windowSoftInputMode="adjustResize" >
+        -->
+        <activity
+            android:name=".chat.ConversationActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".chat.BaiduMapActivity">
+
+            -->
+        </activity>
+        <activity android:name=".chat.location.activity.MapPickerActivity"          android:theme="@style/Theme.AppCompat.Light.DarkActionBar"  >
+
+
         </activity>
     </application>
+
 </manifest>
