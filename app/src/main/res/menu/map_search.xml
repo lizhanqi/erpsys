@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!--    android:icon="@drawable/icon_right_blue"-->
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="80"
+        android:title="位置"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_send"
+        android:orderInCategory="81"
+        android:textSize="20sp"
+        android:title="发送"
+        app:showAsAction="always" />
+</menu>

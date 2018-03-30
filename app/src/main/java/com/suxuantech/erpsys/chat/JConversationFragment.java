@@ -644,7 +644,11 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     public void onPause() {
         super.onPause();
         if(mManager != null){
-            localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
+            try {
+                localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
+            }catch (Exception e){
+
+            }
             mManager.unregisterListener(this);//注销传感器监听
         }
     }

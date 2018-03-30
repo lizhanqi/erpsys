@@ -38,23 +38,34 @@ import java.util.List;
  */
 
 public class BaiduMapAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
+    boolean isCurrent =true;
     public BaiduMapAdapter(int layoutResId, List<PoiInfo> data) {
         super(layoutResId, data);
     }
-
     @Override
     protected void convert(BaseViewHolder helper, PoiInfo item) {
-
         helper.setText(R.id.title,item.name);
         helper.setText(R.id.subtitle, item.address);
-        if (posstionChecked==mData.lastIndexOf(item)){
+        if (posstionChecked==mData.lastIndexOf(item) ){
+            if (mData.lastIndexOf(item)==0&&isCurrent){
+                helper.setText(R.id.title,"[当前位置]"+item.name);
+            }
           helper.getView(R.id.iconView).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.iconView).setVisibility(View.GONE);
         }
     }
+
+    public void setCurrent(boolean current) {
+        isCurrent = current;
+    }
+
     public void upData(List<PoiInfo>  poiList) {
-        mData=poiList;
+        if (poiList!=null){
+            mData=poiList;
+        }else {
+            mData.clear();
+        }
         posstionChecked=0;
         notifyDataSetChanged();
     }
@@ -64,6 +75,17 @@ public class BaiduMapAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
         this.posstionChecked=posstion;
         notifyItemChanged(posstion);
         notifyItemChanged(temp);
+    }
+  public   void  append(List<PoiInfo> datas){
+        if (datas==null){
+            return;
+        }
+        if(mData==null){
+            mData=datas;
+        }else {
+            mData.addAll(datas);
+        }
+        notifyDataSetChanged();
     }
 }
 

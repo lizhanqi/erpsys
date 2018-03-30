@@ -211,9 +211,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity
             android:name=".chat.ConversationActivity"
             android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".chat.BaiduMapActivity">
+        <activity android:name=".chat.BaiduMapActivity"  >
 
-            -->
         </activity>
         <activity android:name=".chat.location.activity.MapPickerActivity"          android:theme="@style/Theme.AppCompat.Light.DarkActionBar"  >
 
