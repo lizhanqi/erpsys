@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.chat;
 import android.media.AudioManager;
 import android.os.Bundle;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.suxuantech.erpsys.R;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -13,6 +14,7 @@ import cn.jpush.im.android.api.event.MessageRetractEvent;
 public class ConversationActivity extends ChatBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SDKInitializer.initialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);// 使得音量键控制媒体声音
         setContentView(R.layout.ac_convertion);

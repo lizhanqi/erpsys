@@ -8,7 +8,6 @@
     android:layout_centerInParent="true"
     android:layout_gravity="center"
     android:gravity="center_horizontal">
-
     <io.rong.imkit.widget.AsyncImageView
         android:id="@id/rc_img"
         android:layout_width="204dp"

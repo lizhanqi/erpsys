@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,17 +21,25 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.utils.DensityUtils;
+import com.suxuantech.erpsys.utils.L;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
 import cn.jpush.im.android.api.callback.ProgressUpdateCallback;
 import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.content.VoiceContent;
 import cn.jpush.im.android.api.enums.ContentType;
@@ -115,7 +124,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             } else if (messageStatus == MessageStatus.send_going) {
                 //发送中
                 ImageView sendView = helper.getView(R.id.img_msg_status);
-                sendView     .setVisibility(View.VISIBLE);
+                sendView.setVisibility(View.VISIBLE);
                 sendView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_message_sending));
 //                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
 //                if (!sendingDrawable.isRunning()){
@@ -126,8 +135,8 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_sending_img));
             } else if (messageStatus == MessageStatus.send_fail) {
                 //发送失败
-                ImageView sendView =   helper.getView(R.id.img_msg_status);
-                sendView  .setVisibility(View.VISIBLE);
+                ImageView sendView = helper.getView(R.id.img_msg_status);
+                sendView.setVisibility(View.VISIBLE);
 //                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
 //                if (sendingDrawable.isRunning()){
 //                    sendingDrawable.stop();
@@ -166,6 +175,33 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             case file:
                 break;
             case location:
+                LocationContent locationContent = (LocationContent) msg.getContent();
+                RelativeLayout inflate = (RelativeLayout) mLayoutInflater.inflate(R.layout.item_location_msg, null);
+                inflate.setLayoutParams(layoutParams);
+                layout.addView(inflate);
+                ImageView mapView = inflate.findViewById(R.id.map_location);
+                Number scale = locationContent.getScale();
+                String address = locationContent.getAddress();
+                Number latitude = locationContent.getLatitude();
+                double lat = latitude.doubleValue();
+                Number longitude = locationContent.getLongitude();
+                double lot = longitude.doubleValue();
+                double scle =scale.doubleValue();
+                if(    scale.doubleValue()<10 )  {
+                    scle=10;
+                }else {
+                    scle= scale.doubleValue();
+                }
+                if(      scale.doubleValue()>19)  {
+                    scle=19;
+                }else {
+                    scle= scale.doubleValue();
+                }
+                String mapUri= "http://api.map.baidu.com/staticimage?width="+ DensityUtils.dp2px(mContext,200)+"&height="+ DensityUtils.dp2px(mContext,120)+"&center="+lot+","+lat+"&zoom="+scle ;
+                L.i(mapUri);
+                Glide.with(mContext).load(mapUri).into(mapView);
+                TextView location = inflate.findViewById(R.id.tv_location);
+                location.setText(address);
                 break;
             case voice:
                 VoiceContent voiceContent = (VoiceContent) msg.getContent();
@@ -250,6 +286,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 break;
         }
     }
+
 
     /**
      * 播放单条语音
@@ -378,11 +415,12 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
-        if (audioManager!=null){
+        if (audioManager != null) {
             audioManager.setMode(AudioManager.MODE_NORMAL);
         }
 
     }
+
     private void stopAnimation(MessageEntity item) {
         int viewPosition = mData.lastIndexOf(item);
         ImageView voice = (ImageView) getViewByPosition(viewPosition, R.id.id_voice_image);
@@ -570,6 +608,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         mData.addAll(0, messageEntities);
         notifyItemRangeInserted(0, messageEntities.size());
     }
+
     public void soundSourceFromSpeakerphone(boolean isSpeakerphoneOn) {
 //        if(audioManager!=null&&mediaPlayer != null) {
 //            if (isSpeakerphoneOn){
@@ -586,6 +625,34 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 //                mediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
 //            }
 //        }
+    }
+
+    public static void download(String urlString, String filename, String savePath) throws Exception {
+// 构造URL
+        URL url = new URL(urlString);
+// 打开连接
+        URLConnection con = url.openConnection();
+//设置请求超时为5s
+        con.setConnectTimeout(5 * 1000);
+// 输入流
+        InputStream is = con.getInputStream();
+// 1K的数据缓冲
+        byte[] bs = new byte[1024];
+// 读取到的数据长度
+        int len;
+// 输出的文件流
+        File sf = new File(savePath);
+        if (!sf.exists()) {
+            sf.mkdirs();
+        }
+        OutputStream os = new FileOutputStream(sf.getPath() + "/" + filename);
+// 开始读取
+        while ((len = is.read(bs)) != -1) {
+            os.write(bs, 0, len);
+        }
+// 完毕，关闭所有链接
+        os.close();
+        is.close();
     }
 }
 

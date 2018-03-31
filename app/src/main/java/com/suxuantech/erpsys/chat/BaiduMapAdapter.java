@@ -76,7 +76,7 @@ public class BaiduMapAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
         notifyItemChanged(posstion);
         notifyItemChanged(temp);
     }
-  public   void  append(List<PoiInfo> datas){
+    public   void  append(List<PoiInfo> datas){
         if (datas==null){
             return;
         }

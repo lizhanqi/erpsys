@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.chat
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -37,30 +39,31 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     var myLocationConfiguration: MyLocationConfiguration? = null
     var isFirstLoc = true
     var mGeoCoder: GeoCoder? = null
-    var  mLastAaddress:String?=""
     var locationService: LocationService? = null
-    var   recycleLocation   :  RecyclerView?=null
-    var currentLatLng: LatLng= LatLng(0.0, 0.0)
-    var  progressBar:ProgressBar?=null
-    var  isOnClick=false;var isCurrentLocation=false
-    var  searchView :SearchView?=null
-    var  rl_map :RelativeLayout?=null
-    var  mPoiSearch:PoiSearch?=null
-    var city="中国"
-    var street=""
-    var keyWord :String=""
+    var recycleLocation: RecyclerView? = null
+    var currentLatLng: LatLng = LatLng(0.0, 0.0)
+    var progressBar: ProgressBar? = null
+    var isOnClick = false
+    var isCurrentLocation = false
+    var searchView: SearchView? = null
+    var rl_map: RelativeLayout? = null
+    var mPoiSearch: PoiSearch? = null
+    var city = "中国"
+    var street = ""
+    var  scale=17.0f
+    var keyWord: String = ""
     var hd: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            progressBar!!.visibility=View.GONE
-            recycleLocation!!.visibility==View.VISIBLE
+            progressBar!!.visibility = View.GONE
+            recycleLocation!!.visibility == View.VISIBLE
         }
     }
     // 地图触摸事件监听器
     var touchListener: BaiduMap.OnMapTouchListener = BaiduMap.OnMapTouchListener { event ->
         if (event.action == MotionEvent.ACTION_UP) {
-            isOnClick=false
-            isCurrentLocation=false
+            isOnClick = false
+            isCurrentLocation = false
         }
     }
     /*****
@@ -68,7 +71,7 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
      */
     private val mListener = object : BDLocationListener {
         override fun onReceiveLocation(location: BDLocation?) {
-            if (null != location && location.locType != BDLocation.TypeServerError&&isFirstLoc) {
+            if (null != location && location.locType != BDLocation.TypeServerError && isFirstLoc) {
                 val data = MyLocationData.Builder()
                         // .direction(mCurrentX)
                         .accuracy(location.radius)
@@ -78,14 +81,15 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 mapView!!.map.setMyLocationData(data)
                 currentLatLng = LatLng(location.latitude, location.longitude)
                 isFirstLoc = false
-                isOnClick=false
-                isCurrentLocation=true
+                isOnClick = false
+                isCurrentLocation = true
                 // 实现动画跳转(位置)
-                val mapStatusUpdate = MapStatusUpdateFactory.newLatLng (currentLatLng)
-                ToastUtils.show(""+currentLatLng.longitude+"===="+currentLatLng.latitude)
-                mapView!!.map.animateMapStatus( mapStatusUpdate)
+                val mapStatusUpdate = MapStatusUpdateFactory.newLatLng(currentLatLng)
+                ToastUtils.show("" + currentLatLng.longitude + "====" + currentLatLng.latitude)
+                mapView!!.map.animateMapStatus(mapStatusUpdate)
             }
         }
+
         fun onConnectHotSpotMessage(s: String, i: Int) {}
     }
     // 地理编码监听器
@@ -97,8 +101,9 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             }
             // 获取地理编码结果
         }
+
         override fun onGetReverseGeoCodeResult(result: ReverseGeoCodeResult?) {
-            hd.sendEmptyMessageDelayed(0,2000)
+            hd.sendEmptyMessageDelayed(0, 2000)
             baiduMapAdapter!!.setEnableLoadMore(false)
             baiduMapAdapter!!.setCurrent(isCurrentLocation)
             if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
@@ -107,14 +112,17 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             } else {
                 val addressDetail = result.addressDetail
                 city = addressDetail.city
-                val address = result.address
+                val province =if(addressDetail.city.equals(addressDetail.province) )  "" else addressDetail.province
+                street=province +addressDetail.city+addressDetail.district+addressDetail.street+addressDetail.streetNumber
+                scale=mapView!!.map.mapStatus.zoom
                 val poiList = result.poiList//这是附近的兴趣点信息
-                baiduMapAdapter!!.upData(poiList)
-                if (poiList != null) {
-                    mLastAaddress = poiList[0].name
-                } else {
-                    mLastAaddress = address
+                if(poiList!=null){
+                    val poiInfo = poiList.get(0)
+                    currentLatLng =poiInfo.location
+                    city =poiInfo.city
+                    street =poiInfo.address+poiInfo.name
                 }
+                baiduMapAdapter!!.upData(poiList)
             }
         }
     }
@@ -123,37 +131,39 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
      * 伴生类对象,作为静态存在,与static  类似
      */
     companion object {
-        var baiduMapAdapter  :BaiduMapAdapter  ?=null
-        var page=20
-        var pageNum=0
+        var baiduMapAdapter: BaiduMapAdapter? = null
+        var page = 20
+        var pageNum = 0
     }
+
     /**
      * Poi搜索结果
      */
-    object ongetPoiSearchResult : OnGetPoiSearchResultListener{
+    object ongetPoiSearchResult : OnGetPoiSearchResultListener {
         override fun onGetPoiResult(p0: PoiResult?) {
             if (p0!!.error != SearchResult.ERRORNO.RESULT_NOT_FOUND) {
                 baiduMapAdapter!!.setEnableLoadMore(true)
                 baiduMapAdapter!!.setCurrent(false)
-                if (pageNum==0){
-                    //搜索结果没点击默认就不选中任何
-                    if(p0.allPoi!=null){
-                        baiduMapAdapter!!.posstionChecked=p0.allPoi.size
-                    }
+                if (pageNum == 0) {
                     baiduMapAdapter!!.upData(p0.allPoi)
-                }else{
+                    //搜索结果没点击默认就不选中任何
+                    if (p0.allPoi != null) {
+                        baiduMapAdapter!!.posstionChecked = p0.allPoi.size
+                    }
+                } else {
                     baiduMapAdapter!!.append(p0.allPoi)
                 }
-                if(p0.allPoi==null||p0.allPoi.size> page){
+                if (p0.allPoi == null || p0.allPoi.size > page) {
                     baiduMapAdapter!!.loadMoreEnd()
-                }else{
+                } else {
                     baiduMapAdapter!!.loadMoreComplete()
                 }
 
-            }else{
+            } else {
                 baiduMapAdapter!!.loadMoreEnd()
             }
         }
+
         /**
          *   * 在传入city检索时，返回的结果太多，涉及多个城市，可以将扩大检索的城市list罗列，
          * 让用户点击选择，再针对选定城市进行二次检索（如果只有一个城市，后端直接进行二次检索）。
@@ -173,19 +183,20 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         override fun onGetPoiIndoorResult(p0: PoiIndoorResult?) {
         }
     }
+
     /**
      * 当用户在输入法中点击搜索按钮时,或者输入回车时,调用这个方法，发起实际的搜索功能
      * @param query
      * @return
      */
     override fun onQueryTextSubmit(query: String?): Boolean {
-        isCurrentLocation=false
-        pageNum=0
+        isCurrentLocation = false
+        pageNum = 0
         keyWord = query.toString()
-        mPoiSearch!!.searchInCity((  PoiCitySearchOption())
-          .city(city)
-          .keyword(keyWord).pageCapacity(page)
-          .pageNum(pageNum))
+        mPoiSearch!!.searchInCity((PoiCitySearchOption())
+                .city(city)
+                .keyword(keyWord).pageCapacity(page)
+                .pageNum(pageNum))
         searchView!!.clearFocus()
         return true
     }
@@ -198,20 +209,25 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when (id) {
             android.R.id.home -> this.finish()//真正实现回退功能的代码
             R.id.menu_send -> {
-            ToastUtils.show(city)
-
+                val intent = Intent()
+                intent.putExtra("address", street)
+                intent.putExtra("latitude", currentLatLng.latitude)
+                intent.putExtra("longitude", currentLatLng.longitude)
+                intent.putExtra("scale", scale)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             }
             else -> {
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -222,47 +238,44 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)//这句代码使启用Activity回退功能，并显示Toolbar上的左侧回退图标
         title = "位置"
         mapView = findViewById<MapView>(R.id.bmapView)
-        rl_map=  findViewById<RelativeLayout>(R.id.rl_map)
+        rl_map = findViewById<RelativeLayout>(R.id.rl_map)
         progressBar = findViewById<ProgressBar>(R.id.address_loading)
-        recycleLocation      = findViewById<RecyclerView>(R.id.rv_location)
-        recycleLocation!!.layoutManager= LinearLayoutManager(baseContext)
+        recycleLocation = findViewById<RecyclerView>(R.id.rv_location)
+        recycleLocation!!.layoutManager = LinearLayoutManager(baseContext)
         baiduMapAdapter = BaiduMapAdapter(R.layout.picker_item_place, null)
         baiduMapAdapter!!.setEnableLoadMore(false)
         baiduMapAdapter!!.setOnLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener {
-            if (!isCurrentLocation){
+            if (!isCurrentLocation) {
                 pageNum++
-                mPoiSearch!!.searchInCity((  PoiCitySearchOption())
+                mPoiSearch!!.searchInCity((PoiCitySearchOption())
                         .city(city)
                         .keyword(keyWord).pageCapacity(page)
                         .pageNum(pageNum))
             }
-        },recycleLocation)
-        baiduMapAdapter!!.setOnItemClickListener { adapter, view, position ->
+        }, recycleLocation)
+            baiduMapAdapter!!.setOnItemClickListener { adapter, view, position ->
             baiduMapAdapter!!.onChecked(position)
-            var poiList=   baiduMapAdapter!!.data  as List<PoiInfo>
-            currentLatLng =  poiList.get(position).location
-//           if(baiduMapAdapter!!.isShowPoint ){
-               isOnClick=true
-//           }else{
-         //      isOnClick=false
-          // }
-            // 实现动画跳转(位置)
-            val mapStatusUpdate = MapStatusUpdateFactory.newLatLng (currentLatLng)
-            city= poiList.get(position).city
-            mapView!!.map.animateMapStatus( mapStatusUpdate)
+            var poiList = baiduMapAdapter!!.data as List<PoiInfo>
+            currentLatLng = poiList.get(position).location
+            isOnClick = true
+            city = poiList.get(position).city
+            street=poiList.get(position).city+poiList.get(position).address+poiList.get(position).name
+            scale=mapView!!.map.mapStatus.zoom
+                mapView!!.map.animateMapStatus(MapStatusUpdateFactory.newLatLng(currentLatLng))
         }
-        recycleLocation!!.adapter=baiduMapAdapter
+        recycleLocation!!.adapter = baiduMapAdapter
         findViewById<ImageView>(R.id.img_current_location).setOnClickListener(View.OnClickListener {
-            isFirstLoc=true
+            isFirstLoc = true
             locationService!!.stop()
             initLocation()
         })
         initMap()
         initLocation()
     }
+
     /**
      * Toolbar菜单
-      */
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.map_search, menu)
         //设置搜索输入框的步骤
@@ -271,12 +284,12 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         //2.设置SearchView v7包方式
         val view = MenuItemCompat.getActionView(menuItem)
         if (view != null) {
-             searchView = view as SearchView
+            searchView = view as SearchView
             //4.设置SearchView 的查询回调接口
             searchView!!.setOnQueryTextListener(this)
             //在搜索输入框没有显示的时候 点击Action ,回调这个接口，并且显示输入框
-           searchView!!.setOnSearchClickListener(View.OnClickListener {  })
-            searchView!!.setOnCloseListener(object : SearchView.OnCloseListener{
+            searchView!!.setOnSearchClickListener(View.OnClickListener { })
+            searchView!!.setOnCloseListener(object : SearchView.OnCloseListener {
                 override fun onClose(): Boolean {
                     return false
                 }
@@ -304,7 +317,7 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
         mapView!!.map.setMyLocationConfiguration(myLocationConfiguration)
         //缩放级别
-        mapView!!.map.setMapStatus(MapStatusUpdateFactory.zoomTo(17.0f))
+        mapView!!.map.setMapStatus(MapStatusUpdateFactory.zoomTo(scale))
         //隐藏比例尺
         mapView!!.showScaleControl(false)
         //隐藏缩放按钮
@@ -320,19 +333,21 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         mapView!!.map.setOnMapStatusChangeListener(object : BaiduMap.OnMapStatusChangeListener {
             override fun onMapStatusChangeStart(p0: MapStatus?, p1: Int) {
             }
+
             override fun onMapStatusChange(p0: MapStatus?) {
             }
+
             override fun onMapStatusChangeStart(p0: MapStatus?) {
             }
+
             override fun onMapStatusChangeFinish(p0: MapStatus?) {
-                currentLatLng= p0!!.target
-                if (!isOnClick){
-                    progressBar!!.visibility=View.VISIBLE
-                    recycleLocation!!.visibility==View.GONE
+                currentLatLng = p0!!.target
+                if (!isOnClick) {
+                    progressBar!!.visibility = View.VISIBLE
+                    recycleLocation!!.visibility == View.GONE
                     //根据经纬度查询当前的附近东西
                     mGeoCoder!!.reverseGeoCode(ReverseGeoCodeOption().location(currentLatLng))
                 }
-
             }
         })
     }
@@ -365,8 +380,6 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         locationService!!.setLocationOption(locationService!!.defaultLocationClientOption)
     }
 
-
-
     override fun onResume() {
         super.onResume()
         locationService!!.start()
@@ -386,6 +399,7 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         locationService!!.stop()
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mapView!!.onDestroy()
+        mapView = null
     }
 }
 

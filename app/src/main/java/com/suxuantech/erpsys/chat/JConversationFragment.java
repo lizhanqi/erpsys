@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.chat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.ClipData;
@@ -63,6 +64,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import cn.jiguang.api.JCoreInterface;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.content.ImageContent;
 import cn.jpush.im.android.api.content.TextContent;
@@ -164,7 +166,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 })
                 .start();
     }
-
     /**
      * 权限授予结果
      *
@@ -218,6 +219,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         localWakeLock =  localPowerManager.newWakeLock(32, "MyPower");
         return mRootView;
     }
+
+
 
     @Override
     public void onResume() {
@@ -378,8 +381,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 } else if (position == 1) {
                     gotoCamera();
                 }else if (position==3){
-
-                     startActivityForResult(new Intent(getActivity(),BaiduMapActivity.class),60);
+                    //sendLoacation(116.35,39.7222,"北京啦",5);
+                  startActivityForResult(new Intent(getActivity(),BaiduMapActivity.class),25);
                 }else {
                     Intent     intent = new Intent(getActivity(), MapPickerActivity.class);
                     intent.putExtra("targetId", UserID);
@@ -399,6 +402,17 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==25&&resultCode== Activity.RESULT_OK){
+            String address = data.getStringExtra("address");
+            float scale = data.getFloatExtra("scale",17.f);
+            double longitude = data.getDoubleExtra("longitude",116.35);
+            double latitude = data.getDoubleExtra("latitude",39.7222);
+            sendLoacation(latitude,longitude,address,scale);
+        }
+    }
 
     /**
      * 发送语音
@@ -425,7 +439,18 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         }
     }
 
-
+    public void sendLoacation(double  latitude,double  longitude,String address, float scale){
+            Message singleVoiceMessage = JMessageClient.createSingleLocationMessage(UserID, JCoreInterface.getAppKey(), latitude,longitude,(int )scale,address  );
+            singleVoiceMessage.setUnreceiptCnt(1);
+            //设置需要已读回执
+            MessageSendingOptions options = new MessageSendingOptions();
+            options.setNeedReadReceipt(true);
+            JMessageClient.sendMessage(singleVoiceMessage, options);
+            //更新页面
+            MessageEntity messageEntity = new MessageEntity(singleVoiceMessage);
+            multipleItemQuickAdapter.appendData(messageEntity);
+            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+    }
     //重发对话框
     public void showResendDialog(Message content, int position) {
         View.OnClickListener listener = new View.OnClickListener() {
@@ -647,7 +672,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             try {
                 localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
             }catch (Exception e){
-
             }
             mManager.unregisterListener(this);//注销传感器监听
         }
@@ -657,7 +681,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     public void onDestroy(){
         super.onDestroy();
         multipleItemQuickAdapter.stopVoice(null);
-
     }
     @Override
     public void onSensorChanged(SensorEvent event) {

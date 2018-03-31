@@ -44,27 +44,17 @@ class JLoginActivity : ChatBaseActivity() {
         val bt123456 = findViewById<Button>(R.id.bt_123456)
         bt123456.setOnClickListener(View.OnClickListener { v ->
             login("10086","10086")
-            var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
-            v.putExtra("name","123456")
-            //startActivity( v)
         })
+        //  与hello
         val bthello = findViewById<Button>(R.id.bt_hello)
         bthello.setOnClickListener(View.OnClickListener { v ->
-            login("10086","10086")
-            var v =Intent(  JLoginActivity@this, ConversationActivity::class.java)
-            v.putExtra("name","123456")
-            //startActivity( v)
+            login("10000","10000")
         })
-
-      //  与hello
     }
 
     private fun regist(tname: CharSequence, passtext: CharSequence) {
         //设置用户信息聊天对象及群聊Id, 此处使用了前缀加上随机生成的4个字符组成用户名, 而聊天对象是提前注册好的
         //关于注册在ReadMe中也有提到
-        var mTargetId = "user002"
-        var mGroupId = 10049741
-        if (JMessageClient.getMyInfo() == null) {
             //val username = getUsername(4)
             var mMyName = tname.toString() //+ username
             val dialog = DialogCreator.createLoadingDialog(this, "注册中ing....")
@@ -79,7 +69,6 @@ class JLoginActivity : ChatBaseActivity() {
                     }
                 }
             })
-        }
     }
     /**
      * 产生一个随机的字符串
@@ -112,8 +101,10 @@ class JLoginActivity : ChatBaseActivity() {
                 if (status == 0) {
                     if(tname.equals("123456")){
                         tochat("10086")
-                    }else{
+                    }else if(tname.equals("10000")){
                         tochat("hello")
+                    }else{
+                        tochat("123456")
                     }
                     Toast.makeText(mContext, "登录成功!", Toast.LENGTH_SHORT).show()
                     Log.d("DemoActivity", "Login success")
