@@ -104,7 +104,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         setTemplate(helper, item);
         setMasseRead(msg, helper.getView(R.id.tv_msg_read));
         LinearLayout layout = helper.getView(R.id.ll_msg);
-        //    boolean oneSelf = helper.getItemViewType() == MessageEntity.ONESELF;
         boolean oneSelf = msg.getDirect() == MessageDirect.send;
         if (msg.getContentType() == ContentType.prompt) {
             TextView view = helper.getView(R.id.tv_msg_recall);
@@ -167,23 +166,24 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             case unknown:
                 break;
             case file:
-                    View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
-                    fileView.setLayoutParams(layoutParams);
-                      ImageView thumbnailView = fileView.findViewById(R.id.video_msg);
-                    layout.addView(fileView);
-                helper.addOnClickListener(R.id.video_msg);
+                View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
+                fileView.setLayoutParams(layoutParams);
+                ImageView thumbnailView = fileView.findViewById(R.id.video_msg);
+                layout.addView(fileView);
                 String extra = msg.getContent().getStringExtra("video");
                 if (!TextUtils.isEmpty(extra)) {
                     FileContent videoFileContent = (FileContent) msg.getContent();
                     String videoPath = videoFileContent.getLocalPath();
-                    if (videoPath==null) {
+                    if (videoPath == null) {
                         videoFileContent.downloadFile(msg, new DownloadCompletionCallback() {
                             @Override
                             public void onComplete(int i, String s, File file) {
                                 ToastUtils.show(s + "");
+                                notifyItemChanged(mData.lastIndexOf(item));
                             }
                         });
-                    }else {
+                    } else {
+                        helper.addOnClickListener(R.id.rl_file);
                         String thumbPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + msg.getServerMessageId();
                         String path = extractThumbnail(videoPath, thumbPath);
                         Glide.with(mContext).load(new File(path)).into(thumbnailView);

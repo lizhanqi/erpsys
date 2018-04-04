@@ -13,6 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -262,6 +264,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         return messages;
     }
 
+
     private void initView() {
         msgList = mRootView.findViewById(R.id.rv_msg);
         mSwipeRefreshLayout = mRootView.findViewById(R.id.srl_load);
@@ -301,7 +304,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 if (msgenty.getMsag().getDirect() == MessageDirect.send) {
                     builder.addItem(new TipItem("撤回"));
                 }
-
                 builder.setOnItemClickListener(new TipView.OnItemClickListener() {
                     @Override
                     public void onItemClick(String str, final int position) {
@@ -348,20 +350,11 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId()==R.id.img_msg){
+                if (view.getId()==R.id.rl_file){
                     MessageEntity msg = (MessageEntity) adapter.getData().get(position);
-                    if (msg.getMsag().getContentType()==ContentType.file){
-                       FileContent fileContent= (FileContent) msg.getMsag().getContent();
-                        String video = fileContent.getStringExtra("video");
-                        if (!TextUtils.isEmpty(video)){
-                            ToastUtils.show("small.");
-                        }
-                    }else {
-
-                    }
-
-
-                }else {
+                    FileContent content = (FileContent) msg.getMsag().getContent();
+                    playVideo(content.getLocalPath());
+                } else if (R.id.img_msg_status==view.getId()){
                     MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
                     Message content = messageEntity.getMsag();
                     showResendDialog(content, position);
@@ -434,7 +427,22 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         });
     }
 
-
+    void playVideo(String filePath) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("oneshot", 0);
+        intent.putExtra("configchange", 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String authority = getActivity().getPackageName() + ".FileProvider";
+            File file = new File(filePath);
+            Uri videoUri = FileProvider.getUriForFile(getActivity(), authority,file);
+            intent.setDataAndType(videoUri, "video/*");
+        } else {
+            Uri uri = Uri.fromFile(new File(filePath));
+            intent.setDataAndType(uri, "video/*");
+        }
+        getActivity().startActivity(intent);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
