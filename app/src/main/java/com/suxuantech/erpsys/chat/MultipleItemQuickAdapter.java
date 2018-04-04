@@ -2,9 +2,15 @@ package com.suxuantech.erpsys.chat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,7 +28,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.utils.DensityUtils;
-import com.suxuantech.erpsys.utils.L;
+import com.suxuantech.erpsys.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -38,6 +44,7 @@ import java.util.List;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
 import cn.jpush.im.android.api.callback.ProgressUpdateCallback;
+import cn.jpush.im.android.api.content.FileContent;
 import cn.jpush.im.android.api.content.ImageContent;
 import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.TextContent;
@@ -120,27 +127,17 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             if (messageStatus == MessageStatus.send_success) {
                 helper.getView(R.id.img_msg_status).setVisibility(View.GONE);
                 helper.getView(R.id.tv_msg_read).setVisibility(View.VISIBLE);
-
             } else if (messageStatus == MessageStatus.send_going) {
                 //发送中
                 ImageView sendView = helper.getView(R.id.img_msg_status);
                 sendView.setVisibility(View.VISIBLE);
                 sendView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_message_sending));
-//                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
-//                if (!sendingDrawable.isRunning()){
-//                    sendingDrawable.start();
-//                }
-
                 helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
                 ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_sending_img));
             } else if (messageStatus == MessageStatus.send_fail) {
                 //发送失败
                 ImageView sendView = helper.getView(R.id.img_msg_status);
                 sendView.setVisibility(View.VISIBLE);
-//                AnimationDrawable sendingDrawable = (AnimationDrawable) sendView.getDrawable();
-//                if (sendingDrawable.isRunning()){
-//                    sendingDrawable.stop();
-//                }
                 ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_msg_send_failed));
                 helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
                 helper.addOnClickListener(R.id.img_msg_status);
@@ -161,11 +158,8 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 layout.removeViewAt(i);
             }
         }
-
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         switch (msg.getContentType()) {
-            case video:
-                break;
             case eventNotification:
                 break;
             case custom:
@@ -173,6 +167,28 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             case unknown:
                 break;
             case file:
+                    View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
+                    fileView.setLayoutParams(layoutParams);
+                      ImageView thumbnailView = fileView.findViewById(R.id.video_msg);
+                    layout.addView(fileView);
+                helper.addOnClickListener(R.id.video_msg);
+                String extra = msg.getContent().getStringExtra("video");
+                if (!TextUtils.isEmpty(extra)) {
+                    FileContent videoFileContent = (FileContent) msg.getContent();
+                    String videoPath = videoFileContent.getLocalPath();
+                    if (videoPath==null) {
+                        videoFileContent.downloadFile(msg, new DownloadCompletionCallback() {
+                            @Override
+                            public void onComplete(int i, String s, File file) {
+                                ToastUtils.show(s + "");
+                            }
+                        });
+                    }else {
+                        String thumbPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + msg.getServerMessageId();
+                        String path = extractThumbnail(videoPath, thumbPath);
+                        Glide.with(mContext).load(new File(path)).into(thumbnailView);
+                    }
+                }
                 break;
             case location:
                 LocationContent locationContent = (LocationContent) msg.getContent();
@@ -186,19 +202,18 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 double lat = latitude.doubleValue();
                 Number longitude = locationContent.getLongitude();
                 double lot = longitude.doubleValue();
-                double scle =scale.doubleValue();
-                if(    scale.doubleValue()<10 )  {
-                    scle=10;
-                }else {
-                    scle= scale.doubleValue();
+                double scle = scale.doubleValue();
+                if (scale.doubleValue() < 10) {
+                    scle = 10;
+                } else {
+                    scle = scale.doubleValue();
                 }
-                if(      scale.doubleValue()>19)  {
-                    scle=19;
-                }else {
-                    scle= scale.doubleValue();
+                if (scale.doubleValue() > 19) {
+                    scle = 19;
+                } else {
+                    scle = scale.doubleValue();
                 }
-                String mapUri= "http://api.map.baidu.com/staticimage?width="+ DensityUtils.dp2px(mContext,200)+"&height="+ DensityUtils.dp2px(mContext,120)+"&center="+lot+","+lat+"&zoom="+scle ;
-                L.i(mapUri);
+                String mapUri = "http://api.map.baidu.com/staticimage?width=" + DensityUtils.dp2px(mContext, 200) + "&height=" + DensityUtils.dp2px(mContext, 120) + "&center=" + lot + "," + lat + "&zoom=" + scle;
                 Glide.with(mContext).load(mapUri).into(mapView);
                 TextView location = inflate.findViewById(R.id.tv_location);
                 location.setText(address);
@@ -609,6 +624,55 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         notifyItemRangeInserted(0, messageEntities.size());
     }
 
+    /**
+     * 设置图片最小宽高
+     *
+     * @param path      图片路径
+     * @param imageView 显示图片的View
+     */
+    private ImageView setPictureScale(String extra, Message message, String path, final ImageView imageView) {
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, opts);
+
+
+        //计算图片缩放比例
+        double imageWidth = opts.outWidth;
+        double imageHeight = opts.outHeight;
+        return setDensity(extra, message, imageWidth, imageHeight, imageView);
+    }
+
+    private ImageView setDensity(String extra, Message message, double imageWidth, double imageHeight, ImageView imageView) {
+        if (extra != null) {
+            imageWidth = 200;
+            imageHeight = 200;
+        } else {
+            if (imageWidth > 350) {
+                imageWidth = 550;
+                imageHeight = 250;
+            } else if (imageHeight > 450) {
+                imageWidth = 300;
+                imageHeight = 450;
+            } else if ((imageWidth < 50 && imageWidth > 20) || (imageHeight < 50 && imageHeight > 20)) {
+                imageWidth = 200;
+                imageHeight = 300;
+            } else if (imageWidth < 20 || imageHeight < 20) {
+                imageWidth = 100;
+                imageHeight = 150;
+            } else {
+                imageWidth = 300;
+                imageHeight = 450;
+            }
+        }
+
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.width = (int) imageWidth;
+        params.height = (int) imageHeight;
+        imageView.setLayoutParams(params);
+        return imageView;
+    }
+
     public void soundSourceFromSpeakerphone(boolean isSpeakerphoneOn) {
 //        if(audioManager!=null&&mediaPlayer != null) {
 //            if (isSpeakerphoneOn){
@@ -626,6 +690,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 //            }
 //        }
     }
+
 
     public static void download(String urlString, String filename, String savePath) throws Exception {
 // 构造URL
@@ -653,6 +718,17 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 // 完毕，关闭所有链接
         os.close();
         is.close();
+    }
+
+    public static String extractThumbnail(String videoPath, String thumbPath) {
+        if (!AttachmentStore.isFileExist(thumbPath)) {
+            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Images.Thumbnails.MINI_KIND);
+            if (bitmap != null) {
+                AttachmentStore.saveBitmap(bitmap, thumbPath, true);
+                return thumbPath;
+            }
+        }
+        return thumbPath;
     }
 }
 

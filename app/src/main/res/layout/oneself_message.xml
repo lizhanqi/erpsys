@@ -21,12 +21,12 @@
         android:text="消息撤回" />
 
     <RelativeLayout
-        android:paddingLeft="@dimen/px150"
         android:id="@+id/rl_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:padding="@dimen/px30">
+        android:padding="@dimen/px30"
+        android:paddingLeft="@dimen/px50">
 
         <ImageView
             android:id="@+id/imag_user_head"
@@ -47,26 +47,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="name" />
+
             <LinearLayout
                 android:id="@+id/ll_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:orientation="horizontal">
+
                 <ImageView
-                    android:padding="5dp"
                     android:id="@+id/img_msg_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
                     android:src="@drawable/jmui_message_sending" />
 
                 <TextView
-                    android:padding="5dp"
-                    android:text="未读"
                     android:id="@+id/tv_msg_read"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_work_normal" />
+                    android:padding="5dp"
+                    android:src="@drawable/icon_work_normal"
+                    android:text="未读" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

@@ -47,7 +47,6 @@ import com.suxuantech.erpsys.chat.keyboard.entity.AppBean;
 import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 import com.suxuantech.erpsys.chat.keyboard.weight.EmotionSinglePageView;
 import com.suxuantech.erpsys.chat.keyboard.weight.KeyBoardView;
-import com.suxuantech.erpsys.chat.location.activity.MapPickerActivity;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -66,6 +65,7 @@ import java.util.Locale;
 
 import cn.jiguang.api.JCoreInterface;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.FileContent;
 import cn.jpush.im.android.api.content.ImageContent;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
@@ -75,6 +75,7 @@ import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
 import cn.jpush.im.android.api.event.MessageRetractEvent;
 import cn.jpush.im.android.api.event.OfflineMessageEvent;
+import cn.jpush.im.android.api.exceptions.JMFileSizeExceedException;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
@@ -123,7 +124,7 @@ import cn.jpush.im.api.BasicCallback;
  * 2.3 @ 某人,@全体 (最后再说)
  */
 
-public class JConversationFragment extends Fragment implements KeyBoardView.AudioInput  , SensorEventListener {
+public class JConversationFragment extends Fragment implements KeyBoardView.AudioInput, SensorEventListener {
     String UserID = "123456";
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
@@ -166,6 +167,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 })
                 .start();
     }
+
     /**
      * 权限授予结果
      *
@@ -208,25 +210,25 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     //屏幕开关
     private PowerManager localPowerManager = null;//电源管理对象
     private PowerManager.WakeLock localWakeLock = null;//电源锁
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = (LinearLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getActivity());
-        mManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        localPowerManager = (PowerManager)getActivity(). getSystemService(Context.POWER_SERVICE);
-        localWakeLock =  localPowerManager.newWakeLock(32, "MyPower");
+        mManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        localPowerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+        localWakeLock = localPowerManager.newWakeLock(32, "MyPower");
         return mRootView;
     }
-
 
 
     @Override
     public void onResume() {
         super.onResume();
-            mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
-             SensorManager.SENSOR_DELAY_NORMAL);//注册传感器，第一个参数为距离监听器，第二个是传感器类型，第三个是延迟类型
+        mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
+                SensorManager.SENSOR_DELAY_NORMAL);//注册传感器，第一个参数为距离监听器，第二个是传感器类型，第三个是延迟类型
     }
 
     @Override
@@ -261,7 +263,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     }
 
     private void initView() {
-        msgList = mRootView.findViewById( R.id.rv_msg);
+        msgList = mRootView.findViewById(R.id.rv_msg);
         mSwipeRefreshLayout = mRootView.findViewById(R.id.srl_load);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.de_title_bg, R.color.themeColor, R.color.colorPrimary, R.color.colorPrimaryDark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -272,9 +274,9 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             }
         });
         mSwipeRefreshLayout.setRefreshing(true);
-           multipleItemQuickAdapter = new MultipleItemQuickAdapter(loadMessage());
+        multipleItemQuickAdapter = new MultipleItemQuickAdapter(loadMessage());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager  .setStackFromEnd(true);
+        linearLayoutManager.setStackFromEnd(true);
         msgList.setLayoutManager(linearLayoutManager);
         //这里请用:bindToRecyclerView 因为需要使用到getViewByPosition
         //   msgList.setAdapter(multipleItemQuickAdapter);
@@ -346,9 +348,24 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
-                Message content = messageEntity.getMsag();
-                showResendDialog(content, position);
+                if (view.getId()==R.id.img_msg){
+                    MessageEntity msg = (MessageEntity) adapter.getData().get(position);
+                    if (msg.getMsag().getContentType()==ContentType.file){
+                       FileContent fileContent= (FileContent) msg.getMsag().getContent();
+                        String video = fileContent.getStringExtra("video");
+                        if (!TextUtils.isEmpty(video)){
+                            ToastUtils.show("small.");
+                        }
+                    }else {
+
+                    }
+
+
+                }else {
+                    MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
+                    Message content = messageEntity.getMsag();
+                    showResendDialog(content, position);
+                }
             }
         });
         keyBoardView = mRootView.findViewById(R.id.keyboard);
@@ -380,16 +397,31 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                     gotoSelectImage();
                 } else if (position == 1) {
                     gotoCamera();
-                }else if (position==3){
+                } else if (position == 3) {
                     //sendLoacation(116.35,39.7222,"北京啦",5);
-                  startActivityForResult(new Intent(getActivity(),BaiduMapActivity.class),25);
-                }else {
-                    Intent     intent = new Intent(getActivity(), MapPickerActivity.class);
-                    intent.putExtra("targetId", UserID);
-                    intent.putExtra("targetAppKey", 0);
-                    intent.putExtra("groupId", 0);
-                    intent.putExtra("sendLocation", true);
-                   startActivityForResult(intent, 25);
+                    startActivityForResult(new Intent(getActivity(), BaiduMapActivity.class), 25);
+                } else {
+                    Album.camera(getActivity())
+                            .video() // 录视频，注意与拍照的方法不同。
+                            //  .filePath("/small_video/")
+                            .requestCode(2)
+                            .quality(1) // 视频质量，[0, 1]。
+                            .limitDuration(1000 * 3) // 视频最长时长，单位是毫秒。
+                            .limitBytes(Long.MAX_VALUE) // 视频最大大小，单位byte。
+                            .onResult(new Action<String>() {
+                                @Override
+                                public void onAction(int requestCode, @NonNull String result) {
+                                    if (requestCode == 2) {
+                                        sendVideo(result);
+                                    }
+                                }
+                            })
+                            .onCancel(new Action<String>() {
+                                @Override
+                                public void onAction(int requestCode, @NonNull String result) {
+                                }
+                            })
+                            .start();
                 }
             }
         });
@@ -402,16 +434,48 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         });
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==25&&resultCode== Activity.RESULT_OK){
+        if (requestCode == 25 && resultCode == Activity.RESULT_OK) {
             String address = data.getStringExtra("address");
-            float scale = data.getFloatExtra("scale",17.f);
-            double longitude = data.getDoubleExtra("longitude",116.35);
-            double latitude = data.getDoubleExtra("latitude",39.7222);
-            sendLoacation(latitude,longitude,address,scale);
+            float scale = data.getFloatExtra("scale", 17.f);
+            double longitude = data.getDoubleExtra("longitude", 116.35);
+            double latitude = data.getDoubleExtra("latitude", 39.7222);
+            sendLoacation(latitude, longitude, address, scale);
         }
+    }
+
+    /**
+     * 发送小视频
+     *
+     * @param path
+     */
+    private void sendVideo(String path) {
+        try {
+            FileContent fileContent = new FileContent(new File(path));
+            if (fileContent == null) {
+                return;
+            }
+            fileContent.setStringExtra("video", "mp4");
+            Message msg = singleConversation.createSendMessage(fileContent);
+            msg.setUnreceiptCnt(1);
+            //设置需要已读回执
+            MessageSendingOptions options = new MessageSendingOptions();
+            options.setNeedReadReceipt(true);
+            JMessageClient.sendMessage(msg, options);
+            //更新页面
+            MessageEntity messageEntity = new MessageEntity(msg);
+            multipleItemQuickAdapter.appendData(messageEntity);
+            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JMFileSizeExceedException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
@@ -439,18 +503,19 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         }
     }
 
-    public void sendLoacation(double  latitude,double  longitude,String address, float scale){
-            Message singleVoiceMessage = JMessageClient.createSingleLocationMessage(UserID, JCoreInterface.getAppKey(), latitude,longitude,(int )scale,address  );
-            singleVoiceMessage.setUnreceiptCnt(1);
-            //设置需要已读回执
-            MessageSendingOptions options = new MessageSendingOptions();
-            options.setNeedReadReceipt(true);
-            JMessageClient.sendMessage(singleVoiceMessage, options);
-            //更新页面
-            MessageEntity messageEntity = new MessageEntity(singleVoiceMessage);
-            multipleItemQuickAdapter.appendData(messageEntity);
-            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+    public void sendLoacation(double latitude, double longitude, String address, float scale) {
+        Message singleVoiceMessage = JMessageClient.createSingleLocationMessage(UserID, JCoreInterface.getAppKey(), latitude, longitude, (int) scale, address);
+        singleVoiceMessage.setUnreceiptCnt(1);
+        //设置需要已读回执
+        MessageSendingOptions options = new MessageSendingOptions();
+        options.setNeedReadReceipt(true);
+        JMessageClient.sendMessage(singleVoiceMessage, options);
+        //更新页面
+        MessageEntity messageEntity = new MessageEntity(singleVoiceMessage);
+        multipleItemQuickAdapter.appendData(messageEntity);
+        msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
     }
+
     //重发对话框
     public void showResendDialog(Message content, int position) {
         View.OnClickListener listener = new View.OnClickListener() {
@@ -628,7 +693,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
     /**
      * 对方读取消息后的状态更新
-     *
      * @param event
      */
     public void onEventMainThread(MessageReceiptStatusChangeEvent event) {
@@ -660,28 +724,29 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         objects.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         objects.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         boolean b = hasPermission(objects);
-        if (!b){
-            requestPermission(Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (!b) {
+            requestPermission(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(mManager != null){
+        if (mManager != null) {
             try {
                 localWakeLock.release();//释放电源锁，如果不释放finish这个acitivity后仍然会有自动锁屏的效果，不信可以试一试
-            }catch (Exception e){
+            } catch (Exception e) {
             }
             mManager.unregisterListener(this);//注销传感器监听
         }
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         multipleItemQuickAdapter.stopVoice(null);
     }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         float[] its = event.values;
@@ -690,14 +755,14 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             if (its[0] == 0.0) {//
                 if (localWakeLock.isHeld()) {
                     return;
-                } else{
+                } else {
                     localWakeLock.acquire();// 申请设备电源锁
                     multipleItemQuickAdapter.soundSourceFromSpeakerphone(false);
                 }
             } else {// 远离手机
                 if (localWakeLock.isHeld()) {
                     return;
-                } else{
+                } else {
                     localWakeLock.setReferenceCounted(false);
                     localWakeLock.release(); // 释放设备电源锁
                     multipleItemQuickAdapter.soundSourceFromSpeakerphone(true);
@@ -705,6 +770,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             }
         }
     }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
