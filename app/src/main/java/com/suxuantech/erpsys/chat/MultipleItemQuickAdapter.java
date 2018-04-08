@@ -56,6 +56,8 @@ import cn.jpush.im.android.api.enums.MessageStatus;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.api.BasicCallback;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 
 /**
  * ......................我佛慈悲....................
@@ -126,6 +128,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             if (messageStatus == MessageStatus.send_success) {
                 helper.getView(R.id.img_msg_status).setVisibility(View.GONE);
                 helper.getView(R.id.tv_msg_read).setVisibility(View.VISIBLE);
+                notifyItemChanged(mData.lastIndexOf(item));
             } else if (messageStatus == MessageStatus.send_going) {
                 //发送中
                 ImageView sendView = helper.getView(R.id.img_msg_status);
@@ -166,11 +169,30 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             case unknown:
                 break;
             case file:
-                View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
-                fileView.setLayoutParams(layoutParams);
-                ImageView thumbnailView = fileView.findViewById(R.id.video_msg);
-                layout.addView(fileView);
+                //是否是视频
                 String extra = msg.getContent().getStringExtra("video");
+                int videoWidth = Integer.parseInt(msg.getContent().getStringExtra("width"));
+                int videoHeight =Integer.parseInt(msg.getContent().getStringExtra("height")) ;
+                int rotation =Integer.parseInt(msg.getContent().getStringExtra("rotation")) ;
+                View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
+                JZVideoPlayerStandard thumbnailView = fileView.findViewById(R.id.videoplayer);
+                int  w = videoWidth / (videoWidth / videoHeight) / 5;
+                int h= videoHeight/(videoWidth/videoHeight)/5;
+                ViewGroup.LayoutParams lvp = thumbnailView.thumbImageView.getLayoutParams();
+                if (rotation==90||rotation==270){
+                    lvp.width=h;
+                    lvp.height=w;
+                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(h,w));
+                    fileView.setLayoutParams( new ViewGroup.LayoutParams(h,w));
+                }else {
+                    //横屏拍摄的
+                    lvp.width=w;
+                    lvp.height=h;
+                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(w,h));
+                    fileView.setLayoutParams( new ViewGroup.LayoutParams(w,h));
+                }
+                thumbnailView.thumbImageView.setLayoutParams(lvp);
+                layout.addView(fileView);
                 if (!TextUtils.isEmpty(extra)) {
                     FileContent videoFileContent = (FileContent) msg.getContent();
                     String videoPath = videoFileContent.getLocalPath();
@@ -183,10 +205,10 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                             }
                         });
                     } else {
-                        helper.addOnClickListener(R.id.rl_file);
+                        thumbnailView.setUp(videoPath, JZVideoPlayer.SCREEN_WINDOW_LIST);
                         String thumbPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + msg.getServerMessageId();
                         String path = extractThumbnail(videoPath, thumbPath);
-                        Glide.with(mContext).load(new File(path)).into(thumbnailView);
+                        Glide.with(mContext).load(new File(path)).into(thumbnailView.thumbImageView);
                     }
                 }
                 break;

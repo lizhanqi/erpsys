@@ -13,6 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -82,6 +83,7 @@ import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
+import cn.jzvd.JZVideoPlayer;
 
 /**
  * ......................我佛慈悲....................
@@ -266,7 +268,20 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
 
     private void initView() {
+
         msgList = mRootView.findViewById(R.id.rv_msg);
+        msgList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(View view) {
+                JZVideoPlayer.onChildViewAttachedToWindow(view, R.id.videoplayer);
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(View view) {
+                JZVideoPlayer.onChildViewDetachedFromWindow(view);
+            }
+        });
+
         mSwipeRefreshLayout = mRootView.findViewById(R.id.srl_load);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.de_title_bg, R.color.themeColor, R.color.colorPrimary, R.color.colorPrimaryDark);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -350,7 +365,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId()==R.id.rl_file){
+                if (view.getId()==R.id.videoplayer){
                     MessageEntity msg = (MessageEntity) adapter.getData().get(position);
                     FileContent content = (FileContent) msg.getMsag().getContent();
                     playVideo(content.getLocalPath());
@@ -455,6 +470,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         }
     }
 
+
+
     /**
      * 发送小视频
      *
@@ -466,7 +483,15 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             if (fileContent == null) {
                 return;
             }
+            MediaMetadataRetriever retr = new MediaMetadataRetriever();
+            retr.setDataSource(path);
+            String height = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT); // 视频高度
+            String width = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH); // 视频宽度
+            String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION); // 视频旋转方向
             fileContent.setStringExtra("video", "mp4");
+            fileContent.setStringExtra("width",width);
+            fileContent.setStringExtra("height",height);
+            fileContent.setStringExtra("rotation",rotation);
             Message msg = singleConversation.createSendMessage(fileContent);
             msg.setUnreceiptCnt(1);
             //设置需要已读回执

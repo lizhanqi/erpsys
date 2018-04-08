@@ -139,6 +139,7 @@ dependencies {
     implementation project(':RecordVoice')
     //  compile 'io.github.rockerhieu:emojicon:+'
     implementation files('libs/BaiduLBS_Android.jar')
+    implementation  rootProject.ext.dependencies.jiaozivideoplayer
 }
 
 //删除release文件夹

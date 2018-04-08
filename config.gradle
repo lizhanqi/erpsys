@@ -114,6 +114,7 @@ ext {
            jmessage: 'cn.jiguang.sdk:jmessage:2.5.0',
            // 此处以JCore 1.1.9 版本为例。
            jcore: 'cn.jiguang.sdk:jcore:1.1.9',
+           jiaozivideoplayer:'cn.jzvd:jiaozivideoplayer:6.2.9'
 
     ]
     bintray = [

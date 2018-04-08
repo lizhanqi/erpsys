@@ -10,6 +10,7 @@ import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
 import cn.jpush.im.android.api.event.MessageRetractEvent;
+import cn.jzvd.JZVideoPlayer;
 
 public class ConversationActivity extends ChatBaseActivity {
     @Override
@@ -46,5 +47,19 @@ public class ConversationActivity extends ChatBaseActivity {
      */
     public void onEventMainThread(MessageRetractEvent event) {
         (( JConversationFragment ) getFragmentManager().findFragmentById(R.id.fra)).onEventMainThread(event);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
     }
 }

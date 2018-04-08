@@ -194,5 +194,8 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
-
+<style name="convertion" parent="AppTheme">
+    <item name="android:windowIsTranslucent">false</item>
+    <item name="android:windowDisablePreview">true</item>
+</style>
 </resources>
