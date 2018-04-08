@@ -427,8 +427,6 @@
     <string name="file_fetch_failed">文件获取失败</string>
 
 
-
-
     <string name="picker_internalerror">发生错误</string>
-   <string name="send_location_error">位置截图失败或会话为空</string>
+    <string name="send_location_error">位置截图失败或会话为空</string>
 </resources>

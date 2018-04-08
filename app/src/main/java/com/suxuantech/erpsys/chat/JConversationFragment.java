@@ -365,11 +365,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId()==R.id.videoplayer){
-                    MessageEntity msg = (MessageEntity) adapter.getData().get(position);
-                    FileContent content = (FileContent) msg.getMsag().getContent();
-                    playVideo(content.getLocalPath());
-                } else if (R.id.img_msg_status==view.getId()){
+           if (R.id.img_msg_status==view.getId()){
                     MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
                     Message content = messageEntity.getMsag();
                     showResendDialog(content, position);
@@ -662,21 +658,30 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     }
 
     void sendImage(String file) {
-        //方式二
         try {
-            ImageContent content = new ImageContent(new File(file));
-            Message sendMessage = singleConversation.createSendMessage(content);
-            sendMessage.setUnreceiptCnt(1);
-            //设置需要已读回执
-            MessageSendingOptions options = new MessageSendingOptions();
-            options.setNeedReadReceipt(true);
-            JMessageClient.sendMessage(sendMessage, options);
-            //更新页面
-            MessageEntity messageEntity = new MessageEntity(sendMessage);
-            multipleItemQuickAdapter.appendData(messageEntity);
-            msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
-            // multipleItemQuickAdapter.notifyDataSetChanged();
-        } catch (FileNotFoundException e) {
+      //      ImageContent content = new ImageContent(new File(file));
+            ImageContent.createImageContentAsync(new File(file), new ImageContent.CreateImageContentCallback() {
+                @Override
+                public void gotResult(int responseCode, String s, ImageContent imageContent) {
+                    if (responseCode == 0) {
+
+
+                    Message sendMessage = singleConversation.createSendMessage(imageContent);
+                    sendMessage.setUnreceiptCnt(1);
+                    //设置需要已读回执
+                    MessageSendingOptions options = new MessageSendingOptions();
+                    options.setNeedReadReceipt(true);
+                    JMessageClient.sendMessage(sendMessage, options);
+                    //更新页面
+                    MessageEntity messageEntity = new MessageEntity(sendMessage);
+                    multipleItemQuickAdapter.appendData(messageEntity);
+                    msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+                    }else {
+                        ToastUtils.show(s);
+                    }
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

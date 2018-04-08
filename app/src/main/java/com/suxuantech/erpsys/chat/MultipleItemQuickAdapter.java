@@ -24,26 +24,27 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.utils.DensityUtils;
+import com.suxuantech.erpsys.utils.GlideRoundTransform;
+import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.yanzhenjie.album.Album;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
-import cn.jpush.im.android.api.callback.ProgressUpdateCallback;
 import cn.jpush.im.android.api.content.FileContent;
 import cn.jpush.im.android.api.content.ImageContent;
 import cn.jpush.im.android.api.content.LocationContent;
@@ -128,7 +129,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             if (messageStatus == MessageStatus.send_success) {
                 helper.getView(R.id.img_msg_status).setVisibility(View.GONE);
                 helper.getView(R.id.tv_msg_read).setVisibility(View.VISIBLE);
-                notifyItemChanged(mData.lastIndexOf(item));
             } else if (messageStatus == MessageStatus.send_going) {
                 //发送中
                 ImageView sendView = helper.getView(R.id.img_msg_status);
@@ -171,13 +171,21 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             case file:
                 //是否是视频
                 String extra = msg.getContent().getStringExtra("video");
-                int videoWidth = Integer.parseInt(msg.getContent().getStringExtra("width"));
-                int videoHeight =Integer.parseInt(msg.getContent().getStringExtra("height")) ;
+                float videoWidth = Float.parseFloat(msg.getContent().getStringExtra("width"));
+                float videoHeight = Float.parseFloat(msg.getContent().getStringExtra("height")) ;
                 int rotation =Integer.parseInt(msg.getContent().getStringExtra("rotation")) ;
                 View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
+
                 JZVideoPlayerStandard thumbnailView = fileView.findViewById(R.id.videoplayer);
-                int  w = videoWidth / (videoWidth / videoHeight) / 5;
-                int h= videoHeight/(videoWidth/videoHeight)/5;
+                float Screenw = ScreenUtils.getScreenWidth(mContext) * 0.7f;
+                Float scaleVideo=0.7F;
+                if (Screenw<videoWidth ){
+                    if (Screenw<videoWidth){
+                        scaleVideo = scaleVideo< Screenw/videoWidth? scaleVideo: Screenw/videoWidth;
+                    }
+                }
+                int  w = (int) (videoWidth *scaleVideo);
+                int h= (int) (videoHeight*scaleVideo);
                 ViewGroup.LayoutParams lvp = thumbnailView.thumbImageView.getLayoutParams();
                 if (rotation==90||rotation==270){
                     lvp.width=h;
@@ -291,23 +299,47 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 
                 break;
             case image:
+                ImageContent imageContent = (ImageContent) msg.getContent();
                 ImageView pic = helper.getView(R.id.img_msg);
                 View view = mLayoutInflater.inflate(R.layout.msg_image, null);
                 view.setLayoutParams(layoutParams);
                 pic = view.findViewById(R.id.img_msg);
+                //这里缩放暂时固定,按理来讲这里应该根据屏幕宽度缩放
+                float sw = ScreenUtils.getScreenWidth(mContext) * 0.7f;
+                 Float scaleImage=0.7F;
+                if (sw<imageContent.getWidth() ){
+                    scaleImage = scaleImage< sw/imageContent.getWidth()? scaleImage: sw/imageContent.getWidth();
+                }
+                int  imagewidth = (int) (imageContent.getWidth() *scaleImage);
+                int imageheight= (int) (imageContent.getHeight() *scaleImage);
+                pic.setLayoutParams(new LinearLayout.LayoutParams(imagewidth,imageheight));
+                view.setLayoutParams(new LinearLayout.LayoutParams(imagewidth,imageheight));
                 layout.addView(view);
-                if (oneSelf) {
-                    msg.setOnContentUploadProgressCallback(new ProgressUpdateCallback() {
+                helper.addOnLongClickListener(R.id.img_msg);
+                if ( imageContent.getLocalPath()==null){
+                    imageContent.downloadOriginImage(msg, new DownloadCompletionCallback() {
                         @Override
-                        public void onProgressUpdate(double v) {
+                        public void onComplete(int i, String s, File file) {
+                           notifyItemChanged(mData.lastIndexOf(item));
                         }
                     });
-                } else {
+                }else {
+                    pic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bigImage(imageContent);
+                        }
+                    });
                 }
-                helper.addOnLongClickListener(R.id.img_msg);
-                ImageContent imageContent = (ImageContent) msg.getContent();
                 //大图  imageContent.getLocalPath(); //小图 imageContent.getLocalThumbnailPath()
-                Glide.with(mContext).load(imageContent.getLocalThumbnailPath()).into(pic);
+                RequestOptions options2 = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.mipmap.ic_launcher)//预加载图片
+                        .error(R.mipmap.ic_launcher)//加载失败显示图片
+                        .priority(Priority.HIGH)//优先级
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)//缓存策略
+                        .transform(new GlideRoundTransform(10));//转化为圆形
+                Glide.with(mContext).load(imageContent.getLocalThumbnailPath()).apply(options2).into(pic);
                 break;
             case prompt:
                 break;
@@ -526,6 +558,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                         //消息发送成功
                         helper.getView(R.id.img_msg_status).setVisibility(View.GONE);
                         helper.getView(R.id.tv_msg_read).setVisibility(View.VISIBLE);
+                        notifyItemChanged(mData.lastIndexOf(item));
                     } else {
                         //消息发送失败
                         helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
@@ -559,9 +592,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             msgTime.setVisibility(View.GONE);
         }
         nameView.setText(userName);
-        // helper.addOnClickListener(R.id.tv_user_name);
     }
-
     /**
      * 判断是否是一次新的会话
      * (时长是5分钟)
@@ -576,7 +607,18 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             return timeSpan >= 5;
         }
     }
-
+        private  void bigImage(ImageContent imageContent){
+            String localPath = imageContent.getLocalPath();
+            ArrayList<String> strings = new ArrayList<>();
+            strings.add(localPath);
+           // 浏览一般的String路径：
+            Album.gallery(mContext)
+                    //   .requestCode() // 请求码，会在listener中返回。
+                    .checkedList(strings) // 要浏览的图片列表：ArrayList<String>。
+                   .navigationAlpha(100) // Android5.0+的虚拟导航栏的透明度。
+                  .checkable(false) // 是否有浏览时的选择功能。
+                    .start(); // 千万不要忘记调用start()方法。
+        }
     /**
      * 更新未读状态未已读
      *
@@ -714,33 +756,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     }
 
 
-    public static void download(String urlString, String filename, String savePath) throws Exception {
-// 构造URL
-        URL url = new URL(urlString);
-// 打开连接
-        URLConnection con = url.openConnection();
-//设置请求超时为5s
-        con.setConnectTimeout(5 * 1000);
-// 输入流
-        InputStream is = con.getInputStream();
-// 1K的数据缓冲
-        byte[] bs = new byte[1024];
-// 读取到的数据长度
-        int len;
-// 输出的文件流
-        File sf = new File(savePath);
-        if (!sf.exists()) {
-            sf.mkdirs();
-        }
-        OutputStream os = new FileOutputStream(sf.getPath() + "/" + filename);
-// 开始读取
-        while ((len = is.read(bs)) != -1) {
-            os.write(bs, 0, len);
-        }
-// 完毕，关闭所有链接
-        os.close();
-        is.close();
-    }
 
     public static String extractThumbnail(String videoPath, String thumbPath) {
         if (!AttachmentStore.isFileExist(thumbPath)) {
