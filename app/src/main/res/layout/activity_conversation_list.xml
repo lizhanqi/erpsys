@@ -5,5 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.suxuantech.erpsys.rongim.activity.ConversationListActivity">
-
+        <fragment
+            android:id="@+id/fr_list_conversation"
+            android:name="com.suxuantech.erpsys.chat.ConversationListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </fragment>
 </RelativeLayout>

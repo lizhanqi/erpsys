@@ -3,7 +3,6 @@ package com.suxuantech.erpsys.chat
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -98,19 +97,21 @@ class JLoginActivity : ChatBaseActivity() {
         JMessageClient.login(tname.toString(), passtext.toString(), object : BasicCallback() {
             override fun gotResult(status: Int, desc: String) {
                 loadingDialog.dismiss()
-                if (status == 0) {
-                    if(tname.equals("123456")){
-                        tochat("10086")
-                    }else if(tname.equals("10000")){
-                        tochat("hello")
-                    }else{
-                        tochat("123456")
-                    }
-                    Toast.makeText(mContext, "登录成功!", Toast.LENGTH_SHORT).show()
-                    Log.d("DemoActivity", "Login success")
-                } else {
-                    HandleResponseCode.onHandle(mContext, status, false)
-                }
+                var v = Intent(  baseContext,ConversationListActivity::class.java)
+                startActivity( v)
+//                if (status == 0) {
+//                    if(tname.equals("123456")){
+//                        tochat("10086")
+//                    }else if(tname.equals("10000")){
+//                        tochat("hello")
+//                    }else{
+//                        tochat("123456")
+//                    }
+//                    Toast.makeText(mContext, "登录成功!", Toast.LENGTH_SHORT).show()
+//                    Log.d("DemoActivity", "Login success")
+//                } else {
+//                    HandleResponseCode.onHandle(mContext, status, false)
+//                }
             }
         })
     }

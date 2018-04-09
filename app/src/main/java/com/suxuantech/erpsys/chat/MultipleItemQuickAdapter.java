@@ -111,6 +111,8 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     @Override
     protected void convert(BaseViewHolder helper, MessageEntity item) {
         Message msg = item.getMsag();
+      //  GroupInfo groupInfo = (GroupInfo) msg.getTargetInfo();
+        UserInfo userInfo = (UserInfo) msg.getTargetInfo();
         setTemplate(helper, item);
         setMasseRead(msg, helper.getView(R.id.tv_msg_read));
         LinearLayout layout = helper.getView(R.id.ll_msg);

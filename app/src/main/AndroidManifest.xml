@@ -213,11 +213,12 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
             android:screenOrientation="portrait"
             android:theme="@style/convertion"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".chat.BaiduMapActivity"></activity>
+        <activity android:name=".chat.BaiduMapActivity" />
         <activity
             android:name=".chat.location.activity.MapPickerActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
-        <activity android:name=".chat.ImageActivity"></activity>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity android:name=".chat.ImageActivity" />
+        <activity android:name=".chat.ConversationListActivity"></activity>
     </application>
 
 </manifest>

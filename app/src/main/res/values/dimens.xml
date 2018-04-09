@@ -15,7 +15,7 @@
     <dimen name="fixed_label_active">@dimen/xs33</dimen>
     <dimen name="fixed_label_inactive">@dimen/xs26</dimen>
 
-<!--Android-AlertView-->
+    <!--Android-AlertView-->
     <dimen name="textSize_alert_title">22sp</dimen>
     <dimen name="textSize_actionsheet_title">14sp</dimen>
     <!--标题文字高度-->
