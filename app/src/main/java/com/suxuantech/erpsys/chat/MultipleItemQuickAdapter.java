@@ -94,6 +94,13 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     private FileInputStream mFIS;
     private FileDescriptor mFD;
     private AudioManager audioManager;
+    RequestOptions options = new RequestOptions()
+            .centerCrop()
+            .placeholder(R.mipmap.ic_launcher)//预加载图片
+            .error(R.mipmap.ic_launcher)//加载失败显示图片
+            .priority(Priority.HIGH)//优先级
+            .diskCacheStrategy(DiskCacheStrategy.NONE)//缓存策略
+            .transform(new GlideRoundTransform(10));//转化为圆形
 
     public MultipleItemQuickAdapter(List<MessageEntity> data) {
         super(data);
@@ -172,32 +179,32 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 //是否是视频
                 String extra = msg.getContent().getStringExtra("video");
                 float videoWidth = Float.parseFloat(msg.getContent().getStringExtra("width"));
-                float videoHeight = Float.parseFloat(msg.getContent().getStringExtra("height")) ;
-                int rotation =Integer.parseInt(msg.getContent().getStringExtra("rotation")) ;
+                float videoHeight = Float.parseFloat(msg.getContent().getStringExtra("height"));
+                int rotation = Integer.parseInt(msg.getContent().getStringExtra("rotation"));
                 View fileView = mLayoutInflater.inflate(R.layout.msg_video, null);
 
                 JZVideoPlayerStandard thumbnailView = fileView.findViewById(R.id.videoplayer);
                 float Screenw = ScreenUtils.getScreenWidth(mContext) * 0.7f;
-                Float scaleVideo=0.7F;
-                if (Screenw<videoWidth ){
-                    if (Screenw<videoWidth){
-                        scaleVideo = scaleVideo< Screenw/videoWidth? scaleVideo: Screenw/videoWidth;
+                Float scaleVideo = 0.7F;
+                if (Screenw < videoWidth) {
+                    if (Screenw < videoWidth) {
+                        scaleVideo = scaleVideo < Screenw / videoWidth ? scaleVideo : Screenw / videoWidth;
                     }
                 }
-                int  w = (int) (videoWidth *scaleVideo);
-                int h= (int) (videoHeight*scaleVideo);
+                int w = (int) (videoWidth * scaleVideo);
+                int h = (int) (videoHeight * scaleVideo);
                 ViewGroup.LayoutParams lvp = thumbnailView.thumbImageView.getLayoutParams();
-                if (rotation==90||rotation==270){
-                    lvp.width=h;
-                    lvp.height=w;
-                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(h,w));
-                    fileView.setLayoutParams( new ViewGroup.LayoutParams(h,w));
-                }else {
+                if (rotation == 90 || rotation == 270) {
+                    lvp.width = h;
+                    lvp.height = w;
+                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(h, w));
+                    fileView.setLayoutParams(new ViewGroup.LayoutParams(h, w));
+                } else {
                     //横屏拍摄的
-                    lvp.width=w;
-                    lvp.height=h;
-                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(w,h));
-                    fileView.setLayoutParams( new ViewGroup.LayoutParams(w,h));
+                    lvp.width = w;
+                    lvp.height = h;
+                    thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+                    fileView.setLayoutParams(new ViewGroup.LayoutParams(w, h));
                 }
                 thumbnailView.thumbImageView.setLayoutParams(lvp);
                 layout.addView(fileView);
@@ -212,6 +219,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                                 notifyItemChanged(mData.lastIndexOf(item));
                             }
                         });
+                        Glide.with(mContext).load(mContext.getResources().getDrawable(R.drawable.logo)).into(thumbnailView.thumbImageView);
                     } else {
                         thumbnailView.setUp(videoPath, JZVideoPlayer.SCREEN_WINDOW_LIST);
                         String thumbPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + msg.getServerMessageId();
@@ -244,7 +252,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                     scle = scale.doubleValue();
                 }
                 String mapUri = "http://api.map.baidu.com/staticimage?width=" + DensityUtils.dp2px(mContext, 200) + "&height=" + DensityUtils.dp2px(mContext, 120) + "&center=" + lot + "," + lat + "&zoom=" + scle;
-                Glide.with(mContext).load(mapUri).into(mapView);
+                Glide.with(mContext).load(mapUri).apply(options).into(mapView);
                 TextView location = inflate.findViewById(R.id.tv_location);
                 location.setText(address);
                 break;
@@ -306,40 +314,47 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 pic = view.findViewById(R.id.img_msg);
                 //这里缩放暂时固定,按理来讲这里应该根据屏幕宽度缩放
                 float sw = ScreenUtils.getScreenWidth(mContext) * 0.7f;
-                 Float scaleImage=0.7F;
-                if (sw<imageContent.getWidth() ){
-                    scaleImage = scaleImage< sw/imageContent.getWidth()? scaleImage: sw/imageContent.getWidth();
+                Float scaleImage = 0.7F;
+                if (sw < imageContent.getWidth()) {
+                    scaleImage = scaleImage < sw / imageContent.getWidth() ? scaleImage : sw / imageContent.getWidth();
                 }
-                int  imagewidth = (int) (imageContent.getWidth() *scaleImage);
-                int imageheight= (int) (imageContent.getHeight() *scaleImage);
-                pic.setLayoutParams(new LinearLayout.LayoutParams(imagewidth,imageheight));
-                view.setLayoutParams(new LinearLayout.LayoutParams(imagewidth,imageheight));
+                int imagewidth = (int) (imageContent.getWidth() * scaleImage);
+                int imageheight = (int) (imageContent.getHeight() * scaleImage);
+                pic.setLayoutParams(new LinearLayout.LayoutParams(imagewidth, imageheight));
+                view.setLayoutParams(new LinearLayout.LayoutParams(imagewidth, imageheight));
                 layout.addView(view);
                 helper.addOnLongClickListener(R.id.img_msg);
-                if ( imageContent.getLocalPath()==null){
+                if (imageContent.getLocalPath() == null) {
                     imageContent.downloadOriginImage(msg, new DownloadCompletionCallback() {
                         @Override
                         public void onComplete(int i, String s, File file) {
-                           notifyItemChanged(mData.lastIndexOf(item));
-                        }
-                    });
-                }else {
-                    pic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            bigImage(imageContent);
+                            notifyItemChanged(mData.lastIndexOf(item));
                         }
                     });
                 }
+                    pic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (imageContent.getLocalPath() == null) {
+                                ToastUtils.show("下载中...");
+                            }else {
+                                bigImage(imageContent);
+                            }
+                        }
+                    });
+
                 //大图  imageContent.getLocalPath(); //小图 imageContent.getLocalThumbnailPath()
-                RequestOptions options2 = new RequestOptions()
-                        .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher)//预加载图片
-                        .error(R.mipmap.ic_launcher)//加载失败显示图片
-                        .priority(Priority.HIGH)//优先级
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)//缓存策略
-                        .transform(new GlideRoundTransform(10));//转化为圆形
-                Glide.with(mContext).load(imageContent.getLocalThumbnailPath()).apply(options2).into(pic);
+                if (imageContent.getLocalThumbnailPath() != null) {
+                    Glide.with(mContext).load( imageContent.getLocalThumbnailPath()).apply(options).into(pic);
+                } else {
+                    Glide.with(mContext).load(mContext.getResources().getDrawable(R.drawable.logo)).apply(options).into(pic);
+                    imageContent.downloadThumbnailImage(msg, new DownloadCompletionCallback() {
+                        @Override
+                        public void onComplete(int i, String s, File file) {
+                            notifyItemChanged(mData.lastIndexOf(item));
+                        }
+                    });
+                }
                 break;
             case prompt:
                 break;
@@ -593,6 +608,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         }
         nameView.setText(userName);
     }
+
     /**
      * 判断是否是一次新的会话
      * (时长是5分钟)
@@ -607,18 +623,21 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             return timeSpan >= 5;
         }
     }
-        private  void bigImage(ImageContent imageContent){
-            String localPath = imageContent.getLocalPath();
-            ArrayList<String> strings = new ArrayList<>();
-            strings.add(localPath);
-           // 浏览一般的String路径：
-            Album.gallery(mContext)
-                    //   .requestCode() // 请求码，会在listener中返回。
-                    .checkedList(strings) // 要浏览的图片列表：ArrayList<String>。
-                   .navigationAlpha(100) // Android5.0+的虚拟导航栏的透明度。
-                  .checkable(false) // 是否有浏览时的选择功能。
-                    .start(); // 千万不要忘记调用start()方法。
-        }
+
+    private void bigImage(ImageContent imageContent) {
+      String localPath = imageContent.getLocalPath();
+//        Intent intent = new Intent(mContext, ImageActivity.class);
+//        intent.putExtra("uri",localPath);
+   //   mContext.startActivity(intent);
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add(localPath);
+        Album.gallery(mContext)
+                .checkedList(strings) // 要浏览的图片列表：ArrayList<String>。
+                .navigationAlpha(100) // Android5.0+的虚拟导航栏的透明度。
+                .checkable(false) // 是否有浏览时的选择功能。
+                .start(); // 千万不要忘记调用start()方法。
+    }
+
     /**
      * 更新未读状态未已读
      *
@@ -754,7 +773,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
 //            }
 //        }
     }
-
 
 
     public static String extractThumbnail(String videoPath, String thumbPath) {

@@ -55,6 +55,7 @@ import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumConfig;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
@@ -238,6 +239,9 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AlbumConfig.newBuilder(getActivity())
+                .setAlbumLoader(new GlideAlbumLoader()) // 设置Album加载器。
+                .build();
         UserID = getActivity().getIntent().getStringExtra("name");
         singleConversation = JMessageClient.getSingleConversation(UserID);
         if (singleConversation == null) {
