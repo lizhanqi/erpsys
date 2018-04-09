@@ -66,9 +66,9 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), emotion.get(position).icon);
                 int fontHeight = getFontHeight(editText);
                 bitmap.copy(Bitmap.Config.ARGB_8888, true);
-                if (fontHeight/2>0&&  bitmap.isMutable()){
-                    bitmap.setHeight(fontHeight/2);
-                    bitmap.setWidth(fontHeight/2);
+                if (fontHeight/3>0&&  bitmap.isMutable()){
+                    bitmap.setHeight(fontHeight/3);
+                    bitmap.setWidth(fontHeight/3);
                 }
                 ImageSpan imageSpan = new ImageSpan(getContext(),bitmap);
                 SpannableString spannableString = new SpannableString(emotion.get(position).emoji);
@@ -113,14 +113,12 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
      *
      * @param emotion
      */
-
-
     public void setEmotion(ArrayList<EmotionBean> emotion) {
         this.emotion=emotion;
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         setLayoutParams(lp);
         setNumColumns(columns);
-        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete,150,150));
+        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete,80,150));
         setOnItemClickListener(this);
     }
 
