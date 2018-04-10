@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,10 +15,13 @@ import android.view.KeyEvent;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
+import com.baidu.mapapi.SDKInitializer;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.beans.DistrictBean;
+import com.suxuantech.erpsys.chat.DialogCreator;
+import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.nohttp.DownLoad;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -40,8 +44,12 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -51,8 +59,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
-
-public class MainActivity extends ImmersedBaseActivity implements IUnReadMessageObserver {
+public class MainActivity extends ImmersedBaseActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private ArrayList<Fragment> fragments =new ArrayList<>();
@@ -115,8 +122,23 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             finish();
         }
     }
+    void  login(String name, String password) {
+        Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
+        loadingDialog.show();
+        JMessageClient.login(name, password, new BasicCallback() {
+            @Override
+            public void gotResult(int i, String s) {
+                loadingDialog.cancel();
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!isRongIM){
+            SDKInitializer.initialize(getApplicationContext());
+            login("10086","10086");
+        }
        // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
        setSwipeBackEnable(false);
@@ -162,9 +184,26 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     /**
      * 会话列表的fragment
      */
-    private ConversationListFragment mConversationListFragment = null;
+    private  Fragment mConversationListFragment = null;
     private Conversation.ConversationType[] mConversationsTypes = null;
-    private ConversationListFragment initConversationList() {
+    boolean isRongIM=false;
+    private  Fragment initConversationList(){
+        if (isRongIM){
+            return initRongIMConversationListFragement();
+        }else {
+            return initJGIMConversationListFragement();
+        }
+    }
+    private  Fragment   initJGIMConversationListFragement() {
+        if (mConversationListFragment == null) {
+            com.suxuantech.erpsys.chat.ConversationListFragment listFragment = new com.suxuantech.erpsys.chat.ConversationListFragment();
+            mConversationListFragment = listFragment;
+            return listFragment;
+        } else {
+            return mConversationListFragment;
+        }
+    }
+    private  Fragment   initRongIMConversationListFragement() {
         if (mConversationListFragment == null) {
             ConversationListFragment listFragment = new ConversationListFragment();
             listFragment.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
@@ -242,7 +281,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 } else {
                     transaction.show(mConversationListFragment);
                 }
-
                 setTitle("我的会话");
 //                setSupportToolbar();
 //                getToolbar().setTitle("我的会话");
@@ -252,8 +290,9 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 if (workFragment == null) {
                     workFragment = new WorkFragment();
                     transaction.add(R.id.main_content, workFragment);
-                } else
+                } else {
                     transaction.show(workFragment);
+                }
                 setTitle("OA办公");
                 break;
 
@@ -261,8 +300,9 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 if ( contactsFragment== null) {
                 contactsFragment = new ContactsFragment();
                 transaction.add(R.id.main_content, contactsFragment);
-                } else
+                } else {
                     transaction.show(contactsFragment);
+                }
                 setTitle("联系人");
                 break;
 
@@ -270,39 +310,46 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 if (erpFragment == null) {
                     erpFragment = new ERPFragment();
                     transaction.add(R.id.main_content, erpFragment);
-                } else
+                } else {
                     transaction.show(erpFragment);
+                }
                 break;
             case 10:
                 if (crmFragment == null) {
                     crmFragment = new CRMFragment();
                     transaction.add(R.id.main_content, crmFragment);
-                } else
-
+                } else {
                     transaction.show(crmFragment);
+                }
                 break;
             case 4:
                 if (myFragment == null) {
                     myFragment = new MyFragment();
                     transaction.add(R.id.main_content, myFragment);
-                } else
+                } else{
                     transaction.show(myFragment);
+                }
                 break;
 
         }
         transaction.commit();
     }
     private void hideFragment(FragmentTransaction transaction) {
-        if (mConversationListFragment != null)
+        if (mConversationListFragment != null) {
             transaction.hide(mConversationListFragment);
-        if (workFragment != null)
+        }
+        if (workFragment != null) {
             transaction.hide(workFragment);
-        if (erpFragment != null)
+        }
+        if (erpFragment != null) {
             transaction.hide(erpFragment);
-        if (contactsFragment != null)
+        }
+        if (contactsFragment != null) {
             transaction.hide(contactsFragment);
-        if (myFragment != null)
+        }
+        if (myFragment != null) {
             transaction.hide(myFragment);
+        }
     }
     //-----------方式一end------
     /**
@@ -502,6 +549,11 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 badgeItem.setText(null);
             }
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(@NotNull DummyContent.DummyItem item) {
+
     }
 }
 
