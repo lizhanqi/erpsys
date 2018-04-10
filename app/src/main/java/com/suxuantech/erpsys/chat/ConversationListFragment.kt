@@ -1,7 +1,10 @@
 package com.suxuantech.erpsys.chat
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +13,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import cn.jpush.im.android.api.JMessageClient
 import cn.jpush.im.android.api.event.MessageEvent
 import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent
@@ -45,11 +49,26 @@ class ConversationListFragment : Fragment() {
         }
         //订阅接收消息,子类只要重写onEvent就能收到
         JMessageClient.registerEventReceiver(this)
+        initReceiver()
     }
+
+    /**
+     * 注册网络监听
+     */
+    var mReceiver:NetworkReceiver ?=null;
+    private fun initReceiver() {
+        mReceiver = NetworkReceiver()
+        val filter = IntentFilter()
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        activity!!.registerReceiver(mReceiver, filter)
+    }
+
     var adapter :MyItemRecyclerViewAdapter?=null;
+    var  netStatus:LinearLayout?=null;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
      var list=    view.findViewById<RecyclerView>(R.id.list)
+        netStatus=view.findViewById(R.id.ll_net_status)
         // Set the adapter
         if (list is RecyclerView) {
             val context = view.getContext()
@@ -82,6 +101,35 @@ class ConversationListFragment : Fragment() {
         }
     }
 
+    //监听网络状态的广播
+    inner class NetworkReceiver : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent?) {
+            if (intent != null && intent.action == "android.net.conn.CONNECTIVITY_CHANGE") {
+                val manager = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeInfo = manager.activeNetworkInfo
+                if (null == activeInfo) {
+                    netStatus!!.visibility=View.VISIBLE
+               //     mConvListView.showHeaderView()
+                } else
+                    netStatus!!.visibility=View.GONE
+                 //   mConvListView.dismissHeaderView()
+                }
+            }
+        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val manager = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeInfo = manager.activeNetworkInfo
+        if (null == activeInfo) {
+            netStatus!!.visibility=View.VISIBLE
+        } else {
+            netStatus!!.visibility=View.GONE
+//            mConvListView.dismissHeaderView()
+//            mConvListView.showLoadingHeader()
+//            mBackgroundHandler.sendEmptyMessageDelayed(DISMISS_REFRESH_HEADER, 1000)
+        }
+    }
     override fun onDetach() {
         super.onDetach()
         mListener = null
@@ -144,4 +192,8 @@ class ConversationListFragment : Fragment() {
         adapter!!.upData(JMessageClient.getConversationList())
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.unregisterReceiver(mReceiver)
+    }
 }
