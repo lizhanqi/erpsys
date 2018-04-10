@@ -17,12 +17,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     <TextView
+        android:singleLine="true"
         android:text="66"
         android:id="@+id/tv_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem" />
     <TextView
+        android:singleLine="true"
         android:text="661"
         android:id="@+id/tv_list_content"
         android:layout_width="wrap_content"

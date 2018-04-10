@@ -6,6 +6,7 @@ import android.widget.TextView
 import cn.jpush.im.android.api.content.TextContent
 import cn.jpush.im.android.api.enums.ContentType
 import cn.jpush.im.android.api.enums.ConversationType
+import cn.jpush.im.android.api.enums.MessageDirect
 import cn.jpush.im.android.api.model.Conversation
 import cn.jpush.im.android.api.model.UserInfo
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -31,18 +32,52 @@ class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : B
             var unread = helper.getView<TextView>(R.id.tv_unread)
             unread.text = "" + item.unReadMsgCnt
             name.setText(userInfo.userName)
-            if(item.latestMessage!=null) {
+            if (item.latestMessage != null) {
                 val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)
                 time.setText(timeFormat.detailTime)
+                val oneSelf = item.latestMessage.getDirect() == MessageDirect.send
                 if (item.latestMessage.contentType == ContentType.text) {
                     val textContent = item.latestMessage.content as TextContent
-                    content.setText(textContent.text)
+                    if (oneSelf) {
+                        if (item.latestMessage.unreceiptCnt > 0) {
+                            content.setText("[未读]" + textContent.text)
+                        } else {
+                            content.setText("[已读]" + textContent.text)
+                        }
+                    } else {
+                        content.setText(textContent.text)
+                    }
                 } else if (item.latestMessage.contentType == ContentType.file) {
-                    content.setText("[小视频]")
+                    if (oneSelf) {
+                        if (item.latestMessage.unreceiptCnt > 0) {
+                            content.setText("[未读]")
+                        } else {
+                            content.setText("[已读][小视频]")
+                        }
+                    } else {
+                        content.setText("[小视频]")
+                    }
                 } else if (item.latestMessage.contentType == ContentType.image) {
-                    content.setText("[图片]")
+                    if (oneSelf) {
+                        if (item.latestMessage.unreceiptCnt > 0) {
+                            content.setText("[未读][图片]")
+                        } else {
+                            content.setText("[已读][图片]")
+                        }
+                    } else {
+                        content.setText("[图片]")
+                    }
                 } else if (item.latestMessage.contentType == ContentType.location) {
-                    content.setText("[位置]")
+                    if (oneSelf) {
+                        if (item.latestMessage.unreceiptCnt > 0) {
+                            content.setText("[未读][位置]")
+                        } else {
+                            content.setText("[已读][位置]")
+                        }
+                    } else {
+                        content.setText("[位置]")
+
+                    }
                 } else {
                     content.setText("")
                 }
@@ -51,7 +86,7 @@ class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : B
     }
 
     fun upData(conversationList: List<Conversation>) {
-        mData=conversationList
+        mData = conversationList
         notifyDataSetChanged()
     }
 }

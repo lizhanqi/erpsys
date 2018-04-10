@@ -16,7 +16,6 @@ import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent
 import cn.jpush.im.android.api.event.MessageRetractEvent
 import cn.jpush.im.android.api.model.Conversation
 import cn.jpush.im.android.api.model.UserInfo
-import cn.jpush.im.android.eventbus.EventBus
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
@@ -41,11 +40,11 @@ class ConversationListFragment : Fragment() {
     private var mListener: OnListFragmentInteractionListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 界面创建时，订阅事件， 接受消息
-        EventBus.getDefault().register(this);
         if (arguments != null) {
             mColumnCount = arguments!!.getInt(ARG_COLUMN_COUNT)
         }
+        //订阅接收消息,子类只要重写onEvent就能收到
+        JMessageClient.registerEventReceiver(this)
     }
     var adapter :MyItemRecyclerViewAdapter?=null;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -101,9 +100,7 @@ class ConversationListFragment : Fragment() {
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: DummyItem)
     }
-
     companion object {
-
         // TODO: Customize parameter argument names
         private val ARG_COLUMN_COUNT = "column-count"
 
@@ -128,17 +125,14 @@ class ConversationListFragment : Fragment() {
      * 接受消息的事件 收到消息(在线的)主线程
      */
     fun onEventMainThread(event: MessageEvent) {
+        adapter!!.upData(JMessageClient.getConversationList())
     }
     /**
      * 对方读取消息后的状态更新
      * @param event
      */
     fun onEventMainThread(event: MessageReceiptStatusChangeEvent) {
-        val messageReceiptMetas = event.messageReceiptMetas
-        for (meta in messageReceiptMetas) {
-            val serverMsgId = meta.serverMsgId
-            val unReceiptCnt = meta.unReceiptCnt
-        }
+        adapter!!.upData(JMessageClient.getConversationList())
     }
 
     /**
@@ -147,16 +141,7 @@ class ConversationListFragment : Fragment() {
      * @param event
      */
     fun onEventMainThread(event: MessageRetractEvent) {
-        val retractedMessage = event.retractedMessage
-    }
-
-
-
-
-    override fun onDestroy() {
-        super.onDestroy();
-        // 界面销毁时，取消订阅
-        EventBus.getDefault().unregister(this);
+        adapter!!.upData(JMessageClient.getConversationList())
     }
 
 }
