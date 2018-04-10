@@ -9,7 +9,7 @@ clickable是防止页面穿透的点击事件的
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout_content_immersed"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
@@ -19,31 +19,39 @@ clickable是防止页面穿透的点击事件的
 
     </android.support.v4.widget.NestedScrollView>
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout xmlns:gyf="http://schemas.android.com/tools"
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        gyf:tr_head_height="100dp"
-        gyf:tr_wave_height="100dp">
+        tools:tr_head_height="100dp"
+        tools:tr_wave_height="100dp">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@color/gray_f9"
             android:clickable="true"
             tools:context=".ui.activity.fragment.ERPLeftFragment">
-
+            <!--背景-->
+            <!--ScrollView本身的高度设置为match_parent,其子View的高度也设置为match_parent,自然状态下该子View的高度并不会占满ScrollView的高度。
+            原因是match_parent针对一般布局而言，是子view的高度和parent的高度一致，但在ScrollView身上，工作机制并非如此，
+            而是ScrollView的高度随着子View的高度变化而变化(子View高度大于ScrollView时)。在子View高度小于ScrollView高度时，
+            必需在xml里为ScrollView加上android:fillViewport="true"，这样子View小于ScrollView高度时就会占满父View.-->
+            <!--解决方法-->
+            <!--xml里为ScrollView加上android:fillViewport="true"-->
+            <!--ScrollView 子view使用match_parent 无效 可以使用   android:fillViewport="true"-->
             <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+                android:fillViewport="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@color/gray_f9">
-
+                        <!--顶部-->
                     <RelativeLayout
                         android:id="@+id/left_top"
                         android:layout_width="match_parent"
@@ -97,7 +105,6 @@ clickable是防止页面穿透的点击事件的
                                     android:textSize="@dimen/xs30" />
                             </RelativeLayout>
                         </LinearLayout>
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px100"
@@ -107,7 +114,6 @@ clickable是防止页面穿透的点击事件的
                             android:orientation="horizontal"
                             android:paddingLeft="@dimen/px55"
                             android:paddingRight="@dimen/px55">
-
                             <TextView
                                 android:id="@+id/tv_notice"
                                 android:layout_width="wrap_content"
@@ -119,12 +125,10 @@ clickable是防止页面穿透的点击事件的
                                 android:text="公告"
                                 android:textColor="@color/noticeOrange"
                                 android:textSize="@dimen/xs34" />
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
-
                                 <com.suxuantech.erpsys.ui.widget.MarqueTextView
                                     android:id="@+id/tv_info"
                                     android:layout_width="wrap_content"
@@ -142,24 +146,6 @@ clickable是防止页面穿透的点击事件的
                                     android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/xs42" />
-                                <!--                <TextView
-                                                    android:id="@+id/tv_info"
-                                                    android:layout_width="300dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginLeft="@dimen/px10"
-                                                    android:layout_marginRight="@dimen/px10"
-                                                    android:layout_weight="1"
-                                                    android:ellipsize="marquee"
-                                                    android:focusable="true"
-                                                    android:focusableInTouchMode="true"
-                                                    android:marqueeRepeatLimit="marquee_forever"
-                                                    android:padding="@dimen/px10"
-                                                    android:scrollHorizontally="true"
-                                                    android:singleLine="true"
-                                                    android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
-                                                    android:textColor="@color/white"
-                                                    android:textSize="@dimen/xs42" />-->
-
                                 <TextView
                                     android:id="@+id/tv_notice_details"
                                     android:layout_width="wrap_content"
@@ -173,14 +159,14 @@ clickable是防止页面穿透的点击事件的
                             </LinearLayout>
                         </LinearLayout>
                     </RelativeLayout>
-
+                    <!--功能区与数据-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/left_top"
                         android:background="@color/gray_f9"
                         android:orientation="vertical">
-
+                        <!--功能区-->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px333"
@@ -208,14 +194,14 @@ clickable是防止页面穿透的点击事件的
                                 android:paddingTop="@dimen/px60"
                                 android:text="@string/order_search" />
                         </LinearLayout>
-
+                        <!--表-->
                         <LinearLayout
+                            android:visibility="gone"
                             android:layout_width="match_parent"
-
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/px30"
-                            android:background="@color/white"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                         >
 
                             <LinearLayout
                                 android:layout_width="@dimen/px0"
@@ -270,7 +256,6 @@ clickable是防止页面穿透的点击事件的
                                     android:textColor="@color/myValue_33"
                                     android:textSize="@dimen/xs40" />
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="@dimen/px0"
                                 android:layout_height="match_parent"
@@ -325,10 +310,41 @@ clickable是防止页面穿透的点击事件的
                                     android:textSize="@dimen/xs40" />
                             </LinearLayout>
                         </LinearLayout>
+                        <!--数据区-->
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <android.support.design.widget.TabLayout
+                                android:id="@+id/tablayout_home"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/px106"
+                                android:layout_gravity="center"
+                                app:tabBackground="@color/white"
+                                app:tabGravity="center"
+                                app:tabIndicatorColor="@color/themeColor"
+                                app:tabIndicatorHeight="@dimen/px5"
+                                app:tabMaxWidth="@dimen/px360"
+                                app:tabMinWidth="@dimen/px360"
+                                app:tabMode="fixed"
+                                app:tabSelectedTextColor="@color/themeColor"
+                                app:tabTextColor="@color/textHint_99" />
+                            <View
+                                android:id="@+id/view_tl"
+                                style="@style/line" />
+
+                            <android.support.v4.view.ViewPager
+                                android:layout_height="match_parent"
+                                android:id="@+id/vp_home"
+                                android:layout_width="match_parent"  />
+                        </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
             </ScrollView>
         </RelativeLayout>
+
+
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
 

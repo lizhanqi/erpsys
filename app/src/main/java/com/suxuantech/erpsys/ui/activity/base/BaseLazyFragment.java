@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,13 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 当使用viewpager加载Fragment，沉浸式的使用，原理懒加载
  * Created by geyifeng on 2017/4/7.
  */
-public abstract class BaseLazyFragment extends Fragment {
+public abstract class BaseLazyFragment extends SupportFragment {
     protected Activity mActivity;
     protected View mRootView;
     /**

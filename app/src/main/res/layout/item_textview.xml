@@ -5,6 +5,7 @@
     android:paddingTop="@dimen/px40"
     android:paddingBottom="@dimen/px40"
     android:textSize="@dimen/xs42"
+    android:text="22"
     android:textColor="@color/myValue_33"
     android:descendantFocusability="blocksDescendants"
     android:id="@+id/tv_item"

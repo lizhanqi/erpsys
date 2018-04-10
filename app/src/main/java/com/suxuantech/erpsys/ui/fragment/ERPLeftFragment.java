@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,10 +24,14 @@ import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
+import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
 import com.suxuantech.erpsys.utils.ScreenUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,21 +48,25 @@ public class ERPLeftFragment extends BaseLazyFragment {
     TextView mTvInfo;
     @BindView(R.id.refreshLayout)
     TwinklingRefreshLayout refreshLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_erp_left;
     }
+
     @Override
     public void initImmersionBar() {
-        if (getActivity()!=null){
+        if (getActivity() != null) {
             super.initImmersionBar();
             mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.translucent_black_90).init();
         }
     }
+
     public void alertShow4() {
         AlertView alertView = new AlertView("标题", null, "取消",
                 new String[]{"高亮按钮1"},
@@ -69,6 +82,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         }
         alertView.show();
     }
+
     Handler hd = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -85,7 +99,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 }
             });
             nb.build().show();
-
         }
     };
 
@@ -94,6 +107,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         super.onViewCreated(view, savedInstanceState);
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
+        initTabLayout();
         WaveView taskWave = view.findViewById(R.id.task_wave);
         WaveView scheduleWave = view.findViewById(R.id.schedule_wave);
         taskWave.setWaveColor(getResources().getColor(R.color.wavel), getResources().getColor(R.color.wave), getResources().getColor(R.color.wavebg));
@@ -125,7 +139,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                    }
 //                }).setDivierMargin(30).show();
 
-              //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+                //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
 
             }
         });
@@ -133,22 +147,54 @@ public class ERPLeftFragment extends BaseLazyFragment {
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-          // Intent intent = new Intent(getActivity(), OptionActivity.class);
+                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+                // Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
 //                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                multiple.setCheckedData("礼服");
 //                multiple.setTitle("选择");
-               // multiple.setUrl("11111");
+                // multiple.setUrl("11111");
 
 //                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Title","选择");
 //                intent.putExtra("Multiple",false);
-               // startActivity(multiple.creat());
+                // startActivity(multiple.creat());
             }
         });
+    }
+
+    private ArrayList<Fragment> fragments;
+    private void initTabLayout() {
+        FragmentManager childFragmentManager = getChildFragmentManager();
+        TabLayout tableLayoutHome = mRootView.findViewById(R.id.tablayout_home);
+        ViewPager viewPagerHome = mRootView.findViewById(R.id.vp_home);
+        String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
+        FragmentTransaction ft = childFragmentManager.beginTransaction();
+        for (Fragment f : childFragmentManager.getFragments()) {
+            ft.remove(f);
+        }
+        ft.commit();
+        viewPagerHome.removeAllViews();
+        viewPagerHome.removeAllViewsInLayout();
+        viewPagerHome.destroyDrawingCache();
+        childFragmentManager.executePendingTransactions();
+        if (fragments == null) {
+           fragments = new ArrayList<Fragment>() ;
+            for (int i = 0; i < stringArray.length; i++) {
+                fragments.add(new HomeDataFragement ());
+            }
+        }
+        DefaultFragmentAdapter defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, new ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
+            @Override
+            public Fragment getItemFragment(int positon) {
+                return fragments.get(positon);
+            }
+        });
+        viewPagerHome.setAdapter(defaultFragmentAdapter);
+        viewPagerHome.setOffscreenPageLimit(1);
+        tableLayoutHome.setupWithViewPager(viewPagerHome);
     }
 
     private void initRefresh() {
