@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
-import com.baidu.mapapi.SDKInitializer;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
@@ -44,6 +43,7 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -135,13 +135,11 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!isRongIM){
-            SDKInitializer.initialize(getApplicationContext());
-            login("10086","10086");
-        }
+
        // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
        setSwipeBackEnable(false);
+//       useEventBus();
         setContentView(R.layout.activity_main);
         initMyBottomNavigation();
         selectedFragment(2);
@@ -192,6 +190,15 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             return initRongIMConversationListFragement();
         }else {
             return initJGIMConversationListFragement();
+        }
+    }
+    /**
+     * 更新列表的消息
+     */
+    @Subscribe
+   public void onEventMainThread( int msg) {
+        if(msg==1){
+           // adapter!!.upData(JMessageClient.getConversationList())
         }
     }
     private  Fragment   initJGIMConversationListFragement() {

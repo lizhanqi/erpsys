@@ -82,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <AutoCompleteTextView
+                    android:text="10086"
                     android:textSize="@dimen/xs30"
                     android:textColor="@color/copyrigth"
                     android:textColorHint="@color/copyrigth"
@@ -121,6 +122,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:text="123456"
                     android:singleLine="true"
                     android:textColor="@color/copyrigth"
                     android:textColorHint="@color/copyrigth"
@@ -130,10 +132,19 @@
 </LinearLayout>
             <Button
                 android:textSize="@dimen/xs40"
-
                 android:layout_marginTop="@dimen/px110"
                 android:background="@drawable/login_button_sp"
                 android:id="@+id/email_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px115"
+                android:text="@string/action_sign_in" />
+            <Button
+                android:textSize="@dimen/xs40"
+                android:layout_marginTop="@dimen/px110"
+                android:background="@drawable/login_button_sp"
+                android:id="@+id/email_sign_in_button2"
                 style="?android:textAppearanceSmall"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"

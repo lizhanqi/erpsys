@@ -694,9 +694,10 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         }
     }
 
-    public void removeMessage(Message message) {
+    public void removeMessage(MessageEntity message) {
+        int i = mData.lastIndexOf(message);
         mData.remove(message);
-        notifyDataSetChanged();
+        notifyItemRemoved(i);
     }
 
     public void appendData(MessageEntity messageEntity) {

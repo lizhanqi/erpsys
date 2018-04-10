@@ -225,6 +225,9 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         mManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         localPowerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
         localWakeLock = localPowerManager.newWakeLock(32, "MyPower");
+        //订阅接收消息,子类只要重写onEvent就能收到
+        JMessageClient.registerEventReceiver(this);
+        JMessageClient.registerEventReceiver(this);
         return mRootView;
     }
 
@@ -232,6 +235,9 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     @Override
     public void onResume() {
         super.onResume();
+        if (singleConversation!=null){
+            singleConversation.setUnReadMessageCnt(0);
+        }
         mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
                 SensorManager.SENSOR_DELAY_NORMAL);//注册传感器，第一个参数为距离监听器，第二个是传感器类型，第三个是延迟类型
     }
@@ -354,7 +360,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                         } else {
                             //删除
                             singleConversation.deleteMessage(msgenty.getMsag().getId());
-                            multipleItemQuickAdapter.removeMessage(msgenty.getMsag());
+                            multipleItemQuickAdapter.removeMessage(msgenty);
                         }
                     }
 
@@ -782,13 +788,12 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             mManager.unregisterListener(this);//注销传感器监听
         }
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
+        JMessageClient.unRegisterEventReceiver(this);
         multipleItemQuickAdapter.stopVoice(null);
     }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         float[] its = event.values;

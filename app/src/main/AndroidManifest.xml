@@ -116,12 +116,14 @@
         <activity
             android:name=".ui.activity.DefaultErrorActivity"
             android:process=":error_activity" />
+        <!--       android:theme="@style/AppTheme"-->
         <activity
             android:name=".ui.activity.MainActivity"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/convertion"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+
             android:windowSoftInputMode="stateHidden|adjustResize">
                 <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -131,12 +133,6 @@
                     android:path="/conversationlist"
                     android:scheme="rong" />
             </intent-filter>
-           <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.activity.QRCodeScanActivity"
@@ -145,7 +141,13 @@
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".ui.activity.OutletsOrderActivity" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"

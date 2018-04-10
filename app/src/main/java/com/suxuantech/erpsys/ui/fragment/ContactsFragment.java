@@ -15,10 +15,11 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.beans.ContactBean;
+import com.suxuantech.erpsys.chat.ConversationActivity;
 import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
-import com.suxuantech.erpsys.beans.ContactBean;
 import com.suxuantech.erpsys.utils.GlideRoundTransform;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jpush.im.android.api.JMessageClient;
 import me.yokeyword.fragmentation.SupportFragment;
 
 
@@ -41,20 +43,17 @@ public class ContactsFragment extends SupportFragment {
     LinearLayout mLlRecentContact;
     private View view;
     private Unbinder unbinder;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ArrayList<ContactBean> objects = new ArrayList<ContactBean>();
         ArrayList<String> strings = new ArrayList<String>();
-
         for (int i = 0; i <30; i++) {
             if (i<10){
                 strings.add("部门"+i);
@@ -74,8 +73,27 @@ public class ContactsFragment extends SupportFragment {
                startActivityForResult(          new Intent(getActivity(), ContactsActivity.class),15);
             }
         });
+
         mRlRecentContact.setNestedScrollingEnabled(false);
         mRlOrganization.setNestedScrollingEnabled(false);
+        mRlRecentContact.setSwipeItemClickListener(new SwipeItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                if (position==0){
+                    if (!JMessageClient.getMyInfo().getUserName().equals("10086")){
+                    Intent intent = new Intent(getActivity(), ConversationActivity.class);
+                    intent.putExtra("name", "10086");
+                    startActivity(intent);
+                    }
+                }else {
+                    if (!JMessageClient.getMyInfo().getUserName().equals("123456")) {
+                        Intent intent = new Intent(getActivity(), ConversationActivity.class);
+                        intent.putExtra("name", "123456");
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
         new BaseRecyclerAdapter<ContactBean>(mRlRecentContact, objects, R.layout.item_contact) {
             @Override
             public void convert(RecyclerHolder holder, ContactBean item, int position, boolean isScrolling) {
@@ -107,8 +125,6 @@ public class ContactsFragment extends SupportFragment {
         };
 
     }
-
-
 }
 
 

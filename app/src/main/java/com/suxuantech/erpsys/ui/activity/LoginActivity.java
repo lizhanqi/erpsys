@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.activity;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -26,12 +27,17 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -65,6 +71,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     //    private View mLoginFormView;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //横向
@@ -80,9 +87,25 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             copyRight.setLayoutParams(layoutParams);
             copyRight.getParent().requestLayout();
         }
+
     }
+    //登录极光
+    void  login(String name, String password) {
+        Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
+        loadingDialog.show();
+        JMessageClient.login(name, password, new BasicCallback() {
+            @Override
+            public void gotResult(int i, String s) {
+                loadingDialog.cancel();
+                startActivity(MainActivity.class);
+                finish();
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SDKInitializer.initialize(getApplicationContext());
         super.onCreate(savedInstanceState);
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         //setSwipeBackEnable(false);
@@ -109,11 +132,16 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //    attemptLogin();
-                startActivity(MainActivity.class);
-                finish();
+                login(mEmailView.getText().toString().trim(),mEmailView.getText().toString().trim());
             }
         });
+        findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login(mPasswordView.getText().toString().trim(),mPasswordView.getText().toString().trim());
+            }
+        });
+
 
 //        mLoginFormView = findViewById(R.id.login_form);
     }

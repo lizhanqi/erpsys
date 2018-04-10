@@ -5,14 +5,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import cn.jpush.im.android.api.content.TextContent
 import cn.jpush.im.android.api.enums.ContentType
+import cn.jpush.im.android.api.enums.ConversationType
 import cn.jpush.im.android.api.model.Conversation
 import cn.jpush.im.android.api.model.UserInfo
-import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener
 import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
+
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
@@ -20,28 +21,38 @@ import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
  */
 class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : BaseQuickAdapter<Conversation, BaseViewHolder>(layoutResId, data) {
     override fun convert(helper: com.chad.library.adapter.base.BaseViewHolder, item: Conversation) {
-        val userInfo = item.getTargetInfo() as UserInfo
+        if (item.type == ConversationType.single) {
+            val userInfo = item.getTargetInfo() as UserInfo
 //        val groupInfo = item.getTargetInfo() as GroupInfo
-        var head = helper.getView<ImageView>(R.id.img_list_head)
-        var content = helper.getView<TextView>(R.id.tv_list_content)
-        var name = helper.getView<TextView>(R.id.tv_list_name)
-        var time = helper.getView<TextView>(R.id.tv_list_time)
-        name.setText(item.latestMessage.fromUser.userName)
-        time.setText(TimeUtils.millis2String(item.latestMessage.createTime));
-        val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)
-        time.setText(timeFormat.detailTime)
-        if (item.latestMessage.contentType == ContentType.text) {
-            val textContent = item.latestMessage.content as TextContent
-            content.setText(textContent.text)
-        } else if (item.latestMessage.contentType == ContentType.file) {
-            content.setText("[小视频]")
-        } else if (item.latestMessage.contentType == ContentType.image) {
-            content.setText("[图片]")
-        } else if (item.latestMessage.contentType == ContentType.location) {
-            content.setText("[位置]")
-        }else{
-            content.setText("")
+            var head = helper.getView<ImageView>(R.id.img_list_head)
+            var content = helper.getView<TextView>(R.id.tv_list_content)
+            var name = helper.getView<TextView>(R.id.tv_list_name)
+            var time = helper.getView<TextView>(R.id.tv_list_time)
+            var unread = helper.getView<TextView>(R.id.tv_unread)
+            unread.text = "" + item.unReadMsgCnt
+            name.setText(userInfo.userName)
+            if(item.latestMessage!=null) {
+                val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)
+                time.setText(timeFormat.detailTime)
+                if (item.latestMessage.contentType == ContentType.text) {
+                    val textContent = item.latestMessage.content as TextContent
+                    content.setText(textContent.text)
+                } else if (item.latestMessage.contentType == ContentType.file) {
+                    content.setText("[小视频]")
+                } else if (item.latestMessage.contentType == ContentType.image) {
+                    content.setText("[图片]")
+                } else if (item.latestMessage.contentType == ContentType.location) {
+                    content.setText("[位置]")
+                } else {
+                    content.setText("")
+                }
+            }
         }
+    }
+
+    fun upData(conversationList: List<Conversation>) {
+        mData=conversationList
+        notifyDataSetChanged()
     }
 }
 

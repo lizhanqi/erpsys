@@ -11,12 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cn.jpush.im.android.api.JMessageClient
+import cn.jpush.im.android.api.event.MessageEvent
+import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent
+import cn.jpush.im.android.api.event.MessageRetractEvent
 import cn.jpush.im.android.api.model.Conversation
 import cn.jpush.im.android.api.model.UserInfo
+import cn.jpush.im.android.eventbus.EventBus
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
+
+
 
 /**
  * A fragment representing a list of Items.
@@ -35,25 +41,28 @@ class ConversationListFragment : Fragment() {
     private var mListener: OnListFragmentInteractionListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 界面创建时，订阅事件， 接受消息
+        EventBus.getDefault().register(this);
         if (arguments != null) {
             mColumnCount = arguments!!.getInt(ARG_COLUMN_COUNT)
         }
     }
-
+    var adapter :MyItemRecyclerViewAdapter?=null;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+     var list=    view.findViewById<RecyclerView>(R.id.list)
         // Set the adapter
-        if (view is RecyclerView) {
+        if (list is RecyclerView) {
             val context = view.getContext()
             if (mColumnCount <= 1) {
-                view.layoutManager = LinearLayoutManager(context)
+                list.layoutManager = LinearLayoutManager(context)
             } else {
-                view.layoutManager = GridLayoutManager(context, mColumnCount)
+                list.layoutManager = GridLayoutManager(context, mColumnCount)
             }
-            var adapter = MyItemRecyclerViewAdapter(R.layout.fragment_item, JMessageClient.getConversationList())
-            view.adapter = adapter;
-            view.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.line)))
-            adapter.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+              adapter = MyItemRecyclerViewAdapter(R.layout.fragment_item, JMessageClient.getConversationList())
+            list.adapter = adapter;
+            list.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.line)))
+            adapter!!.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 var con = adapter.data.get(position) as Conversation
                 var infor = con.targetInfo as UserInfo
                 var intent = Intent(activity, ConversationActivity::class.java)
@@ -107,4 +116,47 @@ class ConversationListFragment : Fragment() {
             return fragment
         }
     }
+    /**
+     * 更新列表的消息
+     */
+    fun onEventMainThread(msg: String) {
+        if(msg.equals("1")){
+            adapter!!.upData(JMessageClient.getConversationList())
+        }
+    }
+    /**
+     * 接受消息的事件 收到消息(在线的)主线程
+     */
+    fun onEventMainThread(event: MessageEvent) {
+    }
+    /**
+     * 对方读取消息后的状态更新
+     * @param event
+     */
+    fun onEventMainThread(event: MessageReceiptStatusChangeEvent) {
+        val messageReceiptMetas = event.messageReceiptMetas
+        for (meta in messageReceiptMetas) {
+            val serverMsgId = meta.serverMsgId
+            val unReceiptCnt = meta.unReceiptCnt
+        }
+    }
+
+    /**
+     * 消息撤回
+     *
+     * @param event
+     */
+    fun onEventMainThread(event: MessageRetractEvent) {
+        val retractedMessage = event.retractedMessage
+    }
+
+
+
+
+    override fun onDestroy() {
+        super.onDestroy();
+        // 界面销毁时，取消订阅
+        EventBus.getDefault().unregister(this);
+    }
+
 }
