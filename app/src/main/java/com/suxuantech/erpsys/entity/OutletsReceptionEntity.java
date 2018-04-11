@@ -1,4 +1,6 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
+
+import java.util.List;
 
 /**
  * ......................我佛慈悲....................
@@ -22,21 +24,22 @@ package com.suxuantech.erpsys.beans;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/7 0007 15:29 .
+ * @author Created by 李站旗 on 2017/12/8 0008 13:42 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description:  获取婚纱订单
+ * @Description: 门市接待
  */
 
-public class OrderNumberBean extends BaseResult {
+public class OutletsReceptionEntity extends BaseResult {
 
     /**
-     * Code : 666
      * Msg : 成功
-     * Data  : b88afcc5-9e36-498b-934f-30c444965a75
+     * Data : [{"StaffID":"AOOO1","StaffName":"李广成"},{"StaffID":"A0002","StaffName":"赵有才"}]
      */
+
     private String Msg;
-    private String Data;
+    private List<DataBean> Data;
+
     public String getMsg() {
         return Msg;
     }
@@ -45,11 +48,37 @@ public class OrderNumberBean extends BaseResult {
         this.Msg = Msg;
     }
 
-    public String getData() {
+    public List<DataBean> getData() {
         return Data;
     }
 
-    public void setData(String Data) {
+    public void setData(List<DataBean> Data) {
         this.Data = Data;
+    }
+
+    public static class DataBean {
+        /**
+         * StaffID : AOOO1
+         * StaffName : 李广成
+         */
+
+        private String StaffID;
+        private String StaffName;
+
+        public String getStaffID() {
+            return StaffID;
+        }
+
+        public void setStaffID(String StaffID) {
+            this.StaffID = StaffID;
+        }
+
+        public String getStaffName() {
+            return StaffName;
+        }
+
+        public void setStaffName(String StaffName) {
+            this.StaffName = StaffName;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @Description:  接单点
  */
 
-public class OrderReceivingSiteBean  extends BaseResult {
+public class OrderReceivingSiteEntity extends BaseResult {
     /**
      * Code : 666
      * Msg : 成功

@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @Description: 订单搜索结果对象
  */
 
-public class SearchOrderBean extends BaseResult {
+public class SearchOrderEntity extends BaseResult {
     /**
      * Msg : 成功
      * Data : [{"customerid":"","wname":"li","wphone":"15311440759","mname":"","mphone":"","area":"VIP区","weddingdate":"20171211","customernote":"","shop_code":"0","shop_name":"0","orderId":"41981277-10b8-49cc-b1b8-6e81e9077fad","consumption_type":"eric_测试店","targetdate":"20171211","package_name":null,"total_money":0,"payment_money":0,"nopayment_money":0}]

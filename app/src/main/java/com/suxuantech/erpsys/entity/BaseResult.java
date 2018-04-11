@@ -1,9 +1,4 @@
-package com.suxuantech.erpsys.presenter.connector;
-
-import com.suxuantech.erpsys.entity.SearchOrderEntity;
-import com.yanzhenjie.nohttp.rest.Response;
-
-import java.util.List;
+package com.suxuantech.erpsys.entity;
 
 /**
  * ......................我佛慈悲....................
@@ -27,25 +22,23 @@ import java.util.List;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/11 0011 10:14 .
+ * @author Created by 李站旗 on 2017/12/7 0007 15:59 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 接口搜索订单和搜索历史
+ * @Description: 请求服务器结果，主要是判断是否成功，正常来讲应该所有的网络bean都继承这个类，
  */
 
-public interface ISearchOrderPresenter {
-    /**
-     *
-     * @param data 数据
-     * @param isRefesh 是否是刷新
-     * @param hasMore 是否还有更多
-     */
-    void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore);
+public abstract class BaseResult {
+    public String Code;
+    public boolean isOK() {
+        return Code.equals("200");
+    }
 
-    /**
-     * 搜索失败结果
-     * @param response
-     * @param pageIndex 多少页的失败
-     */
-    void searchFailed(Response<SearchOrderEntity> response, int pageIndex);
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String Code) {
+        this.Code = Code;
+    }
 }

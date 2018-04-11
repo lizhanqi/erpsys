@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 /**
  * ......................我佛慈悲....................
@@ -28,7 +28,7 @@ package com.suxuantech.erpsys.beans;
  * @Description:  婚纱单的对应临时传递用的对象
  */
 
-public class OpenOrderTempBean {
+public class OpenOrderTempEntity {
     String  orderId;
     String  custromerName;
     String  phoneNumber;

@@ -2,11 +2,10 @@ package com.suxuantech.erpsys.presenter;
 
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
-import com.anye.greendao.gen.HistoryBeanDao;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.beans.HistoryBean;
-import com.suxuantech.erpsys.beans.SearchOrderBean;
+import com.suxuantech.erpsys.entity.HistoryEntity;
+import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -16,7 +15,7 @@ import com.suxuantech.erpsys.utils.DateUtil;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
-
+import  com.anye.greendao.gen.HistoryEntityDao;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,8 +49,8 @@ import java.util.List;
 
 public class SearchOrderPresenter {
     ISearchOrderPresenter iSearchOrderPresenter;
-    private HistoryBeanDao historyDao;
-    private List<HistoryBean> searchHosiery;
+    private HistoryEntityDao historyDao;
+    private List<HistoryEntity> searchHosiery;
     public SearchOrderPresenter(ISearchOrderPresenter iSearchOrderPresenter) {
         this.iSearchOrderPresenter = iSearchOrderPresenter;
         initDB();
@@ -73,10 +72,10 @@ public class SearchOrderPresenter {
         //表的集合
         DaoSession daoSession = daoMaster.newSession();
         //历史表
-        historyDao = daoSession.getHistoryBeanDao();
+        historyDao = daoSession.getHistoryEntityDao();
     }
 
-    public List<HistoryBean> clear(){
+    public List<HistoryEntity> clear(){
         //删除表内数据
         historyDao.deleteAll();
         searchHosiery.clear();
@@ -85,15 +84,15 @@ public class SearchOrderPresenter {
     /**
      *    插入搜索历史
      */
-    public  List<HistoryBean> insert(String trim){
+    public  List<HistoryEntity> insert(String trim){
         //判断是否存在数据库中，如果存在则不再存储
-        for(HistoryBean h:searchHosiery){
+        for(HistoryEntity h:searchHosiery){
             String name = h.getName();
             if (name.equals(trim)){
                 return searchHosiery;
             }
         }
-        HistoryBean studentMsgBean = new HistoryBean();
+        HistoryEntity studentMsgBean = new HistoryEntity();
         studentMsgBean.setName(trim);
         historyDao.insert(studentMsgBean);
       return   searchHosiery =loadAllHistory();
@@ -101,7 +100,7 @@ public class SearchOrderPresenter {
     /**
      * 获取本地DB中搜索历史
      */
-    private List<HistoryBean> loadAllHistory(){
+    private List<HistoryEntity> loadAllHistory(){
         searchHosiery = historyDao.loadAll();
         //倒序下，因为最新的要在上面显示
         Collections.reverse(searchHosiery);
@@ -110,7 +109,7 @@ public class SearchOrderPresenter {
     /**
      * 获取内存中的本地数据
      */
-    public List<HistoryBean> getSearchHosiery(){
+    public List<HistoryEntity> getSearchHosiery(){
         return   searchHosiery;
     }
 
@@ -158,10 +157,10 @@ public class SearchOrderPresenter {
         String url= Contact.getFullUrl(Contact.SEARCH_ORDER,Contact.TOKEN,
                 trim,Contact.TOKEN,startDate,endDate,pageIndex,pageSize);
             //请求实体
-            JavaBeanRequest<SearchOrderBean> districtBeanJavaBeanRequest = new JavaBeanRequest<SearchOrderBean>(url, RequestMethod.POST,SearchOrderBean.class);
-            HttpListener<SearchOrderBean> searchByCustmor = new HttpListener<SearchOrderBean>(){
+            JavaBeanRequest<SearchOrderEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SearchOrderEntity>(url, RequestMethod.POST,SearchOrderEntity.class);
+            HttpListener<SearchOrderEntity> searchByCustmor = new HttpListener<SearchOrderEntity>(){
                 @Override
-                public void onSucceed(int what, Response<SearchOrderBean> response) {
+                public void onSucceed(int what, Response<SearchOrderEntity> response) {
                     if(response.get().isOK()){
                         iSearchOrderPresenter.searchSucceed( response.get().getData(),pageIndex==0, response.get().getData().size() >=pageSize);
                         if (!(response.get().getData().size() <pageSize)){//还有更多
@@ -172,7 +171,7 @@ public class SearchOrderPresenter {
                     }
                }
                 @Override
-                public void onFailed(int what, Response<SearchOrderBean> response) {
+                public void onFailed(int what, Response<SearchOrderEntity> response) {
                     iSearchOrderPresenter.searchFailed(response,pageIndex);
                 }
             };

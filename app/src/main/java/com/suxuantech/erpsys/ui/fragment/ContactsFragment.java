@@ -15,7 +15,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.beans.ContactBean;
+import com.suxuantech.erpsys.entity.ContactEntity;
 import com.suxuantech.erpsys.chat.ConversationActivity;
 import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
@@ -52,18 +52,18 @@ public class ContactsFragment extends SupportFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<ContactBean> objects = new ArrayList<ContactBean>();
+        ArrayList<ContactEntity> objects = new ArrayList<ContactEntity>();
         ArrayList<String> strings = new ArrayList<String>();
         for (int i = 0; i <30; i++) {
             if (i<10){
                 strings.add("部门"+i);
             }
             if (i % 5 != 0) {
-                objects.add(new ContactBean("u" + i, "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2511196149,1814813928&fm=111&gp=0.jpg", "", i + "德玛"));
+                objects.add(new ContactEntity("u" + i, "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2511196149,1814813928&fm=111&gp=0.jpg", "", i + "德玛"));
             } else if (i/8==0){
-                objects.add(new ContactBean("u" + i, "", "", ""));
+                objects.add(new ContactEntity("u" + i, "", "", ""));
             }else {
-                objects.add(new ContactBean("u" + i, "", "", i + "孙"));
+                objects.add(new ContactEntity("u" + i, "", "", i + "孙"));
             }
         }
         mRlOrganization. setSwipeItemClickListener(new SwipeItemClickListener() {
@@ -94,9 +94,9 @@ public class ContactsFragment extends SupportFragment {
                 }
             }
         });
-        new BaseRecyclerAdapter<ContactBean>(mRlRecentContact, objects, R.layout.item_contact) {
+        new BaseRecyclerAdapter<ContactEntity>(mRlRecentContact, objects, R.layout.item_contact) {
             @Override
-            public void convert(RecyclerHolder holder, ContactBean item, int position, boolean isScrolling) {
+            public void convert(RecyclerHolder holder, ContactEntity item, int position, boolean isScrolling) {
                 ImageView imagHead = holder.getView(R.id.img_contact_head);
                 TextView contanTextView = holder.getView(R.id.tv_contact_name);
                 contanTextView.setText(item.getName());

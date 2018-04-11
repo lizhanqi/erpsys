@@ -18,7 +18,7 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.beans.DistrictBean;
+import com.suxuantech.erpsys.entity.DistrictEntity;
 import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.nohttp.DownLoad;
@@ -399,15 +399,15 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     public  void netsBeanSample() {
         String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
         //请求实体         // STOPSHIP: 2018/2/23 0023
-        JavaBeanRequest<DistrictBean> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictBean>(url,DistrictBean.class);
-//        HttpResponseListener<DistrictBean> districtBeanHttpResponseListener = new HttpResponseListener<DistrictBean>(null);
-        HttpListener<DistrictBean> searchByCustmor = new HttpListener<DistrictBean>(){
+        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url,DistrictEntity.class);
+//        HttpResponseListener<DistrictEntity> districtBeanHttpResponseListener = new HttpResponseListener<DistrictEntity>(null);
+        HttpListener<DistrictEntity> searchByCustmor = new HttpListener<DistrictEntity>(){
             @Override
-            public void onSucceed(int what, Response<DistrictBean> response) {
+            public void onSucceed(int what, Response<DistrictEntity> response) {
                 L.i("what = [" + what + "], response = [" + response + "]");
             }
             @Override
-            public void onFailed(int what, Response<DistrictBean> response) {
+            public void onFailed(int what, Response<DistrictEntity> response) {
                 L.i("失败"+what+"\n"+response.get());
                 System.out.println("失败what = [" + what + "], response = [" + response + "]");
             }

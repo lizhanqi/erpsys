@@ -21,8 +21,8 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.beans.HistoryBean;
-import com.suxuantech.erpsys.beans.SearchOrderBean;
+import com.suxuantech.erpsys.entity.HistoryEntity;
+import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
@@ -103,9 +103,9 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     SwipeMenuRecyclerView mSmrHistory;
     @BindView(R.id.ptr_refresh)
     PtrClassicFrameLayout mPtrRefresh;
-    private BaseRecyclerAdapter<HistoryBean> historyAdapter;
+    private BaseRecyclerAdapter<HistoryEntity> historyAdapter;
     private SearchOrderPresenter mSearchOrderPresenter;
-    private BaseRecyclerAdapter<SearchOrderBean.DataBean> searchResultAdaputer;
+    private BaseRecyclerAdapter<SearchOrderEntity.DataBean> searchResultAdaputer;
     private DefaultItemDecoration histroyItemDecoration;
     private DefaultItemDecoration searchItemDecoration;
     private DefineLoadMoreView defineLoadMoreView;
@@ -210,9 +210,9 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         if (mSearchOrderPresenter.getSearchHosiery().size()<=0){
             mTvNearlySearch.setCompoundDrawables(null, null, null, null);
         }
-        historyAdapter = new BaseRecyclerAdapter<HistoryBean>(mSmrHistory, mSearchOrderPresenter.getSearchHosiery(), R.layout.item_search_history) {
+        historyAdapter = new BaseRecyclerAdapter<HistoryEntity>(mSmrHistory, mSearchOrderPresenter.getSearchHosiery(), R.layout.item_search_history) {
             @Override
-            public void convert(RecyclerHolder holder, HistoryBean item, int position, boolean isScrolling) {
+            public void convert(RecyclerHolder holder, HistoryEntity item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_history);
                 view.setText(item.getName());
             }
@@ -374,14 +374,14 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         timePickerView.build().show();
     }
     @Override
-    public void searchSucceed(List<SearchOrderBean.DataBean> data, boolean isRefesh, boolean hasMore) {
+    public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
         mTietNavSearch.setFocusableInTouchMode(false);
         mTietNavSearch.setFocusable(false);
         searchResultAdapter(data, isRefesh);
     }
 
     @Override
-    public void searchFailed(Response<SearchOrderBean> response, int pageIndex) {
+    public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
         if (response.get() != null) {
             if (response.get().getCode().equals("0003")) {
                 if (searchResultAdaputer != null) {
@@ -402,7 +402,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 搜索结果适配器
      * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
      */
-    private void searchResultAdapter(List<SearchOrderBean.DataBean> data,    boolean isRefesh) {
+    private void searchResultAdapter(List<SearchOrderEntity.DataBean> data, boolean isRefesh) {
         if (isRefesh) {
             reset();
         }
@@ -420,10 +420,10 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             }
             return;
         }
-        searchResultAdaputer = new BaseRecyclerAdapter<SearchOrderBean.DataBean>(mSmrHistory, data, R.layout.item_custrom_order) {
+        searchResultAdaputer = new BaseRecyclerAdapter<SearchOrderEntity.DataBean>(mSmrHistory, data, R.layout.item_custrom_order) {
             @SuppressLint("ResourceType")
             @Override
-            public void convert(RecyclerHolder holder, SearchOrderBean.DataBean item, int position, boolean isScrolling) {
+            public void convert(RecyclerHolder holder, SearchOrderEntity.DataBean item, int position, boolean isScrolling) {
                 TextView mTvOrderId = holder.getView(R.id.tv_order_id);
                 TextView mTvUserName = holder.getView(R.id.tv_user_name);
                 TextView mTvConsumeType = holder.getView(R.id.tv_consume_type);

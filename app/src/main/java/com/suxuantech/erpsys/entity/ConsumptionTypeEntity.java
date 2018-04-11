@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 import java.util.List;
 
@@ -24,17 +24,18 @@ import java.util.List;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/8 0008 14:22 .
+ * @author Created by 李站旗 on 2017/12/7 0007 17:44 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 客户分区
+ * @Description:  消费类型
  */
 
-public class CustomerZoneBean  extends BaseResult {
+public class ConsumptionTypeEntity extends BaseResult {
 
     /**
+     * Code : 666
      * Msg : 成功
-     * Data : [{"id":"1","area_name":"东北","shop_name":"长春店","setkey":"","shop_code":"5555555555"},{"id":"2","area_name":"华北","shop_name":"沈阳店","setkey":"","shop_code":"66666666"},{"id":"3","area_name":"西南","shop_name":"沈阳店","setkey":"","shop_code":"66666666"},{"id":"4","area_name":"东北-eric-分区","shop_name":"eric_测试店","setkey":"","shop_code":"7777"},{"id":"6","area_name":"华南-eric-分区","shop_name":"eric_测试店","setkey":"","shop_code":"7777"},{"id":"7","area_name":"华北-eric-分区","shop_name":"eric_测试店","setkey":"","shop_code":"7777"},{"id":"8","area_name":"尊贵区-eric-分区","shop_name":"eric_测试店","setkey":"","shop_code":"7777"}]
+     * Data : [{"id":"1","consumption_name":"结婚照","shop_name":"长春店","shop_code":"5555555555","setkey":""},{"id":"2","consumption_name":"全家福","shop_name":"沈阳店","shop_code":"66666666","setkey":""},{"id":"3","consumption_name":"儿童照","shop_name":"吉林店","shop_code":"34343","setkey":""},{"id":"4","consumption_name":"写真","shop_name":"沈阳店","shop_code":"66666666","setkey":""},{"id":"5","consumption_name":"艺术","shop_name":"沈阳店","shop_code":"66666666","setkey":""},{"id":"6","consumption_name":"哈哈","shop_name":"沈阳店","shop_code":"66666666","setkey":""},{"id":"7","consumption_name":"婚纱照-消费类型","shop_name":"eric_测试店","shop_code":"7777","setkey":""},{"id":"8","consumption_name":"儿童照-消费类型","shop_name":"eric_测试店","shop_code":"7777","setkey":""},{"id":"9","consumption_name":"旅拍-消费类型","shop_name":"eric_测试店","shop_code":"7777","setkey":""}]
      */
 
     private String Msg;
@@ -55,21 +56,20 @@ public class CustomerZoneBean  extends BaseResult {
     public void setData(List<DataBean> Data) {
         this.Data = Data;
     }
-
     public static class DataBean {
         /**
          * id : 1
-         * area_name : 东北
+         * consumption_name : 结婚照
          * shop_name : 长春店
-         * setkey :
          * shop_code : 5555555555
+         * setkey :
          */
 
         private String id;
-        private String area_name;
+        private String consumption_name;
         private String shop_name;
-        private String setkey;
         private String shop_code;
+        private String setkey;
 
         public String getId() {
             return id;
@@ -79,12 +79,12 @@ public class CustomerZoneBean  extends BaseResult {
             this.id = id;
         }
 
-        public String getArea_name() {
-            return area_name;
+        public String getConsumption_name() {
+            return consumption_name;
         }
 
-        public void setArea_name(String area_name) {
-            this.area_name = area_name;
+        public void setConsumption_name(String consumption_name) {
+            this.consumption_name = consumption_name;
         }
 
         public String getShop_name() {
@@ -95,20 +95,20 @@ public class CustomerZoneBean  extends BaseResult {
             this.shop_name = shop_name;
         }
 
-        public String getSetkey() {
-            return setkey;
-        }
-
-        public void setSetkey(String setkey) {
-            this.setkey = setkey;
-        }
-
         public String getShop_code() {
             return shop_code;
         }
 
         public void setShop_code(String shop_code) {
             this.shop_code = shop_code;
+        }
+
+        public String getSetkey() {
+            return setkey;
+        }
+
+        public void setSetkey(String setkey) {
+            this.setkey = setkey;
         }
     }
 }

@@ -11,12 +11,12 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
-import com.suxuantech.erpsys.beans.ConsumptionTypeBean;
-import com.suxuantech.erpsys.beans.CustomerZoneBean;
-import com.suxuantech.erpsys.beans.OrderReceivingSiteBean;
-import com.suxuantech.erpsys.beans.OutletsReceptionBean;
-import com.suxuantech.erpsys.beans.PackageBean;
-import com.suxuantech.erpsys.beans.ProductBean;
+import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
+import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
+import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
+import com.suxuantech.erpsys.entity.PackageEntity;
+import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
@@ -62,10 +62,10 @@ public class OptionActivity extends ImmersedBaseActivity {
      * 是否是多选
      */
     private boolean mMultiple;
-    private List<ConsumptionTypeBean.DataBean> consumptionTypeData;
-    private List<OrderReceivingSiteBean.DataBean> orderReceivingSiteData;
-    private List<OutletsReceptionBean.DataBean> outletsReceptionData;
-    private List<CustomerZoneBean.DataBean> customerZoneData;
+    private List<ConsumptionTypeEntity.DataBean> consumptionTypeData;
+    private List<OrderReceivingSiteEntity.DataBean> orderReceivingSiteData;
+    private List<OutletsReceptionEntity.DataBean> outletsReceptionData;
+    private List<CustomerZoneEntity.DataBean> customerZoneData;
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     /**
      * 加载更多。
@@ -89,9 +89,9 @@ public class OptionActivity extends ImmersedBaseActivity {
     private OptionHelp.UrlTag urlTag;
     private String tag;
     private String title;
-    private List<PackageBean.DataBean> packageData;
-    private List<ProductBean.DataBean> productData;
-    private BaseRecyclerAdapter<ProductBean.DataBean> productAdapter;
+    private List<PackageEntity.DataBean> packageData;
+    private List<ProductEntity.DataBean> productData;
+    private BaseRecyclerAdapter<ProductEntity.DataBean> productAdapter;
 
     @Override
     public void widgetClick(View v) {
@@ -104,17 +104,17 @@ public class OptionActivity extends ImmersedBaseActivity {
                     sb.append(f+"\n");
                 }
             }else {
-                ArrayList<ProductBean.DataBean> dataBeans = new ArrayList<>();
+                ArrayList<ProductEntity.DataBean> dataBeans = new ArrayList<>();
                 for(String f:currentChecked){
                     int i = Integer.parseInt(f);
-                    for (ProductBean.DataBean pd:productData){
+                    for (ProductEntity.DataBean pd:productData){
                         if (pd.getId()== i){
                             dataBeans.add(pd);
                             break;
                         }
                     }
                 }
-                BaseMsg<ProductBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(productData, dataBeans, mMultiple);
+                BaseMsg<ProductEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(productData, dataBeans, mMultiple);
                 dataBeanBaseMsg.setmTitle(title);
                 dataBeanBaseMsg.setTag(tag);
                 dataBeanBaseMsg.setUrl(Url);
@@ -318,9 +318,9 @@ public class OptionActivity extends ImmersedBaseActivity {
             if(Url!=null){
                 if (consumptionTypeData!=null){
                     //消费类型
-                    ArrayList<ConsumptionTypeBean.DataBean> dataBeans = new ArrayList<>();
+                    ArrayList<ConsumptionTypeEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(consumptionTypeData.get(position));
-                    BaseMsg<ConsumptionTypeBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(consumptionTypeData, dataBeans, mMultiple);
+                    BaseMsg<ConsumptionTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(consumptionTypeData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -328,9 +328,9 @@ public class OptionActivity extends ImmersedBaseActivity {
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }else if (orderReceivingSiteData!=null){
                     //消费类型
-                    ArrayList<OrderReceivingSiteBean.DataBean> dataBeans = new ArrayList<>();
+                    ArrayList<OrderReceivingSiteEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(orderReceivingSiteData.get(position));
-                    BaseMsg<OrderReceivingSiteBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(orderReceivingSiteData, dataBeans, mMultiple);
+                    BaseMsg<OrderReceivingSiteEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(orderReceivingSiteData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -338,9 +338,9 @@ public class OptionActivity extends ImmersedBaseActivity {
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }else if (outletsReceptionData!=null){
                     //消费类型
-                    ArrayList<OutletsReceptionBean.DataBean> dataBeans = new ArrayList<>();
+                    ArrayList<OutletsReceptionEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(outletsReceptionData.get(position));
-                    BaseMsg<OutletsReceptionBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(outletsReceptionData, dataBeans, mMultiple);
+                    BaseMsg<OutletsReceptionEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(outletsReceptionData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -348,9 +348,9 @@ public class OptionActivity extends ImmersedBaseActivity {
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }     else if (customerZoneData!=null){
                     //客户分区
-                    ArrayList<CustomerZoneBean.DataBean> dataBeans = new ArrayList<>();
+                    ArrayList<CustomerZoneEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(customerZoneData.get(position));
-                    BaseMsg<CustomerZoneBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(customerZoneData, dataBeans, mMultiple);
+                    BaseMsg<CustomerZoneEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(customerZoneData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -358,9 +358,9 @@ public class OptionActivity extends ImmersedBaseActivity {
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }else  if(packageData!=null){
                     //包套
-                    ArrayList<PackageBean.DataBean> dataBeans = new ArrayList<>();
+                    ArrayList<PackageEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(packageData.get(position));
-                    BaseMsg<PackageBean.DataBean> dataBeanBaseMsg = new BaseMsg<>(packageData, dataBeans, mMultiple);
+                    BaseMsg<PackageEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(packageData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -405,10 +405,10 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getProduct() {
         //请求实体
-        JavaBeanRequest<ProductBean> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductBean >(Url, RequestMethod.POST,ProductBean.class);
-        HttpListener<ProductBean> searchByCustmor = new HttpListener<ProductBean>(){
+        JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(Url, RequestMethod.POST,ProductEntity.class);
+        HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>(){
             @Override
-            public void onSucceed(int what, Response<ProductBean> response) {
+            public void onSucceed(int what, Response<ProductEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
@@ -424,7 +424,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<ProductBean> response) {
+            public void onFailed(int what, Response<ProductEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
@@ -436,17 +436,17 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getPackage() {
         //请求实体
-        JavaBeanRequest<PackageBean> districtBeanJavaBeanRequest = new JavaBeanRequest<PackageBean>(Url, RequestMethod.POST,PackageBean.class);
-        HttpListener<PackageBean> searchByCustmor = new HttpListener<PackageBean>(){
+        JavaBeanRequest<PackageEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PackageEntity>(Url, RequestMethod.POST,PackageEntity.class);
+        HttpListener<PackageEntity> searchByCustmor = new HttpListener<PackageEntity>(){
             @Override
-            public void onSucceed(int what, Response<PackageBean> response) {
+            public void onSucceed(int what, Response<PackageEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
                     mAllData.clear();
                     packageData = response.get().getData();
                     if (packageData!=null){
-                        for (PackageBean.DataBean da:packageData) {
+                        for (PackageEntity.DataBean da:packageData) {
                             mAllData.add(da.getPackage_name()) ;
                         }
                         setAdapterCtrl();
@@ -458,7 +458,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<PackageBean> response) {
+            public void onFailed(int what, Response<PackageEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
@@ -471,17 +471,17 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getConsumptionType() {
         //请求实体
-        JavaBeanRequest<ConsumptionTypeBean> districtBeanJavaBeanRequest = new JavaBeanRequest<ConsumptionTypeBean>(Url, RequestMethod.POST,ConsumptionTypeBean.class);
-        HttpListener<ConsumptionTypeBean> searchByCustmor = new HttpListener<ConsumptionTypeBean>(){
+        JavaBeanRequest<ConsumptionTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ConsumptionTypeEntity>(Url, RequestMethod.POST,ConsumptionTypeEntity.class);
+        HttpListener<ConsumptionTypeEntity> searchByCustmor = new HttpListener<ConsumptionTypeEntity>(){
             @Override
-            public void onSucceed(int what, Response<ConsumptionTypeBean> response) {
+            public void onSucceed(int what, Response<ConsumptionTypeEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
                     mAllData.clear();
                     consumptionTypeData = response.get().getData();
                     if (consumptionTypeData!=null){
-                        for (ConsumptionTypeBean.DataBean da:consumptionTypeData) {
+                        for (ConsumptionTypeEntity.DataBean da:consumptionTypeData) {
                             mAllData.add(da.getShop_name()) ;
                         }
                         setAdapterCtrl();
@@ -493,7 +493,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<ConsumptionTypeBean> response) {
+            public void onFailed(int what, Response<ConsumptionTypeEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
@@ -506,17 +506,17 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getOrderReceivingSite() {
         //请求实体
-        JavaBeanRequest<OrderReceivingSiteBean> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderReceivingSiteBean>(Url, RequestMethod.POST,OrderReceivingSiteBean.class);
-        HttpListener<OrderReceivingSiteBean> searchByCustmor = new HttpListener<OrderReceivingSiteBean>(){
+        JavaBeanRequest<OrderReceivingSiteEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderReceivingSiteEntity>(Url, RequestMethod.POST,OrderReceivingSiteEntity.class);
+        HttpListener<OrderReceivingSiteEntity> searchByCustmor = new HttpListener<OrderReceivingSiteEntity>(){
             @Override
-            public void onSucceed(int what, Response<OrderReceivingSiteBean> response) {
+            public void onSucceed(int what, Response<OrderReceivingSiteEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
                     mAllData.clear();
                    orderReceivingSiteData = response.get().getData();
                     if (orderReceivingSiteData!=null){
-                        for (OrderReceivingSiteBean.DataBean da:orderReceivingSiteData) {
+                        for (OrderReceivingSiteEntity.DataBean da:orderReceivingSiteData) {
                             mAllData.add(da.getShop_name()) ;
                         }
                         setAdapterCtrl();
@@ -528,7 +528,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<OrderReceivingSiteBean> response) {
+            public void onFailed(int what, Response<OrderReceivingSiteEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
@@ -540,17 +540,17 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     public void getOutletsReception() {
         //请求实体
-        JavaBeanRequest<OutletsReceptionBean> districtBeanJavaBeanRequest = new JavaBeanRequest<OutletsReceptionBean>(Url, RequestMethod.POST,OutletsReceptionBean.class);
-        HttpListener<OutletsReceptionBean> searchByCustmor = new HttpListener<OutletsReceptionBean>(){
+        JavaBeanRequest<OutletsReceptionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OutletsReceptionEntity>(Url, RequestMethod.POST,OutletsReceptionEntity.class);
+        HttpListener<OutletsReceptionEntity> searchByCustmor = new HttpListener<OutletsReceptionEntity>(){
             @Override
-            public void onSucceed(int what, Response<OutletsReceptionBean> response) {
+            public void onSucceed(int what, Response<OutletsReceptionEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
                     mAllData.clear();
                     outletsReceptionData = response.get().getData();
                     if (outletsReceptionData!=null){
-                        for (OutletsReceptionBean.DataBean da:outletsReceptionData) {
+                        for (OutletsReceptionEntity.DataBean da:outletsReceptionData) {
                             mAllData.add(da.getStaffName()) ;
                         }
                         setAdapterCtrl();
@@ -562,7 +562,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<OutletsReceptionBean> response) {
+            public void onFailed(int what, Response<OutletsReceptionEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
@@ -575,17 +575,17 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     public void getCustomerZone() {
         //请求实体
-        JavaBeanRequest<CustomerZoneBean> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerZoneBean>(Url, RequestMethod.POST,CustomerZoneBean.class);
-        HttpListener<CustomerZoneBean> searchByCustmor = new HttpListener<CustomerZoneBean>(){
+        JavaBeanRequest<CustomerZoneEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerZoneEntity>(Url, RequestMethod.POST,CustomerZoneEntity.class);
+        HttpListener<CustomerZoneEntity> searchByCustmor = new HttpListener<CustomerZoneEntity>(){
             @Override
-            public void onSucceed(int what, Response<CustomerZoneBean> response) {
+            public void onSucceed(int what, Response<CustomerZoneEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
                 if (ok){
                     mAllData.clear();
                     customerZoneData = response.get().getData();
                     if (customerZoneData!=null){
-                        for (CustomerZoneBean.DataBean da:customerZoneData) {
+                        for (CustomerZoneEntity.DataBean da:customerZoneData) {
                             mAllData.add(da.getArea_name()) ;
                         }
                         setAdapterCtrl();
@@ -597,7 +597,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
             }
             @Override
-            public void onFailed(int what, Response<CustomerZoneBean> response) {
+            public void onFailed(int what, Response<CustomerZoneEntity> response) {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
@@ -667,9 +667,9 @@ public class OptionActivity extends ImmersedBaseActivity {
      * 包套的适配器
      */
     private void packageAdapter() {
-        new BaseRecyclerAdapter<PackageBean.DataBean>(mRecyclerView, packageData, R.layout.item_package) {
+        new BaseRecyclerAdapter<PackageEntity.DataBean>(mRecyclerView, packageData, R.layout.item_package) {
             @Override
-            public void convert(RecyclerHolder holder, PackageBean.DataBean item, int position, boolean isScrolling) {
+            public void convert(RecyclerHolder holder, PackageEntity.DataBean item, int position, boolean isScrolling) {
                 CheckedTextView packagename = holder.getView(R.id.tv_package_name);
                 packagename.setText(item.getPackage_name());
                 TextView tv_right = holder.getView(R.id.tv_right_data);
@@ -697,9 +697,9 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void productAdapter() {
         //单选
-        productAdapter = new BaseRecyclerAdapter<ProductBean.DataBean>(mRecyclerView, productData, R.layout.item_package) {
+        productAdapter = new BaseRecyclerAdapter<ProductEntity.DataBean>(mRecyclerView, productData, R.layout.item_package) {
             @Override
-            public void convert(RecyclerHolder holder, final ProductBean.DataBean item, int position, boolean isScrolling) {
+            public void convert(RecyclerHolder holder, final ProductEntity.DataBean item, int position, boolean isScrolling) {
                 CheckedTextView packagename = holder.getView(R.id.tv_package_name);
                 packagename.setOnClickListener(new View.OnClickListener() {
                     @Override

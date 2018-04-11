@@ -1,9 +1,9 @@
 package com.suxuantech.erpsys.presenter;
 
 import com.suxuantech.erpsys.App;
-import com.suxuantech.erpsys.beans.OpenOrderTempBean;
-import com.suxuantech.erpsys.beans.OpenWeddingOrderBean;
-import com.suxuantech.erpsys.beans.OrderNumberBean;
+import com.suxuantech.erpsys.entity.OpenOrderTempEntity;
+import com.suxuantech.erpsys.entity.OpenWeddingOrderEntity;
+import com.suxuantech.erpsys.entity.OrderNumberEntity;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -62,18 +62,18 @@ public class OutletsOrderPresenter {
     public void getOrderNum  (){
         String url= Contact.getFullUrl(Contact.ORDER_NUMBER,Contact.TOKEN,"0");
         //请求实体
-        JavaBeanRequest<OrderNumberBean> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderNumberBean>(url,RequestMethod.POST,OrderNumberBean.class);
-       HttpListener<OrderNumberBean> searchByCustmor = new HttpListener<OrderNumberBean>(){
+        JavaBeanRequest<OrderNumberEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderNumberEntity>(url,RequestMethod.POST,OrderNumberEntity.class);
+       HttpListener<OrderNumberEntity> searchByCustmor = new HttpListener<OrderNumberEntity>(){
            @Override
-           public void onSucceed(int what, Response<OrderNumberBean> response) {
+           public void onSucceed(int what, Response<OrderNumberEntity> response) {
                 if (iOutletsOrderPresenter!=null&&response.get().isOK()){
                     iOutletsOrderPresenter.getOrderNumberSucceed(what ,response.get().getData());
                 }
            }
            @Override
-           public void onFailed(int what, Response<OrderNumberBean> response) {
+           public void onFailed(int what, Response<OrderNumberEntity> response) {
                if (iOutletsOrderPresenter!=null){
-                   OrderNumberBean orderNumberBean = response.get();
+                   OrderNumberEntity orderNumberBean = response.get();
                    if (orderNumberBean!=null){
                        iOutletsOrderPresenter.getNumberFailed(orderNumberBean.getMsg());
                    }else {
@@ -88,10 +88,10 @@ public class OutletsOrderPresenter {
     /*
             开婚纱单
      */
-    public void OpenOrder(OpenOrderTempBean tempBean) {
+    public void OpenOrder(OpenOrderTempEntity tempBean) {
         String url= Contact.getFullUrl(Contact.OPEN_WEDDING_ORDER,Contact.TOKEN,tempBean.getPackageSetName(),"0","0","0","0");
         //请求实体
-        JavaBeanRequest<OpenWeddingOrderBean> districtBeanJavaBeanRequest = new JavaBeanRequest<OpenWeddingOrderBean>(url,RequestMethod.POST,OpenWeddingOrderBean.class);
+        JavaBeanRequest<OpenWeddingOrderEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OpenWeddingOrderEntity>(url,RequestMethod.POST,OpenWeddingOrderEntity.class);
         districtBeanJavaBeanRequest.set("OrderId",tempBean.getOrderId());
         if (tempBean.getSex().equals("女")){
             districtBeanJavaBeanRequest.set("wname",tempBean.getCustromerName());
@@ -111,15 +111,15 @@ public class OutletsOrderPresenter {
         districtBeanJavaBeanRequest.set("weddingdate",s);
         districtBeanJavaBeanRequest.set("customernote",tempBean.getCustomerRemarks());
 
-        HttpListener<OpenWeddingOrderBean> searchByCustmor = new HttpListener<OpenWeddingOrderBean>(){
+        HttpListener<OpenWeddingOrderEntity> searchByCustmor = new HttpListener<OpenWeddingOrderEntity>(){
             @Override
-            public void onSucceed(int what, Response<OpenWeddingOrderBean> response) {
+            public void onSucceed(int what, Response<OpenWeddingOrderEntity> response) {
                 if (iOutletsOrderPresenter!=null&&response.get().isOK()){
                     iOutletsOrderPresenter.getOrderNumberSucceed(what ,response.get().getData());
                 }
             }
             @Override
-            public void onFailed(int what, Response<OpenWeddingOrderBean> response) {
+            public void onFailed(int what, Response<OpenWeddingOrderEntity> response) {
                 if (iOutletsOrderPresenter!=null){
                     iOutletsOrderPresenter.getNumberFailed(response.getException().getCause().getMessage());
                 }

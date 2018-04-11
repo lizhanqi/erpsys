@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 import com.bigkoo.pickerview.model.IPickerViewData;
 
@@ -32,7 +32,7 @@ import java.util.List;
  * @Description: 地区文件
  */
 
-public class DistrictBean implements IPickerViewData {
+public class DistrictEntity implements IPickerViewData {
     /**
      * name : 省份
      * city : [{"name":"北京市","area":["东城区","西城区","崇文区","宣武区","朝阳区"]}]

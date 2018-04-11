@@ -1,4 +1,6 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
+
+import java.util.List;
 
 /**
  * ......................我佛慈悲....................
@@ -22,20 +24,22 @@ package com.suxuantech.erpsys.beans;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/9 0009 14:41 .
+ * @author Created by 李站旗 on 2017/12/8 0008 17:35 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description:  开婚纱单的结果
+ * @Description: 获取包套
  */
 
-public class OpenWeddingOrderBean extends BaseResult {
+public class PackageEntity extends BaseResult {
 
     /**
      * Msg : 成功
-     * Data : sample string 36
+     * Data : [{"package_name":"6999普通","package_price":6999,"id":5},{"package_name":"8999普通","package_price":6999,"id":7},{"package_name":"8999套系","package_price":8999,"id":9},{"package_name":"3999套系","package_price":8999,"id":10}]
      */
+
     private String Msg;
-    private String Data;
+    private List<DataBean> Data;
+
     public String getMsg() {
         return Msg;
     }
@@ -44,11 +48,47 @@ public class OpenWeddingOrderBean extends BaseResult {
         this.Msg = Msg;
     }
 
-    public String getData() {
+    public List<DataBean> getData() {
         return Data;
     }
 
-    public void setData(String Data) {
+    public void setData(List<DataBean> Data) {
         this.Data = Data;
+    }
+
+    public static class DataBean {
+        /**
+         * package_name : 6999普通
+         * package_price : 6999
+         * id : 5
+         */
+
+        private String package_name;
+        private int package_price;
+        private int id;
+
+        public String getPackage_name() {
+            return package_name;
+        }
+
+        public void setPackage_name(String package_name) {
+            this.package_name = package_name;
+        }
+
+        public int getPackage_price() {
+            return package_price;
+        }
+
+        public void setPackage_price(int package_price) {
+            this.package_price = package_price;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
     }
 }

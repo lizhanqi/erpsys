@@ -13,13 +13,13 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
-import com.suxuantech.erpsys.beans.ConsumptionTypeBean;
-import com.suxuantech.erpsys.beans.CustomerZoneBean;
-import com.suxuantech.erpsys.beans.OpenOrderTempBean;
-import com.suxuantech.erpsys.beans.OrderReceivingSiteBean;
-import com.suxuantech.erpsys.beans.OutletsReceptionBean;
-import com.suxuantech.erpsys.beans.PackageBean;
-import com.suxuantech.erpsys.beans.ProductBean;
+import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
+import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.OpenOrderTempEntity;
+import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
+import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
+import com.suxuantech.erpsys.entity.PackageEntity;
+import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.presenter.OutletsOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.IOutletsOrderPresenter;
@@ -190,7 +190,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
                 optionHelp7.setMultiple(true);
                 if (prd!=null&&prd.size()>0){
                     ArrayList<String> stringArrayList = new ArrayList<String>();
-                    for (ProductBean.DataBean p:prd){
+                    for (ProductEntity.DataBean p:prd){
                         stringArrayList.add(p.getId()+"");
                     }
                     optionHelp7.setCheckedData(stringArrayList);
@@ -239,7 +239,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         }
     }
     private void commit() {
-        OpenOrderTempBean openOrderTempBean = new OpenOrderTempBean();
+        OpenOrderTempEntity openOrderTempBean = new OpenOrderTempEntity();
         openOrderTempBean.setOrderId(mTvOrderId.getText().toString());
         openOrderTempBean.setCustromerName(mEtCustomerName.getText().toString());
         openOrderTempBean.setPhoneNumber(mEtCustomerPhone.getText().toString());
@@ -274,8 +274,8 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
 
 
     }
-    PackageBean.DataBean packageChecked;
-    List<ProductBean.DataBean> prd;
+    PackageEntity.DataBean packageChecked;
+    List<ProductEntity.DataBean> prd;
     /**
      * @param msg
      */
@@ -285,34 +285,34 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         switch (urlTag){
             default:
             case CONSUMPTION_TYPE:
-                ConsumptionTypeBean.DataBean checked1 = (ConsumptionTypeBean.DataBean) msg.getSingleChecked();
+                ConsumptionTypeEntity.DataBean checked1 = (ConsumptionTypeEntity.DataBean) msg.getSingleChecked();
                 mTvConsumptionType.setText(checked1.getShop_name());
                 break;
             case PRODUCT:
-               prd = (List<ProductBean.DataBean>) msg.getMultiSelected();
+               prd = (List<ProductEntity.DataBean>) msg.getMultiSelected();
                 mTvAddition.setText(prd.size()+"");
                 break;
             case PACKAGE:
                     mLlAddition.setVisibility(View.VISIBLE);
                     mViewPackageLine.setVisibility(View.VISIBLE);
-                packageChecked = (PackageBean.DataBean) msg.getSingleChecked();
+                packageChecked = (PackageEntity.DataBean) msg.getSingleChecked();
                 mTvPackageSet.setText(packageChecked.getPackage_name());
                 break;
             case OUTLETS_RECEPTION:
                     if (msg.getTag()!=null&&msg.getTag().equals(getString(R.string.reception))){
-                        OutletsReceptionBean.DataBean checked2 = (OutletsReceptionBean.DataBean) msg.getSingleChecked();
+                        OutletsReceptionEntity.DataBean checked2 = (OutletsReceptionEntity.DataBean) msg.getSingleChecked();
                         mTvReception.setText(checked2.getStaffName());
                     }else {
-                        OutletsReceptionBean.DataBean checked2 = (OutletsReceptionBean.DataBean) msg.getSingleChecked();
+                        OutletsReceptionEntity.DataBean checked2 = (OutletsReceptionEntity.DataBean) msg.getSingleChecked();
                         mTvOutletsReception.setText(checked2.getStaffName());
                     }
                 break;
             case ORDER_RECEIVING_SITE:
-                OrderReceivingSiteBean.DataBean checked3 = (OrderReceivingSiteBean.DataBean) msg.getSingleChecked();
+                OrderReceivingSiteEntity.DataBean checked3 = (OrderReceivingSiteEntity.DataBean) msg.getSingleChecked();
                 mTvOrderReceivingSite.setText(checked3.getShop_name());
                 break;
             case CUSTOMER_ZONE:
-                CustomerZoneBean.DataBean checked4 = (CustomerZoneBean.DataBean) msg.getSingleChecked();
+                CustomerZoneEntity.DataBean checked4 = (CustomerZoneEntity.DataBean) msg.getSingleChecked();
                 mTvVipZone.setText(checked4.getArea_name());
                 break;
         }

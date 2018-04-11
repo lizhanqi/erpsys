@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 /**
  * ......................我佛慈悲....................
@@ -22,23 +22,33 @@ package com.suxuantech.erpsys.beans;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/7 0007 15:59 .
+ * @author Created by 李站旗 on 2017/12/9 0009 14:41 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 请求服务器结果，主要是判断是否成功，正常来讲应该所有的网络bean都继承这个类，
+ * @Description:  开婚纱单的结果
  */
 
-public abstract class BaseResult {
-    public String Code;
-    public boolean isOK() {
-        return Code.equals("200");
+public class OpenWeddingOrderEntity extends BaseResult {
+
+    /**
+     * Msg : 成功
+     * Data : sample string 36
+     */
+    private String Msg;
+    private String Data;
+    public String getMsg() {
+        return Msg;
     }
 
-    public String getCode() {
-        return Code;
+    public void setMsg(String Msg) {
+        this.Msg = Msg;
     }
 
-    public void setCode(String Code) {
-        this.Code = Code;
+    public String getData() {
+        return Data;
+    }
+
+    public void setData(String Data) {
+        this.Data = Data;
     }
 }

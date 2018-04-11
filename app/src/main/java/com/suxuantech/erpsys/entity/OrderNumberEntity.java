@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 /**
  * ......................我佛慈悲....................
@@ -22,54 +22,34 @@ package com.suxuantech.erpsys.beans;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2018/3/1 0001 21:15 .
+ * @author Created by 李站旗 on 2017/12/7 0007 15:29 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description:  获取婚纱订单
  */
 
-public class ContactBean {
-            String uid;
-            String head;
-            String  tel;
-            String  name;
+public class OrderNumberEntity extends BaseResult {
 
-    public ContactBean(String uid, String head, String tel, String name) {
-        this.uid = uid;
-        this.head = head;
-        this.tel = tel;
-        this.name = name;
+    /**
+     * Code : 666
+     * Msg : 成功
+     * Data  : b88afcc5-9e36-498b-934f-30c444965a75
+     */
+    private String Msg;
+    private String Data;
+    public String getMsg() {
+        return Msg;
     }
 
-    public String getUid() {
-        return uid;
+    public void setMsg(String Msg) {
+        this.Msg = Msg;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public String getData() {
+        return Data;
     }
 
-    public String getHead() {
-        return head;
-    }
-
-    public void setHead(String head) {
-        this.head = head;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setData(String Data) {
+        this.Data = Data;
     }
 }

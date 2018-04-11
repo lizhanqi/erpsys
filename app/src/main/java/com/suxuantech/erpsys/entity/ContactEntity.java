@@ -1,6 +1,4 @@
-package com.suxuantech.erpsys.beans;
-
-import java.util.List;
+package com.suxuantech.erpsys.entity;
 
 /**
  * ......................我佛慈悲....................
@@ -24,61 +22,54 @@ import java.util.List;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/8 0008 13:42 .
+ * @author Created by 李站旗 on 2018/3/1 0001 21:15 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 门市接待
+ * @Description: todo(用一句话描述该文件做什么)
  */
 
-public class OutletsReceptionBean extends BaseResult {
+public class ContactEntity {
+            String uid;
+            String head;
+            String  tel;
+            String  name;
 
-    /**
-     * Msg : 成功
-     * Data : [{"StaffID":"AOOO1","StaffName":"李广成"},{"StaffID":"A0002","StaffName":"赵有才"}]
-     */
-
-    private String Msg;
-    private List<DataBean> Data;
-
-    public String getMsg() {
-        return Msg;
+    public ContactEntity(String uid, String head, String tel, String name) {
+        this.uid = uid;
+        this.head = head;
+        this.tel = tel;
+        this.name = name;
     }
 
-    public void setMsg(String Msg) {
-        this.Msg = Msg;
+    public String getUid() {
+        return uid;
     }
 
-    public List<DataBean> getData() {
-        return Data;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setData(List<DataBean> Data) {
-        this.Data = Data;
+    public String getHead() {
+        return head;
     }
 
-    public static class DataBean {
-        /**
-         * StaffID : AOOO1
-         * StaffName : 李广成
-         */
+    public void setHead(String head) {
+        this.head = head;
+    }
 
-        private String StaffID;
-        private String StaffName;
+    public String getTel() {
+        return tel;
+    }
 
-        public String getStaffID() {
-            return StaffID;
-        }
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
 
-        public void setStaffID(String StaffID) {
-            this.StaffID = StaffID;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getStaffName() {
-            return StaffName;
-        }
-
-        public void setStaffName(String StaffName) {
-            this.StaffName = StaffName;
-        }
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -1,7 +1,8 @@
-package com.suxuantech.erpsys.beans;
+package com.suxuantech.erpsys.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
 
@@ -33,18 +34,18 @@ import org.greenrobot.greendao.annotation.Generated;
  * @Description: 搜索历史
  */
 @Entity
-public class HistoryBean {
+public class HistoryEntity {
     @Id
     private Long id;
     @Property(nameInDb = "HISTORY")
     private String name;
-    @Generated(hash = 1142511416)
-    public HistoryBean(Long id, String name) {
+    @Keep
+    public HistoryEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
-    @Generated(hash = 48590348)
-    public HistoryBean() {
+    @Keep
+    public HistoryEntity() {
     }
     public Long getId() {
         return this.id;
