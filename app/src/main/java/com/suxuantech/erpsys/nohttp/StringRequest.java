@@ -26,7 +26,6 @@ import com.yanzhenjie.nohttp.rest.RestRequest;
  * Created by Yan Zhenjie on 2016/10/15.
  */
 public class StringRequest extends RestRequest {
-
     /**
      * 创建一个GetBean请求
      * @param url
@@ -34,8 +33,16 @@ public class StringRequest extends RestRequest {
     public StringRequest(String url) {
         this(url, RequestMethod.GET);
     }
-    public StringRequest(String url, RequestMethod requestMethod) {
+    public StringRequest(String url, RequestMethod requestMethod,Object... parameter) {
         super(url, requestMethod);
+        addSignate();
+    }
+    public void addSignate(){
+        Contact.SignateInfo signate = Contact.getSignate();
+        addHeader("Content-Type", "application/json");
+        addHeader("timestamp", signate.currentTimeMillis+"");
+        addHeader("nonce",signate.random+"");
+        addHeader("signate",signate.signate);
     }
     @Override
     public String parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
@@ -46,4 +53,5 @@ public class StringRequest extends RestRequest {
         // 这里如果数据格式错误，或者解析失败，会在失败的回调方法中返回 ParseError 异常。
         return response;
     }
+
 }

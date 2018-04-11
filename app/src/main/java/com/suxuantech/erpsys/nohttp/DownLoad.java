@@ -1,6 +1,5 @@
 package com.suxuantech.erpsys.nohttp;
 
-import com.suxuantech.erpsys.utils.FileUtils;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -60,7 +59,7 @@ public class DownLoad {
         }
     };
     public DownLoad(int what,String url){
-        download(what,url, FileUtils.getAppFolderPath(),true);
+     //   download(what,url, FileUtils.getAppFolderPath(),true);
     }
 
     public void download(int what,String url, String fileFolder, boolean isDeleteOld) {

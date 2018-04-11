@@ -40,7 +40,15 @@ public class JavaBeanRequest<T> extends RestRequest<T> {
     }
     public JavaBeanRequest(String url, RequestMethod requestMethod, Class<T> clazz) {
         super(url, requestMethod);
+        addSignate();
         this.clazz = clazz;
+    }
+    public void addSignate(){
+        Contact.SignateInfo signate = Contact.getSignate();
+        addHeader("Content-Type", "application/json");
+        addHeader("timestamp", signate.currentTimeMillis+"");
+        addHeader("nonce",signate.random+"");
+        addHeader("signate",signate.signate);
     }
     @Override
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {

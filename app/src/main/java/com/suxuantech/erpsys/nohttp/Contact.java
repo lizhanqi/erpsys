@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.nohttp;
 
+import com.blankj.utilcode.util.EncryptUtils;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -35,12 +37,37 @@ public class Contact {
 
     //http://192.168.0.15:8033/SXWebErpAppStaff/SX_GetOrderNum?Token=SX&code=00
     public static String TESTIP = "http://192.168.0.15:8033";
-    public static String TOKEN = "SX";
+    public static String TOKEN = "%5e******%5e";
 
     public static String getFullUrl(String template, Object... replace) {
-        return TESTIP + String.format(template,  replace);
+        return  TESTIP + String.format(template, replace);
+     //   return URLEncoder.encode(TESTIP + String.format(template, replace));
+    }
+    public static class SignateInfo {
+        public String signate;
+        public int random;
+        public  long currentTimeMillis;
+        public SignateInfo(String signate, int random, long currentTimeMillis) {
+            this.signate = signate;
+            this.random = random;
+            this.currentTimeMillis = currentTimeMillis;
+        }
     }
 
+    /**
+     * 签名 获取
+     * @return
+     */
+    public static SignateInfo getSignate() {
+        String signate = "oUWKYeqCEojOvbmsynvWTctJSAVeoMZv";
+        int Min = 99999;
+        int Max = 999999;
+        int random = Min + (int) (Math.random() * ((Max - Min)));
+        long currentTimeMillis = System.currentTimeMillis();
+        signate = EncryptUtils.encryptMD5ToString(currentTimeMillis + random + signate);
+       return  new  SignateInfo(signate,random,currentTimeMillis);
+    }
+    public static String LOGIN = "/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&userID=%s&userPwd=%s";
     /**
      * 获得订单编号
      */
@@ -80,5 +107,5 @@ public class Contact {
     /**
      * 订单搜索
      */
-    public static String SEARCH_ORDER ="/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%d&pageSize=%d";
+    public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%d&pageSize=%d";
 }
