@@ -4,20 +4,12 @@ android:clickable="true"
 必须要有background防止fragment页面穿透的,
 clickable是防止页面穿透的点击事件的
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout_content_immersed"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </android.support.v4.widget.NestedScrollView>
 
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/refreshLayout"
@@ -33,8 +25,7 @@ clickable是防止页面穿透的点击事件的
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@color/gray_f9"
-            android:clickable="true"
-            tools:context=".ui.activity.fragment.ERPLeftFragment">
+            android:clickable="true">
             <!--背景-->
             <!--ScrollView本身的高度设置为match_parent,其子View的高度也设置为match_parent,自然状态下该子View的高度并不会占满ScrollView的高度。
             原因是match_parent针对一般布局而言，是子view的高度和parent的高度一致，但在ScrollView身上，工作机制并非如此，
@@ -43,32 +34,39 @@ clickable是防止页面穿透的点击事件的
             <!--解决方法-->
             <!--xml里为ScrollView加上android:fillViewport="true"-->
             <!--ScrollView 子view使用match_parent 无效 可以使用   android:fillViewport="true"-->
-            <ScrollView
-                android:fillViewport="true"
+
+            <!--<ScrollView-->
+            <!--android:fillViewport="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/gray_f9">
+                <!--顶部-->
                 <RelativeLayout
+                    android:id="@+id/left_top"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_f9">
-                        <!--顶部-->
-                    <RelativeLayout
-                        android:id="@+id/left_top"
+                    android:layout_height="@dimen/px720"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/bg_work"
+                    android:gravity="center">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/px720"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:background="@drawable/bg_work"
-                        android:gravity="center">
+                        android:layout_height="@dimen/px144"
+                        android:layout_marginTop="@dimen/px144"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/px55"
+                        android:paddingRight="@dimen/px55">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/px144"
-                            android:layout_marginTop="@dimen/px144"
-                            android:gravity="center_vertical"
-                            android:paddingLeft="@dimen/px55"
-                            android:paddingRight="@dimen/px55">
-
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
                             <TextView
                                 android:id="@+id/tv_company_name"
                                 android:layout_width="wrap_content"
@@ -79,276 +77,305 @@ clickable是防止页面穿透的点击事件的
                                 android:text="沈阳时尚经典"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/xs55" />
-
-                            <RelativeLayout
-                                android:id="@+id/rl_msg"
-                                android:layout_width="@dimen/px65"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="@dimen/px15"
-                                    android:layout_marginTop="@dimen/px15"
-                                    android:src="@drawable/icon_email" />
-
-                                <TextView
-                                    android:id="@+id/tv_msg_number"
-                                    android:layout_width="@dimen/px40"
-                                    android:layout_height="@dimen/px40"
-                                    android:layout_alignParentRight="true"
-                                    android:background="@drawable/sp_msg_number"
-                                    android:gravity="center"
-                                    android:text="6"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/xs30" />
-                            </RelativeLayout>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/px100"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/translucent_black_60"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/px55"
-                            android:paddingRight="@dimen/px55">
                             <TextView
-                                android:id="@+id/tv_notice"
+                                android:id="@+id/tv_today_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentStart="true"
-                                android:background="@drawable/notice"
-                                android:padding="@dimen/px10"
-                                android:text="公告"
-                                android:textColor="@color/noticeOrange"
-                                android:textSize="@dimen/xs34" />
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <com.suxuantech.erpsys.ui.widget.MarqueTextView
-                                    android:id="@+id/tv_info"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/px10"
-                                    android:layout_marginRight="@dimen/px10"
-                                    android:layout_weight="1"
-                                    android:ellipsize="marquee"
-                                    android:focusable="true"
-                                    android:focusableInTouchMode="true"
-                                    android:marqueeRepeatLimit="marquee_forever"
-                                    android:padding="@dimen/px10"
-                                    android:scrollHorizontally="true"
-                                    android:singleLine="true"
-                                    android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/xs42" />
-                                <TextView
-                                    android:id="@+id/tv_notice_details"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_weight="0"
-                                    android:padding="@dimen/px10"
-                                    android:text="@string/details"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/xs42" />
-                            </LinearLayout>
+                                android:layout_weight="1"
+                                android:focusable="true"
+                                android:gravity="center_vertical"
+                                android:text="2018-01-21"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/xs55" />
                         </LinearLayout>
-                    </RelativeLayout>
-                    <!--功能区与数据-->
+                        <RelativeLayout
+                            android:id="@+id/rl_msg"
+                            android:layout_width="@dimen/px65"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/px15"
+                                android:layout_marginTop="@dimen/px15"
+                                android:src="@drawable/icon_email" />
+
+                            <TextView
+                                android:id="@+id/tv_msg_number"
+                                android:layout_width="@dimen/px40"
+                                android:layout_height="@dimen/px40"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/sp_msg_number"
+                                android:gravity="center"
+                                android:text="6"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/xs30" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/left_top"
-                        android:background="@color/gray_f9"
-                        android:orientation="vertical">
-                        <!--功能区-->
+                        android:layout_height="@dimen/px100"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/translucent_black_60"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/px55"
+                        android:paddingRight="@dimen/px55">
+
+                        <TextView
+                            android:id="@+id/tv_notice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentStart="true"
+                            android:background="@drawable/notice"
+                            android:padding="@dimen/px10"
+                            android:text="公告"
+                            android:textColor="@color/noticeOrange"
+                            android:textSize="@dimen/xs34" />
+
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/px333"
-                            android:background="@color/white">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.suxuantech.erpsys.ui.widget.MarqueTextView
+                                android:id="@+id/tv_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/px10"
+                                android:layout_marginRight="@dimen/px10"
+                                android:layout_weight="1"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:padding="@dimen/px10"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:text="今天又领导视察各自珍重,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍,重要的话讲三遍"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/xs42" />
 
                             <TextView
-                                android:id="@+id/outlets_order"
+                                android:id="@+id/tv_notice_details"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:drawablePadding="@dimen/px25"
-                                android:drawableTop="@drawable/icon_outlets_order"
-                                android:gravity="center"
-                                android:paddingTop="@dimen/px60"
-                                android:text="@string/outlets_order" />
-
-                            <TextView
-                                android:id="@+id/tv_order_search"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:drawablePadding="@dimen/px25"
-                                android:drawableTop="@drawable/icon_order_search"
-                                android:gravity="center"
-                                android:paddingTop="@dimen/px60"
-                                android:text="@string/order_search" />
-                        </LinearLayout>
-                        <!--表-->
-                        <LinearLayout
-                            android:visibility="gone"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/px30"
-                            android:orientation="horizontal"
-                         >
-
-                            <LinearLayout
-                                android:layout_width="@dimen/px0"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:paddingLeft="@dimen/px115"
-                                android:paddingRight="@dimen/px115"
-                                android:paddingTop="@dimen/px60">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="今日选片满档率"
-                                    android:textColor="@color/myValue_33"
-                                    android:textSize="@dimen/xs44" />
-
-                                <RelativeLayout
-                                    android:layout_width="@dimen/px282"
-                                    android:layout_height="@dimen/px282"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/px40"
-                                    android:gravity="center">
-
-                                    <com.suxuantech.erpsys.ui.widget.WaveView
-                                        android:id="@+id/schedule_wave"
-                                        android:layout_width="@dimen/px282"
-                                        android:layout_height="@dimen/px282"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginBottom="@dimen/px45"
-                                        android:text="48%"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/xs32" />
-                                </RelativeLayout>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/px40"
-                                    android:gravity="center"
-                                    android:lineSpacingExtra="@dimen/px28"
-                                    android:text="总档期:78档 \n今日 拍档:28档"
-                                    android:textColor="@color/myValue_33"
-                                    android:textSize="@dimen/xs40" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="@dimen/px0"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:paddingLeft="@dimen/px115"
-                                android:paddingRight="@dimen/px115"
-                                android:paddingTop="@dimen/px60">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="本月任务"
-                                    android:textColor="@color/myValue_33"
-                                    android:textSize="@dimen/xs44" />
-
-                                <RelativeLayout
-                                    android:layout_width="@dimen/px282"
-                                    android:layout_height="@dimen/px282"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/px40"
-                                    android:gravity="center">
-
-                                    <com.suxuantech.erpsys.ui.widget.WaveView
-                                        android:id="@+id/task_wave"
-                                        android:layout_width="@dimen/px282"
-                                        android:layout_height="@dimen/px282"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentBottom="true"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginBottom="@dimen/px45"
-                                        android:text="48%"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/xs32" />
-                                </RelativeLayout>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="@dimen/px40"
-                                    android:gravity="center"
-                                    android:lineSpacingExtra="@dimen/px28"
-                                    android:text="本月任务:500万 \n已完成: 300万"
-                                    android:textColor="@color/myValue_33"
-                                    android:textSize="@dimen/xs40" />
-                            </LinearLayout>
-                        </LinearLayout>
-                        <!--数据区-->
-                        <LinearLayout
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-                            <android.support.design.widget.TabLayout
-                                android:id="@+id/tablayout_home"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/px106"
-                                android:layout_gravity="center"
-                                app:tabBackground="@color/white"
-                                app:tabGravity="center"
-                                app:tabIndicatorColor="@color/themeColor"
-                                app:tabIndicatorHeight="@dimen/px5"
-                                app:tabMaxWidth="@dimen/px360"
-                                app:tabMinWidth="@dimen/px360"
-                                app:tabMode="fixed"
-                                app:tabSelectedTextColor="@color/themeColor"
-                                app:tabTextColor="@color/textHint_99" />
-                            <View
-                                android:id="@+id/view_tl"
-                                style="@style/line" />
-
-                            <android.support.v4.view.ViewPager
-                                android:layout_height="match_parent"
-                                android:id="@+id/vp_home"
-                                android:layout_width="match_parent"  />
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_weight="0"
+                                android:padding="@dimen/px10"
+                                android:text="@string/details"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/xs42" />
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
-            </ScrollView>
+                <!--<com.suxuantech.erpsys.ui.widget.FoldScrollView-->
+                <!--android:scrollbars="none"-->
+                <!--android:fadingEdge="none"-->
+                <!--android:layout_below="@id/left_top"-->
+                <!--android:id="@+id/nested_scroll_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:fillViewport="true">-->
+                <!--功能区与数据-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/left_top"
+                    android:background="@color/gray_f9"
+                    android:orientation="vertical">
+                    <!--功能区-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/px333"
+                        android:background="@color/white"
+                        app:layout_behavior="com.suxuantech.erpsys.ui.widget.DefineBehavior">
+
+                        <TextView
+                            android:id="@+id/outlets_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/px25"
+                            android:drawableTop="@drawable/icon_outlets_order"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/px60"
+                            android:text="@string/outlets_order" />
+
+                        <TextView
+                            android:id="@+id/tv_order_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/px25"
+                            android:drawableTop="@drawable/icon_order_search"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/px60"
+                            android:text="@string/order_search" />
+                    </LinearLayout>
+                    <!--表-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/px30"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="@dimen/px0"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/px115"
+                            android:paddingRight="@dimen/px115"
+                            android:paddingTop="@dimen/px60">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="今日选片满档率"
+                                android:textColor="@color/myValue_33"
+                                android:textSize="@dimen/xs44" />
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/px282"
+                                android:layout_height="@dimen/px282"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/px40"
+                                android:gravity="center">
+
+                                <com.suxuantech.erpsys.ui.widget.WaveView
+                                    android:id="@+id/schedule_wave"
+                                    android:layout_width="@dimen/px282"
+                                    android:layout_height="@dimen/px282"
+                                    android:layout_gravity="center" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/px45"
+                                    android:text="48%"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/xs32" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/px40"
+                                android:gravity="center"
+                                android:lineSpacingExtra="@dimen/px28"
+                                android:text="总档期:78档 \n今日 拍档:28档"
+                                android:textColor="@color/myValue_33"
+                                android:textSize="@dimen/xs40" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="@dimen/px0"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/px115"
+                            android:paddingRight="@dimen/px115"
+                            android:paddingTop="@dimen/px60">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="本月任务"
+                                android:textColor="@color/myValue_33"
+                                android:textSize="@dimen/xs44" />
+
+                            <RelativeLayout
+                                android:layout_width="@dimen/px282"
+                                android:layout_height="@dimen/px282"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/px40"
+                                android:gravity="center">
+
+                                <com.suxuantech.erpsys.ui.widget.WaveView
+                                    android:id="@+id/task_wave"
+                                    android:layout_width="@dimen/px282"
+                                    android:layout_height="@dimen/px282"
+                                    android:layout_gravity="center" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/px45"
+                                    android:text="48%"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/xs32" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/px40"
+                                android:gravity="center"
+                                android:lineSpacingExtra="@dimen/px28"
+                                android:text="本月任务:500万 \n已完成: 300万"
+                                android:textColor="@color/myValue_33"
+                                android:textSize="@dimen/xs40" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!--数据区-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tablayout_home"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/px106"
+                            android:layout_gravity="center"
+                            app:tabBackground="@color/white"
+                            app:tabGravity="center"
+                            app:tabIndicatorColor="@color/themeColor"
+                            app:tabIndicatorHeight="@dimen/px5"
+                            app:tabMaxWidth="@dimen/px360"
+                            app:tabMinWidth="@dimen/px360"
+                            app:tabMode="fixed"
+                            app:tabSelectedTextColor="@color/themeColor"
+                            app:tabTextColor="@color/textHint_99" />
+
+                        <View
+                            android:id="@+id/view_tl"
+                            style="@style/line" />
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/vp_home"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--</com.suxuantech.erpsys.ui.widget.FoldScrollView>-->
+            </RelativeLayout>
+            <!--</ScrollView>-->
+
+
         </RelativeLayout>
 
 
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
 

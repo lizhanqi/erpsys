@@ -30,14 +30,19 @@ import android.widget.TextView;
 import com.baidu.mapapi.SDKInitializer;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
+import com.suxuantech.erpsys.utils.L;
+import com.yanzhenjie.nohttp.Headers;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.api.BasicCallback;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -91,16 +96,41 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     }
     //登录极光
     void  login(String name, String password) {
+        http://192.168.0.15:8033/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Toke
+        // n=^******^&userID=小飞&userPwd=0
+        name ="小飞";
+        password="0";
         Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
         loadingDialog.show();
-        JMessageClient.login(name, password, new BasicCallback() {
-            @Override
-            public void gotResult(int i, String s) {
-                loadingDialog.cancel();
-                startActivity(MainActivity.class);
-                finish();
-            }
-        });
+        StringRequest stringRequest = new StringRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN,name,password),RequestMethod.POST);
+        Headers headers = stringRequest.getHeaders();
+        RequestQueue requestQueueInstance =getRequestQueue();
+        requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
+                    @Override
+                    public void onStart(int what) {
+                        super.onStart(what);
+                    }
+                    @Override
+                    public void onSucceed(int what, Response<String> response) {
+                        super.onSucceed(what, response);
+                        loadingDialog.dismiss();
+                        L.d("NoHttpSample",response.get());
+                    }
+                    @Override
+                    public void onFailed(int what, Response<String> response) {
+                        super.onFailed(what, response);
+                        loadingDialog.dismiss();
+                    }
+                });
+//        JMessageClient.login(name, password, new BasicCallback() {
+//            @Override
+//            public void gotResult(int i, String s) {
+//                loadingDialog.cancel();
+//
+////                startActivity(MainActivity.class);
+////                finish();
+//            }
+//        });
     }
 
     @Override

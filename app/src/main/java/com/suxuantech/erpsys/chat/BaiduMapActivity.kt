@@ -89,8 +89,6 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 mapView!!.map.animateMapStatus(mapStatusUpdate)
             }
         }
-
-        fun onConnectHotSpotMessage(s: String, i: Int) {}
     }
     // 地理编码监听器
     var GeoListener: OnGetGeoCoderResultListener = object : OnGetGeoCoderResultListener {

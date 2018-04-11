@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
+import com.antfortune.freeline.FreelineCore;
 import com.blankj.utilcode.util.Utils;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.L;
@@ -64,6 +65,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FreelineCore.init(this);
         Utils.init(this);
         RongIM.init(this);
         context = this.getApplicationContext();
