@@ -10,7 +10,6 @@ import android.util.Log;
 import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.ui.activity.MainActivity;
 import com.suxuantech.erpsys.ui.dialog.LoadingDialog;
-import com.suxuantech.erpsys.utils.NLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,31 +35,25 @@ public class ConversationListActivity extends Activity {
         sp = getSharedPreferences("config", MODE_PRIVATE);
         mDialog = new LoadingDialog(this);
         Intent intent = getIntent();
-        NLog.d(TAG, "intent:", getIntent());
         //push
         if (intent.getData().getScheme().equals("rong") && intent.getData().getQueryParameter("isFromPush") != null
                 && intent.getData().getQueryParameter("isFromPush").equals("true")) {
             //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
             String options = getIntent().getStringExtra("options");
             if (options != null) {
-                NLog.d(TAG, "options:", options);
                 try {
                     JSONObject jsonObject = new JSONObject(options);
                     if (jsonObject.has("appData")) {
-                        NLog.d(TAG, "pushData:", jsonObject.getString("appData"));
                     }
                     if (jsonObject.has("rc")) {
                         JSONObject rc = jsonObject.getJSONObject("rc");
-                        NLog.d(TAG, "rc:", rc);
                         String targetId = rc.getString("tId");
                         String pushId = rc.getString("id");
                         if (!TextUtils.isEmpty(pushId)) {
                             RongPushClient.recordNotificationEvent(pushId);
-                            NLog.d(TAG, "pushId:", pushId);
                         }
                         if (rc.has("ext") && rc.getJSONObject("ext") != null) {
                             String ext = rc.getJSONObject("ext").toString();
-                            NLog.d(TAG, "ext:", ext);
                         }
                     }
                 } catch (JSONException e) {
