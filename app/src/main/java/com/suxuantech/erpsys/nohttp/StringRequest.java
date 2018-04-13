@@ -42,7 +42,7 @@ public class StringRequest extends RestRequest {
         addHeader("Content-Type", "application/json");
         addHeader("timestamp", signature.currentTimeMillis+"");
         addHeader("nonce",signature.random+"");
-        addHeader("signate",signature.signature);
+        addHeader("signature",signature.signature);
     }
     @Override
     public String parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
