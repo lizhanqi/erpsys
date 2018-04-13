@@ -123,7 +123,11 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (callback != null) {
             // 这里判断一下http响应码，这个响应码问下你们的服务端你们的状态有几种，一般是200成功。
             // w3c标准http响应码：http://www.w3school.com.cn/tags/html_ref_httpmessages.asp
-            callback.onSucceed(what, response);
+            if (response.get()!=null&&response.getHeaders().getResponseCode()==200){
+                callback.onSucceed(what, response);
+            }else {
+               onFailed(what,response);
+            }
         }
     }
 
@@ -133,6 +137,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
     @Override
     public void onFailed(int what, Response<T> response) {
         Exception exception = response.getException();
+
         if (isShowError) {
             if (exception instanceof NetworkError) {
                 ToastUtils.show(R.string.error_please_check_network);
@@ -148,12 +153,15 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
             } else if (exception instanceof JSONException || exception instanceof com.alibaba.fastjson.JSONException) {
                 // 这个异常只会在解析数据出现问题后提示
                 ToastUtils.show(R.string.error_data_analysis);
-            } else {
-                ToastUtils.show(R.string.error_unknow+response.getException().getMessage());
+            } else if (response.getHeaders().getResponseCode()>=500){
+                ToastUtils.show(App.getApplication().getString(R.string.error_service)+response.getHeaders().getResponseCode());
+            }  else{
+                ToastUtils.show(response.getHeaders().getResponseCode()+response.getException().getMessage()+App.getApplication().getString(R.string.error_unknow));
             }
         }
         if (callback != null){
-            callback.onFailed(what, response);}
+            callback.onFailed(what, response);
+        }
     }
 
 }

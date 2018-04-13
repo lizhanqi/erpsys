@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -27,25 +28,63 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.mapapi.SDKInitializer;
+import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
+import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.HttpResponseListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
-import com.suxuantech.erpsys.utils.L;
-import com.yanzhenjie.nohttp.Headers;
+import com.suxuantech.erpsys.utils.FastJsonUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
+import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
+
+/**
+ * http://www.freebuf.com/
+ * _.._        ,------------.
+ * ,'      `.    ( We want you! )
+ * /  __) __` \    `-,----------'
+ * (  (`-`(-')  ) _.-'
+ * /)  \  = /  (
+ * /'    |--' .  \
+ * (  ,---|  `-.)__`
+ * )(  `-.,--'   _`-.
+ * '/,'          (  Uu",
+ * (_       ,    `/,-' )
+ * `.__,  : `-'/  /`--'
+ * |     `--'  |
+ * `   `-._   /
+ * \        (
+ * /\ .      \.  freebuf
+ * / |` \     ,-\
+ * /  \| .)   /   \
+ * ( ,'|\    ,'     :
+ * | \,`.`--"/      }
+ * `,'    \  |,'    /
+ * / "-._   `-/      |
+ * "-.   "-.,'|     ;
+ * /        _/["---'""]
+ * :        /  |"-     '
+ * '           |      /
+ * `      |
+ */
 
 /**
  * A login screen that offers login via email/password.
@@ -73,6 +112,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView copyRight;
+
     //    private View mLoginFormView;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -81,68 +121,126 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //横向
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.topMargin=20;
-            layoutParams.bottomMargin=20;
+            layoutParams.topMargin = 20;
+            layoutParams.bottomMargin = 20;
             copyRight.setLayoutParams(layoutParams);
             copyRight.getParent().requestLayout();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.topMargin=0;
-            layoutParams.bottomMargin= (int) getResources().getDimension(R.dimen.px145);
+            layoutParams.topMargin = 0;
+            layoutParams.bottomMargin = (int) getResources().getDimension(R.dimen.px145);
             copyRight.setLayoutParams(layoutParams);
             copyRight.getParent().requestLayout();
         }
 
     }
+
+    boolean isLoginOneSucceed;
+
+    public void LoginSucceed() {
+        if (isLoginOneSucceed) {
+            loadingDialog.dismiss();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    Dialog loadingDialog;
+
+    public void addSignate(RestRequest rf) {
+//        Contact.SignateInfo signate = Contact.getSignate();
+//        rf.addHeader("Content-Type", "application/json");
+//        rf.  addHeader("timestamp", signate.currentTimeMillis+"");
+//        rf. addHeader("nonce",signate.random+"");
+//        rf.addHeader("signate",signate.signate);
+    }
+
     //登录极光
-    void  login(String name, String password) {
-        http://192.168.0.15:8033/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Toke
-        // n=^******^&userID=小飞&userPwd=0
-        name ="小飞";
-        password="0";
-        Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
+    void login(String name, String password) {
+        //登录极光
+        loginJG(name, password);
+        loadingDialog.setCancelable(false);
+        isLoginOneSucceed = false;
+        name = "小飞";
+        password = "0";
         loadingDialog.show();
-        StringRequest stringRequest = new StringRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN,name,password),RequestMethod.POST);
-        Headers headers = stringRequest.getHeaders();
-        RequestQueue requestQueueInstance =getRequestQueue();
-        requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
-                    @Override
-                    public void onStart(int what) {
-                        super.onStart(what);
-                    }
-                    @Override
-                    public void onSucceed(int what, Response<String> response) {
-                        super.onSucceed(what, response);
-                        loadingDialog.dismiss();
-                        L.d("NoHttpSample",response.get());
-                    }
-                    @Override
-                    public void onFailed(int what, Response<String> response) {
-                        super.onFailed(what, response);
-                        loadingDialog.dismiss();
-                    }
-                });
-//        JMessageClient.login(name, password, new BasicCallback() {
+        StringRequest stringRequest1 = new StringRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
+        //addSignate(stringRequest1);
+        JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
+        HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
+            @Override
+            public void onSucceed(int what, Response<LoginEntity> response) {
+                if (response.get().isOK()) {
+                    //保存登录信息
+                    CacheUtils.getInstance().put(App.LOGINFILENAME, FastJsonUtils.toJSONString(response.get()));
+                    LoginSucceed();
+                    isLoginOneSucceed = true;
+                } else {
+                    loginFailed();
+                    toast(response.get().getMsg());
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<LoginEntity> response) {
+                loginFailed();
+            }
+        };
+//        HttpListener<String> stringHttpListener = new HttpListener<String>() {
 //            @Override
-//            public void gotResult(int i, String s) {
-//                loadingDialog.cancel();
-//
-////                startActivity(MainActivity.class);
-////                finish();
+//            public void onSucceed(int what, Response response) {
+//                loadingDialog.dismiss();
 //            }
-//        });
+//
+//            @Override
+//            public void onFailed(int what, Response response) {
+//                loginFailed();
+//            }
+//        };
+
+        HttpResponseListener httpResponseListener = new HttpResponseListener(getBaseContext(), stringRequest, httpListener, false, false);
+
+        addRequestQueue(0, stringRequest, httpResponseListener);
+
+    }
+
+    public void loginFailed() {
+
+        loadingDialog.dismiss();
+        if (isLoginOneSucceed) {
+            loadingDialog.dismiss();
+        }
+        isLoginOneSucceed = false;
+    }
+
+    public void loginJG(String name, String password) {
+        JMessageClient.login(name, password, new BasicCallback() {
+            @Override
+            public void gotResult(int i, String s) {
+                if (i == 0) {
+                    LoginSucceed();
+                    isLoginOneSucceed = true;
+                } else {
+                    loginFailed();
+                    ToastUtils.show(s);
+                }
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SDKInitializer.initialize(getApplicationContext());
+        loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
+        LoginEntity userInfor = App.getApplication().getUserInfor();
         super.onCreate(savedInstanceState);
+        ScreenUtils.setFullScreen(this);
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
         //setSwipeBackEnable(false);
         setContentView(R.layout.activity_login);
         //hideStatus();
         copyRight = idGetView(R.id.copyright);
-        copyRight.setText(getString(R.string.copyright)+" V"+ AppUtil.getVersionName(this));
+        copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
@@ -162,13 +260,13 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mEmailView.getText().toString().trim(),mEmailView.getText().toString().trim());
+                login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
             }
         });
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mPasswordView.getText().toString().trim(),mPasswordView.getText().toString().trim());
+                login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
 
@@ -182,6 +280,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         }
         getLoaderManager().initLoader(0, null, this);
     }
+
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -203,6 +302,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         }
         return false;
     }
+
     /**
      * Callback received when a permissions request has been completed.
      */
@@ -261,14 +361,17 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             mAuthTask.execute((Void) null);
         }
     }
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
+
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
+
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -293,7 +396,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-     //       mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            //       mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

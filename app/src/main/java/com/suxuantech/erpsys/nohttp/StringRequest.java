@@ -38,11 +38,11 @@ public class StringRequest extends RestRequest {
         addSignate();
     }
     public void addSignate(){
-        Contact.SignateInfo signate = Contact.getSignate();
+        Contact.SignateInfo signature = Contact.getSignate();
         addHeader("Content-Type", "application/json");
-        addHeader("timestamp", signate.currentTimeMillis+"");
-        addHeader("nonce",signate.random+"");
-        addHeader("signate",signate.signate);
+        addHeader("timestamp", signature.currentTimeMillis+"");
+        addHeader("nonce",signature.random+"");
+        addHeader("signate",signature.signature);
     }
     @Override
     public String parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {

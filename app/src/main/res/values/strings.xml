@@ -16,6 +16,7 @@
     <string name="error_not_found_cache">没有找到缓存.</string>
     <string name="error_data_analysis">数据解析异常.</string>
     <string name="error_unknow">未知错误。</string>
+    <string name="error_service">服务器异常。</string>
     <!--Bug崩溃工具-->
     <string name="customactivityoncrash_error_activity_error_occurred_explanation">出现意外错误。\n为您带来的不便敬请谅解\n本次错误已通知开发人员\n您还可以点击错误详情\n复制<fount />内容联系我们。\n攻城狮微信:lizhanqi999</string>
     <string name="customactivityoncrash_error_activity_restart_app">重新启动应用</string>

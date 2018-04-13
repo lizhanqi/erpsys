@@ -16,18 +16,19 @@
 package com.suxuantech.erpsys.nohttp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.RestRequest;
+import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.StringRequest;
 
 /**
  * <p>自定义JavaBean请求。</p>
  * Created by Yan Zhenjie on 2016/10/15.
  */
-public class JavaBeanRequest<T> extends RestRequest<T> {
+public class JavaBeanRequest<T> extends Request<T> {
     private Class<T> clazz;
 
     /**
@@ -43,12 +44,16 @@ public class JavaBeanRequest<T> extends RestRequest<T> {
         addSignate();
         this.clazz = clazz;
     }
+    /*
+       *添加自定义请求头进行所谓的加密
+     */
     public void addSignate(){
-        Contact.SignateInfo signate = Contact.getSignate();
+        Contact.SignateInfo signature = Contact.getSignate();
         addHeader("Content-Type", "application/json");
-        addHeader("timestamp", signate.currentTimeMillis+"");
-        addHeader("nonce",signate.random+"");
-        addHeader("signate",signate.signate);
+        addHeader("timestamp", ""+signature.currentTimeMillis);
+        addHeader("nonce",""+signature.random);
+        addHeader("signature",signature.signature);
+  //      signature
     }
     @Override
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
@@ -56,7 +61,7 @@ public class JavaBeanRequest<T> extends RestRequest<T> {
         str = StringUtils.jsonStrClean(str);
         Logger.i(str);
         String response = StringRequest.parseResponseString(responseHeaders, str.getBytes());
-        // 这里如果数据格式错误，或者解析失败，会在失败的回调方法中返回 ParseError 异常。
+        JSONObject jsonObject = JSON.parseObject(response);
         return JSON.parseObject(response, clazz);
     }
 }

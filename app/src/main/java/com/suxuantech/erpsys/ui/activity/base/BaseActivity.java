@@ -22,6 +22,8 @@ import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -206,15 +208,15 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * @return true, other wise is false.
      */
     public  boolean hasPermission(  @NonNull List<String> permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {return true;}
         for (String permission : permissions) {
             int result = ContextCompat.checkSelfPermission(this, permission);
-            if (result == PackageManager.PERMISSION_DENIED) return false;
+            if (result == PackageManager.PERMISSION_DENIED) {return false;}
 
             String op = AppOpsManagerCompat.permissionToOp(permission);
-            if (TextUtils.isEmpty(op)) continue;
+            if (TextUtils.isEmpty(op)){ continue;}
             result = AppOpsManagerCompat.noteProxyOp(this, op, this.getPackageName());
-            if (result != AppOpsManagerCompat.MODE_ALLOWED) return false;
+            if (result != AppOpsManagerCompat.MODE_ALLOWED){ return false;}
 
         }
         return true;
@@ -262,6 +264,17 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      */
     public RequestQueue getRequestQueue(){
         return requestQueue;
+    }
+
+    /**
+     * 添加一个请求到本页的请求对列
+     * @param what
+     * @param request
+     * @param listener
+     * @param <T>
+     */
+  public <T>   void    addRequestQueue(int what, Request<T> request, OnResponseListener<T> listener){
+      getRequestQueue().add(what,request,listener);
     }
     //------------------------------------生命周期---------------------
     @Override

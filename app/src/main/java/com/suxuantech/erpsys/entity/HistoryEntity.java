@@ -1,10 +1,9 @@
 package com.suxuantech.erpsys.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Keep;
-import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
 
 /**
  * ......................我佛慈悲....................
@@ -39,12 +38,12 @@ public class HistoryEntity {
     private Long id;
     @Property(nameInDb = "HISTORY")
     private String name;
-    @Keep
+    @Generated(hash = 985482176)
     public HistoryEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
-    @Keep
+    @Generated(hash = 1235354573)
     public HistoryEntity() {
     }
     public Long getId() {

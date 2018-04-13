@@ -6,9 +6,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
-import com.antfortune.freeline.FreelineCore;
+import com.baidu.mapapi.SDKInitializer;
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.Utils;
+import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
+import com.suxuantech.erpsys.utils.JsonUtil;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
@@ -59,13 +62,24 @@ import me.yokeyword.fragmentation.Fragmentation;
 
 public class App extends Application {
     protected static Context context;
-    private static Application application;
+    private static App application;
     public static   boolean ISDEBUG=true;
     public static String APP_LOG_NAME = "debug";
+    public final static   String LOGINFILENAME="login_inf";
+    public LoginEntity userInfo;
+    public     LoginEntity getUserInfor(){
+        //return    CacheUtils.getInstance().getJSONObject(LOGINFILENAME);
+        if (userInfo==null){
+            String string = CacheUtils.getInstance().getString(LOGINFILENAME);
+            userInfo= JsonUtil.parseJson(string,LoginEntity.class);
+        }
+        return userInfo;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
-        FreelineCore.init(this);
+        SDKInitializer.initialize(this);
+       // FreelineCore.init(this);
         Utils.init(this);
         RongIM.init(this);
         context = this.getApplicationContext();
@@ -177,15 +191,14 @@ public class App extends Application {
                 //.retry(1)// 全局重试次数，配置后每个请求失败都会重试x次。
                 .build();
     }
-    public static Application getApplication() {
+    public static App getApplication() {
         return application;
     }
 
     /**
      * 维护Activity 的list
      */
-    private static List<Activity> mActivitys = Collections
-            .synchronizedList(new LinkedList<Activity>());
+    private static List<Activity> mActivitys = Collections.synchronizedList(new LinkedList<Activity>());
 
 
     public static Context getContext() {

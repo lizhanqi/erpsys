@@ -62,7 +62,7 @@ public class CallServer {
 		if (queue==null){
 			queue = NoHttp.getRequestQueueInstance();
 		}
-		queue.add(what, request, new HttpResponseListener<>( context, request, callback, canCancel, isLoading));
+		queue.add(what, request, new HttpResponseListener<T>( context, request, callback, canCancel, isLoading));
 	}
 
 	/**
@@ -78,4 +78,5 @@ public class CallServer {
 	public <T> void add(Context context, Request<T> request, HttpListener<T> callback, int what,  boolean canCancel, boolean  isLoading,boolean isShowError) {
 		queue.add(what, request, new HttpResponseListener<>( context, request, callback, canCancel, isLoading,isShowError));
 	}
+
 }

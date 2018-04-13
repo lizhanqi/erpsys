@@ -2,6 +2,8 @@ package com.suxuantech.erpsys.nohttp;
 
 import com.blankj.utilcode.util.EncryptUtils;
 
+import java.net.URLEncoder;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -37,35 +39,46 @@ public class Contact {
 
     //http://192.168.0.15:8033/SXWebErpAppStaff/SX_GetOrderNum?Token=SX&code=00
     public static String TESTIP = "http://192.168.0.15:8033";
-    public static String TOKEN = "%5e******%5e";
-
+    public static String TOKEN = "^******^";
     public static String getFullUrl(String template, Object... replace) {
-        return  TESTIP + String.format(template, replace);
-     //   return URLEncoder.encode(TESTIP + String.format(template, replace));
+        //return  TESTIP + String.format(template, replace);
+        if (replace==null){
+            return  template;
+        }
+        //把所有类型转为String,并且编码
+        for(int i=0;i<replace.length;i++){
+            replace[i] = URLEncoder.encode( replace[i] .toString());
+        }
+        return   TESTIP + (String.format(template, replace)) ;
     }
+
     public static class SignateInfo {
-        public String signate;
+        public String signature;
         public int random;
         public  long currentTimeMillis;
-        public SignateInfo(String signate, int random, long currentTimeMillis) {
-            this.signate = signate;
+        public SignateInfo(String signature, int random, long currentTimeMillis) {
+            this.signature = signature;
             this.random = random;
             this.currentTimeMillis = currentTimeMillis;
         }
     }
-
     /**
-     * 签名 获取
+     * 签名获取
      * @return
      */
     public static SignateInfo getSignate() {
-        String signate = "oUWKYeqCEojOvbmsynvWTctJSAVeoMZv";
+        String signature = "oUWKYeqCEojOvbmsynvWTctJSAVeoMZv";
         int Min = 99999;
         int Max = 999999;
         int random = Min + (int) (Math.random() * ((Max - Min)));
-        long currentTimeMillis = System.currentTimeMillis();
-        signate = EncryptUtils.encryptMD5ToString(currentTimeMillis + random + signate);
-       return  new  SignateInfo(signate,random,currentTimeMillis);
+        //java时间戳是13位的毫秒,1000毫秒=1秒,所以需要除以一千 得到的是秒的时间戳也就是10位的
+         long currentTimeMillis =System.currentTimeMillis() /1000 ;
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(currentTimeMillis);
+        stringBuffer.append(random);
+        stringBuffer.append(signature);
+        signature = EncryptUtils.encryptMD5ToString(stringBuffer.toString()).toLowerCase();
+       return  new  SignateInfo(signature,random,currentTimeMillis);
     }
     public static String LOGIN = "/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&userID=%s&userPwd=%s";
     /**
