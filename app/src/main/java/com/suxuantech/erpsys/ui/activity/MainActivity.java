@@ -271,6 +271,9 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 //        if (position!=0){
 //            hideToolbar();
 //        }
+        if (position!=0){
+            setUseDefinedNavRightDrawable(null);
+        }
         if (position==2||position==4) {
             hideUserDefinedNav();
         }else {
@@ -289,6 +292,8 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                     transaction.show(mConversationListFragment);
                 }
                 setTitle("我的会话");
+                setUseDefinedNavRightDrawable(getResources().getDrawable(R.drawable.icon_add));
+
 //                setSupportToolbar();
 //                getToolbar().setTitle("我的会话");
 //                getToolbar().setBackground(null);

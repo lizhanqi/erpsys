@@ -320,7 +320,11 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
      * @param drawable
      */
     public void setUseDefinedNavRightDrawable(Drawable drawable){
-        setUseDefinedNavRightDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        if (drawable!=null){
+            setUseDefinedNavRightDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        }else {
+            setUseDefinedNavRightDrawable(null, 0,0);
+        }
     }
     /**
      * 右侧图片指定宽高
