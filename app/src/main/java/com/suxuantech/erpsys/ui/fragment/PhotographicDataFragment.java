@@ -11,7 +11,7 @@ import com.suxuantech.erpsys.R;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * A simple {@link Fragment} subclass.
+ * QuickAdapter simple {@link Fragment} subclass.
  */
 public class PhotographicDataFragment extends SupportFragment {
     public PhotographicDataFragment() {

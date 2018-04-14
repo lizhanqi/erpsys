@@ -135,7 +135,6 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     private Unbinder unbinder;
     private Rationale mRationale;
     private PermissionSetting mSetting;
-
     /**
      * 权限授予结果
      * @param permissions

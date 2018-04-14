@@ -21,7 +21,7 @@ import java.util.Arrays;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * A simple {@link Fragment} subclass.
+ * QuickAdapter simple {@link Fragment} subclass.
  * 可以滑动切换fragment带有
  */
 

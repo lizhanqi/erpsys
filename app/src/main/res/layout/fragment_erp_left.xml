@@ -348,9 +348,8 @@ clickable是防止页面穿透的点击事件的
                             app:tabGravity="center"
                             app:tabIndicatorColor="@color/themeColor"
                             app:tabIndicatorHeight="@dimen/px5"
-                            app:tabMaxWidth="@dimen/px360"
-                            app:tabMinWidth="@dimen/px360"
-                            app:tabMode="fixed"
+                            app:tabMinWidth="@dimen/px260"
+                            app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/themeColor"
                             app:tabTextColor="@color/textHint_99" />
 

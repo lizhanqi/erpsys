@@ -23,7 +23,7 @@ import butterknife.Unbinder;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * A simple {@link Fragment} subclass.
+ * QuickAdapter simple {@link Fragment} subclass.
  */
 public class CustomerInformationFragment extends SupportFragment {
     @BindView(R.id.tv_store_name)

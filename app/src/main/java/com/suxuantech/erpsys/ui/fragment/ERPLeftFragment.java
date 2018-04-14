@@ -22,7 +22,6 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
-import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
@@ -88,7 +87,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             NoticeDialog.Builder nb = new NoticeDialog.Builder(getContext());
-
             nb.setTitleLeftDrawable(getResources().getDrawable(R.drawable.icon_msg_task));
             nb.setDigestText("消息简介\n日期那年月日");
             nb.setTitleText("新任务:");
@@ -125,7 +123,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 alertShow4();
 //              new AlertView("标题", "内容", "取消", new String[]{"确定"}, null, getContext(), AlertView.Style.ALERT, new OnItemClickListener() {
 //                    @Override
@@ -147,7 +144,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+           //     startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 // Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
 //                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
@@ -164,13 +161,12 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
     }
-
     private ArrayList<Fragment> fragments;
     private void initTabLayout() {
         FragmentManager childFragmentManager = getChildFragmentManager();
         TabLayout tableLayoutHome = mRootView.findViewById(R.id.tablayout_home);
         ViewPager viewPagerHome = mRootView.findViewById(R.id.vp_home);
-        String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
+        String[] arryTitle = getResources().getStringArray(R.array.home_title);
         FragmentTransaction ft = childFragmentManager.beginTransaction();
         for (Fragment f : childFragmentManager.getFragments()) {
             ft.remove(f);
@@ -178,22 +174,44 @@ public class ERPLeftFragment extends BaseLazyFragment {
         ft.commit();
         viewPagerHome.removeAllViews();
         viewPagerHome.removeAllViewsInLayout();
-        viewPagerHome.destroyDrawingCache();
+        //这里必要时可以放开
+  //   viewPagerHome.destroyDrawingCache();
+        viewPagerHome.setOffscreenPageLimit(arryTitle.length);
+        viewPagerHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                fragments.get(position).setUserVisibleHint(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         childFragmentManager.executePendingTransactions();
         if (fragments == null) {
-           fragments = new ArrayList<Fragment>() ;
-            for (int i = 0; i < stringArray.length; i++) {
-                fragments.add(new HomeDataFragement ());
+            fragments = new ArrayList<Fragment>();
+            for (int i = 0; i < arryTitle.length; i++) {
+                HomeDataFragement homeDataFragement = new HomeDataFragement();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", arryTitle[i]);
+                homeDataFragement.setArguments(bundle);
+                fragments.add(homeDataFragement);
             }
         }
-        DefaultFragmentAdapter defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, new ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
+
+        DefaultFragmentAdapter defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, new ArrayList<>(Arrays.asList(arryTitle)), new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
+                fragments.get(positon).setUserVisibleHint(true);
                 return fragments.get(positon);
             }
         });
         viewPagerHome.setAdapter(defaultFragmentAdapter);
-        viewPagerHome.setOffscreenPageLimit(1);
+        viewPagerHome.setOffscreenPageLimit(fragments.size());
         tableLayoutHome.setupWithViewPager(viewPagerHome);
     }
 

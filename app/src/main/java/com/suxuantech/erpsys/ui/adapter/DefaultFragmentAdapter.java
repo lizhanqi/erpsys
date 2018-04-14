@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,19 @@ public class DefaultFragmentAdapter extends FragmentStatePagerAdapter {
     public DefaultFragmentAdapter(FragmentManager fm, int mCount) {
         super(fm);
         this.  mCount=  mCount;
+    }
+
+    /**
+     *防止频繁的销毁视图的解决方案
+     * setOffscreenPageLimit(2)
+     * 或者重写PagerAdaper的destroyItem方法为空即可   笔者此处使用的是方案2
+     * @param container
+     * @param position
+     * @param object
+     */
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+//        super.destroyItem(container, position, object);
     }
 
     @Override

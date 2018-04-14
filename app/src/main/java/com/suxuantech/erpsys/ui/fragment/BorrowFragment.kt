@@ -20,7 +20,7 @@ import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
- * A simple [Fragment] subclass.
+ * QuickAdapter simple [Fragment] subclass.
  */
 class BorrowFragment : SupportFragment() {
     private var tv: TextView? = null

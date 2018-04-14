@@ -82,6 +82,34 @@ public class Contact {
     }
     public static String LOGIN = "/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&userID=%s&userPwd=%s";
     /**
+     * 今日拍照
+     */
+   public static String Today_TakePhoto="/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+    /**
+     * 今日取件
+     */
+    public static String TODAY_FULL_DRESS="/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+    /**
+     * 今日礼服
+     */
+    public static String TODAY_PICK_UP_PHOTO="/SXWebErpAppStaff/SX_CustomerDressCountDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+
+    /**
+     *进入化妆
+     */
+    public static String TODAY_MAKE_UP="/SXWebErpAppStaff/SX_CustomerMakeupDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s" ;
+    /**
+     * 今日预约进店
+     */
+    public static String TODAY_APPOINTMENT_TIME ="/SXWebErpAppStaff/SX_GuestInfoDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s" ;
+    /**
+     * 今日选片
+     */
+    public static String TODAY_OPTION_PANEL ="/SXWebErpAppStaff/SX_CustomerXuanPianDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s" ;
+
+
+
+    /**
      * 获得订单编号
      */
     public static String ORDER_NUMBER = "/SXWebErpAppStaff/SX_GetOrderNum?Token=%s&code=%s";

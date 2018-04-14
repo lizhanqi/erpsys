@@ -28,7 +28,7 @@ import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
 
 
 /**
- * A fragment representing a list of Items.
+ * QuickAdapter fragment representing a list of Items.
  *
  *
  * Activities containing this fragment MUST implement the [OnListFragmentInteractionListener]

@@ -293,7 +293,7 @@ public class ProgressWheel extends View {
             if (mProgress > 360) {
                 mProgress -= 360f;
 
-                // A full turn has been completed
+                // QuickAdapter full turn has been completed
                 // we run the callback with -1 in case we want to
                 // do something, like changing the color
                 runCallback(-1.0f);

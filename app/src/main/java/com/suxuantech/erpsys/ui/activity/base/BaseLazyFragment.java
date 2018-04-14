@@ -10,16 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.erpsys.ui.fragment.BaseSupportFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 当使用viewpager加载Fragment，沉浸式的使用，原理懒加载
  * Created by geyifeng on 2017/4/7.
  */
-public abstract class BaseLazyFragment extends SupportFragment {
+public abstract class BaseLazyFragment extends BaseSupportFragment {
     protected Activity mActivity;
     protected View mRootView;
     /**
@@ -64,8 +64,9 @@ public abstract class BaseLazyFragment extends SupportFragment {
             onLazyLoad();
         } else {
             initData();
-            if (isImmersionBarEnabled())
+            if (isImmersionBarEnabled()) {
                 initImmersionBar();
+            }
         }
     }
 
@@ -73,8 +74,9 @@ public abstract class BaseLazyFragment extends SupportFragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        if (mImmersionBar != null)
+        if (mImmersionBar != null) {
             mImmersionBar.destroy();
+        }
     }
 
     @Override

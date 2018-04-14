@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.chat;
+package com.suxuantech.erpsys.ui.adapter;
 
 import android.support.annotation.Nullable;
 
@@ -6,8 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
-
-import cn.jpush.im.android.api.model.Conversation;
 
 /**
  * ......................我佛慈悲....................
@@ -37,13 +35,23 @@ import cn.jpush.im.android.api.model.Conversation;
  * @Description: todo(用一句话描述该文件做什么)
  */
 
-public class A extends BaseQuickAdapter<Conversation, BaseViewHolder> {
-    public A(int layoutResId, @Nullable List<Conversation> data) {
+public   class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
+    public QuickAdapter(int layoutResId, @Nullable List<T> data)
+    {
         super(layoutResId, data);
     }
-
     @Override
-    protected void convert(BaseViewHolder helper, Conversation item) {
+    protected void convert(BaseViewHolder helper, T item) {
 
+    }
+
+    public void updateAll(List<T> data) {
+        if (data!=null){
+            mData=data;
+            notifyDataSetChanged();
+        }else {
+           mData.clear();
+           notifyDataSetChanged();
+        }
     }
 }

@@ -17,7 +17,7 @@ object DummyContent {
     val ITEMS: MutableList<DummyItem> = ArrayList()
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * QuickAdapter map of sample (dummy) items, by ID.
      */
     val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
 
@@ -49,7 +49,7 @@ object DummyContent {
     }
 
     /**
-     * A dummy item representing a piece of content.
+     * QuickAdapter dummy item representing a piece of content.
      */
     class DummyItem(val id: String, val content: String, val details: String) {
 

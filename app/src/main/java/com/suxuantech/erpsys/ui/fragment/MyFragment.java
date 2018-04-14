@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 
@@ -42,6 +44,13 @@ public class MyFragment extends SupportFragment {
             @Override
             public void onClick(View v) {
                 ToastUtils.show("三生三世");
+            }
+        });
+        view.findViewById(R.id.btn_login_out).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
             }
         });
     }
