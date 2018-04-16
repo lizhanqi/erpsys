@@ -351,7 +351,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
     @Override
     public void getOrderNumberSucceed(int what ,String data) {
         if (what==9){
-            ToastUtils.show("开单成功："+data);
+            ToastUtils.showShort("开单成功："+data);
             finish();
         }else {
             if (mTvOrderId != null) {

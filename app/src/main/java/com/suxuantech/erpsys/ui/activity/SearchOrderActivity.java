@@ -453,7 +453,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
                     @Override
                     public void onItemClick(int position, boolean isfinish, String text) {
-                        ToastUtils.show(view.getTag() + text + position + isfinish);
+                        ToastUtils.showShort(view.getTag() + text + position + isfinish);
                     }
                 });
                 view.setStepViewTexts(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))))//总步骤

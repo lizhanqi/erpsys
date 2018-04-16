@@ -166,7 +166,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                         if (AndPermission.hasAlwaysDeniedPermission(JConversationFragment.this, permissions)) {
                             mSetting.showSetting(permissions);
                         } else {
-                            ToastUtils.show(R.string.failure_permission);
+                            ToastUtils.showShort(R.string.failure_permission);
                         }
                     }
                 })
@@ -687,7 +687,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                     multipleItemQuickAdapter.appendData(messageEntity);
                     msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
                     }else {
-                        ToastUtils.show(s);
+                        ToastUtils.showShort(s);
                     }
                 }
             });

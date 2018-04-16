@@ -217,7 +217,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                         videoFileContent.downloadFile(msg, new DownloadCompletionCallback() {
                             @Override
                             public void onComplete(int i, String s, File file) {
-                                ToastUtils.show(s + "");
+                                ToastUtils.showShort(s + "");
                                 notifyItemChanged(mData.lastIndexOf(item));
                             }
                         });
@@ -338,7 +338,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                         @Override
                         public void onClick(View view) {
                             if (imageContent.getLocalPath() == null) {
-                                ToastUtils.show("下载中...");
+                                ToastUtils.showShort("下载中...");
                             }else {
                                 bigImage(imageContent);
                             }

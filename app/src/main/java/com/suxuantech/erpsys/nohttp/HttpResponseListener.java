@@ -140,23 +140,23 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
 
         if (isShowError) {
             if (exception instanceof NetworkError) {
-                ToastUtils.show(R.string.error_please_check_network);
+                ToastUtils.showShort(R.string.error_please_check_network);
             } else if (exception instanceof TimeoutError) {
-                ToastUtils.show(R.string.error_timeout);
+                ToastUtils.showShort(R.string.error_timeout);
             } else if (exception instanceof UnKnownHostError) {
-                ToastUtils.show(R.string.error_not_found_server);
+                ToastUtils.showShort(R.string.error_not_found_server);
             } else if (exception instanceof URLError) {
-                ToastUtils.show(R.string.error_url_error);
+                ToastUtils.showShort(R.string.error_url_error);
             } else if (exception instanceof NotFoundCacheError) {
                 // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
-                ToastUtils.show(R.string.error_not_found_cache);
+                ToastUtils.showShort(R.string.error_not_found_cache);
             } else if (exception instanceof JSONException || exception instanceof com.alibaba.fastjson.JSONException) {
                 // 这个异常只会在解析数据出现问题后提示
-                ToastUtils.show(R.string.error_data_analysis);
+                ToastUtils.showShort(R.string.error_data_analysis);
             } else if (response.getHeaders().getResponseCode()>=500){
-                ToastUtils.show(App.getApplication().getString(R.string.error_service)+response.getHeaders().getResponseCode());
+                ToastUtils.showShort(App.getApplication().getString(R.string.error_service)+response.getHeaders().getResponseCode());
             }  else{
-                ToastUtils.show(response.getHeaders().getResponseCode()+response.getException().getMessage()+App.getApplication().getString(R.string.error_unknow));
+                ToastUtils.showShort(response.getHeaders().getResponseCode()+response.getException().getMessage()+App.getApplication().getString(R.string.error_unknow));
             }
         }
         if (callback != null){

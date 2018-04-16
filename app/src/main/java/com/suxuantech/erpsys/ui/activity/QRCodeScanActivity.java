@@ -63,7 +63,7 @@ public class QRCodeScanActivity extends AppCompatActivity {
     private ScanCallback callback = new ScanCallback() {
         @Override
         public void onScanResult(String content) {
-            ToastUtils.show(content);
+            ToastUtils.showShort(content);
             // Successfully.
         }
     };

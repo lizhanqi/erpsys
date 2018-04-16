@@ -223,7 +223,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                     isLoginOneSucceed = true;
                 } else {
                     loginFailed();
-                    ToastUtils.show(s);
+                    ToastUtils.showShort(s);
                 }
             }
         });

@@ -31,7 +31,6 @@ import com.baidu.mapapi.search.poi.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.location.service.LocationService
-import com.suxuantech.erpsys.utils.ToastUtils
 
 
 class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
@@ -85,7 +84,7 @@ class BaiduMapActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 isCurrentLocation = true
                 // 实现动画跳转(位置)
                 val mapStatusUpdate = MapStatusUpdateFactory.newLatLng(currentLatLng)
-                ToastUtils.show("" + currentLatLng.longitude + "====" + currentLatLng.latitude)
+              //  ToastUtils.show("" + currentLatLng.longitude + "====" + currentLatLng.latitude)
                 mapView!!.map.animateMapStatus(mapStatusUpdate)
             }
         }

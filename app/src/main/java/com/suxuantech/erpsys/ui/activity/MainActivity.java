@@ -124,7 +124,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
      */
     private void closeActivity() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
-            ToastUtils.showInCenter("再按一次退出程序");
+            ToastUtils.showInCenterShort("再按一次退出程序");
             mExitTime = System.currentTimeMillis();
         } else {
             finish();
@@ -166,19 +166,19 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         mMenuView.findViewById(R.id.send_message_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.show("单聊");
+                ToastUtils.showShort("单聊");
             }
         });
         mMenuView.findViewById(R.id.create_group_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.show("群聊");
+                ToastUtils.showShort("群聊");
             }
         });
         mMenuView.findViewById(R.id.ll_saoYiSao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            ToastUtils.show("扫一扫");
+            ToastUtils.showShort("扫一扫");
             }
         });
         mMenuPopWindow = new PopupWindow(mMenuView, WindowManager.LayoutParams.WRAP_CONTENT,

@@ -43,7 +43,7 @@ public class MyFragment extends SupportFragment {
         view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.show("三生三世");
+                ToastUtils.showShort("三生三世");
             }
         });
         view.findViewById(R.id.btn_login_out).setOnClickListener(new View.OnClickListener() {

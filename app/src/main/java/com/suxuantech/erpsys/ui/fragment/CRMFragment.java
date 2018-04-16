@@ -32,7 +32,7 @@ public class CRMFragment extends SupportFragment {
         view.findViewById(R.id.tv_fm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.show("CRM");
+                ToastUtils.showShort("CRM");
             }
         });
         mTvFm =   view.findViewById(R.id.tv_fm);

@@ -53,7 +53,7 @@ public class ServiceFeeFragment extends SupportFragment {
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.show("新增");
+                ToastUtils.showShort("新增");
             }
         });
         BaseRecyclerAdapter<String> baseRecyclerAdapter = new BaseRecyclerAdapter<String>(mSmrvServiceFee, strings, R.layout.item_service_fee) {

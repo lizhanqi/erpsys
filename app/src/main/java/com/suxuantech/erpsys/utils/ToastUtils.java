@@ -32,28 +32,38 @@ public class ToastUtils {
     }
     private static Toast mToast;
     /**
-     * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
+     * 弹出一个吐司
      * @param msg
      */
-    @Deprecated
-    public static void show(  CharSequence msg) {
+    public static void showShort(  CharSequence msg) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_SHORT);
         mToast.show();
     }
+
+    /**
+     * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
+     * @param msg
+     */
+    public static void showLong(  CharSequence msg) {
+        cancelToast();
+        mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_LONG);
+        mToast.show();
+    }
+
     public static void show(  CharSequence msg,int toastTime) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, toastTime);
         mToast.show();
     }
-    public static void showInCenter(  CharSequence msg) {
+    public static void showInCenterShort(  CharSequence msg) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER,0,0);
         mToast.show();
     }
 
-    public static void show( @StringRes int stringId) {
+    public static void showShort( @StringRes int stringId) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), stringId, Toast.LENGTH_SHORT);
         mToast.show();

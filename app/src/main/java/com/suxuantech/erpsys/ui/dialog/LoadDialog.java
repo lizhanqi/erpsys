@@ -63,7 +63,7 @@ public class LoadDialog extends Dialog {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (canNotCancel) {
-                ToastUtils.show(tipMsg);
+                ToastUtils.showShort(tipMsg);
                 return true;
             }
         }

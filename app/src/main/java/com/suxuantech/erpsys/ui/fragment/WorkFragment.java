@@ -122,7 +122,7 @@ public class WorkFragment extends SupportFragment {
             @Override
             public void onSuccess(String userid) {
 
-                ToastUtils.show("链接成功" + userid);
+                ToastUtils.showShort("链接成功" + userid);
                 //   RongIM.getInstance().startConversationList(getActivity());
             }
 

@@ -246,7 +246,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      */
     @Deprecated
     public void toast(String str) {
-        ToastUtils.show(str);
+        ToastUtils.showShort(str);
     }
 
     /**
@@ -254,7 +254,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * @param str
      */
     public void toast(@StringRes int str) {
-        ToastUtils.show(str);
+        ToastUtils.showShort(str);
     }
     //----------------------页面管理------------------------------
     /**
