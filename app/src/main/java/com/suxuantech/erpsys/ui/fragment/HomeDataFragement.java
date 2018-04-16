@@ -104,8 +104,8 @@ public class HomeDataFragement extends BaseSupportFragment {
      * 今日拍照
      */
     public void todayTakePhoto(String url, int what) {
-        String fullUrl = Contact.getFullUrl(url, Contact.TOKEN, "20180401", "20180413", App.getApplication().getUserInfor().getData().get(0).getShop_code());
-        JavaBeanRequest requst = new JavaBeanRequest(fullUrl, RequestMethod.POST, TodayCustomerEntity.class);
+        String fullUrl = Contact.getFullUrl(url, Contact.TOKEN, "20180401", "20180413", App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest requst = new JavaBeanRequest(fullUrl, RequestMethod.POST,TodayCustomerEntity.class);
         HttpListener<TodayCustomerEntity> httpListener = new HttpListener<TodayCustomerEntity>() {
             @Override
             public void onSucceed(int what, Response<TodayCustomerEntity> response) {

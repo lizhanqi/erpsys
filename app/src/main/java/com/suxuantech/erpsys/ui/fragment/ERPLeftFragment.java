@@ -21,6 +21,7 @@ import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
+import com.suxuantech.erpsys.ui.activity.IntoGuestRegistrationActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
@@ -123,7 +124,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
         view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertShow4();
+                startActivity(new Intent(getActivity(), IntoGuestRegistrationActivity.class));
+              //  alertShow4();
 //              new AlertView("标题", "内容", "取消", new String[]{"确定"}, null, getContext(), AlertView.Style.ALERT, new OnItemClickListener() {
 //                    @Override
 //                    public void onItemClick(Object o, int position) {

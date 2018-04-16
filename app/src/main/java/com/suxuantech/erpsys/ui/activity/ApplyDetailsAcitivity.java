@@ -46,33 +46,33 @@ public class ApplyDetailsAcitivity extends ImmersedBaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);//横向滚动的RecycleView
         mRvCc.setLayoutManager(linearLayoutManager);
-        new BaseRecyclerAdapter<String>(mRvCc,ccArray,R.layout.item_cc){
+        new BaseRecyclerAdapter<String>(mRvCc, ccArray, R.layout.item_cc) {
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_cc);
                 view.setSelected(true);
                 ImageView ccImage = holder.getView(R.id.image_cc);
-                ccImage.setImageBitmap(Text2Bitmap.getNameBitMap(item,getResources().getColor(R.color.white)));
+                ccImage.setImageBitmap(Text2Bitmap.getNameBitMap(item, getResources().getColor(R.color.white)));
                 view.setText(item);
             }
         };
 
-        new BaseRecyclerAdapter<String>(mRvSchedule,ccArray,R.layout.item_apply_schedule){
+        new BaseRecyclerAdapter<String>(mRvSchedule, ccArray, R.layout.item_apply_schedule) {
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
 
                 ImageView view = holder.getView(R.id.image_head_schedule);
                 View viewt = holder.getView(R.id.view_top);
                 View viewb = holder.getView(R.id.view_bottom);
-                view.setImageBitmap(   Text2Bitmap.getNameBitMap(item,getResources().getColor(R.color.white)));
-                if (position==0){
+                view.setImageBitmap(Text2Bitmap.getNameBitMap(item, getResources().getColor(R.color.white)));
+                if (position == 0) {
                     viewt.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     viewt.setVisibility(View.VISIBLE);
                 }
-                if (mRvSchedule.getAdapter().getItemCount()-1==position){
+                if (mRvSchedule.getAdapter().getItemCount() - 1 == position) {
                     viewb.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     viewb.setVisibility(View.VISIBLE);
                 }
 

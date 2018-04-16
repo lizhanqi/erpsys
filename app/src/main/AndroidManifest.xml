@@ -199,7 +199,7 @@
         <activity android:name=".ui.activity.PunchCardActivity" />
         <activity android:name=".ui.activity.BookManageActivity" />
         <activity android:name=".ui.activity.MyBorrowActivity" />
-        <activity android:name=".chat.JLoginActivity"></activity>
+        <activity android:name=".chat.JLoginActivity" />
         <!--
 adjustPan是把整个界面向上平移，使输入框露出，不会改变界面的布局；
 adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
@@ -216,7 +216,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity android:name=".chat.ImageActivity" />
         <activity android:name=".chat.ConversationListActivity" />
-        <activity android:name=".chat.GroupActivity"></activity>
+        <activity android:name=".chat.GroupActivity" />
+        <activity android:name=".ui.activity.IntoGuestRegistrationActivity"></activity>
     </application>
 
 </manifest>

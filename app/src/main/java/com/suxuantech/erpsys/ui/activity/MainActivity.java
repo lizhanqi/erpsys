@@ -27,7 +27,6 @@ import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.chat.GroupActivity;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.entity.DistrictEntity;
-import com.suxuantech.erpsys.nohttp.DownLoad;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.nohttp.StringRequest;
@@ -465,7 +464,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     public void netsBeanSample() {
         String url = "http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
         //请求实体         // STOPSHIP: 2018/2/23 0023
-        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url, DistrictEntity.class);
+        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url,DistrictEntity.class);
 //        HttpResponseListener<DistrictEntity> districtBeanHttpResponseListener = new HttpResponseListener<DistrictEntity>(null);
         HttpListener<DistrictEntity> searchByCustmor = new HttpListener<DistrictEntity>() {
             @Override
@@ -481,13 +480,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         };
         //CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
-
-    public void Down() {
-        String u = "http://sw.bos.baidu.com/sw-search-sp/software/e25c4cc36a934/QQ_8.9.6.22427_setup.exe";
-        DownLoad downLoad = new DownLoad(10, u);
-
-    }
-
     public void netsStringSample() {
         String url = "http://192.168.0.187:8734/api/fnTest/asd/ads/gh";
         //请求实体

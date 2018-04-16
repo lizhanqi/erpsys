@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@color/line">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.suxuantech.erpsys.ui.activity.IntoGuestRegistrationActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:textColor="@color/litte_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户姓名" />
+
+                <EditText
+                    android:id="@+id/et_customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:background="@null"
+                    android:hint="请填写姓名" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:textColor="@color/litte_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户手机" />
+
+                <EditText
+                    android:maxEms="11"
+                    android:inputType="phone"
+                    android:id="@+id/et_customer_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:background="@null"
+                    android:hint="请填写客户手机号" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_outlets_reception"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="门市接待" />
+
+                <TextView
+                    android:id="@+id/tv_outlets_reception"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择门市接待" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户微信" />
+
+                <EditText
+                    android:id="@+id/et_customer_wechat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:background="@null"
+                    android:hint="请填写客户微信" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_QQ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户QQ" />
+
+                <EditText
+                    android:background="@null"
+                    android:id="@+id/et_customer_QQ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:hint="请填写客户QQ" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户性别" />
+
+                <TextView
+                    android:id="@+id/tv_customer_sex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择性别" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_consumption_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="消费类型" />
+
+                <TextView
+                    android:id="@+id/tv_consumption_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择消费类型" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户分区" />
+
+                <TextView
+                    android:id="@+id/tv_customer_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择客户分区" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户生日" />
+
+                <TextView
+                    android:id="@+id/tv_customer_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择客户生日" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_custmoer_source"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户来源" />
+
+                <TextView
+                    android:id="@+id/tv_custmoer_source"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择客户来源" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_customer_intention"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户意向" />
+
+                <TextView
+                    android:id="@+id/tv_customer_intention"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择客户意向" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_order_receiving_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户接单点" />
+
+                <TextView
+                    android:id="@+id/tv_order_receiving_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择接单点" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_custmoer_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户地址" />
+
+                <TextView
+                    android:id="@+id/tv_custmoer_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择客户地址" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_reservation_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约进店" />
+
+                <TextView
+                    android:id="@+id/tv_reservation_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择预约进店时间" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_reservation_shoot_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预拍日期" />
+
+                <TextView
+                    android:id="@+id/tv_reservation_shoot_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择预拍日期" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_marry_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/px30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="结婚日期" />
+
+                <TextView
+                    android:id="@+id/tv_marry_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:drawableRight="@drawable/arrows_right_gray"
+                    android:hint="请选择结婚日期" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/px30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶姓名" />
+
+            <EditText
+                android:id="@+id/et_mate_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:background="@null"
+                android:hint="请填写配偶姓名" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶手机" />
+
+            <EditText
+                android:maxLength="11"
+                android:inputType="phone"
+                android:id="@+id/et_mate_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:background="@null"
+                android:hint="请填写配偶手机" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶微信" />
+
+            <EditText
+                android:id="@+id/et_mate_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:background="@null"
+                android:hint="请填写配偶微信" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶QQ" />
+
+            <EditText
+                android:id="@+id/et_mate_QQ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:background="@null"
+                android:hint="请填写配偶QQ" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mate_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶性别" />
+
+            <TextView
+                android:id="@+id/tv_mate_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:drawableRight="@drawable/arrows_right_gray"
+                android:hint="请选择配偶性别" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mate_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配偶生日" />
+
+            <TextView
+                android:id="@+id/tv_mate_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:drawableRight="@drawable/arrows_right_gray"
+                android:hint="请填选择配偶生日" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:orientation="horizontal"
+            android:padding="@dimen/px30">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="客户备注" />
+
+            <com.suxuantech.erpsys.ui.widget.ScrollEditText
+                android:maxLines="3"
+                android:minLines="3"
+                android:id="@+id/et_custmoer_mark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:background="@null"
+                android:hint="请填写客户备注" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+    <Button
+        android:id="@+id/btn_submint"
+        android:text="@string/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

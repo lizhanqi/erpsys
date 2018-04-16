@@ -123,7 +123,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (callback != null) {
             // 这里判断一下http响应码，这个响应码问下你们的服务端你们的状态有几种，一般是200成功。
             // w3c标准http响应码：http://www.w3school.com.cn/tags/html_ref_httpmessages.asp
-            if (response.get()!=null&&response.getHeaders().getResponseCode()==200){
+            if (response.get()!=null){
                 callback.onSucceed(what, response);
             }else {
                onFailed(what,response);

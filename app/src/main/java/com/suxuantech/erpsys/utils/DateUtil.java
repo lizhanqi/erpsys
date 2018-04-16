@@ -174,6 +174,17 @@ public class DateUtil {
         }
         return date;
     }
+
+    /**
+     * 时间String 转换格式
+     * @param dateString  时间串
+     * @param source  原格式
+     * @param target  目标格式
+     * @return  目标格式串
+     */
+    public static  String String2String(String dateString, DatePattern source,DatePattern target){
+      return   dateToString(stringToDate(dateString,source),target);
+    }
     /**
      * 将date转换成字符串
      *

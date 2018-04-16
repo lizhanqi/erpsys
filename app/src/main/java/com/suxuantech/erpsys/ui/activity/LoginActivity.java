@@ -38,14 +38,12 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.nohttp.StringRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 import com.suxuantech.erpsys.utils.FastJsonUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.RestRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +87,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * QuickAdapter login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -112,6 +110,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView copyRight;
+
 
     //    private View mLoginFormView;
     @Override
@@ -145,17 +144,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             finish();
         }
     }
-
     Dialog loadingDialog;
-
-    public void addSignate(RestRequest rf) {
-//        Contact.SignateInfo signate = Contact.getSignate();
-//        rf.addHeader("Content-Type", "application/json");
-//        rf.  addHeader("timestamp", signate.currentTimeMillis+"");
-//        rf. addHeader("nonce",signate.random+"");
-//        rf.addHeader("signate",signate.signate);
-    }
-
     //登录极光
     void login(String name, String password) {
         //登录极光
@@ -165,8 +154,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         name = "小飞";
         password = "0";
         loadingDialog.show();
-        StringRequest stringRequest1 = new StringRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
-        //addSignate(stringRequest1);
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
         HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
             @Override
@@ -187,20 +174,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 loginFailed();
             }
         };
-//        HttpListener<String> stringHttpListener = new HttpListener<String>() {
-//            @Override
-//            public void onSucceed(int what, Response response) {
-//                loadingDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onFailed(int what, Response response) {
-//                loginFailed();
-//            }
-//        };
-
         HttpResponseListener httpResponseListener = new HttpResponseListener(getBaseContext(), stringRequest, httpListener, false, false);
-
         addRequestQueue(0, stringRequest, httpResponseListener);
 
     }
@@ -231,7 +205,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
-        LoginEntity userInfor = App.getApplication().getUserInfor();
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullScreen(this);
 //        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());

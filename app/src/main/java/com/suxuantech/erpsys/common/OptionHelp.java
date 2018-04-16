@@ -40,7 +40,7 @@ public class OptionHelp {
      * 网络接口标志
      */
     public  enum UrlTag implements Serializable {
-        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT
+        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION
     }
     private UrlTag urlTag;
     boolean isMultiple;

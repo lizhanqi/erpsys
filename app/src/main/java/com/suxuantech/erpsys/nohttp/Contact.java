@@ -106,7 +106,19 @@ public class Contact {
      * 今日选片
      */
     public static String TODAY_OPTION_PANEL ="/SXWebErpAppStaff/SX_CustomerXuanPianDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s" ;
+    /**
+     * 客户意向
+     */
+        public static String CUSTOMER_INTENTION ="/SXWebErpAppStaff/SX_IntentionNameSet?Token=%s&Code=%s" ;
+    /**
+     * 客户来源
+     */
+    public static String CUSTOMER_SOURCE="/SXWebErpAppStaff/SX_CusNameSet?Token=%s&Code=%s";
 
+    /**
+     *进客登记
+     */
+    public static String GUEST_REGISTRATION="/SXWebErpAppStaff/SX_OpenGuestInfo?Token=%s";
 
 
     /**
@@ -125,7 +137,7 @@ public class Contact {
     /**
      * 门市接待
      */
-    public static String OUTLETS_RECEPTION = "/SXWebErpAppStaff/SX_Menshi?Token=%s&code=%s";
+    public static String OUTLETS_RECEPTION = "/SXWebErpAppStaff/SX_MenShiSet?Token=%s&Code=%s";
 
     /**
      * 客户分区

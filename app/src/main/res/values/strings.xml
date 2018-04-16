@@ -274,13 +274,13 @@
     </string-array>
 
     <string-array name="home_title">
-           <item>拍照客户</item>
-           <item>取件客户</item>
-           <item>礼服客户</item>
-           <item>化妆客户</item>
-           <item>预约进店</item>
-           <item>选片客户</item>
-           <item>我的客户</item>
+        <item>拍照客户</item>
+        <item>取件客户</item>
+        <item>礼服客户</item>
+        <item>化妆客户</item>
+        <item>预约进店</item>
+        <item>选片客户</item>
+        <item>我的客户</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -6,25 +6,29 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-import com.suxuantech.erpsys.common.OptionHelp;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
-import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
-import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
+import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
+import com.suxuantech.erpsys.entity.CustomerIntentionEntity;
+import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
+import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.utils.StringUtils;
+import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
+import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.DefineLoadMoreView;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -66,7 +70,11 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<OrderReceivingSiteEntity.DataBean> orderReceivingSiteData;
     private List<OutletsReceptionEntity.DataBean> outletsReceptionData;
     private List<CustomerZoneEntity.DataBean> customerZoneData;
+    private List<CustomerSourceEntity.DataBean> customerSourceData;
+    private List<CustomerIntentionEntity.DataBean> customerIntentionData;
+
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
+
     /**
      * 加载更多。
      */
@@ -92,7 +100,6 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<PackageEntity.DataBean> packageData;
     private List<ProductEntity.DataBean> productData;
     private BaseRecyclerAdapter<ProductEntity.DataBean> productAdapter;
-
     @Override
     public void widgetClick(View v) {
         switch (v.getId()){
@@ -280,7 +287,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 break;
             case OUTLETS_RECEPTION:
                 //门市接待
-                Url=Contact.getFullUrl(Contact.OUTLETS_RECEPTION, Contact.TOKEN, 0);
+                Url=Contact.getFullUrl(Contact.OUTLETS_RECEPTION, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if(getData) {
                     getOutletsReception();
                 }
@@ -299,6 +306,23 @@ public class OptionActivity extends ImmersedBaseActivity {
                     getCustomerZone();
                 }
                 break;
+            case CUSTOMER_SOURCE:
+                //客户来源
+                Url=Contact.getFullUrl(Contact.CUSTOMER_SOURCE, Contact.TOKEN, 0);
+                if(getData) {
+                    getCustomerSource();
+                }
+                break;
+
+            case CUSTOMER_INTENTION:
+                //客户意向
+                Url=Contact.getFullUrl(Contact.CUSTOMER_INTENTION, Contact.TOKEN, 0);
+                if(getData) {
+                    getCustomerIntention();
+                }
+                break;
+
+
         }
     }
 
@@ -315,7 +339,9 @@ public class OptionActivity extends ImmersedBaseActivity {
             setResult(RESULT_OK,intent1);
             //发送EventBus事件也可以接收
             EventBus.getDefault().post(mAllData.get(position));
+            EventBus.getDefault().post(new SmpileEventMsg(urlTag,mAllData.get(position)));
             if(Url!=null){
+
                 if (consumptionTypeData!=null){
                     //消费类型
                     ArrayList<ConsumptionTypeEntity.DataBean> dataBeans = new ArrayList<>();
@@ -327,7 +353,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }else if (orderReceivingSiteData!=null){
-                    //消费类型
+                    //接单点
                     ArrayList<OrderReceivingSiteEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(orderReceivingSiteData.get(position));
                     BaseMsg<OrderReceivingSiteEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(orderReceivingSiteData, dataBeans, mMultiple);
@@ -337,7 +363,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 }else if (outletsReceptionData!=null){
-                    //消费类型
+                    //门市接待
                     ArrayList<OutletsReceptionEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(outletsReceptionData.get(position));
                     BaseMsg<OutletsReceptionEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(outletsReceptionData, dataBeans, mMultiple);
@@ -361,6 +387,26 @@ public class OptionActivity extends ImmersedBaseActivity {
                     ArrayList<PackageEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(packageData.get(position));
                     BaseMsg<PackageEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(packageData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                }else  if(customerSourceData!=null){
+                    //客户来源
+                    ArrayList<CustomerSourceEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(customerSourceData.get(position));
+                    BaseMsg<CustomerSourceEntity.DataBean> dataBeanBaseMsg = new BaseMsg<CustomerSourceEntity.DataBean>(customerSourceData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                }else  if(customerIntentionData!=null){
+                    //客户来源
+                    ArrayList<CustomerIntentionEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(customerIntentionData.get(position));
+                    BaseMsg<CustomerIntentionEntity.DataBean> dataBeanBaseMsg = new BaseMsg<CustomerIntentionEntity.DataBean>(customerIntentionData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -482,7 +528,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     consumptionTypeData = response.get().getData();
                     if (consumptionTypeData!=null){
                         for (ConsumptionTypeEntity.DataBean da:consumptionTypeData) {
-                            mAllData.add(da.getShop_name()) ;
+                            mAllData.add(da.getConsumption_name()) ;
                         }
                         setAdapterCtrl();
                     }else {
@@ -517,7 +563,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                    orderReceivingSiteData = response.get().getData();
                     if (orderReceivingSiteData!=null){
                         for (OrderReceivingSiteEntity.DataBean da:orderReceivingSiteData) {
-                            mAllData.add(da.getShop_name()) ;
+                            mAllData.add(da.getAcceptoraddress_name()) ;
                         }
                         setAdapterCtrl();
                     }else {
@@ -598,6 +644,80 @@ public class OptionActivity extends ImmersedBaseActivity {
             }
             @Override
             public void onFailed(int what, Response<CustomerZoneEntity> response) {
+                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+
+    }
+
+
+    /**
+     *客户来源
+     */
+    public void getCustomerSource() {
+        //请求实体
+        JavaBeanRequest<CustomerSourceEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerSourceEntity>(Url, RequestMethod.POST,CustomerSourceEntity.class);
+        HttpListener<CustomerSourceEntity> searchByCustmor = new HttpListener<CustomerSourceEntity>(){
+            @Override
+            public void onSucceed(int what, Response<CustomerSourceEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok){
+                    mAllData.clear();
+                    customerSourceData = response.get().getData();
+                    if (customerSourceData!=null){
+                        for (CustomerSourceEntity.DataBean da:customerSourceData) {
+                            mAllData.add(da.getCus_name()) ;
+                        }
+                        setAdapterCtrl();
+                    }else {
+                        mRecyclerView.loadMoreFinish(true,false);
+                    }
+                }else {
+                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<CustomerSourceEntity> response) {
+                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+
+    }
+
+
+    /**
+     *客户意向
+     */
+    public void getCustomerIntention() {
+        //请求实体
+        JavaBeanRequest<CustomerIntentionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerIntentionEntity>(Url, RequestMethod.POST,CustomerIntentionEntity.class);
+        HttpListener<CustomerIntentionEntity> searchByCustmor = new HttpListener<CustomerIntentionEntity>(){
+            @Override
+            public void onSucceed(int what, Response<CustomerIntentionEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok){
+                    mAllData.clear();
+                    customerIntentionData = response.get().getData();
+                    if (customerIntentionData!=null){
+                        for (CustomerIntentionEntity.DataBean da:customerIntentionData) {
+                            mAllData.add(da.getIntention_name()) ;
+                        }
+                        setAdapterCtrl();
+                    }else {
+                        mRecyclerView.loadMoreFinish(true,false);
+                    }
+                }else {
+                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<CustomerIntentionEntity> response) {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }

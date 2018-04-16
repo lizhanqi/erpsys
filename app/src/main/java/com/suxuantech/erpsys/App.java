@@ -66,8 +66,8 @@ public class App extends Application {
     public static   boolean ISDEBUG=true;
     public static String APP_LOG_NAME = "debug";
     public final static   String LOGINFILENAME="login_inf";
-    public LoginEntity userInfo;
-    public     LoginEntity getUserInfor(){
+    private LoginEntity userInfo;
+    public     LoginEntity getLoginData(){
         //return    CacheUtils.getInstance().getJSONObject(LOGINFILENAME);
         if (userInfo==null){
             String string = CacheUtils.getInstance().getString(LOGINFILENAME);
@@ -75,6 +75,10 @@ public class App extends Application {
         }
         return userInfo;
     }
+    public   LoginEntity.DataBean getUserInfor(){
+    return  App.getApplication().getLoginData().getData().get(0);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

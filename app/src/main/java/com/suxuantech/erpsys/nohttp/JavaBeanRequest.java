@@ -44,6 +44,7 @@ public class JavaBeanRequest<T> extends Request<T> {
         addSignate();
         this.clazz = clazz;
     }
+
     /*
        *添加自定义请求头进行所谓的加密
      */
@@ -53,7 +54,6 @@ public class JavaBeanRequest<T> extends Request<T> {
         addHeader("timestamp", ""+signature.currentTimeMillis);
         addHeader("nonce",""+signature.random);
         addHeader("signature",signature.signature);
-  //      signature
     }
     @Override
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
