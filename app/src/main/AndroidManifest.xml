@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:overrideLibrary="android.support.v7.appcompat"
-    package="com.suxuantech.erpsys">
+    package="com.suxuantech.erpsys"
+    tools:overrideLibrary="android.support.v7.appcompat">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- //获取设备网络状态，禁用后无法获取网络状态 -->
@@ -115,18 +115,19 @@
         <activity
             android:name=".ui.activity.DefaultErrorActivity"
             android:process=":error_activity" />
-        <!--       android:theme="@style/AppTheme"-->
+        <!-- android:theme="@style/AppTheme" -->
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/convertion"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-
+            android:theme="@style/convertion"
             android:windowSoftInputMode="stateHidden|adjustResize">
-                <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="com.suxuantech.erpsys"
                     android:path="/conversationlist"
@@ -140,13 +141,13 @@
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.activity.OutletsOrderActivity" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"
@@ -198,8 +199,7 @@
         <activity android:name=".ui.activity.PunchCardActivity" />
         <activity android:name=".ui.activity.BookManageActivity" />
         <activity android:name=".ui.activity.MyBorrowActivity" />
-        <activity android:name=".chat.JLoginActivity">
-        </activity>
+        <activity android:name=".chat.JLoginActivity"></activity>
         <!--
 adjustPan是把整个界面向上平移，使输入框露出，不会改变界面的布局；
 adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
@@ -215,7 +215,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
             android:name=".chat.location.activity.MapPickerActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity android:name=".chat.ImageActivity" />
-        <activity android:name=".chat.ConversationListActivity"></activity>
+        <activity android:name=".chat.ConversationListActivity" />
+        <activity android:name=".chat.GroupActivity"></activity>
     </application>
 
 </manifest>

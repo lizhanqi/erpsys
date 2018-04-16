@@ -24,6 +24,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
+import com.suxuantech.erpsys.chat.GroupActivity;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.entity.DistrictEntity;
 import com.suxuantech.erpsys.nohttp.DownLoad;
@@ -172,6 +173,8 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         mMenuView.findViewById(R.id.create_group_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, GroupActivity.class));
+                mMenuPopWindow.dismiss();
                 ToastUtils.showShort("群聊");
             }
         });
