@@ -377,6 +377,11 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
     public void setUseDefinedNavRightTextColor(int Color){
         mTvNavRight.setTextColor(Color);
     }
+
+    public AdjustDrawableTextView getNavRight() {
+        return mTvNavRight;
+    }
+
     //---------------------自定义导航右侧end-------------
     /**
      * 自定义导航控件的距离父view位置

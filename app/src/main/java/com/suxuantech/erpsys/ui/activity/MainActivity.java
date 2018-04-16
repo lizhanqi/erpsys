@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -18,9 +23,9 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.entity.DistrictEntity;
 import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
+import com.suxuantech.erpsys.entity.DistrictEntity;
 import com.suxuantech.erpsys.nohttp.DownLoad;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -43,7 +48,6 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -59,35 +63,39 @@ import io.rong.imlib.model.Conversation;
 import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
+
 public class MainActivity extends ImmersedBaseActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
-    private ArrayList<Fragment> fragments =new ArrayList<>();
-   // private MsgFragment msgFragment;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    // private MsgFragment msgFragment;
     private MyFragment myFragment;
     private ERPFragment erpFragment;
     private WorkFragment workFragment;
     private CRMFragment crmFragment;
+    private PopupWindow mMenuPopWindow;
     /**
      * 导航栏点击切换的事件
      */
-    BottomNavigationBar.OnTabSelectedListener onTabSelectedListener=new BottomNavigationBar.OnTabSelectedListener() {
+    BottomNavigationBar.OnTabSelectedListener onTabSelectedListener = new BottomNavigationBar.OnTabSelectedListener() {
         @Override
         public void onTabSelected(int position) {
         }
+
         @Override
         public void onTabUnselected(int position) {
             send();
-            if(position==bottomNavigationBar.getCurrentSelectedPosition()){
-            return;
+            if (position == bottomNavigationBar.getCurrentSelectedPosition()) {
+                return;
             }
-            dLog(position+"当前"+            bottomNavigationBar.getCurrentSelectedPosition());
-            selectedFragment( bottomNavigationBar.getCurrentSelectedPosition());
-          //  showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
-            if (   bottomNavigationBar.getCurrentSelectedPosition()!=2&&bottomNavigationBar.getCurrentSelectedPosition()!=4){
-                ImmersionBar.with(MainActivity.this).statusBarDarkFont(true,0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
+            dLog(position + "当前" + bottomNavigationBar.getCurrentSelectedPosition());
+            selectedFragment(bottomNavigationBar.getCurrentSelectedPosition());
+            //  showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
+            if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
+                ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
             }
         }
+
         @Override
         public void onTabReselected(int position) {
             dLog("再选");
@@ -122,7 +130,8 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             finish();
         }
     }
-    void  login(String name, String password) {
+
+    void login(String name, String password) {
         Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
         loadingDialog.show();
         JMessageClient.login(name, password, new BasicCallback() {
@@ -136,72 +145,111 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-       // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
+        // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
-       setSwipeBackEnable(false);
+        setSwipeBackEnable(false);
 //       useEventBus();
         setContentView(R.layout.activity_main);
+        initPop();
         initMyBottomNavigation();
         selectedFragment(2);
         ImmersionBar.with(MainActivity.this).navigationBarColor(R.color.translucent_black_90).init();
-       // initFragement();
+        // initFragement();
         initData();
     }
+
+    /**
+     * 初始化弹窗
+     */
+    private void initPop() {
+        View mMenuView = getLayoutInflater().inflate(R.layout.drop_down_menu, null);
+        mMenuView.findViewById(R.id.send_message_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtils.show("单聊");
+            }
+        });
+        mMenuView.findViewById(R.id.create_group_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtils.show("群聊");
+            }
+        });
+        mMenuView.findViewById(R.id.ll_saoYiSao).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            ToastUtils.show("扫一扫");
+            }
+        });
+        mMenuPopWindow = new PopupWindow(mMenuView, WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT, true);
+
+    }
+
     public static final int FIRST = 0;
     public static final int SECOND = 1;
     public static final int THIRD = 2;
     public static final int FOUR = 3;
     //public static final int FIVE = 4;
     private SupportFragment[] mFragments = new SupportFragment[5];
-       private  void initFragement(){
-            SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
+
+    private void initFragement() {
+        SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
 //           initConversationList();
-            if (firstFragment == null) {
-                mFragments[FIRST] =new  MsgFragment();
-                mFragments[SECOND] = new  WorkFragment();
-                mFragments[THIRD] = new ERPFragment();
-               // mFragments[FOUR] = new CRMFragment();
-                mFragments[FOUR] = new MyFragment();
-                loadMultipleRootFragment(R.id.main_content, FIRST,
-                        mFragments[FIRST],
-                        mFragments[SECOND],
-                        mFragments[THIRD],
-                        mFragments[FOUR]);
-            } else {
-                // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
-                // 这里我们需要拿到mFragments的引用
-                mFragments[FIRST] = firstFragment;
-                mFragments[SECOND] =SupportHelper.findFragment(getSupportFragmentManager(),WorkFragment.class);
-                mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(),ERPFragment.class);
-                //mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),CRMFragment.class);
-                mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),MyFragment.class);
-            }
-            showHideFragment(mFragments[2]);
+        if (firstFragment == null) {
+            mFragments[FIRST] = new MsgFragment();
+            mFragments[SECOND] = new WorkFragment();
+            mFragments[THIRD] = new ERPFragment();
+            // mFragments[FOUR] = new CRMFragment();
+            mFragments[FOUR] = new MyFragment();
+            loadMultipleRootFragment(R.id.main_content, FIRST,
+                    mFragments[FIRST],
+                    mFragments[SECOND],
+                    mFragments[THIRD],
+                    mFragments[FOUR]);
+        } else {
+            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
+            // 这里我们需要拿到mFragments的引用
+            mFragments[FIRST] = firstFragment;
+            mFragments[SECOND] = SupportHelper.findFragment(getSupportFragmentManager(), WorkFragment.class);
+            mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
+            //mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),CRMFragment.class);
+            mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(), MyFragment.class);
         }
+        showHideFragment(mFragments[2]);
+    }
+
+    /**
+     * 发起会话弹窗
+     */
+    public void showPopWindow() {
+        mMenuPopWindow.setTouchable(true);
+        mMenuPopWindow.setOutsideTouchable(true);
+        mMenuPopWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        if (mMenuPopWindow.isShowing()) {
+            mMenuPopWindow.dismiss();
+        } else {
+            mMenuPopWindow.showAsDropDown(getNavRightView(), -10, -5);
+        }
+    }
+
 
     /**
      * 会话列表的fragment
      */
-    private  Fragment mConversationListFragment = null;
+    private Fragment mConversationListFragment = null;
     private Conversation.ConversationType[] mConversationsTypes = null;
-    boolean isRongIM=false;
-    private  Fragment initConversationList(){
-        if (isRongIM){
+    boolean isRongIM = false;
+
+    private Fragment initConversationList() {
+        if (isRongIM) {
             return initRongIMConversationListFragement();
-        }else {
+        } else {
             return initJGIMConversationListFragement();
         }
     }
-    /**
-     * 更新列表的消息
-     */
-    @Subscribe
-   public void onEventMainThread( int msg) {
-        if(msg==1){
-           // adapter!!.upData(JMessageClient.getConversationList())
-        }
-    }
-    private  Fragment   initJGIMConversationListFragement() {
+
+    private Fragment initJGIMConversationListFragement() {
         if (mConversationListFragment == null) {
             com.suxuantech.erpsys.chat.ConversationListFragment listFragment = new com.suxuantech.erpsys.chat.ConversationListFragment();
             mConversationListFragment = listFragment;
@@ -210,7 +258,8 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             return mConversationListFragment;
         }
     }
-    private  Fragment   initRongIMConversationListFragement() {
+
+    private Fragment initRongIMConversationListFragement() {
         if (mConversationListFragment == null) {
             ConversationListFragment listFragment = new ConversationListFragment();
             listFragment.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
@@ -271,17 +320,17 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 //        if (position!=0){
 //            hideToolbar();
 //        }
-        if (position!=0){
-            setUseDefinedNavRightDrawable(null);
+        if (position != 0) {
+            getNavRightView().setVisibility(View.GONE);
         }
-        if (position==2||position==4) {
+        if (position == 2 || position == 4) {
             hideUserDefinedNav();
-        }else {
+        } else {
             showUserDefinedNav();
             setUseDefinedNavLeftDrawable(null);
             getHeadNavUseDefinedRootView().setBackground(null);
         }
-         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
             case 0:
@@ -293,6 +342,12 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 }
                 setTitle("我的会话");
                 setUseDefinedNavRightDrawable(getResources().getDrawable(R.drawable.icon_add));
+                getNavRightView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPopWindow();
+                    }
+                });
 
 //                setSupportToolbar();
 //                getToolbar().setTitle("我的会话");
@@ -309,9 +364,9 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 break;
 
             case 3:
-                if ( contactsFragment== null) {
-                contactsFragment = new ContactsFragment();
-                transaction.add(R.id.main_content, contactsFragment);
+                if (contactsFragment == null) {
+                    contactsFragment = new ContactsFragment();
+                    transaction.add(R.id.main_content, contactsFragment);
                 } else {
                     transaction.show(contactsFragment);
                 }
@@ -338,7 +393,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
                 if (myFragment == null) {
                     myFragment = new MyFragment();
                     transaction.add(R.id.main_content, myFragment);
-                } else{
+                } else {
                     transaction.show(myFragment);
                 }
                 break;
@@ -346,6 +401,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         }
         transaction.commit();
     }
+
     private void hideFragment(FragmentTransaction transaction) {
         if (mConversationListFragment != null) {
             transaction.hide(mConversationListFragment);
@@ -364,6 +420,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         }
     }
     //-----------方式一end------
+
     /**
      * 初始化页面的导航
      */
@@ -372,19 +429,19 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         badgeItem = new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setText("2").setHideOnSelect(true);
         msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
         msgItem.setBadgeItem(badgeItem);
-        msgItem.setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_msg_normal));//非选中的图片
+        msgItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_msg_normal));//非选中的图片
         msgItem.setInActiveColor(getResources().getColor(R.color.mainNav_66));
         msgItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem workItem = new BottomNavigationItem(R.drawable.icon_work_pressed, getString(R.string.work));
-        workItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_work_normal));//非选中的图片
+        workItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_work_normal));//非选中的图片
         workItem.setInActiveColor(getResources().getColor(R.color.mainNav_66));
         workItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem erpItem = new BottomNavigationItem(R.drawable.icon_erp_pressed, getString(R.string.erp));
-        erpItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_erp_normal));//非选中的图片
-           BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_pressed, getString(R.string.crm));
-        contactItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_contact_normal));//非选中的图片
+        erpItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_erp_normal));//非选中的图片
+        BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_pressed, getString(R.string.crm));
+        contactItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_contact_normal));//非选中的图片
         BottomNavigationItem myItem = new BottomNavigationItem(R.drawable.icon_my_pressed, getString(R.string.my));
-        myItem .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_my_normal));//非选中的图片
+        myItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_my_normal));//非选中的图片
         bottomNavigationBar = findViewById(R.id.bottomNavigationBar);
         bottomNavigationBar.clearAll();
         bottomNavigationBar.initialise();
@@ -393,7 +450,7 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         bottomNavigationBar.addItem(msgItem)
                 .addItem(workItem)
                 .addItem(erpItem)
-               .addItem(contactItem)
+                .addItem(contactItem)
                 .addItem(myItem)
                 .setFirstSelectedPosition(2)
                 .initialise();
@@ -401,73 +458,80 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
         badgeItem.hide();
         //startFragment(ERPFragment.class);
     }
-    public  void netsBeanSample() {
-        String url="http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
+
+    public void netsBeanSample() {
+        String url = "http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
         //请求实体         // STOPSHIP: 2018/2/23 0023
-        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url,DistrictEntity.class);
+        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url, DistrictEntity.class);
 //        HttpResponseListener<DistrictEntity> districtBeanHttpResponseListener = new HttpResponseListener<DistrictEntity>(null);
-        HttpListener<DistrictEntity> searchByCustmor = new HttpListener<DistrictEntity>(){
+        HttpListener<DistrictEntity> searchByCustmor = new HttpListener<DistrictEntity>() {
             @Override
             public void onSucceed(int what, Response<DistrictEntity> response) {
                 L.i("what = [" + what + "], response = [" + response + "]");
             }
+
             @Override
             public void onFailed(int what, Response<DistrictEntity> response) {
-                L.i("失败"+what+"\n"+response.get());
+                L.i("失败" + what + "\n" + response.get());
                 System.out.println("失败what = [" + what + "], response = [" + response + "]");
             }
         };
         //CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
-    public void Down(){
-        String u="http://sw.bos.baidu.com/sw-search-sp/software/e25c4cc36a934/QQ_8.9.6.22427_setup.exe";
+
+    public void Down() {
+        String u = "http://sw.bos.baidu.com/sw-search-sp/software/e25c4cc36a934/QQ_8.9.6.22427_setup.exe";
         DownLoad downLoad = new DownLoad(10, u);
 
     }
-        public  void netsStringSample() {
-        String url="http://192.168.0.187:8734/api/fnTest/asd/ads/gh";
+
+    public void netsStringSample() {
+        String url = "http://192.168.0.187:8734/api/fnTest/asd/ads/gh";
         //请求实体
-       StringRequest districtBeanJavaBeanRequest = new StringRequest(url,RequestMethod.POST);
-        HttpListener<String> searchByCustmor = new HttpListener<String>(){
+        StringRequest districtBeanJavaBeanRequest = new StringRequest(url, RequestMethod.POST);
+        HttpListener<String> searchByCustmor = new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 L.i("what = [" + what + "], response = [" + response + "]");
             }
+
             @Override
             public void onFailed(int what, Response<String> response) {
-                L.i("失败"+what+"\n"+response.get());
+                L.i("失败" + what + "\n" + response.get());
                 System.out.println("失败what = [" + what + "], response = [" + response + "]");
             }
         };
 //        new  CallServer().setQueue();
-     //   CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
+        //   CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
 
     public void send() {
         Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.175:8734/api/SX_CustomerInfo", RequestMethod.POST);
-     //  stringRequest.addHeader("Content-Type", "application/json");
+        //  stringRequest.addHeader("Content-Type", "application/json");
         // stringRequest.setDefineRequestBodyForJson("{\"Token\":sio,\"Message\":2}");
 
-   stringRequest.add("Token","sio");
-        stringRequest.add("orderid","0");
-        stringRequest.add("ckey","小飞");
-        stringRequest.add("bTime","");
-        stringRequest.add("eTime","");
-        stringRequest.add("pageIndex",0);
-        stringRequest.add("pageSize","41414acbcsdfd");
-      // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
-       // stringRequest.setProxy(proxy);
+        stringRequest.add("Token", "sio");
+        stringRequest.add("orderid", "0");
+        stringRequest.add("ckey", "小飞");
+        stringRequest.add("bTime", "");
+        stringRequest.add("eTime", "");
+        stringRequest.add("pageIndex", 0);
+        stringRequest.add("pageSize", "41414acbcsdfd");
+        // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
+        // stringRequest.setProxy(proxy);
         RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
         requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
                     @Override
                     public void onStart(int what) {
                         super.onStart(what);
                     }
+
                     @Override
                     public void onSucceed(int what, Response<String> response) {
                         super.onSucceed(what, response);
-                        L.d("NoHttpSample",response.get());
+                        L.d("NoHttpSample", response.get());
                     }
+
                     @Override
                     public void onFailed(int what, Response<String> response) {
                         super.onFailed(what, response);
@@ -550,14 +614,15 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             }
         }
     }
+
     @Override
     public void onCountChanged(int i) {
-        if (badgeItem!=null){
-            if (i<=0){
-                badgeItem.setText(i+"");
-            }else if (i<99){
+        if (badgeItem != null) {
+            if (i <= 0) {
+                badgeItem.setText(i + "");
+            } else if (i < 99) {
                 badgeItem.setText("99+");
-            }else {
+            } else {
                 badgeItem.setText(null);
             }
         }
