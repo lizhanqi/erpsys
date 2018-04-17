@@ -196,6 +196,12 @@
 
 <style name="convertion" parent="AppTheme">
     <item name="android:windowIsTranslucent">false</item>
-    <item name="android:windowDisablePreview">true</item>
+<item name="android:windowDisablePreview">true</item>
+    </style>
+
+<style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+<item name="android:backgroundDimEnabled">false</item>
+<item name="android:windowBackground">@android:color/transparent</item>
 </style>
+
 </resources>
