@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -149,7 +150,13 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
     public Toolbar getToolbar() {
         return mToolbar;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+            if (android.R.id.home==item.getItemId()){
+                this.onBackPressed();
+            }
+        return super.onOptionsItemSelected(item);
+    }
     /**
      * 设置(内置)Toolbar支持
      * @return

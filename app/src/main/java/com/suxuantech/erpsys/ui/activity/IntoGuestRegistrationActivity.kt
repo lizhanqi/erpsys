@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -29,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 /**
- * 进客等级
+ * 进客登记
  */
 class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
     private var submit: Button? = null
@@ -165,6 +166,10 @@ class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_into_guest_registration)
         initView()
+        setTitle("进客登记")
+        setSupportToolbar()
+        getSupportActionBar()?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.white)))
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
         useEventBus()
     }
     override fun widgetClick(v: View?) {
