@@ -344,7 +344,7 @@ class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
             }
 
         }
-        request(0, stringRequest, httpListener,false,false)
+        request(0, stringRequest, httpListener,false,true)
     }
 
 

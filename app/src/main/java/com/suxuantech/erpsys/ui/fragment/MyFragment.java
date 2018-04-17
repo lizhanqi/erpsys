@@ -39,7 +39,7 @@ public class MyFragment extends SupportFragment {
         super.onViewCreated(view, savedInstanceState);
         BounceScrollView dampView =view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
-        ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).titleBar(R.id.tv_mine).navigationBarColor(R.color.themeColor).init();
+        ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).titleBar(R.id.tv_mine).init();
         view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

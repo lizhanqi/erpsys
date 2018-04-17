@@ -15,6 +15,7 @@
  */
 package com.suxuantech.erpsys.nohttp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
@@ -39,11 +40,10 @@ import org.json.JSONException;
  * @author Yan Zhenjie.
  */
 public class HttpResponseListener<T> implements OnResponseListener<T> {
-    private Context mContext;
     /**
      * Dialog.
      */
-    private WaitDialog mWaitDialog;
+    private Dialog mWaitDialog;
     /**
      * Request.
      */
@@ -66,6 +66,16 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
     public HttpResponseListener(Context context, Request<?> request, HttpListener<T> httpCallback, boolean canCancel, boolean isLoading) {
         this(context, request, httpCallback, canCancel, isLoading, true);
     }
+
+    /**  不能取消,显示错误,显示加载弹窗的
+     * @param mContext
+     * @param mRequest
+     * @param callback
+     */
+    public HttpResponseListener(Context mContext, Request<?> mRequest, HttpListener<T> callback) {
+        this(mContext, mRequest, callback, false, true, true);
+    }
+
     /**
      * @param context      context用来实例化dialog.
      * @param request      请求对象.
@@ -78,7 +88,6 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (context instanceof App){
             context =((App) context).getTopActivity();
         }
-        this.mContext = context;
         this.mRequest = request;
         this.isShowError = isShowError;
         if (context != null && isLoading) {
@@ -93,6 +102,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         }
         this.callback = httpCallback;
     }
+
     /**
      * 开始请求, 这里显示一个dialog.
      */

@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
@@ -201,10 +202,8 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullScreen(this);
-//        Log.i(TAG, "onCreate: "+checkDeviceHasNavigationBar()+getNavigationBarHeight());
-        //setSwipeBackEnable(false);
+        ImmersionBar.with(this).reset().statusBarDarkFont(true).init();
         setContentView(R.layout.activity_login);
-        //hideStatus();
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
         // Set up the login form.

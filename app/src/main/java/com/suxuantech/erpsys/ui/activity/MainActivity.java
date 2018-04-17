@@ -425,7 +425,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
      * 初始化页面的导航
      */
     private void initMyBottomNavigation() {
-
         badgeItem = new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setText("2").setHideOnSelect(true);
         msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
         msgItem.setBadgeItem(badgeItem);
