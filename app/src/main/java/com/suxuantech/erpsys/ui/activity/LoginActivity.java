@@ -36,7 +36,6 @@ import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
-import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
@@ -138,7 +137,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 
     public void LoginSucceed() {
         if (isLoginOneSucceed) {
-            loadingDialog.dismiss();
+          loadingDialog.dismiss();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -153,7 +152,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         isLoginOneSucceed = false;
         name = "小飞";
         password = "0";
-        loadingDialog.show();
+       loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
         HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
             @Override
@@ -168,19 +167,14 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                     toast(response.get().getMsg());
                 }
             }
-
             @Override
             public void onFailed(int what, Response<LoginEntity> response) {
                 loginFailed();
             }
         };
-        HttpResponseListener httpResponseListener = new HttpResponseListener(getBaseContext(), stringRequest, httpListener, false, false);
-        addRequestQueue(0, stringRequest, httpResponseListener);
-
+        request(0, stringRequest, httpListener, false, false);
     }
-
     public void loginFailed() {
-
         loadingDialog.dismiss();
         if (isLoginOneSucceed) {
             loadingDialog.dismiss();
@@ -232,7 +226,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
+               login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
             }
         });
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {

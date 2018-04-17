@@ -16,13 +16,14 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.permission.Action;
@@ -132,6 +133,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * 网络队列,默认每个Activity都应该有一个队列,用这个队列在页面销毁可以全部取消major
      */
     private RequestQueue requestQueue;
+    /**
+     * 用来标记取消。
+     */
+    private Object object = new Object();
     private Unbinder unbinder;
     private Rationale mRationale;
     private PermissionSetting mSetting;
@@ -256,7 +261,8 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     public void toast(@StringRes int str) {
         ToastUtils.showShort(str);
     }
-    //----------------------页面管理------------------------------
+    //----------------------页面管理end------------------------------
+    /*------------------------------- 网络-------------------------------------------*/
     /**
      * 获取本页面的队列
      * @return RequestQueue 队列
@@ -264,18 +270,24 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     public RequestQueue getRequestQueue(){
         return requestQueue;
     }
-
     /**
-     * 添加一个请求到本页的请求对列
-     * @param what
-     * @param request
-     * @param listener
-     * @param <T>
+     * 发起请求。
+     *
+     * @param what      what.
+     * @param request   请求对象。
+     * @param callback  回调函数。
+     * @param canCancel 是否能被用户取消。
+     * @param isLoading 实现显示加载框。
+     * @param <T>       想请求到的数据类型。
      */
-  public <T>   void    addRequestQueue(int what, Request<T> request, OnResponseListener<T> listener){
-      getRequestQueue().add(what,request,listener);
+    public <T> void request(int what, Request<T> request, HttpListener<T> callback,boolean canCancel, boolean isLoading) {
+        request.setCancelSign(object);
+        requestQueue.add(what, request, new HttpResponseListener<>(this, request, callback, canCancel, isLoading));
     }
-    //------------------------------------生命周期---------------------
+    protected void cancelAll() {
+        requestQueue.cancelAll();
+    }
+    /* ----------------------------------------------网络end----------------------------------------------*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -283,15 +295,14 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionSet.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        requestQueue = NoHttp.newRequestQueue();
-        dLog(TAG + "-->onCreate()");
+        // 初始化请求队列，传入的参数是请求并发值。
+        requestQueue = NoHttp.newRequestQueue(1);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        dLog(TAG + "--->onResume()");
     }
     @Override
     protected void onDestroy() {
@@ -303,9 +314,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         if (useButterKnife&&unbinder!=null){
             unbinder.unbind();
         }
-        requestQueue.cancelAll();
+        // 和声明周期绑定，退出时取消这个队列中的所有请求，当然可以在你想取消的时候取消也可以，不一定和声明周期绑定。
+        requestQueue.cancelBySign(object);
+        // 因为回调函数持有了activity，所以退出activity时请停止队列。
         requestQueue.stop();
-        dLog(TAG + "--->onDestroy()");
     }
     //----------------生命周期end-----------------
     //--------------------------------------日志模块------------------

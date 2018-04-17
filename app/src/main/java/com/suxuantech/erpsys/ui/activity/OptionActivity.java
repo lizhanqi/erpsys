@@ -19,7 +19,6 @@ import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
-import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -475,7 +474,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+       request(0,districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
     /**
      * 获取包套
@@ -509,7 +508,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(2,districtBeanJavaBeanRequest, searchByCustmor,   false, false);
     }
 
     /**
@@ -544,7 +543,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(3,districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
     /**
@@ -579,7 +578,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(4,districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
     /**
      * 门市接待
@@ -613,7 +612,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(5,districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
     /**
@@ -648,7 +647,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(6,districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
@@ -685,7 +684,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(7,districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
@@ -722,7 +721,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        new CallServer().setQueue(getRequestQueue()).add(this, districtBeanJavaBeanRequest,searchByCustmor, 0, false, false);
+        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 

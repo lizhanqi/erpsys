@@ -93,7 +93,6 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         }
         this.callback = httpCallback;
     }
-
     /**
      * 开始请求, 这里显示一个dialog.
      */
@@ -102,9 +101,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (mWaitDialog != null && !mWaitDialog.isShowing()){
             mWaitDialog.show();
         }
-
     }
-
     /**
      * 结束请求, 这里关闭dialog.
      */
@@ -113,7 +110,6 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (mWaitDialog != null && mWaitDialog.isShowing()){
             mWaitDialog.dismiss();
         }
-
     }
     /**
      * 成功回调.
@@ -123,21 +119,19 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (callback != null) {
             // 这里判断一下http响应码，这个响应码问下你们的服务端你们的状态有几种，一般是200成功。
             // w3c标准http响应码：http://www.w3school.com.cn/tags/html_ref_httpmessages.asp
-            if (response.get()!=null){
+            if (response.get()!=null&&response.getHeaders().getResponseCode()==200){
                 callback.onSucceed(what, response);
             }else {
                onFailed(what,response);
             }
         }
     }
-
     /**
      * 失败回调.
      */
     @Override
     public void onFailed(int what, Response<T> response) {
         Exception exception = response.getException();
-
         if (isShowError) {
             if (exception instanceof NetworkError) {
                 ToastUtils.showShort(R.string.error_please_check_network);
@@ -163,5 +157,4 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
             callback.onFailed(what, response);
         }
     }
-
 }

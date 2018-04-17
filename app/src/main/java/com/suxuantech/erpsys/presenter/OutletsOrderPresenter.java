@@ -82,7 +82,7 @@ public class OutletsOrderPresenter {
                }
            }
        };
-        new CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 0, false, true);
+          new  CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 0, false, true);
        // CallServer.getInstance().add(null, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
     }
     /*

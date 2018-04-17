@@ -17,20 +17,19 @@ package com.suxuantech.erpsys.nohttp;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.suxuantech.erpsys.nohttp.ext.BaseRequest;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.StringRequest;
 
 /**
  * <p>自定义JavaBean请求。</p>
  * Created by Yan Zhenjie on 2016/10/15.
  */
-public class JavaBeanRequest<T> extends Request<T> {
+public class JavaBeanRequest<T> extends BaseRequest<T> {
     private Class<T> clazz;
-
     /**
      * 创建一个GetBean请求
      * @param url
@@ -41,19 +40,7 @@ public class JavaBeanRequest<T> extends Request<T> {
     }
     public JavaBeanRequest(String url, RequestMethod requestMethod, Class<T> clazz) {
         super(url, requestMethod);
-        addSignate();
         this.clazz = clazz;
-    }
-
-    /*
-       *添加自定义请求头进行所谓的加密
-     */
-    public void addSignate(){
-        Contact.SignateInfo signature = Contact.getSignate();
-        addHeader("Content-Type", "application/json");
-        addHeader("timestamp", ""+signature.currentTimeMillis);
-        addHeader("nonce",""+signature.random);
-        addHeader("signature",signature.signature);
     }
     @Override
     public T parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {

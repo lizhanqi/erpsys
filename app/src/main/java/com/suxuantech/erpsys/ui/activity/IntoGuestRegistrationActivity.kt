@@ -17,19 +17,16 @@ import com.suxuantech.erpsys.entity.*
 import com.suxuantech.erpsys.eventmsg.BaseMsg
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
-import com.suxuantech.erpsys.nohttp.HttpResponseListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
 import com.suxuantech.erpsys.ui.widget.ScrollEditText
 import com.suxuantech.erpsys.utils.DateUtil
-import com.suxuantech.erpsys.utils.FastJsonUtils
 import com.suxuantech.erpsys.utils.ToastUtils
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * 进客等级
@@ -291,63 +288,63 @@ class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
             }
         }
     }
-
     private fun commint() {
-       var m  = HashMap<String ,String>() ;
-        m.put("Customer_name",mEtCustomerName?.text.toString())
-        m.put("Customer_tel",mEtCustomerPhone?.text.toString())
-        m.put("Customer_wechat",mEtCustomerWechat?.text.toString())
-        m.put("Customer_qq",mETCustomerQQ?.text.toString())
-        m.put("Customer_sex",mTvCustomerSex?.text.toString())
-        m.put("Consultation_type",mTvConsumptionType?.text.toString())
-        m.put("Customer_area",mTvCustomerZone?.text.toString())
-        m.put("Customer_birthday",if(TextUtils.isEmpty(mTvCustomerBirthday?.text.toString())){ ""}else{ DateUtil.String2String(mTvCustomerBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-        m.put("Customer_cource",mTvCustmoerSource?.text.toString())
-        m.put("Customer_intention",mTvCustomerIntention?.text.toString())
-        m.put("Customer_orderaddress",mTvOrderReceivingPoint?.text.toString())
-        m.put("Customer_address",mTvCustmoerAddress?.text.toString())
-        m.put("Yjd_day", if(TextUtils.isEmpty(mTvReservationDate?.text.toString())){ ""}else{ DateUtil.String2String(mTvReservationDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-        m.put("Wedding_date",if(TextUtils.isEmpty(mTvMarryDate?.text.toString())){ ""}else{DateUtil.String2String(mTvMarryDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-        m.put("Yp_day",if(TextUtils.isEmpty(mTvReservationShootDate?.text.toString())){ ""}else{DateUtil.String2String(mTvReservationShootDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-        m.put("Mate_name",mEtMateName?.text.toString())
-        m.put("Mate_sex",mTvMateSex?.text.toString())
-        m.put("Mate_tel",mEtMatePhone?.text.toString())
-        m.put("Mate_wechat",mEtMateWechat?.text.toString())
-        m.put("Mate_qq",mEtMateQQ?.text.toString())
-        m.put("Mate_birthday",if(TextUtils.isEmpty(mTvMateBirthday?.text.toString())){ ""}else{DateUtil.String2String(mTvMateBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-        m.put("Dj_staff", App.getApplication().userInfor.staffname)
-        m.put("Sales_staff",mTvOutletsReception?.text.toString())
-        m.put("Customer_remark",mEtCustmoerMark?.text.toString())
-        m.put("Shop_name",App.getApplication().userInfor.shop_name)
-        m.put("Shop_code",App.getApplication().userInfor.shop_code)
-        m.put("Brandid",App.getApplication().userInfor.brandclass_id)
-        m.put("Customer_from","APP")
-        m.put("From_index","")
-        m.put("Sales_staff_number",salesStaffNumber)
-        m.put("Consultation_type_id",consultationTypeId)
-        m.put("Customer_area_id",customerZoneId)
-        m.put("Customer_cource_id",customerSourceId)
-        m.put("Customer_intention_id",customerIntentionId)
-        m.put("Staffid",App.getApplication().userInfor.staff_id)
-        val toJSONString = FastJsonUtils.toJSONString(m);
         //请求实体
         var url= Contact.getFullUrl( Contact.GUEST_REGISTRATION,Contact.TOKEN)
         val stringRequest = JavaBeanRequest(url, RequestMethod.POST, GustRegistrationEntity::class.java)
-        stringRequest.addHeader("Content-Type", "application/json");
-        stringRequest.setDefineRequestBodyForJson(toJSONString)
+     //  var m  = HashMap<String ,String>() ;
+       stringRequest.addBodyJson("Customer_name",mEtCustomerName?.text.toString())
+       stringRequest.addBodyJson("Customer_tel",mEtCustomerPhone?.text.toString())
+       stringRequest.addBodyJson("Customer_wechat",mEtCustomerWechat?.text.toString())
+       stringRequest.addBodyJson("Customer_qq",mETCustomerQQ?.text.toString())
+       stringRequest.addBodyJson("Customer_sex",mTvCustomerSex?.text.toString())
+       stringRequest.addBodyJson("Consultation_type",mTvConsumptionType?.text.toString())
+       stringRequest.addBodyJson("Customer_area",mTvCustomerZone?.text.toString())
+       stringRequest.addBodyJson("Customer_birthday",if(TextUtils.isEmpty(mTvCustomerBirthday?.text.toString())){ ""}else{ DateUtil.String2String(mTvCustomerBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
+       stringRequest.addBodyJson("Customer_cource",mTvCustmoerSource?.text.toString())
+       stringRequest.addBodyJson("Customer_intention",mTvCustomerIntention?.text.toString())
+       stringRequest.addBodyJson("Customer_orderaddress",mTvOrderReceivingPoint?.text.toString())
+       stringRequest.addBodyJson("Customer_address",mTvCustmoerAddress?.text.toString())
+       stringRequest.addBodyJson("Yjd_day", if(TextUtils.isEmpty(mTvReservationDate?.text.toString())){ ""}else{ DateUtil.String2String(mTvReservationDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
+       stringRequest.addBodyJson("Wedding_date",if(TextUtils.isEmpty(mTvMarryDate?.text.toString())){ ""}else{DateUtil.String2String(mTvMarryDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
+       stringRequest.addBodyJson("Yp_day",if(TextUtils.isEmpty(mTvReservationShootDate?.text.toString())){ ""}else{DateUtil.String2String(mTvReservationShootDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
+       stringRequest.addBodyJson("Mate_name",mEtMateName?.text.toString())
+       stringRequest.addBodyJson("Mate_sex",mTvMateSex?.text.toString())
+       stringRequest.addBodyJson("Mate_tel",mEtMatePhone?.text.toString())
+       stringRequest.addBodyJson("Mate_wechat",mEtMateWechat?.text.toString())
+       stringRequest.addBodyJson("Mate_qq",mEtMateQQ?.text.toString())
+       stringRequest.addBodyJson("Mate_birthday",if(TextUtils.isEmpty(mTvMateBirthday?.text.toString())){ ""}else{DateUtil.String2String(mTvMateBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
+       stringRequest.addBodyJson("Dj_staff", App.getApplication().userInfor.staffname)
+       stringRequest.addBodyJson("Sales_staff",mTvOutletsReception?.text.toString())
+       stringRequest.addBodyJson("Customer_remark",mEtCustmoerMark?.text.toString())
+       stringRequest.addBodyJson("Shop_name",App.getApplication().userInfor.shop_name)
+       stringRequest.addBodyJson("Shop_code",App.getApplication().userInfor.shop_code)
+       stringRequest.addBodyJson("Brandid",App.getApplication().userInfor.brandclass_id)
+       stringRequest.addBodyJson("Customer_from","APP")
+       stringRequest.addBodyJson("From_index","")
+       stringRequest.addBodyJson("Sales_staff_number",salesStaffNumber)
+       stringRequest.addBodyJson("Consultation_type_id",consultationTypeId)
+       stringRequest.addBodyJson("Customer_area_id",customerZoneId)
+       stringRequest.addBodyJson("Customer_cource_id",customerSourceId)
+       stringRequest.addBodyJson("Customer_intention_id",customerIntentionId)
+       stringRequest.addBodyJson("Staffid",App.getApplication().userInfor.staff_id)
+        stringRequest.param2Json()
+      // val toJSONString = FastJsonUtils.toJSONString(m);
+       // stringRequest.addHeader("Content-Type", "application/json");
+        //stringRequest.setDefineRequestBodyForJson(toJSONString)
         val httpListener = object : HttpListener<GustRegistrationEntity> {
-            override fun onFailed(what: Int, response: Response<GustRegistrationEntity>?) {
+            override fun onSucceed(what: Int, response: Response<GustRegistrationEntity>?) {
                 if(response!!.get().isOK){
                     ToastUtils.showShort(response.get().data)
                 }else{
                     ToastUtils.showShort(response.get().getMsg())
                 }
             }
-            override fun onSucceed(what: Int, response: Response<GustRegistrationEntity>?) {
+            override fun onFailed(what: Int, response: Response<GustRegistrationEntity>?) {
             }
+
         }
-        val httpResponseListener = HttpResponseListener(baseContext, stringRequest, httpListener, false, false)
-        addRequestQueue<GustRegistrationEntity>(0, stringRequest, httpResponseListener)
+        request(0, stringRequest, httpListener,false,false)
     }
 
 

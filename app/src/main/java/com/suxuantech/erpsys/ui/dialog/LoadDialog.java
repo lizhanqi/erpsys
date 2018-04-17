@@ -120,7 +120,6 @@ public class LoadDialog extends Dialog {
                     return;
                 }
             }
-
             if (loadDialog != null && loadDialog.isShowing()) {
                 Context loadContext = loadDialog.getContext();
                 if (loadContext != null && loadContext instanceof Activity) {

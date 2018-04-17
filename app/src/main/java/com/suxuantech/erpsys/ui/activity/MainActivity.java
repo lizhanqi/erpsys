@@ -88,7 +88,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
             if (position == bottomNavigationBar.getCurrentSelectedPosition()) {
                 return;
             }
-            dLog(position + "当前" + bottomNavigationBar.getCurrentSelectedPosition());
             selectedFragment(bottomNavigationBar.getCurrentSelectedPosition());
             //  showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
             if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
@@ -98,7 +97,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
         @Override
         public void onTabReselected(int position) {
-            dLog("再选");
         }
     };
 

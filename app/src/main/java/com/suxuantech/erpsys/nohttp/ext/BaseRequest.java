@@ -1,12 +1,12 @@
 package com.suxuantech.erpsys.nohttp.ext;
 
-import android.support.annotation.NonNull;
-
-import com.alibaba.fastjson.JSON;
-import com.yanzhenjie.nohttp.Headers;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.utils.FastJsonUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.tools.MultiValueMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ......................我佛慈悲....................
@@ -33,31 +33,47 @@ import com.yanzhenjie.nohttp.tools.MultiValueMap;
  * @author Created by 李站旗 on 2018/3/9 0009 15:06 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: 对于基础的请求扩展，主要实现 请求时统一签名 参数转换为json
  */
 
-public class BaseRequest extends Request {
+public abstract class BaseRequest<Result> extends Request<Result> {
     public BaseRequest(String url) {
         super(url);
     }
-
+    Map<String ,Object> jsonParam;
     public BaseRequest(String url, RequestMethod requestMethod) {
         super(url, requestMethod);
+        addSignate();
+        jsonParam=new HashMap<>();
     }
-    @Override
-    public Object parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
-        return null;
-    }
-
-    @Override
-    public int compareTo(@NonNull Object o) {
-
-        return 0;
-    }
-    public void  Param2Json(){
-        MultiValueMap paramKeyValues = getParamKeyValues();
+    /**
+     * 请求头签名
+     */
+    public void addSignate(){
+        Contact.SignateInfo signature = Contact.getSignate();
         addHeader("Content-Type", "application/json");
-        setDefineRequestBodyForJson(JSON.toJSONString(paramKeyValues));
+        addHeader("timestamp", signature.currentTimeMillis+"");
+        addHeader("nonce",signature.random+"");
+        addHeader("signature",signature.signature);
+    }
+    public void addBodyJson(String key ,String value){
+        jsonParam.put(key,value);
+    }
+    public void addBodyJson(String key ,int value){
+        jsonParam.put(key,value);
     }
 
+    public void addBodyJson(String key ,boolean value){
+        jsonParam.put(key,value);
+    }
+
+    /**
+     * 参数转化为json
+     */
+    public void  param2Json(){
+      //  MultiValueMap paramKeyValues = getParamKeyValues();
+        addHeader("Content-Type", "application/json");
+        String jsonString = FastJsonUtils.toJSONString(jsonParam);
+        setDefineRequestBodyForJson(jsonString);
+    }
 }

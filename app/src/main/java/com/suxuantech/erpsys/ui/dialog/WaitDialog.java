@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.suxuantech.erpsys.R;
 
@@ -32,12 +33,16 @@ public class WaitDialog extends ProgressDialog {
 
     public WaitDialog(Context context) {
         super(context);
+        setOwnerActivity((Activity) context );
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCanceledOnTouchOutside(false);
         setProgressStyle(STYLE_SPINNER);
         setMessage(context.getText(R.string.wait_dialog_title));
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        getWindow().setAttributes(params);
     }
-
     @Override
     public void show() {
         Activity activity = getOwnerActivity();
@@ -45,7 +50,6 @@ public class WaitDialog extends ProgressDialog {
             super.show();
         }
     }
-
     @Override
     public void dismiss() {
         if (isShowing()) {

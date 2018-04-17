@@ -33,16 +33,8 @@ public class StringRequest extends RestRequest {
     public StringRequest(String url) {
         this(url, RequestMethod.GET);
     }
-    public StringRequest(String url, RequestMethod requestMethod,Object... parameter) {
+    public StringRequest(String url, RequestMethod requestMethod) {
         super(url, requestMethod);
-        addSignate();
-    }
-    public void addSignate(){
-        Contact.SignateInfo signature = Contact.getSignate();
-        addHeader("Content-Type", "application/json");
-        addHeader("timestamp", signature.currentTimeMillis+"");
-        addHeader("nonce",signature.random+"");
-        addHeader("signature",signature.signature);
     }
     @Override
     public String parseResponse(Headers responseHeaders, byte[] responseBody) throws Exception {
