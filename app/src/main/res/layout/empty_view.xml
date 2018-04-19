@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/notData"
+              android:gravity="center"
+              android:orientation="vertical" >
+    <ImageView
+        android:layout_height="80dp"
+        android:layout_width="80dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/empty_icon"/>
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:visibility="invisible"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"/>
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有数据,点击重试" />
+    </LinearLayout>
+</LinearLayout>
