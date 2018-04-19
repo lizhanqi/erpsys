@@ -160,7 +160,11 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
             } else if (response.getHeaders().getResponseCode()>=500){
                 ToastUtils.showShort(App.getApplication().getString(R.string.error_service)+response.getHeaders().getResponseCode());
             }  else{
-                ToastUtils.showShort(response.getHeaders().getResponseCode()+response.getException().getMessage()+App.getApplication().getString(R.string.error_unknow));
+                String ex="";
+                if (response.getException()!=null&& response.getException().getMessage()!=null){
+                    ex=   response.getException().getMessage();
+                }
+                ToastUtils.showShort(response.getHeaders().getResponseCode()+ex+App.getApplication().getString(R.string.error_unknow));
             }
         }
         if (callback != null){
