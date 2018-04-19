@@ -51,7 +51,6 @@ public class Contact {
         }
         return   TESTIP + (String.format(template, replace)) ;
     }
-
     public static class SignateInfo {
         public String signature;
         public int random;
@@ -86,13 +85,13 @@ public class Contact {
      */
    public static String Today_TakePhoto="/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
     /**
-     * 今日取件
-     */
-    public static String TODAY_FULL_DRESS="/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
-    /**
      * 今日礼服
      */
-    public static String TODAY_PICK_UP_PHOTO="/SXWebErpAppStaff/SX_CustomerDressCountDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+    public static String TODAY_FULL_DRESS="/SXWebErpAppStaff/SX_CustomerDressCountDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+    /**
+     * 今日取件
+     */
+    public static String TODAY_PICK_UP_PHOTO="/SXWebErpAppStaff/SX_CustomerGetTakeawayItemDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
 
     /**
      *进入化妆
@@ -124,7 +123,7 @@ public class Contact {
     /**
      * 获得订单编号
      */
-    public static String ORDER_NUMBER = "/SXWebErpAppStaff/SX_GetOrderNum?Token=%s&code=%s";
+    public static String ORDER_NUMBER = "/SXWebErpAppStaff/SX_GetOrderNum?Token=%s&code=%s&SN=%s";
     /**
      * 获得消费类型设定
      */
@@ -135,9 +134,19 @@ public class Contact {
     public static String ORDER_RECEIVING_SITE = "/SXWebErpAppStaff/SX_AOAcceptorAddress?Token=%s&code=%s";
 
     /**
+     * 拍摄店(实体店)
+     */
+    public static  String PHOTO_SHOP="/SXWebErpAppStaff/SX_BrandPhotoShopNameSet?Token=%s&BrandName=%s";
+
+    /**
      * 门市接待
      */
     public static String OUTLETS_RECEPTION = "/SXWebErpAppStaff/SX_MenShiSet?Token=%s&Code=%s";
+
+    /**
+     * 网销人
+     */
+   public static String RECEPTION_MARKET="/SXWebErpAppStaff/SX_WangXiaoMenShiSet?Token=%s&Code=%s";
 
     /**
      * 客户分区
