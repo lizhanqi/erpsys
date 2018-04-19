@@ -68,11 +68,11 @@ public class BitmapLoader {
         FileOutputStream fileOutput = null;
         File imgFile;
         try {
-            File desDir = new File("sdcard/JChatDemo/pictures/");
+            File desDir = new File("sdcard/suxuan/pictures/");
             if (!desDir.exists()) {
                 desDir.mkdirs();
             }
-            imgFile = new File("sdcard/JChatDemo/pictures/", userName + ".png");
+            imgFile = new File("sdcard/suxuan/pictures/", userName + ".png");
             imgFile.createNewFile();
             fileOutput = new FileOutputStream(imgFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutput);
