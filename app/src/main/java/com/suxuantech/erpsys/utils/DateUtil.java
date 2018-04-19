@@ -183,6 +183,9 @@ public class DateUtil {
      * @return  目标格式串
      */
     public static  String String2String(String dateString, DatePattern source,DatePattern target){
+        if (android.text.TextUtils.isEmpty(dateString)){
+        return "";
+        }
       return   dateToString(stringToDate(dateString,source),target);
     }
     /**
