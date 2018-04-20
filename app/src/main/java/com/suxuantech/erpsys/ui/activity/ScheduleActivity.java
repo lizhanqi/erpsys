@@ -127,7 +127,7 @@ public class ScheduleActivity extends ImmersedBaseActivity {
                     break;
                 }
             }
-            toast("第"+groupPosition+"组的第"+childrenPosition);
+           // toastShort("第"+groupPosition+"组的第"+childrenPosition);
         }
     };
 

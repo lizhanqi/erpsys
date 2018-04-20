@@ -224,7 +224,6 @@ class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
                         resources.getStringArray(R.array.sex),
                         this, AlertView.Style.ACTIONSHEET, OnItemClickListener { o, position ->
                     //position -1是取消按钮
-                    toast("点击了第" + position + "个")
                     if (position == 1) {
                         mTvCustomerSex?.setText("女")
                     } else if (position == 0) {

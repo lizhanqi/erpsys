@@ -249,8 +249,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
      * @param str
      */
-    @Deprecated
-    public void toast(String str) {
+    public void toastShort(String str) {
         ToastUtils.showShort(str);
     }
 
@@ -487,7 +486,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      */
     public boolean fastClick(View v) {
         if (System.currentTimeMillis() - lastClick <= fastClickTime && lastView == v) {
-            toast("已经点过了");
+            toastShort("已经点过了");
             return false;
         }
         lastView = v;

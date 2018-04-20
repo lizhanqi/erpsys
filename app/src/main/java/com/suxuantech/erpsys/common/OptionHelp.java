@@ -40,8 +40,8 @@ public class OptionHelp {
      * 网络接口标志
      */
     public  enum UrlTag implements Serializable {
-        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION
-    }
+        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION,RECEPTION_MARKET
+  ,PHOTO_SHOP  }
     private UrlTag urlTag;
     boolean isMultiple;
     ArrayList<String> checkedDatas;

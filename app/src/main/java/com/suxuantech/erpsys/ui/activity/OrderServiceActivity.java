@@ -101,7 +101,6 @@ public class OrderServiceActivity extends ImmersedBaseActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast("xzzz");
                 selectPic();
             }
         });

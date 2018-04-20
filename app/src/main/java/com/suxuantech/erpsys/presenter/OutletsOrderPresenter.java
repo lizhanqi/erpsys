@@ -50,17 +50,15 @@ public class OutletsOrderPresenter {
     public OutletsOrderPresenter(IOutletsOrderPresenter iOutletsOrderPresenter){
         this.iOutletsOrderPresenter=iOutletsOrderPresenter;
     }
-
     public OutletsOrderPresenter(IOutletsOrderPresenter iOutletsOrderPresenter, RequestQueue requestQueue){
         this.iOutletsOrderPresenter=iOutletsOrderPresenter;
         this.requestQueue=requestQueue;
     }
-
     /**
      * 获取单号
      */
     public void getOrderNum  (){
-        String url= Contact.getFullUrl(Contact.ORDER_NUMBER,Contact.TOKEN,"0");
+        String url= Contact.getFullUrl(Contact.ORDER_NUMBER,Contact.TOKEN,App.getApplication().getUserInfor().getShop_code(),App.getApplication().getUserInfor().getSn());
         //请求实体
         JavaBeanRequest<OrderNumberEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderNumberEntity>(url,RequestMethod.POST,OrderNumberEntity.class);
        HttpListener<OrderNumberEntity> searchByCustmor = new HttpListener<OrderNumberEntity>(){

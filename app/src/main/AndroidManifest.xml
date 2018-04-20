@@ -148,7 +148,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.OutletsOrderActivity" />
+        <activity android:name=".ui.activity.OutletsOrderActivity"      android:windowSoftInputMode="stateVisible|adjustResize"   />
+
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">

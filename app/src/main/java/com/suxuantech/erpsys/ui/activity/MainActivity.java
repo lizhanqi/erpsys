@@ -520,7 +520,6 @@ public class MainActivity extends ImmersedBaseActivity implements IUnReadMessage
 
                     @Override
                     public void onSucceed(int what, Response<String> response) {
-                        super.onSucceed(what, response);
                         L.d("NoHttpSample", response.get());
                     }
 

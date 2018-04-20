@@ -135,7 +135,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 } else {
                     Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
                     startActivity(intent);
-                    toast(position+"");
+                    toastShort(position+"");
                 }
             }
         });

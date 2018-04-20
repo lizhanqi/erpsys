@@ -165,7 +165,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                     isLoginOneSucceed = true;
                 } else {
                     loginFailed();
-                    toast(response.get().getMsg());
+                    toastShort(response.get().getMsg());
                 }
             }
             @Override

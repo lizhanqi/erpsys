@@ -16,6 +16,7 @@ import com.suxuantech.erpsys.entity.CustomerZoneEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
+import com.suxuantech.erpsys.entity.PhotoShopEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
@@ -71,7 +72,7 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<CustomerZoneEntity.DataBean> customerZoneData;
     private List<CustomerSourceEntity.DataBean> customerSourceData;
     private List<CustomerIntentionEntity.DataBean> customerIntentionData;
-
+    private List<PhotoShopEntity.DataBean> photoShopData;
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
 
     /**
@@ -321,7 +322,21 @@ public class OptionActivity extends ImmersedBaseActivity {
                 }
                 break;
 
+            case RECEPTION_MARKET:
+                //网销门市
+                Url=Contact.getFullUrl(Contact.RECEPTION_MARKET, Contact.TOKEN, 0);
+                if(getData) {
+                    getOutletsReception();
+                }
+                break;
 
+            case PHOTO_SHOP:
+                //拍摄店面
+                Url=Contact.getFullUrl(Contact.PHOTO_SHOP, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass());
+                if(getData) {
+                    getPhotoShop();
+                }
+                break;
         }
     }
 
@@ -334,13 +349,12 @@ public class OptionActivity extends ImmersedBaseActivity {
             //activity result 也可以设置
             Intent intent1 = new Intent();
             intent1.putExtra("result",mAllData.get(position));
-            toast(mAllData.get(position));
+            toastShort(mAllData.get(position));
             setResult(RESULT_OK,intent1);
             //发送EventBus事件也可以接收
             EventBus.getDefault().post(mAllData.get(position));
             EventBus.getDefault().post(new SmpileEventMsg(urlTag,mAllData.get(position)));
             if(Url!=null){
-
                 if (consumptionTypeData!=null){
                     //消费类型
                     ArrayList<ConsumptionTypeEntity.DataBean> dataBeans = new ArrayList<>();
@@ -406,6 +420,16 @@ public class OptionActivity extends ImmersedBaseActivity {
                     ArrayList<CustomerIntentionEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(customerIntentionData.get(position));
                     BaseMsg<CustomerIntentionEntity.DataBean> dataBeanBaseMsg = new BaseMsg<CustomerIntentionEntity.DataBean>(customerIntentionData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                }else  if(photoShopData!=null){
+                    //客户来源
+                    ArrayList<PhotoShopEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(photoShopData.get(position));
+                    BaseMsg<PhotoShopEntity.DataBean> dataBeanBaseMsg = new BaseMsg<PhotoShopEntity.DataBean>(photoShopData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -601,9 +625,11 @@ public class OptionActivity extends ImmersedBaseActivity {
                         setAdapterCtrl();
                     }else {
                         mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
                     }
                 }else {
                     mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                    toastShort(response.get().getMsg());
                 }
             }
             @Override
@@ -636,9 +662,11 @@ public class OptionActivity extends ImmersedBaseActivity {
                         setAdapterCtrl();
                     }else {
                         mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
                     }
                 }else {
                     mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                    toastShort(response.get().getMsg());
                 }
             }
             @Override
@@ -673,9 +701,11 @@ public class OptionActivity extends ImmersedBaseActivity {
                         setAdapterCtrl();
                     }else {
                         mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
                     }
                 }else {
                     mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                    toastShort(response.get().getMsg());
                 }
             }
             @Override
@@ -685,10 +715,7 @@ public class OptionActivity extends ImmersedBaseActivity {
             }
         };
         request(7,districtBeanJavaBeanRequest, searchByCustmor, false, false);
-
     }
-
-
     /**
      *客户意向
      */
@@ -710,6 +737,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                         setAdapterCtrl();
                     }else {
                         mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
                     }
                 }else {
                     mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
@@ -725,7 +753,67 @@ public class OptionActivity extends ImmersedBaseActivity {
 
     }
 
+    /**
+     *获取店面
+     */
+    public void getPhotoShop() {
+        //请求实体
+        JavaBeanRequest<PhotoShopEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoShopEntity>(Url, RequestMethod.POST,PhotoShopEntity.class);
+        HttpListener<PhotoShopEntity> searchByCustmor = new HttpListener<PhotoShopEntity>(){
+            @Override
+            public void onSucceed(int what, Response<PhotoShopEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok){
+                    mAllData.clear();
+                    photoShopData = response.get().getData();
+                    if (photoShopData!=null){
+                        for (PhotoShopEntity.DataBean da:photoShopData) {
+                         //   if (da.getIs_photo().equals("0")){
+                                mAllData.add(da.getBelong_shop_name()) ;
+                           // }
+                        }
+                        setAdapterCtrl();
+                    }else {
+                        mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
+                    }
+                }else {
+                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<PhotoShopEntity> response) {
+                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
+    }
+
+//    public  void    get(Class<? extends    BaseResult2 > clas) {
+//        get12(PhotoShopEntity.class);
+//    }
+//
+//    private void get12(Class<? extends  BaseResult2> baseResultClass) {
+//        JavaBeanRequest<BaseResult2> districtBeanJavaBeanRequest = new JavaBeanRequest<BaseResult2>(Url, RequestMethod.POST,BaseResult2.class);
+//        HttpListener<BaseResult2> searchByCustmor = new HttpListener<BaseResult2>(){
+//
+//            @Override
+//            public void onSucceed(int what, Response<BaseResult2> response) {
+//                Object o = response.get().getData().get(0);
+//
+//            }
+//
+//
+//            @Override
+//            public void onFailed(int what, Response<BaseResult2> response) {
+//
+//            }
+//        };
+//
+//    }
 
 
     //--------------------------------------适配器专区----------------------------------------

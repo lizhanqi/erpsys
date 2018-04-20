@@ -38,5 +38,5 @@ public interface IOutletsOrderPresenter {
     /**
      * 获取订单编号成功
      */
-    void getOrderNumberSucceed(int whta,String data);
+    void getOrderNumberSucceed(int what,String data);
 }

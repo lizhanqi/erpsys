@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
     tools:context=".ui.activity.OutletsOrderActivity">
     <LinearLayout
         android:background="@color/white"
@@ -25,7 +30,7 @@
             android:drawableRight="@null"
             android:id="@+id/tv_order_id"
             android:hint="@string/please_input_order_id"
-            style="@style/OpenOrderValue" />
+            style="@style/FormSelectValue" />
     </LinearLayout>
     <View
         style="@style/line" />
@@ -45,7 +50,7 @@
             android:drawableRight="@null"
             android:id="@+id/et_customer_name"
             android:hint="@string/please_input_customer_name"
-            style="@style/OpenOrderValue"
+            style="@style/FormSelectValue"
          />
 
     </LinearLayout>
@@ -67,7 +72,7 @@
             android:drawableRight="@null"
             android:id="@+id/et_customer_phone"
             android:hint="@string/please_input_phone_number"
-            style="@style/OpenOrderValue"
+            style="@style/FormSelectValue"
          />
 
     </LinearLayout>
@@ -87,7 +92,7 @@
             <TextView
                 android:id="@+id/tv_sex"
                 android:text="@string/women"
-                style="@style/OpenOrderValue"  />
+                style="@style/FormSelectValue"  />
 
         </LinearLayout>
         <View
@@ -106,7 +111,7 @@
         <TextView
             android:id="@+id/tv_consumption_type"
             android:hint="@string/please_select_consumption_type"
-            style="@style/OpenOrderValue"  />
+            style="@style/FormSelectValue"  />
     </LinearLayout>
     <View
         style="@style/line"/>
@@ -124,7 +129,7 @@
             android:text="@string/outlets_reception" />
         <TextView
             android:id="@+id/tv_outlets_reception"
-            style="@style/OpenOrderValue"
+            style="@style/FormSelectValue"
             android:hint="@string/please_selsect_outlets_reception"/>
     </LinearLayout>
     <View
@@ -141,7 +146,7 @@
             android:text="@string/order_receiving_site"
            style="@style/DetailsKey"/>
         <TextView
-            style="@style/OpenOrderValue"
+            style="@style/FormSelectValue"
             android:id="@+id/tv_order_receiving_site"
             android:hint="@string/please_select_order_receiving_site" />
     </LinearLayout>
@@ -161,7 +166,7 @@
         <TextView
             android:id="@+id/tv_package_set"
             android:hint="@string/please_select_package_set"
-            style="@style/OpenOrderValue" />
+            style="@style/FormSelectValue" />
     </LinearLayout>
     <View
         android:visibility="gone"
@@ -183,15 +188,14 @@
 
         <TextView
             android:id="@+id/tv_addition"
-            style="@style/OpenOrderValue"
+            style="@style/FormSelectValue"
             android:hint="@string/zero" />
 
     </LinearLayout>
-       <!--其他信息-->
         <TextView
             android:id="@+id/tv_other_infromation"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px123"
+            android:layout_height="wrap_content"
             android:background="@color/myBackground_f7"
             android:drawableRight="@drawable/arrows_status"
             android:gravity="center_vertical"
@@ -199,7 +203,8 @@
             android:paddingRight="@dimen/px55"
             android:text="@string/information"
             android:textColor="@color/myValue_33" />
-     <LinearLayout
+       <!--其他信息-->
+        <LinearLayout
          android:visibility="gone"
         android:id="@+id/ll_other_information"
          android:orientation="vertical"
@@ -220,7 +225,7 @@
              <TextView
                  android:id="@+id/tv_vip_zone"
                  android:text="@string/vip_zone"
-                 style="@style/OpenOrderValue"  />
+                 style="@style/FormSelectValue"  />
 
          </LinearLayout>
          <View
@@ -240,7 +245,7 @@
              <TextView
                  android:id="@+id/tv_reception"
                  android:text="@string/lixiaoxiao"
-                 style="@style/OpenOrderValue" />
+                 style="@style/FormSelectValue" />
 
          </LinearLayout>
          <View
@@ -261,7 +266,7 @@
              <TextView
                 android:id="@+id/tv_marriage_date"
                  android:hint="@string/please_select_marriage_date"
-                 style="@style/OpenOrderValue" />
+                 style="@style/FormSelectValue" />
 
          </LinearLayout>
          <View
@@ -282,7 +287,7 @@
                  android:id="@+id/et_customer_remarks"
                  android:background="@null"
                  android:hint="@string/please_input_customer_remarks"
-                 style="@style/OpenOrderValue" />
+                 style="@style/FormSelectValue" />
 
          </LinearLayout>
          <View
@@ -296,7 +301,6 @@
              android:paddingLeft="@dimen/px55"
              android:layout_width="match_parent"
              android:layout_height="@dimen/px155">
-
              <TextView
                  android:drawableLeft="@drawable/icon_photography_remarks"
                  android:text="@string/photographic_remarks"
@@ -306,25 +310,27 @@
                  android:id="@+id/et_photography_remarks"
                  android:background="@null"
                  android:hint="@string/please_fill_in_photography_remarks"
-                 style="@style/OpenOrderValue" />
+                 style="@style/FormSelectValue" />
          </LinearLayout>
          <View
              android:background="@color/mainNavline_e7"
              android:layout_width="wrap_content"
              android:layout_height="@dimen/px2"/>
      </LinearLayout>
-        <Button
+    </LinearLayout>
 
-            android:id="@+id/btn_submint_order"
-            android:textSize="@dimen/xs42"
-            android:textColor="@color/white"
-            android:background="@drawable/login_button_sp"
-            android:layout_marginTop="@dimen/px100"
-            android:layout_marginBottom="@dimen/px110"
-            android:layout_marginLeft="@dimen/px55"
-            android:layout_marginRight="@dimen/px55"
-            android:text="@string/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-     </LinearLayout>
+
 </ScrollView>
+    <Button
+        android:id="@+id/btn_submint_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px30"
+        android:layout_marginLeft="@dimen/px55"
+        android:layout_marginRight="@dimen/px55"
+        android:layout_marginTop="@dimen/px30"
+        android:background="@drawable/login_button_sp"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/xs42" />
+</LinearLayout>
