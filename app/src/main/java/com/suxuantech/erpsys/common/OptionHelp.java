@@ -41,7 +41,7 @@ public class OptionHelp {
      */
     public  enum UrlTag implements Serializable {
         CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION,RECEPTION_MARKET
-  ,PHOTO_SHOP  }
+  ,PHOTO_SHOP ,NEW_ORDER_TYPE }
     private UrlTag urlTag;
     boolean isMultiple;
     ArrayList<String> checkedDatas;

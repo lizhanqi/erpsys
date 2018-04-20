@@ -170,4 +170,8 @@ public class Contact {
      * 订单搜索
      */
     public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%d&pageSize=%d";
+    /**
+     * 新单类型
+     */
+    public  static String NEW_ORDER_TYPE="/SXWebErpAppStaff/SX_OrderTypeSet?Token=%S&Code=%S&consumptiontype=%S";
 }

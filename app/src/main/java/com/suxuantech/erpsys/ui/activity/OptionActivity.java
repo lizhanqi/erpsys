@@ -13,6 +13,7 @@ import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
 import com.suxuantech.erpsys.entity.CustomerIntentionEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
@@ -73,6 +74,8 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<CustomerSourceEntity.DataBean> customerSourceData;
     private List<CustomerIntentionEntity.DataBean> customerIntentionData;
     private List<PhotoShopEntity.DataBean> photoShopData;
+    private List<NewOrderTypeEntity.DataBean> newOrderTyepData;
+
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
 
     /**
@@ -337,6 +340,13 @@ public class OptionActivity extends ImmersedBaseActivity {
                     getPhotoShop();
                 }
                 break;
+            case NEW_ORDER_TYPE:
+                //新单类型
+                Url=Contact.getFullUrl(Contact.NEW_ORDER_TYPE, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass(),getIntent().getStringExtra("ConsumptionType"));
+                if(getData) {
+                    getNewOrderType();
+                }
+                break;
         }
     }
 
@@ -430,6 +440,17 @@ public class OptionActivity extends ImmersedBaseActivity {
                     ArrayList<PhotoShopEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(photoShopData.get(position));
                     BaseMsg<PhotoShopEntity.DataBean> dataBeanBaseMsg = new BaseMsg<PhotoShopEntity.DataBean>(photoShopData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                }
+                else  if(newOrderTyepData!=null){
+                    //新单类型
+                    ArrayList<NewOrderTypeEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(newOrderTyepData.get(position));
+                    BaseMsg<NewOrderTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<NewOrderTypeEntity.DataBean>(newOrderTyepData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -769,9 +790,9 @@ public class OptionActivity extends ImmersedBaseActivity {
                     photoShopData = response.get().getData();
                     if (photoShopData!=null){
                         for (PhotoShopEntity.DataBean da:photoShopData) {
-                         //   if (da.getIs_photo().equals("0")){
-                                mAllData.add(da.getBelong_shop_name()) ;
-                           // }
+                            //   if (da.getIs_photo().equals("0")){
+                            mAllData.add(da.getBelong_shop_name()) ;
+                            // }
                         }
                         setAdapterCtrl();
                     }else {
@@ -779,11 +800,50 @@ public class OptionActivity extends ImmersedBaseActivity {
                         toastShort(response.get().getMsg());
                     }
                 }else {
+                    toastShort(response.get().getMsg());
                     mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
                 }
             }
             @Override
             public void onFailed(int what, Response<PhotoShopEntity> response) {
+                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+
+    }
+
+    /**
+     *获取新单类型
+     */
+    public void getNewOrderType() {
+        //请求实体
+        JavaBeanRequest<NewOrderTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<NewOrderTypeEntity>(Url, RequestMethod.POST,NewOrderTypeEntity.class);
+        HttpListener<NewOrderTypeEntity> searchByCustmor = new HttpListener<NewOrderTypeEntity>(){
+            @Override
+            public void onSucceed(int what, Response<NewOrderTypeEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok){
+                    mAllData.clear();
+                    newOrderTyepData = response.get().getData();
+                    if (newOrderTyepData!=null){
+                        for (NewOrderTypeEntity.DataBean da:newOrderTyepData) {
+                            mAllData.add(da.getOrdertype()) ;
+                        }
+                        setAdapterCtrl();
+                    }else {
+                        mRecyclerView.loadMoreFinish(true,false);
+                        toastShort(response.get().getMsg());
+                    }
+                }else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<NewOrderTypeEntity> response) {
                 mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }

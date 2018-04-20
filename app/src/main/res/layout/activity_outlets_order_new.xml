@@ -22,7 +22,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/white"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:title="ToolBar Title"
+                app:title="门市开单"
                 app:titleTextColor="@color/text_tab_title_def" />
         </android.support.design.widget.AppBarLayout>
         <android.support.v4.widget.NestedScrollView
@@ -90,7 +90,7 @@
 
                     <TextView
                         style="@style/DetailsKey"
-                        android:text="子类型" />
+                        android:text="新单类型" />
 
                     <TextView
                         android:id="@+id/tv_consumption_sub"

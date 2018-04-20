@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
@@ -140,7 +142,6 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         outletsOrderPresenter = new OutletsOrderPresenter(this, getRequestQueue());
         outletsOrderPresenter.getOrderNum();
     }
-
     /**
      * 时间选择
      */
@@ -157,12 +158,10 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
         timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         timePickerView.show();
     }
-
     @Override
     public void getNumberFailed(String msg) {
 
     }
-
     @Override
     public void getOrderNumberSucceed(int what, String data) {
        if (what==9){
@@ -174,9 +173,7 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
            }
        }
     }
-
-
-
+    String consumptionType ="";
     @Override
     @OnClick({R.id.ll_order_id, R.id.ll_order_date, R.id.ll_consumption_type, R.id.ll_consumption_sub, R.id.ll_customer_birthday_m,
             R.id.ll_customer_birthday_w, R.id.ll_reception, R.id.ll_reception_market, R.id.ll_reception_governor, R.id.ll_marriage_date,
@@ -196,6 +193,16 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
                 startActivity(optionHelp.creat());
                 break;
             case R.id.ll_consumption_sub:
+                if (mTvConsumptionType.getText().toString().isEmpty()){
+                    toastShort("请先选择消费类型");
+                    return;
+                }
+                optionHelp.setTitle("新单类型");
+                optionHelp.setCheckedData(mTvConsumptionSub.getText().toString());
+                optionHelp.setUrlTag(OptionHelp.UrlTag.NEW_ORDER_TYPE);
+                Intent creat = optionHelp.creat();
+                creat.putExtra("ConsumptionType",mTvConsumptionType.getText().toString());
+                startActivity(creat);
                 break;
             case R.id.ll_customer_birthday_m:
                 showDataSelect(mTvCustomerBirthdayM);
@@ -256,8 +263,12 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
                 startActivity(optionHelp1.creat());
                 break;
             case R.id.btn_submint_order:
+                commit();
                 break;
         }
+    }
+
+    private void commit() {
     }
 
     /**
@@ -271,8 +282,12 @@ public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutle
             case CUSTOMER_SOURCE:
                 mTvCustomerSource.setText(((CustomerSourceEntity.DataBean) msg.getSingleChecked()).getCus_name());
                 break;
+            case NEW_ORDER_TYPE:
+                mTvConsumptionSub.setText(((NewOrderTypeEntity.DataBean) msg.getSingleChecked()).getOrdertype());
+                break;
             case CONSUMPTION_TYPE:
                 mTvConsumptionType.setText(((ConsumptionTypeEntity.DataBean) msg.getSingleChecked()).getConsumption_name());
+                consumptionType= ((ConsumptionTypeEntity.DataBean) msg.getSingleChecked()).getId();
                 break;
             case PRODUCT:
                 //  prd = (List<ProductEntity.DataBean>) msg.getMultiSelected();
