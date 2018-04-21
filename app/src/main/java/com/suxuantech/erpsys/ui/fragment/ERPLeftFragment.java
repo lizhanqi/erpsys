@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,14 +21,15 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
-import com.suxuantech.erpsys.ui.activity.OptionActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
+import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
+import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
+import com.suxuantech.erpsys.ui.widget.MarqueTextView;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
 import com.suxuantech.erpsys.utils.ScreenUtils;
@@ -40,21 +42,49 @@ import butterknife.OnClick;
 
 public class ERPLeftFragment extends BaseLazyFragment {
 
+
+    @BindView(R.id.tv_company_name)
+    TextView mTvCompanyName;
+    @BindView(R.id.tv_today_time)
+    TextView mTvTodayTime;
     @BindView(R.id.tv_msg_number)
     TextView mTvMsgNumber;
     @BindView(R.id.rl_msg)
     RelativeLayout mRlMsg;
+    @BindView(R.id.tv_notice)
+    TextView mTvNotice;
+    @BindView(R.id.tv_info)
+    MarqueTextView mTvInfo;
     @BindView(R.id.tv_notice_details)
     TextView mTvNoticeDetails;
-    @BindView(R.id.tv_info)
-    TextView mTvInfo;
+    @BindView(R.id.left_top)
+    RelativeLayout mLeftTop;
+    @BindView(R.id.tv_register_into_shop)
+    TextView mTvRegisterIntoShop;
+    @BindView(R.id.tv_outlets_order)
+    TextView mTvOutletsOrder;
+    @BindView(R.id.tv_order_search)
+    TextView mTvOrderSearch;
+    @BindView(R.id.tv_schedule)
+    TextView mTvSchedule;
+    @BindView(R.id.schedule_wave)
+    WaveView mScheduleWave;
+    @BindView(R.id.task_wave)
+    WaveView mTaskWave;
+    @BindView(R.id.tablayout_home)
+    TabLayout mTablayoutHome;
+    @BindView(R.id.view_tl)
+    View mViewTl;
+    @BindView(R.id.vp_home)
+    ViewPager mVpHome;
+    @BindView(R.id.relativeLayout2)
+    RelativeLayout mRelativeLayout2;
     @BindView(R.id.refreshLayout)
-    TwinklingRefreshLayout refreshLayout;
+    TwinklingRefreshLayout mRefreshLayout;
+    @BindView(R.id.root_layout_content_immersed)
+    CoordinatorLayout mRootLayoutContentImmersed;
+    private View view;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected int setLayoutId() {
@@ -96,7 +126,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             nb.setOnClickDetails(new NoticeDialog.OnClickDetails() {
                 @Override
                 public void onClickDetails() {
-                    startActivity(new Intent(getActivity(), com.suxuantech.erpsys.ui.activity.NoticeDetailActivity.class));
+                    startActivity(new Intent(getActivity(), NoticeDetailActivity.class));
                 }
             });
             nb.build().show();
@@ -109,6 +139,28 @@ public class ERPLeftFragment extends BaseLazyFragment {
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
         initTabLayout();
+        //initBall(view);
+//                Intent intent = new Intent(getActivity(), OptionActivity.class);
+//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
+//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData("礼服");
+//                multiple.setTitle("选择");
+  //                multiple.setUrl("11111");
+
+//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Title","选择");
+//                intent.putExtra("Multiple",false);
+  //                startActivity(multiple.creat());
+    }
+
+    /**
+     * 动画球,暂时不用
+     *
+     * @param view
+     */
+    private void initBall(View view) {
         WaveView taskWave = view.findViewById(R.id.task_wave);
         WaveView scheduleWave = view.findViewById(R.id.schedule_wave);
         taskWave.setWaveColor(getResources().getColor(R.color.wavel), getResources().getColor(R.color.wave), getResources().getColor(R.color.wavebg));
@@ -123,49 +175,10 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 hd.sendEmptyMessageDelayed(0, 5000);
             }
         });
-        view.findViewById(R.id.outlets_order).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
-              //  alertShow4();
-//              new AlertView("标题", "内容", "取消", new String[]{"确定"}, null, getContext(), AlertView.Style.ALERT, new OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(Object o, int position) {
-//
-//                    }
-//                }).setCancelable(true).setOnDismissListener(new OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(Object o) {
-//
-//                    }
-//                }).setDivierMargin(30).show();
-
-                //  startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
-
-            }
-        });
-
-        view.findViewById(R.id.tv_order_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-           //     startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-              Intent intent = new Intent(getActivity(), OptionActivity.class);
-              OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
-              multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-               multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-                 multiple.setCheckedData("礼服");
-//                multiple.setTitle("选择");
-                // multiple.setUrl("11111");
-
-//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Title","选择");
-//                intent.putExtra("Multiple",false);
-                // startActivity(multiple.creat());
-            }
-        });
     }
+
     private ArrayList<Fragment> fragments;
+
     private void initTabLayout() {
         FragmentManager childFragmentManager = getChildFragmentManager();
         TabLayout tableLayoutHome = mRootView.findViewById(R.id.tablayout_home);
@@ -179,12 +192,13 @@ public class ERPLeftFragment extends BaseLazyFragment {
         viewPagerHome.removeAllViews();
         viewPagerHome.removeAllViewsInLayout();
         //这里必要时可以放开
-  //   viewPagerHome.destroyDrawingCache();
+        //   viewPagerHome.destroyDrawingCache();
         viewPagerHome.setOffscreenPageLimit(arryTitle.length);
         viewPagerHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
                 fragments.get(position).setUserVisibleHint(true);
@@ -220,8 +234,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
     }
 
     private void initRefresh() {
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+        mRefreshLayout.setEnableLoadmore(false);
+        mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
                 new Handler().postDelayed(new Runnable() {
@@ -246,7 +260,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
     }
 
-    @OnClick({R.id.tv_msg_number, R.id.rl_msg, R.id.tv_notice_details})
+    @OnClick({R.id.tv_msg_number, R.id.rl_msg, R.id.tv_notice_details, R.id.tv_company_name, R.id.tv_today_time, R.id.tv_notice, R.id.tv_info, R.id.left_top, R.id.tv_register_into_shop, R.id.tv_outlets_order, R.id.tv_order_search, R.id.tv_schedule, R.id.schedule_wave, R.id.task_wave, R.id.tablayout_home, R.id.view_tl, R.id.vp_home, R.id.relativeLayout2, R.id.refreshLayout, R.id.root_layout_content_immersed})
     public void onClick(View v) {
         switch (v.getId()) {
             default:
@@ -258,6 +272,44 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 break;
             case R.id.tv_notice_details:
                 startActivity(new Intent(getActivity(), NoticeDetailActivity.class));
+                break;
+            case R.id.tv_company_name:
+                break;
+            case R.id.tv_today_time:
+                break;
+            case R.id.tv_notice:
+                break;
+            case R.id.tv_info:
+                break;
+            case R.id.left_top:
+                break;
+            case R.id.tv_register_into_shop:
+
+                break;
+            case R.id.tv_outlets_order:
+                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+                break;
+            case R.id.tv_order_search:
+                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+                break;
+            case R.id.tv_schedule:
+                startActivity(new Intent(getActivity(), ScheduleActivity.class));
+                break;
+            case R.id.schedule_wave:
+                break;
+            case R.id.task_wave:
+                break;
+            case R.id.tablayout_home:
+                break;
+            case R.id.view_tl:
+                break;
+            case R.id.vp_home:
+                break;
+            case R.id.relativeLayout2:
+                break;
+            case R.id.refreshLayout:
+                break;
+            case R.id.root_layout_content_immersed:
                 break;
         }
     }

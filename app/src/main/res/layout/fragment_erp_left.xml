@@ -195,7 +195,7 @@ clickable是防止页面穿透的点击事件的
                         app:layout_behavior="com.suxuantech.erpsys.ui.widget.DefineBehavior">
 
                         <TextView
-                            android:id="@+id/outlets_order"
+                            android:id="@+id/tv_register_into_shop"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -203,8 +203,18 @@ clickable是防止页面穿透的点击事件的
                             android:drawableTop="@drawable/icon_outlets_order"
                             android:gravity="center"
                             android:paddingTop="@dimen/px60"
-                            android:text="@string/outlets_order" />
+                            android:text="进店登记" />
 
+                        <TextView
+                            android:id="@+id/tv_outlets_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/px25"
+                            android:drawableTop="@drawable/icon_order_search"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/px60"
+                            android:text="门市开单" />
                         <TextView
                             android:id="@+id/tv_order_search"
                             android:layout_width="wrap_content"
@@ -214,7 +224,17 @@ clickable是防止页面穿透的点击事件的
                             android:drawableTop="@drawable/icon_order_search"
                             android:gravity="center"
                             android:paddingTop="@dimen/px60"
-                            android:text="@string/order_search" />
+                            android:text="订单查询" />
+                        <TextView
+                            android:id="@+id/tv_schedule"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/px25"
+                            android:drawableTop="@drawable/icon_order_search"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/px60"
+                            android:text=" 排  程 " />
                     </LinearLayout>
                     <!--表-->
                     <LinearLayout
