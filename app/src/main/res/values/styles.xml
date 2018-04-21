@@ -208,7 +208,7 @@
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
         <item name="android:textColor">@color/textHint_99</item>
     </style>
-
+    <!--排程名称-->
     <style name="ScheduleTypeName">
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:textSize">@dimen/xs48</item>
@@ -216,11 +216,21 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-
+    <!--排程信息-->
     <style name="ScheduleTypeInfromation" parent="ScheduleTypeName">
         <item name="android:textColor">@color/textHint_99</item>
         <item name="android:textSize">@dimen/xs44</item>
     </style>
+    <!--排程-->
+    <style name="ScheduleTypeWrap" parent="ScheduleTypeName">
+        <item name="android:layout_marginLeft">@dimen/px35</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+
 
     <style name="ScheduleType">
         <item name="android:background">@color/white</item>

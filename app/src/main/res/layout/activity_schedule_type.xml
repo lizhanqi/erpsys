@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".ui.activity.ScheduleTypeActivity">
-    <LinearLayout android:orientation="horizontal"
-        style="@style/ScheduleType">
+
+    <LinearLayout
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/icon_camera_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:src="@drawable/icon_camera_schedule" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/px35"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/icon_camera_schedule"
-            android:orientation="vertical">
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/icon_camera_schedule">
+
             <TextView
                 style="@style/ScheduleTypeName"
                 android:text="@string/camera_schedule" />
+
             <TextView
                 style="@style/ScheduleTypeInfromation"
                 android:text="@string/camera_schedule" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/arrows_right_gray" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout android:orientation="horizontal"
-        style="@style/ScheduleType">
+
+    <View style="@style/line" />
+
+    <LinearLayout
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/icon_select_pictrue_schedule"
             android:layout_width="wrap_content"
@@ -45,29 +51,33 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/icon_schedule_select_pictrue" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/px35"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/icon_select_pictrue_schedule"
-            android:orientation="vertical">
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/icon_select_pictrue_schedule">
+
             <TextView
                 style="@style/ScheduleTypeName"
                 android:text="选片排程" />
+
             <TextView
                 style="@style/ScheduleTypeInfromation"
                 android:text="选片排程" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/arrows_right_gray" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout android:orientation="horizontal"
-        style="@style/ScheduleType">
+
+    <View style="@style/line" />
+
+    <LinearLayout
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/icon_schedule_menu"
             android:layout_width="wrap_content"
@@ -75,29 +85,33 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/icon_schedule_menu" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/px35"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/icon_schedule_menu"
-            android:orientation="vertical">
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/icon_schedule_menu">
+
             <TextView
                 style="@style/ScheduleTypeName"
                 android:text="@string/look_board_schedule" />
+
             <TextView
                 style="@style/ScheduleTypeInfromation"
                 android:text="@string/look_board_schedule" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/arrows_right_gray" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout android:orientation="horizontal"
-        style="@style/ScheduleType">
+
+    <View style="@style/line" />
+
+    <LinearLayout
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/icon_box"
             android:layout_width="wrap_content"
@@ -105,55 +119,58 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/icon_schedule_take_pictrue" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/px35"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/icon_box"
-            android:orientation="vertical">
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/icon_box">
+
             <TextView
                 style="@style/ScheduleTypeName"
                 android:text="@string/take_pictrue_schedule" />
+
             <TextView
                 style="@style/ScheduleTypeInfromation"
                 android:text="@string/take_pictrue_schedule" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/arrows_right_gray" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout android:orientation="horizontal"
-        style="@style/ScheduleType">
+
+    <View style="@style/line" />
+
+    <LinearLayout
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/icon_schedule_option_dress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:src="@drawable/icon_schedule_option_dress" />
+
         <LinearLayout
-            android:layout_marginLeft="@dimen/px35"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/icon_schedule_option_dress"
-            android:orientation="vertical">
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/icon_schedule_option_dress">
+
             <TextView
                 style="@style/ScheduleTypeName"
                 android:text="@string/option_dress_schedule" />
+
             <TextView
                 style="@style/ScheduleTypeInfromation"
                 android:text="@string/option_dress_schedule" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/arrows_right_gray" />
     </LinearLayout>
-    <View style="@style/line"/>
+
+    <View style="@style/line" />
 </LinearLayout>
