@@ -148,8 +148,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.OutletsOrderActivity"      android:windowSoftInputMode="stateVisible|adjustResize"   />
-
+        <activity
+            android:name=".ui.activity.OutletsOrderActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">
@@ -218,7 +219,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity android:name=".chat.ImageActivity" />
         <activity android:name=".chat.ConversationListActivity" />
         <activity android:name=".chat.GroupActivity" />
-        <activity android:name=".ui.activity.IntoGuestRegistrationActivity"></activity>
+        <activity android:name=".ui.activity.IntoGuestRegistrationActivity" />
+        <activity android:name=".ui.activity.RegisterIntoShopActivity"></activity>
     </application>
 
 </manifest>

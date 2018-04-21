@@ -24,6 +24,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
+import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
 import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
@@ -284,7 +285,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             case R.id.left_top:
                 break;
             case R.id.tv_register_into_shop:
-
+                startActivity(new Intent(getActivity(), RegisterIntoShopActivity.class));
                 break;
             case R.id.tv_outlets_order:
                 startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
