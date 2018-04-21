@@ -35,19 +35,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+
                 <!--订单编号-->
                 <LinearLayout
-                    android:id="@+id/ll_order_id"
                     style="@style/LinearLayoutStandard">
-
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="@string/order_id" />
 
                     <TextView
                         android:id="@+id/tv_order_id"
-                        style="@style/FormValue"
-                        android:hint="@string/please_input_order_id" />
+                        style="@style/FormValueMust"
+                        android:hint="请获取(必填)" />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -57,13 +57,13 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="订单日期" />
 
                     <TextView
                         android:id="@+id/tv_order_date"
-                        style="@style/FormSelectValue"
-                        android:hint="请选择订单日期" />
+                        style="@style/FormSelectValueMust"
+                          />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -73,13 +73,13 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="@string/consumption_type" />
 
                     <TextView
                         android:id="@+id/tv_consumption_type"
-                        style="@style/FormSelectValue"
-                        android:hint="@string/please_select_consumption_type" />
+                        style="@style/FormSelectValueMust"
+                       />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -104,27 +104,28 @@
                     android:layout_marginTop="@dimen/px30">
 
                     <TextView
-                        style="@style/DetailsKey"
-                        android:text="@string/customer_name" />
+                        style="@style/FormKeyMust"
+                        android:text="男士姓名" />
 
                     <android.support.design.widget.TextInputEditText
+                        android:hint="请输入(与女士姓名选填一个)"
                         android:id="@+id/et_customer_name_m"
                         style="@style/FormValue"
-                        android:hint="@string/please_input_customer_name" />
+                     />
                 </LinearLayout>
 
                 <View style="@style/line" />
-                <!--客户手机-->
+                <!--男手机-->
                 <LinearLayout style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
-                        android:text="@string/customer_phone" />
+                        style="@style/FormKeyMust"
+                        android:text="男士手机" />
 
                     <android.support.design.widget.TextInputEditText
+                        android:hint="请输入(与女士手机选填一个)"
                         android:id="@+id/et_customer_phone_m"
-                        style="@style/InputPhone"
-                        android:hint="@string/please_input_phone_number" />
+                        style="@style/InputPhone"  />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -136,12 +137,26 @@
                         android:text="男士微信" />
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/et_customer_phone"
+                        android:id="@+id/et_customer_wechat_m"
                         style="@style/FormValue"
-                        android:hint="@string/please_input_phone_number" />
+                        />
                 </LinearLayout>
-
                 <View style="@style/line" />
+
+                <!--男士QQ-->
+                <LinearLayout style="@style/LinearLayoutStandard" android:visibility="gone">
+
+                    <TextView
+                        style="@style/DetailsKey"
+                        android:text="男士QQ" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_customer_qq_m"
+                        style="@style/FormValue"
+                        />
+                </LinearLayout>
+                <View style="@style/line" android:visibility="gone" />
+
                 <!--男士生日-->
                 <LinearLayout
                     android:id="@+id/ll_customer_birthday_m"
@@ -153,8 +168,7 @@
 
                     <TextView
                         android:id="@+id/tv_customer_birthday_m"
-                        style="@style/FormSelectValue"
-                        android:hint="请选择日期" />
+                        style="@style/FormSelectValue" />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -166,11 +180,12 @@
                     android:layout_marginTop="@dimen/px30">
 
                     <TextView
-                        style="@style/DetailsKey"
-                        android:text="@string/customer_name" />
+                        style="@style/FormKeyMust"
+                        android:text="女士姓名" />
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_customer_name_w"
+                        android:hint="请输入(与男士姓名选填一个)"
                         style="@style/FormValue" />
                 </LinearLayout>
 
@@ -179,12 +194,12 @@
                 <LinearLayout style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="女士手机" />
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/et_customer_phone_w"
-                        style="@style/InputPhone" />
+                        style="@style/InputPhone" android:hint="请输入(与男士手机选填一个)"/>
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -200,7 +215,18 @@
                         style="@style/FormValue" />
                 </LinearLayout>
 
-                <View style="@style/line" />
+                <!--女士QQ-->
+                <LinearLayout style="@style/LinearLayoutStandard" android:visibility="gone">
+                    <TextView
+                        style="@style/DetailsKey"
+                        android:text="女士QQ" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_customer_qq_w"
+                        style="@style/FormValue" />
+                </LinearLayout>
+
+                <View style="@style/line" android:visibility="gone"/>
                 <!--女士生日-->
                 <LinearLayout
                     android:id="@+id/ll_customer_birthday_w"
@@ -226,13 +252,13 @@
                     android:layout_marginTop="@dimen/px30">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="销售门市" />
 
                     <TextView
                         android:id="@+id/tv_reception"
-                        style="@style/FormSelectValue"
-                        android:hint="@string/please_selsect_outlets_reception" />
+                        style="@style/FormSelectValueMust"
+                     />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -247,8 +273,7 @@
 
                     <TextView
                         android:id="@+id/tv_reception_market"
-                        style="@style/FormSelectValue"
-                        android:hint="@string/please_selsect_outlets_reception" />
+                        style="@style/FormSelectValue" />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -283,6 +308,46 @@
                         android:hint="@string/please_select_marriage_date" />
 
                 </LinearLayout>
+
+                <!--摄影主题-->
+                <RelativeLayout android:id="@+id/rl_shoot_theme" android:layout_marginTop="@dimen/px30"  style="@style/LinearLayoutStandard">
+                    <TextView
+                        android:id="@+id/rv_shoot_theme"
+                        style="@style/DetailsKey"
+                        android:text="摄影主题" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_shoot_theme"
+                        android:gravity="right"
+                        android:layout_toRightOf="@id/rv_shoot_theme"
+                        android:layout_below="@id/rv_shoot_theme"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--礼服主题-->
+                <RelativeLayout android:id="@+id/rl_drees_theme" android:layout_marginTop="@dimen/px30" style="@style/LinearLayoutStandard">
+                    <TextView
+                        android:id="@+id/rv_dress_theme"
+                        style="@style/DetailsKey"
+                        android:text="礼服主题" />
+                    <LinearLayout
+                        android:id="@+id/ll_drees_theme"
+                        android:gravity="right"
+                        android:layout_toRightOf="@id/rv_dress_theme"
+                        android:layout_below="@id/rv_dress_theme"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+
+
+
+
                 <!--拍照店一-->
                 <LinearLayout
                     android:id="@+id/ll_photo_shop_one"
@@ -290,10 +355,11 @@
                     android:layout_marginTop="@dimen/px30">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="拍照店一" />
 
                     <TextView
+                        android:hint="请选择(与拍照店二选填一个)"
                         android:id="@+id/tv_photo_shop_one"
                         style="@style/FormSelectValue" />
                 </LinearLayout>
@@ -301,6 +367,7 @@
                 <View style="@style/line" />
                 <!--意向店-->
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/ll_intention_shop"
                     style="@style/LinearLayoutStandard">
 
@@ -321,10 +388,11 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="拍照店二" />
 
                     <TextView
+                        android:hint="请选择(与拍照店一选填一个)"
                         android:id="@+id/tv_photo_shop_two"
                         style="@style/FormSelectValue" />
 
@@ -337,12 +405,12 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/DetailsKey"
+                        style="@style/FormKeyMust"
                         android:text="@string/customer_zone" />
 
                     <TextView
                         android:id="@+id/tv_vip_zone"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormSelectValueMust" />
 
                 </LinearLayout>
 
@@ -359,6 +427,21 @@
                     <TextView
                         android:id="@+id/tv_customer_source"
                         style="@style/FormSelectValue" />
+
+                </LinearLayout>
+                <View style="@style/line" />
+                <!--意向套系-->
+                <LinearLayout
+                    android:id="@+id/ll_intention_package"
+                    style="@style/LinearLayoutStandard">
+
+                    <TextView
+                        style="@style/FormKeyMust"
+                        android:text="意向套系" />
+
+                    <TextView
+                        android:id="@+id/tv_intention_package"
+                        style="@style/FormSelectValueMust" />
 
                 </LinearLayout>
 
@@ -502,7 +585,6 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-
         <Button
             android:id="@+id/btn_submint_order"
             android:layout_width="match_parent"

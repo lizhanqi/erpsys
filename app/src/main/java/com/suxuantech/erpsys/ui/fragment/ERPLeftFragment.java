@@ -20,8 +20,10 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
+import com.suxuantech.erpsys.ui.activity.OptionActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
@@ -147,11 +149,11 @@ public class ERPLeftFragment extends BaseLazyFragment {
             @Override
             public void onClick(View v) {
            //     startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-                // Intent intent = new Intent(getActivity(), OptionActivity.class);
-//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
-//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData("礼服");
+              Intent intent = new Intent(getActivity(), OptionActivity.class);
+              OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
+              multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+               multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+                 multiple.setCheckedData("礼服");
 //                multiple.setTitle("选择");
                 // multiple.setUrl("11111");
 

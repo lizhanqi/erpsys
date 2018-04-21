@@ -1,7 +1,7 @@
 <resources>
-        
+
     <!--启动页-->
-    <style name="WelcomeStyle"   parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="WelcomeStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -24,6 +24,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/themeColor</item>
         <item name="android:textColorHint">@color/copyrigth</item>
@@ -32,7 +33,7 @@
         <item name="colorControlHighlight">@color/themeColor</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-        <!--Toolbar的-->
+    <!--Toolbar的-->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <!--
         <style name="FullscreenTheme" parent="AppTheme">
@@ -67,52 +68,77 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
+
     <!--表单值-->
     <style name="FormValue">
-        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:hint">请输入</item>
+        <item name="android:layout_marginLeft">@dimen/px30</item>
+        <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">@dimen/xs44</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColorHint">@color/textHint_99</item>
-        <item name="android:drawablePadding"> @dimen/px30</item>
+        <item name="android:drawablePadding">@dimen/px30</item>
         <item name="android:background">@null</item>
     </style>
+
+    <!--文本域-->
     <style name="TextAreaKey" parent="DetailsKey">
         <item name="android:gravity">top</item>
     </style>
+
     <style name="TextAreaValue" parent="FormValue">
         <item name="android:minLines">3</item>
     </style>
     <!--表单类型选择类的-->
     <style name="FormSelectValue" parent="FormValue">
+        <item name="android:hint">请选择</item>
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
     </style>
+
     <style name="InputNumber" parent="FormValue">
         <item name="android:inputType">number</item>
     </style>
+
     <style name="InputDecimals" parent="FormValue">
         <item name="android:inputType">numberDecimal</item>
     </style>
+
     <style name="InputPhone" parent="FormValue">
         <item name="android:drawableRight">@null</item>
         <item name="android:inputType">phone</item>
         <item name="android:maxLength">11</item>
     </style>
+    <!--必填项key-->
+    <style name="FormKeyMust" parent="DetailsKey">
+        <item name="android:textColor">@color/litte_red</item>
+    </style>
+    <!--必填项key-->
+    <style name="FormSelectValueMust" parent="FormSelectValue">
+        <item name="android:hint">请选择(必选)</item>
+    </style>
+    <!--必填项key-->
+    <style name="FormValueMust" parent="FormValue">
+        <item name="android:hint">请输入(必选)</item>
+    </style>
     <!--一个横线-->
-    <style name="line"  >
+    <style name="line">
         <item name="android:id">@id/line</item>
         <item name="android:background">@color/mainNavline_e7</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/px2</item>
     </style>
+
     <style name="customer_order_detail">
         <item name="android:textSize">@dimen/xs42</item>
         <item name="android:textColor">@color/textcolor_b6</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="customer_order_money">
         <item name="android:textSize">@dimen/xs40</item>
         <item name="android:textColor">@color/textHint_99</item>
@@ -122,22 +148,25 @@
     <!--客户信息-->
     <style name="CustomerInformationKey">
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity" >center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/mainNav_66</item>
         <item name="android:textSize">@dimen/xs44</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">@dimen/px215</item>
     </style>
+
     <style name="CustomerInformationValue" parent="CustomerInformationKey">
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginLeft">@dimen/px18</item>
         <item name="android:textColorHint">@color/textHint_99</item>
     </style>
+
     <style name="EditNormal" parent="CustomerInformationValue">
         <item name="android:editable">false</item>
         <item name="android:background">@null</item>
     </style>
+
     <style name="CustomerInformationContain" parent="CustomerInformationKey">
         <item name="android:background">@color/white</item>
         <item name="android:orientation">horizontal</item>
@@ -146,7 +175,8 @@
         <item name="android:layout_height">@dimen/px125</item>
         <item name="android:layout_width">match_parent</item>
     </style>
-    <style name="PayDetail" >
+
+    <style name="PayDetail">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/xs44</item>
         <item name="android:textColor">@color/myValue_33</item>
@@ -166,6 +196,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="Standard" parent="PayDetail">
         <item name="android:layout_weight">1</item>
         <item name="android:drawablePadding">@dimen/px30</item>
@@ -177,6 +208,7 @@
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
         <item name="android:textColor">@color/textHint_99</item>
     </style>
+
     <style name="ScheduleTypeName">
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:textSize">@dimen/xs48</item>
@@ -184,21 +216,23 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
     <style name="ScheduleTypeInfromation" parent="ScheduleTypeName">
         <item name="android:textColor">@color/textHint_99</item>
         <item name="android:textSize">@dimen/xs44</item>
     </style>
-<style name="ScheduleType">
-    <item name="android:background">@color/white</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:gravity">center_vertical</item>
-    <item name="android:paddingBottom">@dimen/px40</item>
-    <item name="android:paddingTop">@dimen/px40</item>
-    <item name="android:paddingLeft">@dimen/px55</item>
-    <item name="android:paddingRight">@dimen/px55</item>
-</style>
-        <!--融云loadingdiarlog-->
+
+    <style name="ScheduleType">
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingBottom">@dimen/px40</item>
+        <item name="android:paddingTop">@dimen/px40</item>
+        <item name="android:paddingLeft">@dimen/px55</item>
+        <item name="android:paddingRight">@dimen/px55</item>
+    </style>
+    <!--融云loadingdiarlog-->
     <style name="WinDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -213,19 +247,20 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
-<style name="convertion" parent="AppTheme">
-    <item name="android:windowIsTranslucent">false</item>
-<item name="android:windowDisablePreview">true</item>
+    <style name="convertion" parent="AppTheme">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
-<style name="CustomDialog" parent="Theme.AppCompat.Dialog">
-<item name="android:backgroundDimEnabled">false</item>
-<item name="android:windowBackground">@android:color/transparent</item>
-</style>
-        <style name="notData">
-            <item name="android:layout_width">match_parent</item>
-            <item name="android:layout_height">match_parent</item>
-            <item name="android:background">@color/bgColor_divier</item>
-            <item name="android:orientation">vertical</item>
-        </style>
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="notData">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/bgColor_divier</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 </resources>

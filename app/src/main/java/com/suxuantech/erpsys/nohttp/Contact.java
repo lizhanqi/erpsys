@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.nohttp;
 
 import com.blankj.utilcode.util.EncryptUtils;
+import com.suxuantech.erpsys.App;
 
 import java.net.URLEncoder;
 
@@ -44,6 +45,12 @@ public class Contact {
         //return  TESTIP + String.format(template, replace);
         if (replace==null){
             return  template;
+        }
+        if (App.ISDEBUG){
+            for(int i=0;i<replace.length;i++){
+                replace[i] =  replace[i] .toString();
+            }
+            com.yanzhenjie.nohttp.Logger.d(  TESTIP + (String.format(template, replace)) );
         }
         //把所有类型转为String,并且编码
         for(int i=0;i<replace.length;i++){
@@ -156,7 +163,7 @@ public class Contact {
     /**
      * 获得包套
      */
-    public static String PACKAGE = "/SXWebErpAppStaff/SX_SelPageNameToxi?Token=%s&code=%s";
+    public static String PACKAGE = "/SXWebErpAppStaff/SX_PackageSet?Token=%s&code=%s";
 
     /**
      * 获得包套
@@ -165,13 +172,22 @@ public class Contact {
     /**
      * 开婚纱单
      */
-    public static String OPEN_WEDDING_ORDER = "/SXWebErpAppStaff/SX_Open_WeddingOrder?Token=%s&package_name=%s&pid=%s&pp=%s&code=%s&shopname=%s";
+    public static String OPEN_WEDDING_ORDER = "/SXWebErpAppStaff/SX_Open_WeddingOrder?Token=%s&package_name=%s&cid=%s&Code=%s&shopname=%s&PZCode=%s&PZshopname=%s&PZCode1=%s&PZshopname1=%s&zktype=%s&staffid=%s";
     /**
      * 订单搜索
      */
-    public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%d&pageSize=%d";
+    public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%s&pageSize=%s";
     /**
      * 新单类型
      */
     public  static String NEW_ORDER_TYPE="/SXWebErpAppStaff/SX_OrderTypeSet?Token=%S&Code=%S&consumptiontype=%S";
+    /**
+     *摄影主题
+     */
+    public static String SHOOT_THEME="/SXWebErpAppStaff/SX_TopicSet?Token=%s&Code=%s";
+
+    /**
+     *礼服主题
+     */
+    public static String DRESS_THEME="/SXWebErpAppStaff/SX_DressThemesetSet?Token=%s&Code=%s";
 }

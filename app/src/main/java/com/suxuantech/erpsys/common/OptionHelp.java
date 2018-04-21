@@ -41,7 +41,7 @@ public class OptionHelp {
      */
     public  enum UrlTag implements Serializable {
         CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION,RECEPTION_MARKET
-  ,PHOTO_SHOP ,NEW_ORDER_TYPE }
+  ,PHOTO_SHOP ,NEW_ORDER_TYPE ,SHOOT_THEME,DRESS_THEME}
     private UrlTag urlTag;
     boolean isMultiple;
     ArrayList<String> checkedDatas;
@@ -131,6 +131,15 @@ public class OptionHelp {
         checkedDatas.add(checkedData);
         return this;
     }
+
+    public   OptionHelp addCheckedData(String checkedData) {
+        if (checkedDatas == null) {
+            checkedDatas = new ArrayList<>();
+        }
+        checkedDatas.add(checkedData);
+        return this;
+    }
+
 
     /**
      * 设置全部数据(本地的非网络)

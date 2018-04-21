@@ -1,7 +1,9 @@
 package com.suxuantech.erpsys.nohttp.ext;
 
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.utils.FastJsonUtils;
+import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 
@@ -74,6 +76,9 @@ public abstract class BaseRequest<Result> extends Request<Result> {
       //  MultiValueMap paramKeyValues = getParamKeyValues();
         addHeader("Content-Type", "application/json");
         String jsonString = FastJsonUtils.toJSONString(jsonParam);
+        if (App.ISDEBUG){
+            Logger.d(jsonString);
+        }
         setDefineRequestBodyForJson(jsonString);
     }
 }

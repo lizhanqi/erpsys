@@ -19,6 +19,7 @@ import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
+import com.suxuantech.erpsys.entity.ThemeEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
@@ -58,7 +59,7 @@ public class OptionActivity extends ImmersedBaseActivity {
      * checkedData当前选中的，单选的话只认下表为0的那个才是
      * mAllData全部选项
      */
-    ArrayList<String > checkedData,mAllData, currentChecked ;
+    ArrayList<String> checkedData, mAllData, currentChecked;
     /**
      * 网络的数据，暂时没有留在
      */
@@ -75,6 +76,7 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<CustomerIntentionEntity.DataBean> customerIntentionData;
     private List<PhotoShopEntity.DataBean> photoShopData;
     private List<NewOrderTypeEntity.DataBean> newOrderTyepData;
+    private List<ThemeEntity.DataBean> themeData;
 
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
 
@@ -87,7 +89,6 @@ public class OptionActivity extends ImmersedBaseActivity {
             mRecyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
                     mRecyclerView.loadMoreFinish(false, true);
                     // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
                     // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
@@ -103,40 +104,56 @@ public class OptionActivity extends ImmersedBaseActivity {
     private List<PackageEntity.DataBean> packageData;
     private List<ProductEntity.DataBean> productData;
     private BaseRecyclerAdapter<ProductEntity.DataBean> productAdapter;
+
     @Override
     public void widgetClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             default:
             case R.id.tv_nav_right://多选确定时候关闭页面的
-                StringBuffer sb = new StringBuffer();
-            if (urlTag!= OptionHelp.UrlTag.PRODUCT){
-                for(String f:currentChecked){
-                    sb.append(f+"\n");
-                }
-            }else {
-                ArrayList<ProductEntity.DataBean> dataBeans = new ArrayList<>();
-                for(String f:currentChecked){
-                    int i = Integer.parseInt(f);
-                    for (ProductEntity.DataBean pd:productData){
-                        if (pd.getId()== i){
-                            dataBeans.add(pd);
-                            break;
-                        }
-                    }
-                }
-                BaseMsg<ProductEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(productData, dataBeans, mMultiple);
-                dataBeanBaseMsg.setmTitle(title);
-                dataBeanBaseMsg.setTag(tag);
-                dataBeanBaseMsg.setUrl(Url);
-                dataBeanBaseMsg.setUrlTag(urlTag);
-                EventBus.getDefault().post(dataBeanBaseMsg);
-            }
-              finish();
+                setMultipleResult();
                 break;
             case R.id.tv_nav_left:
                 finish();
                 break;
         }
+    }
+
+    private void setMultipleResult() {
+        if (themeData != null) {
+            ArrayList<ThemeEntity.DataBean> dataBeans = new ArrayList<>();
+            for (String s : currentChecked) {
+                for (ThemeEntity.DataBean dataBean : themeData) {
+                    if (dataBean.getTopic().equals(s)) {
+                        dataBeans.add(dataBean);
+                        break;
+                    }
+                }
+            }
+            BaseMsg<ThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg (themeData, dataBeans, mMultiple);
+            dataBeanBaseMsg.setmTitle(title);
+            dataBeanBaseMsg.setTag(tag);
+            dataBeanBaseMsg.setUrl(Url);
+            dataBeanBaseMsg.setUrlTag(urlTag);
+            EventBus.getDefault().post(dataBeanBaseMsg);
+        } else {
+            ArrayList<ProductEntity.DataBean> dataBeans = new ArrayList<>();
+            for (String f : currentChecked) {
+                int i = Integer.parseInt(f);
+                for (ProductEntity.DataBean pd : productData) {
+                    if (pd.getId() == i) {
+                        dataBeans.add(pd);
+                        break;
+                    }
+                }
+            }
+            BaseMsg<ProductEntity.DataBean> dataBeanBaseMsg = new BaseMsg<>(productData, dataBeans, mMultiple);
+            dataBeanBaseMsg.setmTitle(title);
+            dataBeanBaseMsg.setTag(tag);
+            dataBeanBaseMsg.setUrl(Url);
+            dataBeanBaseMsg.setUrlTag(urlTag);
+            EventBus.getDefault().post(dataBeanBaseMsg);
+        }
+        finish();
     }
 
 
@@ -148,7 +165,7 @@ public class OptionActivity extends ImmersedBaseActivity {
         useButterKnife();
         showUserDefinedNav();
         //初始化传过来的IntentData
-        initIntentData( getIntent());
+        initIntentData(getIntent());
         //初始化recycleview
         initRecycleView();
         /**
@@ -157,19 +174,20 @@ public class OptionActivity extends ImmersedBaseActivity {
         initRefreshView();
 
         //如果路径不为空直接调用自动刷新（这个一定要在initIntentData后执行，Url有没有数据是那里获取到的）
-        if (urlTag!=null){
+        if (urlTag != null) {
             getUrlAndDataCtrl(false);
             mRotateHeaderGridViewFrame.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mRotateHeaderGridViewFrame.autoRefresh();
                 }
-            },0);
-        }else {
+            }, 0);
+        } else {
             mAllData = getIntent().getStringArrayListExtra("All");
             setAdapterCtrl();
         }
     }
+
     /**
      * 初始化设置刷新View
      */
@@ -189,7 +207,7 @@ public class OptionActivity extends ImmersedBaseActivity {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 currentChecked = (ArrayList<String>) checkedData.clone();
                 //开始刷新如果是本地有个2秒延迟
-                if (Url==null) {
+                if (Url == null) {
                     mRotateHeaderGridViewFrame.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -197,22 +215,24 @@ public class OptionActivity extends ImmersedBaseActivity {
                             stringBaseRecyclerAdapter.notifyDataSetChanged();
                         }
                     }, 2000);
-                }else {
+                } else {
                     //网络直接获取数据
                     getUrlAndDataCtrl(true);
                 }
             }
+
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
     }
+
     /**
      * 初始化RecycleView
      */
     private void initRecycleView() {
-        if (urlTag!= OptionHelp.UrlTag.PRODUCT) {
+        if (urlTag != OptionHelp.UrlTag.PRODUCT) {
             mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
         }
 //       mRecyclerView.useDefaultLoadMore();
@@ -231,120 +251,136 @@ public class OptionActivity extends ImmersedBaseActivity {
 
     /**
      * 获取传递过来的的信息
+     *
      * @param intent
      */
     private void initIntentData(Intent intent) {
         //判断是否为空
         if (intent != null) {
-                //获取是否是多选
-                mMultiple = intent.getBooleanExtra("Multiple",false);
-                  if (mMultiple){
-                        setUseDefinedNavRightText(getString(R.string.complete));
-                 }
-                 tag = intent.getStringExtra("Tag");
-                 title = intent.getStringExtra("Title");
-              //设置标题
-                setTitle(title);
-                checkedData = intent.getStringArrayListExtra("Checked");
-                //已经选中的
-                if (checkedData==null){
-                   checkedData=       new ArrayList<>();
-                    }
-              //当前选中的
-                  currentChecked= (ArrayList<String>) checkedData.clone();
-                //给个地址
-                  urlTag = (OptionHelp.UrlTag) intent.getSerializableExtra("UrlTag");
-         }
+            //获取是否是多选
+            mMultiple = intent.getBooleanExtra("Multiple", false);
+            if (mMultiple) {
+                setUseDefinedNavRightText(getString(R.string.complete));
+            }
+            tag = intent.getStringExtra("Tag");
+            title = intent.getStringExtra("Title");
+            //设置标题
+            setTitle(title);
+            checkedData = intent.getStringArrayListExtra("Checked");
+            //已经选中的
+            if (checkedData == null) {
+                checkedData = new ArrayList<>();
+            }
+            //当前选中的
+            currentChecked = (ArrayList<String>) checkedData.clone();
+            //给个地址
+            urlTag = (OptionHelp.UrlTag) intent.getSerializableExtra("UrlTag");
+        }
     }
 
     /**
-     *获取网络路径和是否获取数据的总控
+     * 获取网络路径和是否获取数据的总控
      */
-    public  void getUrlAndDataCtrl(boolean getData){
-        if (mAllData==null){
-            mAllData =new ArrayList<>();
+    public void getUrlAndDataCtrl(boolean getData) {
+        if (mAllData == null) {
+            mAllData = new ArrayList<>();
         }
-        switch (urlTag){
+        switch (urlTag) {
             default:
             case PRODUCT:
                 //包套
-                Url= Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, 0);
-                if (getData){
+                Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, 0);
+                if (getData) {
                     getProduct();
                 }
                 break;
 
             case PACKAGE:
                 //包套
-                  Url= Contact.getFullUrl(Contact.PACKAGE, Contact.TOKEN, 0,0);
-                  if (getData){
-                      getPackage();
-                  }
+                Url = Contact.getFullUrl(Contact.PACKAGE, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
+                    getPackage();
+                }
                 break;
             case CONSUMPTION_TYPE:
                 //消费类型
-                Url= Contact.getFullUrl(Contact.CONSUMPTION_TYPE, Contact.TOKEN, 0);
-                if(getData){
-                 getConsumptionType();
+                Url = Contact.getFullUrl(Contact.CONSUMPTION_TYPE, Contact.TOKEN, 0);
+                if (getData) {
+                    getConsumptionType();
                 }
                 break;
             case OUTLETS_RECEPTION:
                 //门市接待
-                Url=Contact.getFullUrl(Contact.OUTLETS_RECEPTION, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.OUTLETS_RECEPTION, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
                     getOutletsReception();
                 }
-              break;
+                break;
             case ORDER_RECEIVING_SITE:
                 //接单点
-                Url=Contact.getFullUrl(Contact.ORDER_RECEIVING_SITE, Contact.TOKEN, 0);
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.ORDER_RECEIVING_SITE, Contact.TOKEN, 0);
+                if (getData) {
                     getOrderReceivingSite();
                 }
                 break;
             case CUSTOMER_ZONE:
                 //客户分区
-                Url=Contact.getFullUrl(Contact.CUSTOMER_ZONE, Contact.TOKEN, 0);
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.CUSTOMER_ZONE, Contact.TOKEN, 0);
+                if (getData) {
                     getCustomerZone();
                 }
                 break;
             case CUSTOMER_SOURCE:
                 //客户来源
-                Url=Contact.getFullUrl(Contact.CUSTOMER_SOURCE, Contact.TOKEN, 0);
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.CUSTOMER_SOURCE, Contact.TOKEN, 0);
+                if (getData) {
                     getCustomerSource();
                 }
                 break;
 
             case CUSTOMER_INTENTION:
                 //客户意向
-                Url=Contact.getFullUrl(Contact.CUSTOMER_INTENTION, Contact.TOKEN, 0);
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.CUSTOMER_INTENTION, Contact.TOKEN, 0);
+                if (getData) {
                     getCustomerIntention();
                 }
                 break;
 
             case RECEPTION_MARKET:
                 //网销门市
-                Url=Contact.getFullUrl(Contact.RECEPTION_MARKET, Contact.TOKEN, 0);
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.RECEPTION_MARKET, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
                     getOutletsReception();
                 }
                 break;
 
             case PHOTO_SHOP:
                 //拍摄店面
-                Url=Contact.getFullUrl(Contact.PHOTO_SHOP, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass());
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.PHOTO_SHOP, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass());
+                if (getData) {
                     getPhotoShop();
                 }
                 break;
             case NEW_ORDER_TYPE:
                 //新单类型
-                Url=Contact.getFullUrl(Contact.NEW_ORDER_TYPE, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass(),getIntent().getStringExtra("ConsumptionType"));
-                if(getData) {
+                Url = Contact.getFullUrl(Contact.NEW_ORDER_TYPE, Contact.TOKEN, App.getApplication().getUserInfor().getBrandclass(), getIntent().getStringExtra("ConsumptionType"));
+                if (getData) {
                     getNewOrderType();
+                }
+                break;
+            case SHOOT_THEME:
+                //摄影主题
+                Url = Contact.getFullUrl(Contact.SHOOT_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
+                    getThemeData();
+                }
+                break;
+
+            case DRESS_THEME:
+                //礼服主题
+                Url = Contact.getFullUrl(Contact.SHOOT_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
+                    getThemeData();
                 }
                 break;
         }
@@ -352,20 +388,21 @@ public class OptionActivity extends ImmersedBaseActivity {
 
     /**
      * 单选结果发送
+     *
      * @param position
      */
     private void singleResult(int position) {
-        if (!mMultiple){
+        if (!mMultiple) {
             //activity result 也可以设置
             Intent intent1 = new Intent();
-            intent1.putExtra("result",mAllData.get(position));
+            intent1.putExtra("result", mAllData.get(position));
             toastShort(mAllData.get(position));
-            setResult(RESULT_OK,intent1);
+            setResult(RESULT_OK, intent1);
             //发送EventBus事件也可以接收
             EventBus.getDefault().post(mAllData.get(position));
-            EventBus.getDefault().post(new SmpileEventMsg(urlTag,mAllData.get(position)));
-            if(Url!=null){
-                if (consumptionTypeData!=null){
+            EventBus.getDefault().post(new SmpileEventMsg(urlTag, mAllData.get(position)));
+            if (Url != null) {
+                if (consumptionTypeData != null) {
                     //消费类型
                     ArrayList<ConsumptionTypeEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(consumptionTypeData.get(position));
@@ -375,7 +412,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else if (orderReceivingSiteData!=null){
+                } else if (orderReceivingSiteData != null) {
                     //接单点
                     ArrayList<OrderReceivingSiteEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(orderReceivingSiteData.get(position));
@@ -385,7 +422,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else if (outletsReceptionData!=null){
+                } else if (outletsReceptionData != null) {
                     //门市接待
                     ArrayList<OutletsReceptionEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(outletsReceptionData.get(position));
@@ -395,7 +432,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }     else if (customerZoneData!=null){
+                } else if (customerZoneData != null) {
                     //客户分区
                     ArrayList<CustomerZoneEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(customerZoneData.get(position));
@@ -405,7 +442,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else  if(packageData!=null){
+                } else if (packageData != null) {
                     //包套
                     ArrayList<PackageEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(packageData.get(position));
@@ -415,7 +452,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else  if(customerSourceData!=null){
+                } else if (customerSourceData != null) {
                     //客户来源
                     ArrayList<CustomerSourceEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(customerSourceData.get(position));
@@ -425,7 +462,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else  if(customerIntentionData!=null){
+                } else if (customerIntentionData != null) {
                     //客户来源
                     ArrayList<CustomerIntentionEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(customerIntentionData.get(position));
@@ -435,7 +472,7 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else  if(photoShopData!=null){
+                } else if (photoShopData != null) {
                     //客户来源
                     ArrayList<PhotoShopEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(photoShopData.get(position));
@@ -445,12 +482,21 @@ public class OptionActivity extends ImmersedBaseActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }
-                else  if(newOrderTyepData!=null){
+                } else if (newOrderTyepData != null) {
                     //新单类型
                     ArrayList<NewOrderTypeEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(newOrderTyepData.get(position));
                     BaseMsg<NewOrderTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<NewOrderTypeEntity.DataBean>(newOrderTyepData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                } else if (themeData != null) {
+                    //新单类型
+                    ArrayList<ThemeEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(themeData.get(position));
+                    BaseMsg<ThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<ThemeEntity.DataBean>(themeData, dataBeans, mMultiple);
                     dataBeanBaseMsg.setmTitle(title);
                     dataBeanBaseMsg.setTag(tag);
                     dataBeanBaseMsg.setUrl(Url);
@@ -461,99 +507,103 @@ public class OptionActivity extends ImmersedBaseActivity {
             finish();
         }
     }
+
     /**
      * 设置数据到适配器总控
-     *
      */
     private void setAdapterCtrl() {
         //适配器不为空刷新反复
-        if (stringBaseRecyclerAdapter!=null)   {
+        if (stringBaseRecyclerAdapter != null) {
             stringBaseRecyclerAdapter.notifyDataSetChanged();
             return;
         }
-        if (productAdapter!=null)   {
+        if (productAdapter != null) {
             productAdapter.notifyDataSetChanged();
             return;
         }
-         if(urlTag== OptionHelp.UrlTag.PRODUCT) {
+        if (urlTag == OptionHelp.UrlTag.PRODUCT) {
             productAdapter();
-        }else  if (urlTag== OptionHelp.UrlTag.PACKAGE){
+        } else if (urlTag == OptionHelp.UrlTag.PACKAGE) {
             packageAdapter();
-        }else {
-         //多选的
-         if (mMultiple){
-             multipleAdapter();
-         }else {
-             singleSetAdapter();
-          }
+        } else {
+            //多选的
+            if (mMultiple) {
+                multipleAdapter();
+            } else {
+                singleSetAdapter();
+            }
         }
         mRecyclerView.loadMoreFinish(false, false);
     }
-   //------------------网络专区-----------------------------------------
+    //------------------网络专区-----------------------------------------
+
     /**
      * 获取包套
      */
     private void getProduct() {
         //请求实体
-        JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(Url, RequestMethod.POST,ProductEntity.class);
-        HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>(){
+        JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(Url, RequestMethod.POST, ProductEntity.class);
+        HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>() {
             @Override
             public void onSucceed(int what, Response<ProductEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     productData = response.get().getData();
-                    if (productData!=null){
+                    if (productData != null) {
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<ProductEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
             }
         };
-       request(0,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
     /**
      * 获取包套
      */
     private void getPackage() {
         //请求实体
-        JavaBeanRequest<PackageEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PackageEntity>(Url, RequestMethod.POST,PackageEntity.class);
-        HttpListener<PackageEntity> searchByCustmor = new HttpListener<PackageEntity>(){
+        JavaBeanRequest<PackageEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PackageEntity>(Url, RequestMethod.POST, PackageEntity.class);
+        HttpListener<PackageEntity> searchByCustmor = new HttpListener<PackageEntity>() {
             @Override
             public void onSucceed(int what, Response<PackageEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     packageData = response.get().getData();
-                    if (packageData!=null){
-                        for (PackageEntity.DataBean da:packageData) {
-                            mAllData.add(da.getPackage_name()) ;
+                    if (packageData != null) {
+                        for (PackageEntity.DataBean da : packageData) {
+                            mAllData.add(da.getPackage_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<PackageEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
             }
         };
-        request(2,districtBeanJavaBeanRequest, searchByCustmor,   false, false);
+        request(2, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
     /**
@@ -561,34 +611,35 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getConsumptionType() {
         //请求实体
-        JavaBeanRequest<ConsumptionTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ConsumptionTypeEntity>(Url, RequestMethod.POST,ConsumptionTypeEntity.class);
-        HttpListener<ConsumptionTypeEntity> searchByCustmor = new HttpListener<ConsumptionTypeEntity>(){
+        JavaBeanRequest<ConsumptionTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ConsumptionTypeEntity>(Url, RequestMethod.POST, ConsumptionTypeEntity.class);
+        HttpListener<ConsumptionTypeEntity> searchByCustmor = new HttpListener<ConsumptionTypeEntity>() {
             @Override
             public void onSucceed(int what, Response<ConsumptionTypeEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     consumptionTypeData = response.get().getData();
-                    if (consumptionTypeData!=null){
-                        for (ConsumptionTypeEntity.DataBean da:consumptionTypeData) {
-                            mAllData.add(da.getConsumption_name()) ;
+                    if (consumptionTypeData != null) {
+                        for (ConsumptionTypeEntity.DataBean da : consumptionTypeData) {
+                            mAllData.add(da.getConsumption_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                     }
-                }else {
+                } else {
                     mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<ConsumptionTypeEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
             }
         };
-        request(3,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(3, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
     /**
@@ -596,287 +647,313 @@ public class OptionActivity extends ImmersedBaseActivity {
      */
     private void getOrderReceivingSite() {
         //请求实体
-        JavaBeanRequest<OrderReceivingSiteEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderReceivingSiteEntity>(Url, RequestMethod.POST,OrderReceivingSiteEntity.class);
-        HttpListener<OrderReceivingSiteEntity> searchByCustmor = new HttpListener<OrderReceivingSiteEntity>(){
+        JavaBeanRequest<OrderReceivingSiteEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OrderReceivingSiteEntity>(Url, RequestMethod.POST, OrderReceivingSiteEntity.class);
+        HttpListener<OrderReceivingSiteEntity> searchByCustmor = new HttpListener<OrderReceivingSiteEntity>() {
             @Override
             public void onSucceed(int what, Response<OrderReceivingSiteEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
-                   orderReceivingSiteData = response.get().getData();
-                    if (orderReceivingSiteData!=null){
-                        for (OrderReceivingSiteEntity.DataBean da:orderReceivingSiteData) {
-                            mAllData.add(da.getAcceptoraddress_name()) ;
+                    orderReceivingSiteData = response.get().getData();
+                    if (orderReceivingSiteData != null) {
+                        for (OrderReceivingSiteEntity.DataBean da : orderReceivingSiteData) {
+                            mAllData.add(da.getAcceptoraddress_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<OrderReceivingSiteEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
             }
         };
-        request(4,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(4, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
     /**
      * 门市接待
      */
     public void getOutletsReception() {
         //请求实体
-        JavaBeanRequest<OutletsReceptionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OutletsReceptionEntity>(Url, RequestMethod.POST,OutletsReceptionEntity.class);
-        HttpListener<OutletsReceptionEntity> searchByCustmor = new HttpListener<OutletsReceptionEntity>(){
+        JavaBeanRequest<OutletsReceptionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OutletsReceptionEntity>(Url, RequestMethod.POST, OutletsReceptionEntity.class);
+        HttpListener<OutletsReceptionEntity> searchByCustmor = new HttpListener<OutletsReceptionEntity>() {
             @Override
             public void onSucceed(int what, Response<OutletsReceptionEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     outletsReceptionData = response.get().getData();
-                    if (outletsReceptionData!=null){
-                        for (OutletsReceptionEntity.DataBean da:outletsReceptionData) {
-                            mAllData.add(da.getStaffName()) ;
+                    if (outletsReceptionData != null) {
+                        for (OutletsReceptionEntity.DataBean da : outletsReceptionData) {
+                            mAllData.add(da.getStaffName());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                     toastShort(response.get().getMsg());
                 }
             }
+
             @Override
             public void onFailed(int what, Response<OutletsReceptionEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
             }
         };
-        request(5,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(5, districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
+
     /**
      * 客户分区
      */
     public void getCustomerZone() {
         //请求实体
-        JavaBeanRequest<CustomerZoneEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerZoneEntity>(Url, RequestMethod.POST,CustomerZoneEntity.class);
-        HttpListener<CustomerZoneEntity> searchByCustmor = new HttpListener<CustomerZoneEntity>(){
+        JavaBeanRequest<CustomerZoneEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerZoneEntity>(Url, RequestMethod.POST, CustomerZoneEntity.class);
+        HttpListener<CustomerZoneEntity> searchByCustmor = new HttpListener<CustomerZoneEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerZoneEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     customerZoneData = response.get().getData();
-                    if (customerZoneData!=null){
-                        for (CustomerZoneEntity.DataBean da:customerZoneData) {
-                            mAllData.add(da.getArea_name()) ;
+                    if (customerZoneData != null) {
+                        for (CustomerZoneEntity.DataBean da : customerZoneData) {
+                            mAllData.add(da.getArea_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                     toastShort(response.get().getMsg());
                 }
             }
+
             @Override
             public void onFailed(int what, Response<CustomerZoneEntity> response) {
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        request(6,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(6, districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
 
     /**
-     *客户来源
+     * 客户来源
      */
     public void getCustomerSource() {
         //请求实体
-        JavaBeanRequest<CustomerSourceEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerSourceEntity>(Url, RequestMethod.POST,CustomerSourceEntity.class);
-        HttpListener<CustomerSourceEntity> searchByCustmor = new HttpListener<CustomerSourceEntity>(){
+        JavaBeanRequest<CustomerSourceEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerSourceEntity>(Url, RequestMethod.POST, CustomerSourceEntity.class);
+        HttpListener<CustomerSourceEntity> searchByCustmor = new HttpListener<CustomerSourceEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerSourceEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     customerSourceData = response.get().getData();
-                    if (customerSourceData!=null){
-                        for (CustomerSourceEntity.DataBean da:customerSourceData) {
-                            mAllData.add(da.getCus_name()) ;
+                    if (customerSourceData != null) {
+                        for (CustomerSourceEntity.DataBean da : customerSourceData) {
+                            mAllData.add(da.getCus_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                     toastShort(response.get().getMsg());
                 }
             }
+
             @Override
             public void onFailed(int what, Response<CustomerSourceEntity> response) {
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        request(7,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(7, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
     /**
-     *客户意向
+     * 客户意向
      */
     public void getCustomerIntention() {
         //请求实体
-        JavaBeanRequest<CustomerIntentionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerIntentionEntity>(Url, RequestMethod.POST,CustomerIntentionEntity.class);
-        HttpListener<CustomerIntentionEntity> searchByCustmor = new HttpListener<CustomerIntentionEntity>(){
+        JavaBeanRequest<CustomerIntentionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerIntentionEntity>(Url, RequestMethod.POST, CustomerIntentionEntity.class);
+        HttpListener<CustomerIntentionEntity> searchByCustmor = new HttpListener<CustomerIntentionEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerIntentionEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     customerIntentionData = response.get().getData();
-                    if (customerIntentionData!=null){
-                        for (CustomerIntentionEntity.DataBean da:customerIntentionData) {
-                            mAllData.add(da.getIntention_name()) ;
+                    if (customerIntentionData != null) {
+                        for (CustomerIntentionEntity.DataBean da : customerIntentionData) {
+                            mAllData.add(da.getIntention_name());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                } else {
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<CustomerIntentionEntity> response) {
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
     /**
-     *获取店面
+     * 获取店面
      */
     public void getPhotoShop() {
         //请求实体
-        JavaBeanRequest<PhotoShopEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoShopEntity>(Url, RequestMethod.POST,PhotoShopEntity.class);
-        HttpListener<PhotoShopEntity> searchByCustmor = new HttpListener<PhotoShopEntity>(){
+        JavaBeanRequest<PhotoShopEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoShopEntity>(Url, RequestMethod.POST, PhotoShopEntity.class);
+        HttpListener<PhotoShopEntity> searchByCustmor = new HttpListener<PhotoShopEntity>() {
             @Override
             public void onSucceed(int what, Response<PhotoShopEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     photoShopData = response.get().getData();
-                    if (photoShopData!=null){
-                        for (PhotoShopEntity.DataBean da:photoShopData) {
+                    if (photoShopData != null) {
+                        for (PhotoShopEntity.DataBean da : photoShopData) {
                             //   if (da.getIs_photo().equals("0")){
-                            mAllData.add(da.getBelong_shop_name()) ;
+                            mAllData.add(da.getBelong_shop_name());
                             // }
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
+                } else {
                     toastShort(response.get().getMsg());
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<PhotoShopEntity> response) {
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
     /**
-     *获取新单类型
+     * 获取新单类型
      */
     public void getNewOrderType() {
         //请求实体
-        JavaBeanRequest<NewOrderTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<NewOrderTypeEntity>(Url, RequestMethod.POST,NewOrderTypeEntity.class);
-        HttpListener<NewOrderTypeEntity> searchByCustmor = new HttpListener<NewOrderTypeEntity>(){
+        JavaBeanRequest<NewOrderTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<NewOrderTypeEntity>(Url, RequestMethod.POST, NewOrderTypeEntity.class);
+        HttpListener<NewOrderTypeEntity> searchByCustmor = new HttpListener<NewOrderTypeEntity>() {
             @Override
             public void onSucceed(int what, Response<NewOrderTypeEntity> response) {
                 mRotateHeaderGridViewFrame.refreshComplete();
                 boolean ok = response.get().isOK();
-                if (ok){
+                if (ok) {
                     mAllData.clear();
                     newOrderTyepData = response.get().getData();
-                    if (newOrderTyepData!=null){
-                        for (NewOrderTypeEntity.DataBean da:newOrderTyepData) {
-                            mAllData.add(da.getOrdertype()) ;
+                    if (newOrderTyepData != null) {
+                        for (NewOrderTypeEntity.DataBean da : newOrderTyepData) {
+                            mAllData.add(da.getOrdertype());
                         }
                         setAdapterCtrl();
-                    }else {
-                        mRecyclerView.loadMoreFinish(true,false);
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
                         toastShort(response.get().getMsg());
                     }
-                }else {
+                } else {
                     toastShort(response.get().getMsg());
-                    mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 }
             }
+
             @Override
             public void onFailed(int what, Response<NewOrderTypeEntity> response) {
-                mRecyclerView.loadMoreError(0,getString(R.string.data_load_error));
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
         };
-        request(8,districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
 
     }
 
-//    public  void    get(Class<? extends    BaseResult2 > clas) {
-//        get12(PhotoShopEntity.class);
-//    }
-//
-//    private void get12(Class<? extends  BaseResult2> baseResultClass) {
-//        JavaBeanRequest<BaseResult2> districtBeanJavaBeanRequest = new JavaBeanRequest<BaseResult2>(Url, RequestMethod.POST,BaseResult2.class);
-//        HttpListener<BaseResult2> searchByCustmor = new HttpListener<BaseResult2>(){
-//
-//            @Override
-//            public void onSucceed(int what, Response<BaseResult2> response) {
-//                Object o = response.get().getData().get(0);
-//
-//            }
-//
-//
-//            @Override
-//            public void onFailed(int what, Response<BaseResult2> response) {
-//
-//            }
-//        };
-//
-//    }
+    /**
+     * 获取新单类型
+     */
+    public void getThemeData() {
+        //请求实体
+        JavaBeanRequest<ThemeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ThemeEntity>(Url, RequestMethod.POST, ThemeEntity.class);
+        HttpListener<ThemeEntity> searchByCustmor = new HttpListener<ThemeEntity>() {
+            @Override
+            public void onSucceed(int what, Response<ThemeEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok) {
+                    mAllData.clear();
+                    themeData = response.get().getData();
+                    if (themeData != null) {
+                        for (ThemeEntity.DataBean da : themeData) {
+                            mAllData.add(da.getTopic());
+                        }
+                        setAdapterCtrl();
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
+                        toastShort(response.get().getMsg());
+                    }
+                } else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                }
+            }
 
+            @Override
+            public void onFailed(int what, Response<ThemeEntity> response) {
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+
+    }
 
     //--------------------------------------适配器专区----------------------------------------
+
     /**
      * 设置多选适配器
      */
@@ -890,19 +967,19 @@ public class OptionActivity extends ImmersedBaseActivity {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CheckedTextView checkedTextView = (CheckedTextView)v;
+                        CheckedTextView checkedTextView = (CheckedTextView) v;
                         checkedTextView.toggle();
-                        if (checkedTextView.isChecked()){
-                          currentChecked.add( mAllData.get(position)) ;
-                        }else {
-                            currentChecked.remove( mAllData.get(position)) ;
+                        if (checkedTextView.isChecked()) {
+                            currentChecked.add(mAllData.get(position));
+                        } else {
+                            currentChecked.remove(mAllData.get(position));
                         }
                     }
                 });
-                if (currentChecked!=null){
-                    if (currentChecked.contains(item)){
+                if (currentChecked != null) {
+                    if (currentChecked.contains(item)) {
                         view.setChecked(true);
-                    }else {
+                    } else {
                         view.setChecked(false);
                     }
                 }
@@ -920,9 +997,9 @@ public class OptionActivity extends ImmersedBaseActivity {
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_item);
                 view.setText(item);
-                if (currentChecked!=null&&currentChecked.size()>0){
+                if (currentChecked != null && currentChecked.size() > 0) {
                     String s = currentChecked.get(0);
-                    if(item.equals(s)){
+                    if (item.equals(s)) {
                         view.setBackgroundColor(getResources().getColor(R.color.myBackground_f7));
                     }
                 }
@@ -930,6 +1007,7 @@ public class OptionActivity extends ImmersedBaseActivity {
             }
         };
     }
+
     /**
      * 包套的适配器
      */
@@ -940,25 +1018,26 @@ public class OptionActivity extends ImmersedBaseActivity {
                 CheckedTextView packagename = holder.getView(R.id.tv_package_name);
                 packagename.setText(item.getPackage_name());
                 TextView tv_right = holder.getView(R.id.tv_right_data);
-                tv_right.setText("¥"+item.getPackage_price());
-                if (!mMultiple){//单选
+                tv_right.setText("¥" + item.getPackage_price());
+                if (!mMultiple) {//单选
                     holder.getView(R.id.item_package_line).setVisibility(View.GONE);
-                    packagename.setCompoundDrawables(null,null,null,null);
-                    if (currentChecked!=null&&currentChecked.size()>0){
+                    packagename.setCompoundDrawables(null, null, null, null);
+                    if (currentChecked != null && currentChecked.size() > 0) {
                         String s = currentChecked.get(0);
-                        if (!StringUtils.empty(s)){
-                            if(item.getId()==Integer.parseInt(s)){
+                        if (!StringUtils.empty(s)) {
+                            if (item.getId() == Integer.parseInt(s)) {
                                 holder.getView(R.id.item_package_root_layout).setBackgroundColor(getResources().getColor(R.color.myBackground_f7));
                             }
                         }
 
                     }
-                }else {
+                } else {
 
                 }
             }
         };
     }
+
     /**
      * 产品的适配器
      */
@@ -971,42 +1050,42 @@ public class OptionActivity extends ImmersedBaseActivity {
                 packagename.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CheckedTextView checkedTextView = (CheckedTextView)v;
+                        CheckedTextView checkedTextView = (CheckedTextView) v;
                         checkedTextView.toggle();
-                        if (checkedTextView.isChecked()){
-                            currentChecked.add( item.getId()+"") ;
-                        }else {
-                            currentChecked.remove( item.getId()+"") ;
+                        if (checkedTextView.isChecked()) {
+                            currentChecked.add(item.getId() + "");
+                        } else {
+                            currentChecked.remove(item.getId() + "");
                         }
                     }
                 });
-                 if (currentChecked!=null){
-                     if (currentChecked.contains(item.getId()+"")){
-                         packagename.setChecked(true);
-                     }else {
-                         packagename.setChecked(false);
-                     }
-                 }
-               packagename.setText(item.getItem_name());
-               TextView tv_right = holder.getView(R.id.tv_right_data);
-                tv_right.setText("¥"+item.getItem_price());
-                if (!mMultiple){//单选
+                if (currentChecked != null) {
+                    if (currentChecked.contains(item.getId() + "")) {
+                        packagename.setChecked(true);
+                    } else {
+                        packagename.setChecked(false);
+                    }
+                }
+                packagename.setText(item.getItem_name());
+                TextView tv_right = holder.getView(R.id.tv_right_data);
+                tv_right.setText("¥" + item.getItem_price());
+                if (!mMultiple) {//单选
                     holder.getView(R.id.item_package_line).setVisibility(View.GONE);
-                    packagename.setCompoundDrawables(null,null,null,null);
-                    if (currentChecked!=null&&currentChecked.size()>0){
+                    packagename.setCompoundDrawables(null, null, null, null);
+                    if (currentChecked != null && currentChecked.size() > 0) {
                         String s = currentChecked.get(0);
-                        if (!StringUtils.empty(s)){
-                            if(item.getId()==Integer.parseInt(s)){
+                        if (!StringUtils.empty(s)) {
+                            if (item.getId() == Integer.parseInt(s)) {
                                 holder.getView(R.id.item_package_root_layout).setBackgroundColor(getResources().getColor(R.color.myBackground_f7));
                             }
                         }
                     }
-                }else {
-                    if (currentChecked!=null&&currentChecked.size()>0){
-                        for (String s:currentChecked){
-                            if(s.equals(productData.get(position).getId()+"")){
+                } else {
+                    if (currentChecked != null && currentChecked.size() > 0) {
+                        for (String s : currentChecked) {
+                            if (s.equals(productData.get(position).getId() + "")) {
                                 packagename.setChecked(true);
-                            break;
+                                break;
                             }
                         }
                     }
@@ -1014,7 +1093,6 @@ public class OptionActivity extends ImmersedBaseActivity {
             }
         };
     }
-
 
 
 }
