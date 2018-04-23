@@ -35,16 +35,11 @@ import java.util.List;
  * @Description: todo(用一句话描述该文件做什么)
  */
 
-public   class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
+public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
     public QuickAdapter(int layoutResId, @Nullable List<T> data)
     {
         super(layoutResId, data);
     }
-    @Override
-    protected void convert(BaseViewHolder helper, T item) {
-
-    }
-
     public void updateAll(List<T> data) {
         if (data!=null){
             mData=data;

@@ -83,13 +83,14 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
      * @param visible 是否可见
      */
     private void setClearIconVisible(boolean visible) {
-        if (visible){
-            DrawableCompat.setTint(mLeftDrawable, colorAccent);//有字的时候颜色彩色
-        }else {
-            DrawableCompat.setTint(mLeftDrawable,getResources().getColor(R.color.textHint_99));
+        if (mLeftDrawable!=null) {
+            if (visible) {
+                DrawableCompat.setTint(mLeftDrawable, colorAccent);//有字的时候颜色彩色
+            } else {
+                DrawableCompat.setTint(mLeftDrawable, getResources().getColor(R.color.textHint_99));
+            }
         }
         Drawable right = visible ? mClearDrawable : null;
-
         setCompoundDrawables(mLeftDrawable, getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
     }
     @Override

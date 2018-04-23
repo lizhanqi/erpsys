@@ -142,8 +142,7 @@ public class HomeDataFragement extends BaseSupportFragment {
         if (adapter == null) {
             adapter = new QuickAdapter<TodayCustomerEntity.DataBean>(R.layout.item_home_data, data) {
                 @Override
-                protected void convert(BaseViewHolder helper, TodayCustomerEntity.DataBean item) {
-                    super.convert(helper, item);
+                public void convert(BaseViewHolder helper, TodayCustomerEntity.DataBean item) {
                     TextView name = helper.getView(R.id.tv_home_name);
                     TextView date = helper.getView(R.id.tv_home_date);
                     TextView info = helper.getView(R.id.tv_home_info);

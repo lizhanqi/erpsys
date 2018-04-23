@@ -11,16 +11,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
@@ -29,6 +33,7 @@ import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
+import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
 import com.suxuantech.erpsys.ui.widget.MarqueTextView;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
@@ -84,7 +89,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
     TwinklingRefreshLayout mRefreshLayout;
     @BindView(R.id.root_layout_content_immersed)
     CoordinatorLayout mRootLayoutContentImmersed;
-    private View view;
+    @BindView(R.id.rv_card)
+    RecyclerView mRvCard;
 
 
     @Override
@@ -139,7 +145,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
         super.onViewCreated(view, savedInstanceState);
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
-        initTabLayout();
+        initCard();
+     //   initTabLayout();
         //initBall(view);
 //                Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
@@ -154,6 +161,10 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                intent.putExtra("Title","选择");
 //                intent.putExtra("Multiple",false);
   //                startActivity(multiple.creat());
+    }
+
+    private void initCard() {
+
     }
 
     /**
@@ -180,6 +191,9 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
     private ArrayList<Fragment> fragments;
 
+    /**
+     * 首页数据不用了
+     */
     private void initTabLayout() {
         FragmentManager childFragmentManager = getChildFragmentManager();
         TabLayout tableLayoutHome = mRootView.findViewById(R.id.tablayout_home);
@@ -211,9 +225,23 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
         childFragmentManager.executePendingTransactions();
+        ArrayList<RegisterEntity.DataBean> a=null;
+        QuickAdapter value=      new QuickAdapter<RegisterEntity.DataBean>(R.layout.item_register_info, a) {
+            @Override
+            protected void convert(BaseViewHolder helper, RegisterEntity.DataBean item) {
+
+            }
+        };
+        value.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
         if (fragments == null) {
             fragments = new ArrayList<Fragment>();
             for (int i = 0; i < arryTitle.length; i++) {
+
                 HomeDataFragement homeDataFragement = new HomeDataFragement();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", arryTitle[i]);

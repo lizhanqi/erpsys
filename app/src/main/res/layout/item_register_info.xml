@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_bb"
+
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        android:background="@color/color_fa"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:padding="@dimen/px30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_register_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/icon_order"
+            android:drawablePadding="@dimen/px30"
+            android:text="2122" />
+
+        <TextView
+            android:id="@+id/tv_register_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新进客资" />
+
+    </LinearLayout>
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_register_phone"
+       android:paddingTop="@dimen/px10"
+        android:paddingLeft="@dimen/px30"
+        android:text="手机号"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_register_consumption_type"
+        android:paddingTop="@dimen/px10"
+        android:paddingLeft="@dimen/px30"
+        android:text="消费类型"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_register_zone"
+        android:paddingTop="@dimen/px10"
+        android:paddingLeft="@dimen/px30"
+        android:text="客户分区"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_register_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="进店日期" />
+        <TextView
+            android:id="@+id/tv_register_staff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="接待人:" />
+    </LinearLayout>
+        <View style="@style/line"/>
+        <TextView
+            android:id="@+id/tv_run_reason"
+            android:paddingTop="@dimen/px10"
+            android:paddingLeft="@dimen/px30"
+            android:text="流失原因"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

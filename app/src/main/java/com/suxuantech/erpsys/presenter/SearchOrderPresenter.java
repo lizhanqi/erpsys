@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.presenter;
 
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
+import com.anye.greendao.gen.HistoryEntityDao;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HistoryEntity;
@@ -15,7 +16,7 @@ import com.suxuantech.erpsys.utils.DateUtil;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
-import  com.anye.greendao.gen.HistoryEntityDao;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -55,6 +56,11 @@ public class SearchOrderPresenter {
         this.iSearchOrderPresenter = iSearchOrderPresenter;
         initDB();
         searchHosiery=loadAllHistory();
+
+
+
+
+
     }
     RequestQueue     requestQueue;
     public SearchOrderPresenter(ISearchOrderPresenter iOutletsOrderPresenter, RequestQueue requestQueue){

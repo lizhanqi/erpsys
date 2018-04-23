@@ -190,4 +190,8 @@ public class Contact {
      *礼服主题
      */
     public static String DRESS_THEME="/SXWebErpAppStaff/SX_DressThemesetSet?Token=%s&Code=%s";
+    /**
+     * 进客搜索
+     */
+    public static String INQUIRE_GUEST_INFO="/SXWebErpAppStaff/SX_InquireGuestInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s&JKID=%s";
 }

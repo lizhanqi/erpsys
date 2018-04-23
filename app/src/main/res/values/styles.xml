@@ -68,21 +68,23 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
-
+  <style name="Value">
+      <item name="android:layout_marginLeft">@dimen/px30</item>
+      <item name="android:gravity">left|center_vertical</item>
+      <item name="android:textColor">@color/myValue_33</item>
+      <item name="android:layout_weight">1</item>
+      <item name="android:textSize">@dimen/xs44</item>
+      <item name="android:layout_width">match_parent</item>
+      <item name="android:layout_height">match_parent</item>
+      <item name="android:textColorHint">@color/textHint_99</item>
+      <item name="android:drawablePadding">@dimen/px30</item>
+      <item name="android:background">@null</item>
+  </style>
 
     <!--表单值-->
-    <style name="FormValue">
+    <style name="FormValue" parent="Value">
         <item name="android:hint">请输入</item>
-        <item name="android:layout_marginLeft">@dimen/px30</item>
-        <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textColor">@color/myValue_33</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">@dimen/xs44</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColorHint">@color/textHint_99</item>
-        <item name="android:drawablePadding">@dimen/px30</item>
-        <item name="android:background">@null</item>
+
     </style>
 
     <!--文本域-->

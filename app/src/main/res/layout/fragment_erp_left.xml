@@ -354,6 +354,7 @@ clickable是防止页面穿透的点击事件的
                     </LinearLayout>
                     <!--数据区-->
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -382,6 +383,13 @@ clickable是防止页面穿透的点击事件的
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_card"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
                 <!--</com.suxuantech.erpsys.ui.widget.FoldScrollView>-->
             </RelativeLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_bb"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity">
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/px30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+                android:id="@+id/tiet_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:background="@drawable/sp_register_search"
+                android:gravity="center_vertical"
+                android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="@dimen/xs60" />
+            <ImageView
+
+                android:id="@+id/img_search"
+                android:background="@drawable/sp_register_search_btn"
+                android:padding="@dimen/px20"
+                android:scaleType="center"
+                android:src="@drawable/icon_soso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/px45"
+                android:paddingRight="@dimen/px45"/>
+        </LinearLayout>
+
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px30"
+            android:text="新增"
+            android:textColor="@color/themeColor" />
+    </LinearLayout>
+    <in.srain.cube.views.ptr.PtrFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        tools:listitem="@layout/item_register_info"
+        android:id="@+id/rv_register"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    </android.support.v7.widget.RecyclerView>
+    </in.srain.cube.views.ptr.PtrFrameLayout>
+</LinearLayout>

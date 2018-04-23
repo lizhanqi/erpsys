@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor_overlay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.suxuantech.erpsys.ui.activity.CustomerDetailsActivity">
+        <include layout="@layout/item_register_info" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户微信" />
+
+            <TextView
+                android:id="@+id/tv_customer_wechat"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户QQ" />
+
+            <TextView
+                android:id="@+id/tv_customer_QQ"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户性别" />
+
+            <TextView
+                android:id="@+id/tv_customer_sex"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户生日" />
+
+            <TextView
+                android:id="@+id/tv_customer_birthday"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户来源" />
+
+            <TextView
+                android:id="@+id/tv_customer_source"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户意向" />
+
+            <TextView
+                android:id="@+id/tv_customer_intention"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="接单点" />
+
+            <TextView
+                android:id="@+id/tv_order_address"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户地址" />
+
+            <TextView
+                android:id="@+id/tv_customer_address"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard" android:layout_marginTop="@dimen/px30">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="预约进店" />
+
+            <TextView
+                android:id="@+id/tv_make_date"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="预拍日期" />
+
+            <TextView
+                android:id="@+id/tv_pre_shooting_date"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="结婚日期" />
+
+            <TextView
+                android:id="@+id/tv_marry_date"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayoutStandard"
+            android:layout_marginTop="@dimen/px30">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶姓名" />
+
+            <TextView
+                android:id="@+id/tv_mate_name"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶手机" />
+
+            <TextView
+                android:id="@+id/tv_mate_phone"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶微信" />
+
+            <TextView
+                android:id="@+id/tv_mate_wechat"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶QQ" />
+
+            <TextView
+                android:id="@+id/tv_mate_QQ"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶性别" />
+
+            <TextView
+                android:id="@+id/tv_mate_sex"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="配偶生日" />
+
+            <TextView
+                android:id="@+id/tv_mate_birthday"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+        <View style="@style/line" />
+
+        <LinearLayout style="@style/LinearLayoutStandard">
+
+            <TextView
+                style="@style/DetailsKey"
+                android:text="客户备注" />
+
+            <TextView
+                android:id="@+id/tv_customer_remarks"
+                style="@style/Value"
+                 />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
