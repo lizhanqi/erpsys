@@ -378,7 +378,7 @@ public class OptionActivity extends ImmersedBaseActivity {
 
             case DRESS_THEME:
                 //礼服主题
-                Url = Contact.getFullUrl(Contact.SHOOT_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                Url = Contact.getFullUrl(Contact.DRESS_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
                     getThemeData();
                 }

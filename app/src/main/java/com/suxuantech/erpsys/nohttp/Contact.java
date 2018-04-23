@@ -194,4 +194,10 @@ public class Contact {
      * 进客搜索
      */
     public static String INQUIRE_GUEST_INFO="/SXWebErpAppStaff/SX_InquireGuestInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s&JKID=%s";
+    /**
+     * 首页数据
+     */
+    public static String HOME_CUSTOMER_COUNT="/SXWebErpAppStaff/SX_CustomerDayCount?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+
+
 }

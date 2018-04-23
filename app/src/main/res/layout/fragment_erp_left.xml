@@ -11,12 +11,6 @@ clickable是防止页面穿透的点击事件的
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:tr_head_height="100dp"
-        tools:tr_wave_height="100dp">
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
@@ -383,13 +377,22 @@ clickable是防止页面穿透的点击事件的
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_card"
+                    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                         android:layout_weight="1"
+                        android:id="@+id/refreshLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:tr_head_height="100dp"
+                        tools:tr_wave_height="100dp">
+                    <android.support.v7.widget.RecyclerView
+                        android:padding="@dimen/px30"
+                        android:background="@color/gray_f9"
+                        android:id="@+id/rv_card"
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-
                     </android.support.v7.widget.RecyclerView>
+                    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
                 </LinearLayout>
                 <!--</com.suxuantech.erpsys.ui.widget.FoldScrollView>-->
             </RelativeLayout>
@@ -398,8 +401,6 @@ clickable是防止页面穿透的点击事件的
 
         </RelativeLayout>
 
-
-    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

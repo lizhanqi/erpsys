@@ -3,6 +3,8 @@ package com.suxuantech.erpsys.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -43,6 +45,7 @@ public class BaseSupportFragment extends SupportFragment {
      * 网络队列,默认每个Activity都应该有一个队列,用这个队列在页面销毁可以全部取消major
      */
     private RequestQueue requestQueue;
+    Object object=new Object();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,20 @@ public class BaseSupportFragment extends SupportFragment {
     public <T>   void    addRequestQueue(int what, Request<T> request, OnResponseListener<T> listener){
 
         getRequestQueue().add(what,request,listener);
+    }
+    /**
+     * 发起请求。
+     *
+     * @param what      what.
+     * @param request   请求对象。
+     * @param callback  回调函数。
+     * @param canCancel 是否能被用户取消。
+     * @param isLoading 实现显示加载框。
+     * @param <T>       想请求到的数据类型。
+     */
+    public <T> void request(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean isLoading) {
+        request.setCancelSign(object);
+        requestQueue.add(what, request, new HttpResponseListener (getContext(), request, callback, canCancel, isLoading));
     }
 
     @Override

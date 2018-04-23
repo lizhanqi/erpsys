@@ -11,8 +11,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,8 +26,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.HomeCustmoerCountEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
@@ -35,13 +43,18 @@ import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
+import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.MarqueTextView;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
+import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.ScreenUtils;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -146,7 +159,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
         initCard();
-     //   initTabLayout();
+        //   initTabLayout();
         //initBall(view);
 //                Intent intent = new Intent(getActivity(), OptionActivity.class);
 //                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
@@ -154,18 +167,94 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                multiple.setCheckedData("礼服");
 //                multiple.setTitle("选择");
-  //                multiple.setUrl("11111");
+        //                multiple.setUrl("11111");
 
 //                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
 //                intent.putExtra("Title","选择");
 //                intent.putExtra("Multiple",false);
-  //                startActivity(multiple.creat());
+        //                startActivity(multiple.creat());
     }
 
     private void initCard() {
+        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+        String Url = Contact.getFullUrl(Contact.HOME_CUSTOMER_COUNT, Contact.TOKEN, nowDate, nowDate, App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<HomeCustmoerCountEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<HomeCustmoerCountEntity>(Url, RequestMethod.POST, HomeCustmoerCountEntity.class);
+        HttpListener<HomeCustmoerCountEntity> searchByCustmor = new HttpListener<HomeCustmoerCountEntity>() {
+            @Override
+            public void onSucceed(int what, Response<HomeCustmoerCountEntity> response) {
+                if (response.get().isOK()) {
+                    List<HomeCustmoerCountEntity.DataBean> data = response.get().getData();
+                    setAdapter(data);
+                }
+            }
 
+            @Override
+            public void onFailed(int what, Response<HomeCustmoerCountEntity> response) {
+
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
+
+    private void setAdapter(List<HomeCustmoerCountEntity.DataBean> data) {
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("预约进店");
+        strings.add("拍照客户");
+        strings.add("礼服客户");
+        strings.add("化妆客户");
+        strings.add("选片客户");
+        strings.add("取件客户");
+        strings.add("我的客户");
+        //网格布局管理器
+        mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRvCard.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+                    mRefreshLayout.setEnableRefresh(false);
+                }
+                if (motionEvent.getAction()==MotionEvent.ACTION_UP||motionEvent.getAction()==MotionEvent.ACTION_CANCEL){
+                    mRefreshLayout.setEnableRefresh(true);
+                }
+                return false;
+            }
+        });
+        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9),30,30);
+        mRvCard.addItemDecoration(defaultItemDecoration );
+        QuickAdapter<String> quickAdapter = new QuickAdapter<String>(R.layout.item_home_card, strings) {
+            @Override
+            protected void convert(BaseViewHolder helper, String item) {
+                int i = strings.lastIndexOf(item);
+                ImageView imgIcon = (ImageView) helper.getView(R.id.img_icon);
+                TextView tvName = (TextView) helper.getView(R.id.tv_name);
+                TextView tvValues = (TextView) helper.getView(R.id.tv_values);
+                tvName.setText(item);
+                if (i==0){
+                    tvValues.setText(data.get(0).getJkyycount());
+                }else      if (i==1){
+                    tvValues.setText(data.get(0).getPzcount());
+                }else      if (i==2){
+                  tvValues.setText(data.get(0).getLfcount());
+                }else      if (i==3){
+                   tvValues.setText(data.get(0).getHzcount());
+                }else      if (i==4){
+                       tvValues.setText(data.get(0).getXpcount());
+                }else      if (i==5){
+                    tvValues.setText(data.get(0).getQjcount());
+                }else      if (i==6){
+                  tvName.setText(strings.get(i));
+                   //   tvValues.setText(item.get());
+                }
+
+
+            }
+        };
+        mRvCard.setAdapter(quickAdapter);
+    }
+
 
     /**
      * 动画球,暂时不用
@@ -188,6 +277,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
     }
+
 
     private ArrayList<Fragment> fragments;
 
@@ -225,8 +315,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
         childFragmentManager.executePendingTransactions();
-        ArrayList<RegisterEntity.DataBean> a=null;
-        QuickAdapter value=      new QuickAdapter<RegisterEntity.DataBean>(R.layout.item_register_info, a) {
+        ArrayList<RegisterEntity.DataBean> a = null;
+        QuickAdapter value = new QuickAdapter<RegisterEntity.DataBean>(R.layout.item_register_info, a) {
             @Override
             protected void convert(BaseViewHolder helper, RegisterEntity.DataBean item) {
 
