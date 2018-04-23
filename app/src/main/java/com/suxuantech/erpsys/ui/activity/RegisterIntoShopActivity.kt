@@ -21,7 +21,10 @@ class RegisterIntoShopActivity : ImmersedBaseActivity() {
         setContentView(R.layout.activity_register_into_shop)
         // useButterKnife()
         setSupportToolbar()
+        toolbar.setBackgroundColor(resources.getColor(R.color.gray_f9))
+        getSupportActionBar()!!.  setDisplayHomeAsUpEnabled(true);
         setTitle("进店登记")
+
         val idSetOnClick = idSetOnClick<LinearLayout>(R.id.ll_not_in_shop)
 
         llNewCustomer = idSetOnClick<LinearLayout>(R.id.ll_new_customer)

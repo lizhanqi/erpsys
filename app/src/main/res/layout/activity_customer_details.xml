@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgColor_overlay">
+    android:background="@color/mainNavline_e7">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="com.suxuantech.erpsys.ui.activity.CustomerDetailsActivity">
-        <include layout="@layout/item_register_info" />
-
-        <LinearLayout style="@style/LinearLayoutStandard">
+        <include layout="@layout/item_register_info"  />
+        <LinearLayout style="@style/LinearLayoutStandard" android:layout_marginTop="@dimen/px30">
 
             <TextView
                 style="@style/DetailsKey"

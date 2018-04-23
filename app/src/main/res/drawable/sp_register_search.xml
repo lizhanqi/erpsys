@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- 圆角 -->
     <corners
-        android:bottomLeftRadius="@dimen/px5" android:topLeftRadius="@dimen/px5" />
+        android:bottomLeftRadius="@dimen/px25" android:topLeftRadius="@dimen/px25" />
 
     <!-- 填充 -->
     <solid

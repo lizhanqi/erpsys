@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- 圆角 -->
     <corners
-        android:bottomRightRadius="@dimen/px5" android:topRightRadius="@dimen/px5" />
+        android:bottomRightRadius="@dimen/px25" android:topRightRadius="@dimen/px25" />
     <!-- 填充 -->
     <solid
         android:color="@color/themeColor"/><!-- 填充的颜色 -->

@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_bb"
-
+    android:background="@color/mainNavline_e7"
     android:orientation="vertical">
     <LinearLayout
         android:layout_marginTop="@dimen/px30"
-        android:background="@color/color_fa"
+        android:background="@color/white"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -74,13 +73,19 @@
             android:layout_height="wrap_content"
             android:text="接待人:" />
     </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_lossing"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <View style="@style/line"/>
         <TextView
             android:id="@+id/tv_run_reason"
-            android:paddingTop="@dimen/px10"
-            android:paddingLeft="@dimen/px30"
+            android:padding ="@dimen/px30"
             android:text="流失原因"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
