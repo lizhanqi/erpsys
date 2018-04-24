@@ -176,6 +176,8 @@ public class Contact {
     /**
      * 订单搜索
      */
+    public static String SEARCH_ORDER_NEW =  "/SX_CrmApi/Sel_CustomerOrderList?Token=%s&CustomerType=%s&brandid=%s&startdate=%s&enddate=%s&orderInfo=%s";
+
     public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%s&pageSize=%s";
     /**
      * 新单类型

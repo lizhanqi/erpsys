@@ -105,7 +105,7 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
         mImmersionBar.statusBarDarkFont(true,0.15f);
         mImmersionBar .statusBarColor(R.color.white) ;
         mImmersionBar.keyboardEnable(false);
-        mImmersionBar .navigationBarColor(R.color.translucent_black_90) ;
+        mImmersionBar .navigationBarColor(R.color.themeColor) ;
         mImmersionBar.init();
     }
 

@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.presenter;
 
+import android.support.annotation.IntRange;
+
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
 import com.anye.greendao.gen.HistoryEntityDao;
@@ -7,6 +9,7 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HistoryEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
+import com.suxuantech.erpsys.entity.SearchOrderInforEntity;
 import com.suxuantech.erpsys.nohttp.CallServer;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -144,7 +147,7 @@ public class SearchOrderPresenter {
      * @param endDate
      */
 
-    public void sosoNetOrder(String trim, String mTvSosoStorefront, String startDate, String endDate,boolean isFresh) {
+    public void sosoNetOrder(   String trim, String mTvSosoStorefront, String startDate, String endDate, boolean isFresh) {
        if (isFresh){
            pageIndex=0;
        }
@@ -186,4 +189,40 @@ public class SearchOrderPresenter {
     public void sosoNetLoadmore() {
         sosoNetOrder(lastSearchKey,lastShopKey,lastStartDate,lastEndDate,false);
     }
+
+    /**
+     *
+     * @param type  客户类型：0婚纱，1儿童
+     * @param startDate
+     * @param endDate
+     */
+    public void sosoNetOrderNew(@IntRange(from = 0 ,to = 1) int type, String startDate, String endDate, String key) {
+        if (startDate.equals(App.getContext().getResources().getString(R.string.start_time))){
+            startDate = "20000101";
+            lastStartDate=startDate;
+        }
+        if (endDate.equals(App.getContext().getResources().getString(R.string.end_time))){
+            endDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+            lastEndDate=endDate;
+        }
+        String url= Contact.getFullUrl(Contact.SEARCH_ORDER_NEW,Contact.TOKEN,
+                type, App.getApplication().getUserInfor().getBrandclass_id(),
+              startDate,endDate,key);
+        //请求实体
+        JavaBeanRequest<SearchOrderInforEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SearchOrderInforEntity>(url, RequestMethod.POST,SearchOrderInforEntity.class);
+        HttpListener<SearchOrderInforEntity> searchByCustmor = new HttpListener<SearchOrderInforEntity>(){
+            @Override
+            public void onSucceed(int what, Response<SearchOrderInforEntity> response) {
+                if(response.get().isOK()){
+                    iSearchOrderPresenter.searchSucceed (response.get().getData());
+                }else {
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<SearchOrderInforEntity> response) {
+            }
+        };
+        new CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 9, false, pageIndex==0);
+    }
+
 }

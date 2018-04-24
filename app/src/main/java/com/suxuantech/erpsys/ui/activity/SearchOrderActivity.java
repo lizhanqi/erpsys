@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,14 +20,17 @@ import android.widget.TextView;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HistoryEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
+import com.suxuantech.erpsys.entity.SearchOrderInforEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
 import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
+import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -83,12 +87,12 @@ import in.srain.cube.views.ptr.PtrHandler;
  * @Description: 订单搜索页面
  */
 public class SearchOrderActivity extends ImmersedBaseActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
-     @BindView(R.id.tv_nav_search_left)
-     AdjustDrawableTextView mTvNavLeft;
-   @BindView(R.id.tiet_nav_search)
-   OneKeyClearAutoCompleteText mTietNavSearch;
-     @BindView(R.id.tv_nav_search_right)
-     AdjustDrawableTextView mTvNavRight;
+    @BindView(R.id.tv_nav_search_left)
+    AdjustDrawableTextView mTvNavLeft;
+    @BindView(R.id.tiet_nav_search)
+    OneKeyClearAutoCompleteText mTietNavSearch;
+    @BindView(R.id.tv_nav_search_right)
+    AdjustDrawableTextView mTvNavRight;
     @BindView(R.id.tv_soso_storefront)
     TextView mTvSosoStorefront;
     @BindView(R.id.btn_start_date)
@@ -109,7 +113,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     private DefaultItemDecoration histroyItemDecoration;
     private DefaultItemDecoration searchItemDecoration;
     private DefineLoadMoreView defineLoadMoreView;
-    boolean isShowSimple=true;
+    boolean isShowSimple = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +139,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 } else {
                     Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
                     startActivity(intent);
-                    toastShort(position+"");
+                    toastShort(position + "");
                 }
             }
         });
@@ -151,11 +155,20 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         });
         histroyItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7), 0, 2);
         histroyItemDecoration.offSetX(55);
-        searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.white), 0, 30).offSetX(0);
+        searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
         defineLoadMoreView = new DefineLoadMoreView(this);
         Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+
+        drawable = getResources().getDrawable(R.drawable.icon_qrcode_scan);
+        //2:先调用DrawableCompat的wrap方法
+        drawable = DrawableCompat.wrap(drawable);
+        //3:再调用DrawableCompat的setTint方法，为Drawable实例进行着色
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.themeColor));
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+        mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+
     }
 
     /**
@@ -207,7 +220,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         }
         mSmrHistory.removeAllViews();
         mSmrHistory.setAdapter(null);
-        if (mSearchOrderPresenter.getSearchHosiery().size()<=0){
+        if (mSearchOrderPresenter.getSearchHosiery().size() <= 0) {
             mTvNearlySearch.setCompoundDrawables(null, null, null, null);
         }
         historyAdapter = new BaseRecyclerAdapter<HistoryEntity>(mSmrHistory, mSearchOrderPresenter.getSearchHosiery(), R.layout.item_search_history) {
@@ -245,24 +258,26 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         });
     }
 
-    @OnClick({R.id.tv_nav_search_left,R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search})
+    @OnClick({R.id.tv_nav_search_left, R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search})
     public void onClicks(View v) {
         switch (v.getId()) {
             case R.id.tv_nav_search_right:
-                isShowSimple = !isShowSimple;
-                if (isShowSimple) {
-                    Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
-                } else {
-                    Drawable drawable = getResources().getDrawable(R.drawable.icon_all_data);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
 
-                }
-                if (searchResultAdaputer != null) {
-                    searchResultAdaputer.notifyDataSetChanged();
-                }
+//                isShowSimple = !isShowSimple;
+//                if (isShowSimple) {
+//                    Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
+//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+//                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+//                } else {
+//                    Drawable drawable = getResources().getDrawable(R.drawable.icon_all_data);
+//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+//                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+//
+//                }
+//                if (searchResultAdaputer != null) {
+//                    searchResultAdaputer.notifyDataSetChanged();
+//                }
+                startActivity(QRCodeScanActivity.class);
                 break;
             case R.id.tv_nav_search_left:
                 finish();
@@ -282,7 +297,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 showDataSelect(mBtnEndDate);
                 break;
         }
-        }
+    }
 
     /**
      * 订单的详情拼接
@@ -308,7 +323,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 弹窗确认删除历史
      */
     public void alterDelete() {
-        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
+        KeyBoardUtils.closeKeybord(mTietNavSearch, this);
         new AlertView("清除历史记录", "确认清除历史记录?", null, new String[]{"取消", "确定"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
             @Override
             public void onItemClick(Object o, int position) {
@@ -329,15 +344,15 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     private void search() {
         mTietNavSearch.dismissDropDown();
         //隐藏键盘
-        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
+        KeyBoardUtils.closeKeybord(mTietNavSearch, this);
         //输入框的光标不可见
         mTietNavSearch.setCursorVisible(false);
         //失去焦点
         mTietNavSearch.setFocusableInTouchMode(false);
-        String trim = mTietNavSearch.getText().toString().trim();
+        String key = mTietNavSearch.getText().toString().trim();
         //搜索内容不是空的就添加到最近搜索历史数据库中并更新页面
-        if (!trim.isEmpty()) {
-            historyAdapter.refresh(mSearchOrderPresenter.insert(trim));
+        if (!key.isEmpty()) {
+            historyAdapter.refresh(mSearchOrderPresenter.insert(key));
             mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
             Drawable drawable = getResources().getDrawable(R.drawable.icon_delete_bucket);
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getMinimumHeight());
@@ -345,7 +360,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             mTvNearlySearch.postInvalidate();
         }
         //网络搜搜
-        mSearchOrderPresenter.sosoNetOrder(trim, mTvSosoStorefront.getText().toString(), mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true);
+        mSearchOrderPresenter.sosoNetOrderNew(0, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), key);
     }
 
     @Override
@@ -357,7 +372,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 时间选择
      */
     public void showDataSelect(final TextView showOn) {
-        KeyBoardUtils.closeKeybord(mTietNavSearch,this);
+        KeyBoardUtils.closeKeybord(mTietNavSearch, this);
         TimePickerView.OnTimeSelectListener timPic = new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
@@ -373,6 +388,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         timePickerView.build().show();
     }
+
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
         mTietNavSearch.setFocusableInTouchMode(false);
@@ -381,19 +397,26 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     }
 
     @Override
+    public void searchSucceed(List<SearchOrderInforEntity.DataBean> data) {
+        mTietNavSearch.setFocusableInTouchMode(false);
+        mTietNavSearch.setFocusable(false);
+        searchResultAdapter2(data, true);
+    }
+
+    @Override
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
         if (response.get() != null) {
-            if (response.get().getCode().equals("0003")) {
+            if (response.get().getCode() != null && response.get().getCode().equals("0003")) {
                 if (searchResultAdaputer != null) {
                     mLlSearch.setVisibility(View.GONE);
                     mSmrHistory.setAdapter(searchResultAdaputer);
-                    if (response.get().getData().size()<=0){
+                    if (response.get().getData().size() <= 0) {
                         searchResultAdapter(null, pageIndex == 0);
                     }
                 } else {
                     searchResultAdapter(null, pageIndex == 0);
                 }
-                mSmrHistory.loadMoreError(1,"加载失败!请稍后重试");
+                mSmrHistory.loadMoreError(1, "加载失败!请稍后重试");
             }
         }
     }
@@ -410,11 +433,11 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             if (isRefesh) {
                 searchResultAdaputer.refresh(data);
                 mSmrHistory.setAdapter(searchResultAdaputer);
-                mSmrHistory.loadMoreFinish(data!=null,true);
+                mSmrHistory.loadMoreFinish(data != null, true);
             } else {
-                if (data==null){
-                    mSmrHistory.loadMoreFinish(true,false);
-                }else {
+                if (data == null) {
+                    mSmrHistory.loadMoreFinish(true, false);
+                } else {
                     searchResultAdaputer.notifyAppendDataSetChanged(data, true);
                 }
             }
@@ -430,24 +453,24 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                 mTvOrderId.setText(item.getCustomerid());
                 mTvUserName.setText(item.getWname() + "\t" + item.getMname());
                 mTvConsumeType.setText(item.getConsumption_type());
-              if (isShowSimple) {
-                  holder.getView(R.id.ll_details).setVisibility(View.GONE);
-              } else {
-                  LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
-                  stringStringMap.put("服务店面:", item.getShop_name() == null ? "" : item.getShop_name());
-                  stringStringMap.put("消费类型:", item.getConsumption_type() == null ? "" : item.getConsumption_type());
-                  stringStringMap.put("开单日期:", item.getTargetdate() == null ? "" : item.getTargetdate());
-                  stringStringMap.put("套餐名称:", item.getPackage_name() == null ? "" : item.getPackage_name());
-                  TextView mtvInfor = holder.getView(R.id.tv_infor);
-                  mtvInfor.setText(Html.fromHtml(colorText(stringStringMap, R.color.textHint_99, R.color.myValue_33)));
-                  TextView mTvMoney = holder.getView(R.id.tv_money_details);
-                  mTvMoney.setText(Html.fromHtml("<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getTotal_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>总价</font><br/>"
-                          +"<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getPayment_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>已付</font><br/>"
-                       +   "<font color='" + getResources().getColor( R.color.myValue_33) + "'>¥" + item.getNopayment_money() + "</font> <font color='" + getResources().getColor(R.color.color_f1403b) + "'><br/>欠款</font><br/>"
-                  ));
-                  holder.getView(R.id.ll_details).setVisibility(View.VISIBLE);
-              }
-            final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
+                if (isShowSimple) {
+                    holder.getView(R.id.ll_details).setVisibility(View.GONE);
+                } else {
+                    LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
+                    stringStringMap.put("服务店面:", item.getShop_name() == null ? "" : item.getShop_name());
+                    stringStringMap.put("消费类型:", item.getConsumption_type() == null ? "" : item.getConsumption_type());
+                    stringStringMap.put("开单日期:", item.getTargetdate() == null ? "" : item.getTargetdate());
+                    stringStringMap.put("套餐名称:", item.getPackage_name() == null ? "" : item.getPackage_name());
+                    TextView mtvInfor = holder.getView(R.id.tv_infor);
+                    mtvInfor.setText(Html.fromHtml(colorText(stringStringMap, R.color.textHint_99, R.color.myValue_33)));
+                    TextView mTvMoney = holder.getView(R.id.tv_money_details);
+                    mTvMoney.setText(Html.fromHtml("<font color='" + getResources().getColor(R.color.myValue_33) + "'>¥" + item.getTotal_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>总价</font><br/>"
+                            + "<font color='" + getResources().getColor(R.color.myValue_33) + "'>¥" + item.getPayment_money() + "</font> <font color='" + getResources().getColor(R.color.textHint_99) + "'><br/>已付</font><br/>"
+                            + "<font color='" + getResources().getColor(R.color.myValue_33) + "'>¥" + item.getNopayment_money() + "</font> <font color='" + getResources().getColor(R.color.color_f1403b) + "'><br/>欠款</font><br/>"
+                    ));
+                    holder.getView(R.id.ll_details).setVisibility(View.VISIBLE);
+                }
+                final HorizontalStepView view = holder.getView(R.id.horizontalSteps);
                 view.setStepsViewIndicatorComplectingPosition(2);
                 view.setTag(position);
                 view.setOnItemClickList(new HorizontalStepView.ItemClick() {
@@ -474,8 +497,63 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         };
     }
 
+
+    /**
+     * 搜索结果适配器
+     * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
+     */
+    private void searchResultAdapter2(List<SearchOrderInforEntity.DataBean> data, boolean isRefesh) {
+        if (isRefesh) {
+            reset();
+        }
+        if (searchResultAdaputer != null) {
+            if (isRefesh) {
+                // searchResultAdaputer.refresh(data);
+                mSmrHistory.setAdapter(searchResultAdaputer);
+                mSmrHistory.loadMoreFinish(data != null, true);
+            } else {
+                if (data == null) {
+                    mSmrHistory.loadMoreFinish(true, false);
+                } else {
+                    //  searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+                }
+            }
+            return;
+        }
+        QuickAdapter quickAdapter = new QuickAdapter<SearchOrderInforEntity.DataBean>(R.layout.item_new_search_order_info, data) {
+            @Override
+            protected void convert(BaseViewHolder helper, SearchOrderInforEntity.DataBean item) {
+                  TextView tvName;
+                  TextView tvMoney;
+                  TextView tvOrderId;
+                  TextView tvStatus;
+                  TextView tvConsumptionType;
+                  TextView tvPackageName;
+                  TextView tvOrderDate;
+
+                tvName = (TextView) helper.getView(R.id.tv_name);
+                tvMoney = (TextView)  helper.getView(R.id.tv_money);
+                tvOrderId = (TextView)  helper.getView(R.id.tv_order_id);
+                tvStatus = (TextView)  helper.getView(R.id.tv_status);
+                tvConsumptionType = (TextView)  helper.getView(R.id.tv_consumption_type);
+                tvPackageName = (TextView)  helper.getView(R.id.tv_package_name);
+                tvOrderDate = (TextView)  helper.getView(R.id.tv_order_date);
+                tvName.setText(item.getMname() +"  "+ item.getMname());
+                tvMoney.setText("¥ "+item.getNopayment_money());
+                tvOrderId.setText(item.getOrderId());
+                tvStatus.setText(item.getNopayment_money()>0?"欠款":"");
+                tvConsumptionType.setText("消费类型:"+item.getConsumption_type());
+                tvOrderDate.setText("订单日期:"+item.getTargetdate());
+                tvPackageName.setText("包套名称:"+item.getPayment_money());
+            }
+        };
+        mSmrHistory.setAdapter(quickAdapter);
+
+
+    }
+
     private void reset() {
-        if(mSmrHistory.getFooterItemCount()>0){
+        if (mSmrHistory.getFooterItemCount() > 0) {
             mSmrHistory.removeFooterView(defineLoadMoreView);
         }
         mSmrHistory.removeAllViews();
