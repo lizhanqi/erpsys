@@ -198,6 +198,19 @@ public class Contact {
      * 首页数据
      */
     public static String HOME_CUSTOMER_COUNT="/SXWebErpAppStaff/SX_CustomerDayCount?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
-
+    /**
+     * 修改进店状态
+     *进客ID
+     * 进店类型（数字类型1进店进客，2进店非进客）
+     */
+    public  static String INTO_STORE_STATUS="SXWebErpAppStaff/SX_AlterIntoStore?Token=%s&JKID=%s&JDType=%s";
+    /**
+     *修改未进店状态
+     */
+    public  static String  SB="/SXWebErpAppStaff/SX_AlterNoIntoStore?Token=%s&JKID=%s&Statusremark=%s";
+    /**
+     * 修改流失状态
+     */
+    public static String RUN_AWAY="/SXWebErpAppStaff/SX_AlterLoss?Token=%s&JKID=%s&Statusremark=%s";
 
 }

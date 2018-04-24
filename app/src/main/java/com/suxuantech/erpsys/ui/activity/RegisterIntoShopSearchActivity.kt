@@ -1,10 +1,12 @@
 package com.suxuantech.erpsys.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -33,7 +35,7 @@ class RegisterIntoShopSearchActivity : ImmersedBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop_search)
         showUserDefinedNav()
-        setTitle("11")
+        setTitle(   intent.getStringExtra("title"))
         setUseDefinedNavRightText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY))
         tietSearch = findViewById<OneKeyClearAutoCompleteText>(R.id.tiet_search)
         imgSearch = idSetOnClick<ImageView>(R.id.img_search)
@@ -44,10 +46,12 @@ class RegisterIntoShopSearchActivity : ImmersedBaseActivity() {
     }
 
     override fun widgetClick(v: View?) {
+        super.widgetClick(v)
         when (v!!.id) {
             R.id.img_search -> {
                 search()
             }
+            R.id.tv_add->{startActivity(IntoGuestRegistrationActivity::class.java)}
         }
     }
 
@@ -87,32 +91,25 @@ class RegisterIntoShopSearchActivity : ImmersedBaseActivity() {
                 var date = helper.getView<TextView>(R.id.tv_register_date)
                 var staff = helper.getView<TextView>(R.id.tv_register_staff)
                 var reason = helper.getView<TextView>(R.id.tv_run_reason)
+                var llLossing = helper.getView<LinearLayout>(R.id.ll_lossing)
                 name.text = item.xingming;
                 cotype.text = "消费类型:" + item.consultation_type
-                  reason.text="流失原因:"
                 zone.text = "客户分区:" + item.customer_area
-                date.text = "进店日期:" + item.dj_day
-                staff.text = "接待人:" + item.dj_staff
-                phone.text = item.customer_tel
+                date.text = "进店日期:" + item.yjd_day
+                staff.text = "接待人:" + item.sales_staff
+                phone.text = "手机:"+item.shouji
                 type.text = item.is_loss
-//                  if( item.wname!=null&&item.mname!=null){
-//                      name.text=  item.mname+"&"+ item.wname
-//                  }else if(item.wname!=null){
-//                      name.text=  item.wname
-//                  }else{
-//                      name.text=  item.mname
-//                  }
-//                  if( item.wphone!=null&&item.mphone!=null){
-//                      phone.text= "手机号:"+ item.mphone+"&"+ item.wphone
-//                  }else if(item.wphone!=null){
-//                      phone.text= "手机号:"+ item.wphone
-//                  }else{
-//                      phone.text= "手机号:"+item.mphone
-//                  }
+                llLossing!!.visibility= View.GONE
+//                reason.text="流失原因:"
             }
         }
         value.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            startActivity(CustomerDetailsActivity::class.java)
+            val data = dataX.get(position);
+            var it = Intent( baseContext , CustomerDetailsActivity::class.java);
+            var vb = Bundle();
+            vb .putParcelable("data",data)
+            it.putExtra("bundle",vb)
+            startActivity(it)
         }
         rvRegister!!.adapter = value
     }

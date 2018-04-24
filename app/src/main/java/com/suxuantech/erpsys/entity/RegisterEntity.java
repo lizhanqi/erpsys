@@ -1,5 +1,8 @@
 package com.suxuantech.erpsys.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -50,7 +53,7 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
         this.DataX = DataX;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * id : 4
          * customer_number : SY18011900003
@@ -122,44 +125,44 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
         private String customer_sex;
         private String customer_tel;
         private String customer_wechat;
-        private Object customer_weibo;
+        private String customer_weibo;
         private String customer_qq;
-        private Object province_id;
-        private Object province;
-        private Object city_id;
-        private Object city;
-        private Object county_id;
-        private Object county;
+        private String province_id;
+        private String province;
+        private String city_id;
+        private String city;
+        private String county_id;
+        private String county;
         private String customer_address;
         private String mate_name;
         private String mate_sex;
         private String mate_tel;
         private String mate_wechat;
-        private Object mate_weibo;
+        private String mate_weibo;
         private String mate_qq;
         private String consultation_type;
         private String customer_cource;
         private String customer_intention;
         private String customer_orderaddress;
         private String customer_area;
-        private Object op_signinfo;
-        private Object op_signday;
+        private String op_signinfo;
+        private String op_signday;
         private String xingming;
         private String shouji;
         private String customer_birthday;
         private String mate_birthday;
         private String wedding_date;
         private String dj_staff;
-        private Object fp_staff;
+        private String fp_staff;
         private String sales_staff;
         private String dj_day;
-        private Object fp_day;
+        private String fp_day;
         private String yjd_day;
-        private Object syjd_day;
+        private String syjd_day;
         private String yp_day;
-        private Object order_day;
-        private Object order_number;
-        private Object last_trackday;
+        private String order_day;
+        private String order_number;
+        private String last_trackday;
         private String creator_day;
         private String customer_remark;
         private String shop_name;
@@ -171,8 +174,8 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
         private String is_valid;
         private String is_loss;
         private String statusremark;
-        private Object shop_codeZD;
-        private Object shop_nameZD;
+        private String shop_codeZD;
+        private String shop_nameZD;
         private String from_index;
         private String customer_from;
         private int brandid;
@@ -229,11 +232,11 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.customer_wechat = customer_wechat;
         }
 
-        public Object getCustomer_weibo() {
+        public String getCustomer_weibo() {
             return customer_weibo;
         }
 
-        public void setCustomer_weibo(Object customer_weibo) {
+        public void setCustomer_weibo(String customer_weibo) {
             this.customer_weibo = customer_weibo;
         }
 
@@ -245,51 +248,51 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.customer_qq = customer_qq;
         }
 
-        public Object getProvince_id() {
+        public String getProvince_id() {
             return province_id;
         }
 
-        public void setProvince_id(Object province_id) {
+        public void setProvince_id(String province_id) {
             this.province_id = province_id;
         }
 
-        public Object getProvince() {
+        public String getProvince() {
             return province;
         }
 
-        public void setProvince(Object province) {
+        public void setProvince(String province) {
             this.province = province;
         }
 
-        public Object getCity_id() {
+        public String getCity_id() {
             return city_id;
         }
 
-        public void setCity_id(Object city_id) {
+        public void setCity_id(String city_id) {
             this.city_id = city_id;
         }
 
-        public Object getCity() {
+        public String getCity() {
             return city;
         }
 
-        public void setCity(Object city) {
+        public void setCity(String city) {
             this.city = city;
         }
 
-        public Object getCounty_id() {
+        public String getCounty_id() {
             return county_id;
         }
 
-        public void setCounty_id(Object county_id) {
+        public void setCounty_id(String county_id) {
             this.county_id = county_id;
         }
 
-        public Object getCounty() {
+        public String getCounty() {
             return county;
         }
 
-        public void setCounty(Object county) {
+        public void setCounty(String county) {
             this.county = county;
         }
 
@@ -333,11 +336,11 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.mate_wechat = mate_wechat;
         }
 
-        public Object getMate_weibo() {
+        public String getMate_weibo() {
             return mate_weibo;
         }
 
-        public void setMate_weibo(Object mate_weibo) {
+        public void setMate_weibo(String mate_weibo) {
             this.mate_weibo = mate_weibo;
         }
 
@@ -389,19 +392,19 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.customer_area = customer_area;
         }
 
-        public Object getOp_signinfo() {
+        public String getOp_signinfo() {
             return op_signinfo;
         }
 
-        public void setOp_signinfo(Object op_signinfo) {
+        public void setOp_signinfo(String op_signinfo) {
             this.op_signinfo = op_signinfo;
         }
 
-        public Object getOp_signday() {
+        public String getOp_signday() {
             return op_signday;
         }
 
-        public void setOp_signday(Object op_signday) {
+        public void setOp_signday(String op_signday) {
             this.op_signday = op_signday;
         }
 
@@ -453,11 +456,11 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.dj_staff = dj_staff;
         }
 
-        public Object getFp_staff() {
+        public String getFp_staff() {
             return fp_staff;
         }
 
-        public void setFp_staff(Object fp_staff) {
+        public void setFp_staff(String fp_staff) {
             this.fp_staff = fp_staff;
         }
 
@@ -477,11 +480,11 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.dj_day = dj_day;
         }
 
-        public Object getFp_day() {
+        public String getFp_day() {
             return fp_day;
         }
 
-        public void setFp_day(Object fp_day) {
+        public void setFp_day(String fp_day) {
             this.fp_day = fp_day;
         }
 
@@ -493,11 +496,11 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.yjd_day = yjd_day;
         }
 
-        public Object getSyjd_day() {
+        public String getSyjd_day() {
             return syjd_day;
         }
 
-        public void setSyjd_day(Object syjd_day) {
+        public void setSyjd_day(String syjd_day) {
             this.syjd_day = syjd_day;
         }
 
@@ -509,27 +512,27 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.yp_day = yp_day;
         }
 
-        public Object getOrder_day() {
+        public String getOrder_day() {
             return order_day;
         }
 
-        public void setOrder_day(Object order_day) {
+        public void setOrder_day(String order_day) {
             this.order_day = order_day;
         }
 
-        public Object getOrder_number() {
+        public String getOrder_number() {
             return order_number;
         }
 
-        public void setOrder_number(Object order_number) {
+        public void setOrder_number(String order_number) {
             this.order_number = order_number;
         }
 
-        public Object getLast_trackday() {
+        public String getLast_trackday() {
             return last_trackday;
         }
 
-        public void setLast_trackday(Object last_trackday) {
+        public void setLast_trackday(String last_trackday) {
             this.last_trackday = last_trackday;
         }
 
@@ -621,19 +624,19 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
             this.statusremark = statusremark;
         }
 
-        public Object getShop_codeZD() {
+        public String getShop_codeZD() {
             return shop_codeZD;
         }
 
-        public void setShop_codeZD(Object shop_codeZD) {
+        public void setShop_codeZD(String shop_codeZD) {
             this.shop_codeZD = shop_codeZD;
         }
 
-        public Object getShop_nameZD() {
+        public String getShop_nameZD() {
             return shop_nameZD;
         }
 
-        public void setShop_nameZD(Object shop_nameZD) {
+        public void setShop_nameZD(String shop_nameZD) {
             this.shop_nameZD = shop_nameZD;
         }
 
@@ -676,5 +679,154 @@ public class RegisterEntity extends  BaseResult2 <RegisterEntity.DataBean>{
         public void set_$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4(String _$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4) {
             this._$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4 = _$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.customer_number);
+            dest.writeString(this.customer_name);
+            dest.writeString(this.customer_sex);
+            dest.writeString(this.customer_tel);
+            dest.writeString(this.customer_wechat);
+            dest.writeString(this.customer_weibo);
+            dest.writeString(this.customer_qq);
+            dest.writeString(this.province_id);
+            dest.writeString(this.province);
+            dest.writeString(this.city_id);
+            dest.writeString(this.city);
+            dest.writeString(this.county_id);
+            dest.writeString(this.county);
+            dest.writeString(this.customer_address);
+            dest.writeString(this.mate_name);
+            dest.writeString(this.mate_sex);
+            dest.writeString(this.mate_tel);
+            dest.writeString(this.mate_wechat);
+            dest.writeString(this.mate_weibo);
+            dest.writeString(this.mate_qq);
+            dest.writeString(this.consultation_type);
+            dest.writeString(this.customer_cource);
+            dest.writeString(this.customer_intention);
+            dest.writeString(this.customer_orderaddress);
+            dest.writeString(this.customer_area);
+            dest.writeString(this.op_signinfo);
+            dest.writeString(this.op_signday);
+            dest.writeString(this.xingming);
+            dest.writeString(this.shouji);
+            dest.writeString(this.customer_birthday);
+            dest.writeString(this.mate_birthday);
+            dest.writeString(this.wedding_date);
+            dest.writeString(this.dj_staff);
+            dest.writeString(this.fp_staff);
+            dest.writeString(this.sales_staff);
+            dest.writeString(this.dj_day);
+            dest.writeString(this.fp_day);
+            dest.writeString(this.yjd_day);
+            dest.writeString(this.syjd_day);
+            dest.writeString(this.yp_day);
+            dest.writeString(this.order_day);
+            dest.writeString(this.order_number);
+            dest.writeString(this.last_trackday);
+            dest.writeString(this.creator_day);
+            dest.writeString(this.customer_remark);
+            dest.writeString(this.shop_name);
+            dest.writeString(this.shop_code);
+            dest.writeString(this.setkey);
+            dest.writeString(this.is_fp);
+            dest.writeString(this.is_intostore);
+            dest.writeString(this.is_success);
+            dest.writeString(this.is_valid);
+            dest.writeString(this.is_loss);
+            dest.writeString(this.statusremark);
+            dest.writeString(this.shop_codeZD);
+            dest.writeString(this.shop_nameZD);
+            dest.writeString(this.from_index);
+            dest.writeString(this.customer_from);
+            dest.writeInt(this.brandid);
+            dest.writeString(this._$Co04230346202221997520732ComSuxuantechErpsysINoHttpNsultation_type322);
+            dest.writeString(this._$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4);
+        }
+
+        public DataBean() {
+        }
+
+        protected DataBean(Parcel in) {
+            this.id = in.readInt();
+            this.customer_number = in.readString();
+            this.customer_name = in.readString();
+            this.customer_sex = in.readString();
+            this.customer_tel = in.readString();
+            this.customer_wechat = in.readString();
+            this.customer_weibo = in.readString();
+            this.customer_qq = in.readString();
+            this.province_id = in.readString();
+            this.province = in.readString();
+            this.city_id = in.readString();
+            this.city = in.readString();
+            this.county_id = in.readString();
+            this.county = in.readString();
+            this.customer_address = in.readString();
+            this.mate_name = in.readString();
+            this.mate_sex = in.readString();
+            this.mate_tel = in.readString();
+            this.mate_wechat = in.readString();
+            this.mate_weibo = in.readString();
+            this.mate_qq = in.readString();
+            this.consultation_type = in.readString();
+            this.customer_cource = in.readString();
+            this.customer_intention = in.readString();
+            this.customer_orderaddress = in.readString();
+            this.customer_area = in.readString();
+            this.op_signinfo = in.readString();
+            this.op_signday = in.readString();
+            this.xingming = in.readString();
+            this.shouji = in.readString();
+            this.customer_birthday = in.readString();
+            this.mate_birthday = in.readString();
+            this.wedding_date = in.readString();
+            this.dj_staff = in.readString();
+            this.fp_staff = in.readString();
+            this.sales_staff = in.readString();
+            this.dj_day = in.readString();
+            this.fp_day = in.readString();
+            this.yjd_day = in.readString();
+            this.syjd_day = in.readString();
+            this.yp_day = in.readString();
+            this.order_day = in.readString();
+            this.order_number = in.readString();
+            this.last_trackday = in.readString();
+            this.creator_day = in.readString();
+            this.customer_remark = in.readString();
+            this.shop_name = in.readString();
+            this.shop_code = in.readString();
+            this.setkey = in.readString();
+            this.is_fp = in.readString();
+            this.is_intostore = in.readString();
+            this.is_success = in.readString();
+            this.is_valid = in.readString();
+            this.is_loss = in.readString();
+            this.statusremark = in.readString();
+            this.shop_codeZD = in.readString();
+            this.shop_nameZD = in.readString();
+            this.from_index = in.readString();
+            this.customer_from = in.readString();
+            this.brandid = in.readInt();
+            this._$Co04230346202221997520732ComSuxuantechErpsysINoHttpNsultation_type322 = in.readString();
+            this._$Customer04230346202231997520732ComSuxuantechErpsysINoHttp_sex4 = in.readString();
+        }
+
+        public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
+            }
+
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
 }

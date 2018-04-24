@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/top_msg"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="100dp"
+    android:layout_height="200dp">
+    <TextView
+        android:id="@+id/tv_new_customer"
+        android:padding="@dimen/px30"
+        android:text="新进客资"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_not_into_shop"
+        android:padding="@dimen/px30"
+        android:text="未进店"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_not_in_shop"
+        android:padding="@dimen/px30"
+        android:text="进店未成"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_make_bargain"
+        android:padding="@dimen/px30"
+        android:text="已成交"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_run_away"
+        android:padding="@dimen/px30"
+        android:text="客资流失"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
