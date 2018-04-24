@@ -101,7 +101,7 @@ public class Contact {
     public static String TODAY_PICK_UP_PHOTO="/SXWebErpAppStaff/SX_CustomerGetTakeawayItemDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
 
     /**
-     *进入化妆
+     *今日化妆
      */
     public static String TODAY_MAKE_UP="/SXWebErpAppStaff/SX_CustomerMakeupDay?Token=%s&StartDate=%s&EndDate=%s&Code=%s" ;
     /**

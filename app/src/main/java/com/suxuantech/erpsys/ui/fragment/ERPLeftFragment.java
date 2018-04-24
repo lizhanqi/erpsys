@@ -39,6 +39,7 @@ import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
 import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
+import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
@@ -200,14 +201,9 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
 
     private void setAdapter(List<HomeCustmoerCountEntity.DataBean> data) {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("预约进店");
-        strings.add("拍照客户");
-        strings.add("礼服客户");
-        strings.add("化妆客户");
-        strings.add("选片客户");
-        strings.add("取件客户");
-        strings.add("我的客户");
+//        ArrayList<String> strings = new ArrayList<>();
+        String[] titles = getResources().getStringArray(R.array.home_title);
+        List<String>  strings= Arrays.asList(titles);
         //网格布局管理器
         mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
@@ -252,6 +248,11 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
             }
         };
+        quickAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+            intent.putExtra("title",strings.get(position));
+            startActivity( intent);
+        });
         mRvCard.setAdapter(quickAdapter);
     }
 
