@@ -126,7 +126,7 @@ public class ExpandableAdapter extends GroupedRecyclerViewAdapter {
         view9.append(new MyString(dataBean.getSj_weddingdate()).setColor(mContext.getResources().getColor(R.color.black)));
         view10.setText("礼服备注"+"\u3000");
         view10.append(new MyString(dataBean.getDressremark()).setColor(mContext.getResources().getColor(R.color.black)));
-        view3.setOnClickListener(new View.OnClickListener() {
+        view4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ToastUtils.showShort(groupPosition+"");
