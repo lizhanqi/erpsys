@@ -1,5 +1,8 @@
 package com.suxuantech.erpsys.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -37,7 +40,7 @@ public class SearchOrderInforEntity extends BaseResult2<SearchOrderInforEntity.D
      */
 
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * brandid : 1
          * customer_from_index :
@@ -80,15 +83,15 @@ public class SearchOrderInforEntity extends BaseResult2<SearchOrderInforEntity.D
         private String shop_code;
         private String consumption_type;
         private String mwechat;
-        private Object take_takaddress;
-        private Object getDate;
+        private String take_takaddress;
+        private String getDate;
         private String wwechat;
         private int total_money;
         private int payment_money;
         private int nopayment_money;
         private int bargain_money;
         private int supplementary_money;
-        private Object allfinishfate;
+        private String allfinishfate;
 
         public int getBrandid() {
             return brandid;
@@ -210,19 +213,19 @@ public class SearchOrderInforEntity extends BaseResult2<SearchOrderInforEntity.D
             this.mwechat = mwechat;
         }
 
-        public Object getTake_takaddress() {
+        public String getTake_takaddress() {
             return take_takaddress;
         }
 
-        public void setTake_takaddress(Object take_takaddress) {
+        public void setTake_takaddress(String take_takaddress) {
             this.take_takaddress = take_takaddress;
         }
 
-        public Object getGetDate() {
+        public String getGetDate() {
             return getDate;
         }
 
-        public void setGetDate(Object getDate) {
+        public void setGetDate(String getDate) {
             this.getDate = getDate;
         }
 
@@ -274,12 +277,87 @@ public class SearchOrderInforEntity extends BaseResult2<SearchOrderInforEntity.D
             this.supplementary_money = supplementary_money;
         }
 
-        public Object getAllfinishfate() {
+        public String getAllfinishfate() {
             return allfinishfate;
         }
 
-        public void setAllfinishfate(Object allfinishfate) {
+        public void setAllfinishfate(String allfinishfate) {
             this.allfinishfate = allfinishfate;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.brandid);
+            dest.writeString(this.customer_from_index);
+            dest.writeString(this.mname);
+            dest.writeString(this.mphone);
+            dest.writeString(this.wname);
+            dest.writeString(this.wphone);
+            dest.writeString(this.viptype);
+            dest.writeString(this.vipnum);
+            dest.writeString(this.area);
+            dest.writeString(this.orderId);
+            dest.writeString(this.targetdate);
+            dest.writeString(this.shop_name);
+            dest.writeString(this.shop_code);
+            dest.writeString(this.consumption_type);
+            dest.writeString(this.mwechat);
+            dest.writeString(this.take_takaddress);
+            dest.writeString(this.getDate);
+            dest.writeString(this.wwechat);
+            dest.writeInt(this.total_money);
+            dest.writeInt(this.payment_money);
+            dest.writeInt(this.nopayment_money);
+            dest.writeInt(this.bargain_money);
+            dest.writeInt(this.supplementary_money);
+            dest.writeString(this.allfinishfate);
+        }
+
+        public DataBean() {
+        }
+
+        protected DataBean(Parcel in) {
+            this.brandid = in.readInt();
+            this.customer_from_index = in.readString();
+            this.mname = in.readString();
+            this.mphone = in.readString();
+            this.wname = in.readString();
+            this.wphone = in.readString();
+            this.viptype = in.readString();
+            this.vipnum = in.readString();
+            this.area = in.readString();
+            this.orderId = in.readString();
+            this.targetdate = in.readString();
+            this.shop_name = in.readString();
+            this.shop_code = in.readString();
+            this.consumption_type = in.readString();
+            this.mwechat = in.readString();
+            this.take_takaddress = in.readString();
+            this.getDate = in.readString();
+            this.wwechat = in.readString();
+            this.total_money = in.readInt();
+            this.payment_money = in.readInt();
+            this.nopayment_money = in.readInt();
+            this.bargain_money = in.readInt();
+            this.supplementary_money = in.readInt();
+            this.allfinishfate = in.readString();
+        }
+
+        public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
 }

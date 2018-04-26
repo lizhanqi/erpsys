@@ -12,22 +12,30 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.allen.library.SuperTextView;
 import com.bigkoo.alertview.AlertView;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.OrderDetailActivity;
+import com.suxuantech.erpsys.entity.CustomerProductEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
 import com.suxuantech.erpsys.utils.ScreenUtils;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 产品资料
  */
-public class ProductDataFragment extends SupportFragment {
+public class ProductDataFragment extends BaseSupportFragment {
     @BindView(R.id.recycler_one_product)
     SwipeMenuRecyclerView mRecyclerOneProduct;
     @BindView(R.id.recycler_two_product)
@@ -42,9 +50,14 @@ public class ProductDataFragment extends SupportFragment {
     TextView mTvDelete;
     @BindView(R.id.rl_delete)
     RelativeLayout mRlDelete;
+    @BindView(R.id.stv_one_package)
+    SuperTextView mStvOnePackage;
+
+
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer2;
     private ProductGroupAdaputer productGroupAdaputer;
+
     public ProductDataFragment() {
     }
 
@@ -53,15 +66,19 @@ public class ProductDataFragment extends SupportFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
-        ((OrderDetailActivity) getActivity()).setUseDefinedNavRightText("1111");
+       // ((OrderDetailActivity) getActivity()).setUseDefinedNavRightText("1111");
         initView(view);
+        getProduct();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productGroupAdaputer = new ProductGroupAdaputer(getActivity(), true);
+
+    }
+    public void setData(CustomerProductEntity.DataBean dataBean){
+        productGroupAdaputer = new ProductGroupAdaputer(getActivity(), true,dataBean);
         mRecyclerOneProduct.setAdapter(productGroupAdaputer);
         //recycleview和其他view滑动冲突可以禁用
         mRecyclerOneProduct.setLayoutManager(new LinearLayoutManager(getActivity()) {
@@ -72,10 +89,10 @@ public class ProductDataFragment extends SupportFragment {
                                                  }
                                              }
         );
-    productGroupAdaputer2 = new ProductGroupAdaputer(getActivity(), false);
+        productGroupAdaputer2 = new ProductGroupAdaputer(getActivity(), false, dataBean);
         mRecyclerTwoProduct.setLayoutManager(new LinearLayoutManager(getActivity()) {
-                                                 @Override
-                                                 public boolean canScrollVertically() {
+            @Override
+            public boolean canScrollVertically() {
                                                      // 直接禁止垂直滑动
                                                      return false;
                                                  }
@@ -95,7 +112,6 @@ public class ProductDataFragment extends SupportFragment {
     public void change() {
         addPackageOrProductWindow();
         isShowCheckBox = !isShowCheckBox;
-
         if (isShowCheckBox) {
             mRlDelete.setVisibility(View.VISIBLE);
             mCbOneAll.setVisibility(View.VISIBLE);
@@ -133,19 +149,46 @@ public class ProductDataFragment extends SupportFragment {
         });
 
     }
-    public  void  addPackageOrProductWindow(){
+
+    public void addPackageOrProductWindow() {
         AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
         Button bn = views.findViewById(R.id.btn_add_package);
         bn.setClickable(true);
         alertView.addExtView(views);
         alertView.setCancelable(true);
-        alertView.setContentContainerMargins(0,0,0,0);
-        if( ScreenUtils.checkDeviceHasNavigationBar(getContext())){
+        alertView.setContentContainerMargins(0, 0, 0, 0);
+        if (ScreenUtils.checkDeviceHasNavigationBar(getContext())) {
             alertView.setRootViewMarginBootom(ScreenUtils.getNavigationBarHeight(getContext()));
             alertView.show();
-    }
+        }
     }
 
+    public void getProduct() {
+        String orderId = getArguments().getString("orderId");
+        String url = Contact.getFullUrl(Contact.CUSTOMER_PRODUCT, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest<CustomerProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<CustomerProductEntity>(url, RequestMethod.POST, CustomerProductEntity.class);
+        HttpListener<CustomerProductEntity> searchByCustmor = new HttpListener<CustomerProductEntity>() {
+            @Override
+            public void onSucceed(int what, Response<CustomerProductEntity> response) {
 
+                if (response.get().isOK()) {
+                    CustomerProductEntity.DataBean dataBean = response.get().getData() ;
+                    if (dataBean != null) {
+                        List<CustomerProductEntity.DataBean.YxBean.YxpBean> yxp = dataBean.getYx().getYxp();
+                        List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf =  dataBean.getYx().getYxf();
+                        mStvOnePackage.setLeftString(yxp.get(0).getConsumption_name());
+                        mStvOnePackage.setRightString("¥:" + yxp.get(0).getPrice());
+                        mStvOnePackage.setRightTextColor(getResources().getColor(R.color.litte_red));
+                        setData(dataBean);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<CustomerProductEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
 }

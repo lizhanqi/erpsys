@@ -55,13 +55,11 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
 
 public class OrderDetailActivity extends ImmersedBaseActivity {
-
     private String[] stringArray;
-        private PopupWindow mPopupWindow;
+    private PopupWindow mPopupWindow;
     private SwipeMenuRecyclerView recycleView;
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
-
     String current;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +72,7 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
         setUseDefinedNavTitle(current);
         gotoFragment();
     }
+
     private SupportFragment[] mFragments = new SupportFragment[5];
     @Override
     public void widgetClick(View v) {
@@ -93,13 +92,14 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
         }
     }
 
-
     public void gotoFragment(){
             switch (current){
                 default:
                     if (findFragment(CustomerInformationFragment.class)==null){
                         CustomerInformationFragment customerInformationFragment = new CustomerInformationFragment();
                         mFragments[0]=customerInformationFragment;
+                        Bundle bund = getIntent().getBundleExtra("bund");
+                        customerInformationFragment.setArguments(bund);
                         loadRootFragment(R.id.container,  mFragments[0],false,true);
                     }else {
                         start(mFragments[0], ISupportFragment.SINGLETASK);
@@ -132,10 +132,15 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
                         productDataFragment = new ProductDataFragment();
                         // loadRootFragment(R.id.container, serviceFeeFragment);
                         mFragments[3]= productDataFragment;
+                        String orderId = getIntent().getStringExtra("orderId");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId",orderId);
+                        productDataFragment.setArguments(bundle);
                         loadRootFragment(R.id.container,  mFragments[3],false,true);
                     }else {
                         start(mFragments[3], ISupportFragment.SINGLETASK);
                     }
+
                     break;
             }
     }

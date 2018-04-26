@@ -176,9 +176,14 @@ public class Contact {
     /**
      * 订单搜索
      */
+
     public static String SEARCH_ORDER_NEW =  "/SX_CrmApi/Sel_CustomerOrderList?Token=%s&CustomerType=%s&brandid=%s&startdate=%s&enddate=%s&orderInfo=%s";
 
-    public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_CustomerInfo?Token=%s&orderid=%s&ckey=%s&bTime=%s&eTime=%s&pageIndex=%s&pageSize=%s";
+
+    /**
+     *订单搜索
+     */
+    public static String SEARCH_ORDER = "/SXWebErpAppStaff/SX_InquireCustomerInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
     /**
      * 新单类型
      */
@@ -214,5 +219,12 @@ public class Contact {
      * 修改流失状态
      */
     public static String RUN_AWAY="/SXWebErpAppStaff/SX_AlterLoss?Token=%s&JKID=%s&Statusremark=%s";
+
+
+    /**
+     * 获取客户产品.
+     *
+     */
+    public static  String CUSTOMER_PRODUCT="/SXWebErpAppStaff/SX_CustomerConsumptionContent?Token=%S&orderid=%S&Code=%S";
 
 }

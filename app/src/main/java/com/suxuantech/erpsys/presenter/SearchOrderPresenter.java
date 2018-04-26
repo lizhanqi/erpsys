@@ -141,19 +141,18 @@ public class SearchOrderPresenter {
     String lastStartDate,lastEndDate,lastSearchKey,lastShopKey;
     /**
      * 搜索网络订单
-     * @param trim
-     * @param mTvSosoStorefront cky
+     * @param key
      * @param startDate
      * @param endDate
      */
 
-    public void sosoNetOrder(   String trim, String mTvSosoStorefront, String startDate, String endDate, boolean isFresh) {
+    public void sosoNetOrder(   String key,  String startDate, String endDate, boolean isFresh) {
        if (isFresh){
            pageIndex=0;
        }
-        if (trim == null) {
-            trim = "";
-            lastSearchKey=trim;
+        if (key == null) {
+            key = "";
+            lastSearchKey=key;
         }
         if (startDate.equals(App.getContext().getResources().getString(R.string.start_time))){
             startDate = "20000101";
@@ -163,8 +162,7 @@ public class SearchOrderPresenter {
             endDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
             lastEndDate=endDate;
         }
-        String url= Contact.getFullUrl(Contact.SEARCH_ORDER,Contact.TOKEN,
-                trim,Contact.TOKEN,startDate,endDate,pageIndex,pageSize);
+        String url= Contact.getFullUrl(Contact.SEARCH_ORDER,Contact.TOKEN, startDate,endDate, key,  pageIndex,pageSize,App.getApplication().getUserInfor().getShop_code());
             //请求实体
             JavaBeanRequest<SearchOrderEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SearchOrderEntity>(url, RequestMethod.POST,SearchOrderEntity.class);
             HttpListener<SearchOrderEntity> searchByCustmor = new HttpListener<SearchOrderEntity>(){
@@ -187,7 +185,7 @@ public class SearchOrderPresenter {
             new CallServer().setQueue(requestQueue).add(App.getContext(), districtBeanJavaBeanRequest, searchByCustmor, 9, false, pageIndex==0);
         }
     public void sosoNetLoadmore() {
-        sosoNetOrder(lastSearchKey,lastShopKey,lastStartDate,lastEndDate,false);
+        sosoNetOrder(lastSearchKey, lastStartDate,lastEndDate,false);
     }
 
     /**

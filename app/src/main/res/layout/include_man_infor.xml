@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical"     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--客户姓名-->
+    <LinearLayout
+        style="@style/LinearLayoutStandard"
+        android:layout_marginTop="@dimen/px30">
+
+        <TextView
+            style="@style/FormKeyMust"
+            android:text="男士姓名" />
+
+        <android.support.design.widget.TextInputEditText
+            android:hint="请输入(与女士姓名选填一个)"
+            android:id="@+id/et_customer_name_m"
+            style="@style/FormValue"
+            />
+    </LinearLayout>
+
+    <View style="@style/line" />
+    <!--男手机-->
+    <LinearLayout style="@style/LinearLayoutStandard">
+
+        <TextView
+            style="@style/FormKeyMust"
+            android:text="男士手机" />
+
+        <android.support.design.widget.TextInputEditText
+            android:hint="请输入(与女士手机选填一个)"
+            android:id="@+id/et_customer_phone_m"
+            style="@style/InputPhone"  />
+    </LinearLayout>
+
+    <View style="@style/line" />
+    <!--男士微信-->
+    <LinearLayout style="@style/LinearLayoutStandard">
+
+        <TextView
+            style="@style/DetailsKey"
+            android:text="男士微信" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_customer_wechat_m"
+            style="@style/FormValue"
+            />
+    </LinearLayout>
+    <View style="@style/line" />
+
+    <!--男士QQ-->
+    <LinearLayout style="@style/LinearLayoutStandard" android:visibility="gone">
+
+        <TextView
+            style="@style/DetailsKey"
+            android:text="男士QQ" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_customer_qq_m"
+            style="@style/FormValue"
+            />
+    </LinearLayout>
+    <View style="@style/line" android:visibility="gone" />
+
+    <!--男士生日-->
+    <LinearLayout
+        android:id="@+id/ll_customer_birthday_m"
+        style="@style/LinearLayoutStandard">
+
+        <TextView
+            style="@style/DetailsKey"
+            android:text="男士生日" />
+
+        <TextView
+            android:id="@+id/tv_customer_birthday_m"
+            style="@style/FormSelectValue" />
+    </LinearLayout>
+</LinearLayout>

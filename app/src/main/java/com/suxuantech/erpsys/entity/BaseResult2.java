@@ -31,16 +31,8 @@ import java.util.List;
  */
 
 public class BaseResult2<T> extends BaseResult  {
-    private String Msg;
+
     private List<T> Data;
-
-    public String getMsg() {
-        return Msg;
-    }
-
-    public void setMsg(String msg) {
-        Msg = msg;
-    }
 
     public List<T> getData() {
         return Data;

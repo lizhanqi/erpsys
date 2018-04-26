@@ -39,6 +39,7 @@
             android:layout_width="@dimen/px40"
             android:layout_height="wrap_content" />
         <ImageView
+            android:id="@+id/img_product"
             android:src="@drawable/img_placeholder"
             android:layout_width="@dimen/px240"
             android:layout_height="@dimen/px240" />

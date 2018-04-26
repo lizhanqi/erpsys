@@ -63,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     <com.allen.library.SuperTextView
+        android:id="@+id/stv_one_package"
         app:sLeftTvDrawableLeft="@drawable/icon_product_package"
         app:sTextViewDrawablePadding="@dimen/px30"
         app:sLeftTextColor="@color/myValue_33"
@@ -71,7 +72,6 @@
         android:layout_width="match_parent"
         app:sRightTextSize="@dimen/xs40"
         app:sRightTextColor="@color/color_f1430b"
-        app:sRightTopTextString="¥:0"
         android:layout_height="@dimen/px160">
     </com.allen.library.SuperTextView>
     </LinearLayout>

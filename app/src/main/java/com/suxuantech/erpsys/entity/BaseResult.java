@@ -30,14 +30,21 @@ package com.suxuantech.erpsys.entity;
 
 public abstract class BaseResult {
     public String mCode;
+    private String Msg;
+    public String getMsg() {
+        return Msg;
+    }
+    public void setMsg(String msg) {
+        Msg = msg;
+    }
     public boolean isOK() {
         return mCode!=null&&mCode.equals("200");
     }
     public String getCode() {
         return mCode;
     }
-
     public void setCode(String Code) {
         this.mCode = Code;
     }
+
 }

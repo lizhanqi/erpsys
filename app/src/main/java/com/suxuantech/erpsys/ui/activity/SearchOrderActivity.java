@@ -114,7 +114,6 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     private DefaultItemDecoration searchItemDecoration;
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +137,12 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
                     mTietNavSearch.setFocusable(true);
                 } else {
                     Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
+                //    SearchOrderInforEntity.DataBean dataBean = data.get(position);
+                    SearchOrderEntity.DataBean dataBean  = datacopy.get(position);
+                    intent.putExtra("orderId",dataBean .getOrderId());
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("customerAllInfor",dataBean);
+                    intent.putExtra("bund",bundle);
                     startActivity(intent);
                     toastShort(position + "");
                 }
@@ -360,7 +365,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             mTvNearlySearch.postInvalidate();
         }
         //网络搜搜
-        mSearchOrderPresenter.sosoNetOrderNew(0, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), key);
+        mSearchOrderPresenter.sosoNetOrder ( key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(),true);
     }
 
     @Override
@@ -393,7 +398,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
         mTietNavSearch.setFocusableInTouchMode(false);
         mTietNavSearch.setFocusable(false);
-        searchResultAdapter(data, isRefesh);
+        searchResultAdaptercopy(data, isRefesh);
     }
 
     @Override
@@ -496,13 +501,65 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
             }
         };
     }
+    List<SearchOrderEntity.DataBean> datacopy;
+    private void searchResultAdaptercopy(List<SearchOrderEntity.DataBean> data, boolean isRefesh) {
+        if (isRefesh) {
+            reset();
+
+        }
+        if (searchResultAdaputer != null) {
+            if (isRefesh) {
+                datacopy=data;
+                // searchResultAdaputer.refresh(data);
+                mSmrHistory.setAdapter(searchResultAdaputer);
+                mSmrHistory.loadMoreFinish(data != null, true);
+            } else {
+                if (data == null) {
+                    mSmrHistory.loadMoreFinish(true, false);
+                } else {
+                    datacopy.addAll(data);
+                    //  searchResultAdaputer.notifyAppendDataSetChanged(data, true);
+                }
+            }
+            return;
+        }
+        datacopy=data;
+        QuickAdapter quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, data) {
+            @Override
+            protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+                TextView tvName;
+                TextView tvMoney;
+                TextView tvOrderId;
+                TextView tvStatus;
+                TextView tvConsumptionType;
+                TextView tvPackageName;
+                TextView tvOrderDate;
+
+                tvName = (TextView) helper.getView(R.id.tv_name);
+                tvMoney = (TextView)  helper.getView(R.id.tv_money);
+                tvOrderId = (TextView)  helper.getView(R.id.tv_order_id);
+                tvStatus = (TextView)  helper.getView(R.id.tv_status);
+                tvConsumptionType = (TextView)  helper.getView(R.id.tv_consumption_type);
+                tvPackageName = (TextView)  helper.getView(R.id.tv_package_name);
+                tvOrderDate = (TextView)  helper.getView(R.id.tv_order_date);
+                tvName.setText(item.getXingming());
+                tvMoney.setText("¥ "+item.getNopayment_money());
+                tvOrderId.setText(item.getOrderId());
+                 tvStatus.setText(item.getNopayment_money()>0?"欠款":"");
+                tvConsumptionType.setText("消费类型:"+item.getConsumption_type());
+                tvOrderDate.setText("订单日期:"+item.getTargetdate());
+                tvPackageName.setText("包套名称:"+item.getPayment_money());
+            }
+        };
+        mSmrHistory.setAdapter(quickAdapter);
 
 
-    /**
-     * 搜索结果适配器
-     * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
-     */
+    }
+
+
+    List<SearchOrderInforEntity.DataBean> data;
     private void searchResultAdapter2(List<SearchOrderInforEntity.DataBean> data, boolean isRefesh) {
+        this.data=data;
         if (isRefesh) {
             reset();
         }
