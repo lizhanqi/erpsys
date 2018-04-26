@@ -35,6 +35,16 @@ import android.widget.TextView;
  */
 
 public class TextUtils {
+ SpannableString spannableString = new SpannableString("jakjfkajfjaj");
+////设置颜色
+//spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#FE6026")), 3, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+////设置字体大小，true表示前面的字体大小20单位为dip
+//spannableString.setSpan(new AbsoluteSizeSpan(20, true), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+////设置链接
+//spannableString.setSpan(new URLSpan("www.baidu.com"), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+////设置字体，BOLD为粗体
+//spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
 
     private TextUtils() {
         /* cannot be instantiated */

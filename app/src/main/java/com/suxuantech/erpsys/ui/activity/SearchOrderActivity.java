@@ -151,6 +151,12 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         hideUserDefinedNav();
     }
 
+    @Override
+    public void onBackPressedSupport() {
+        super.onBackPressedSupport();
+
+    }
+
     private void initView() {
         mTvNearlySearch.setDrawableRightClick(new TextViewDrawableClickView.DrawableRightClickListener() {
             @Override

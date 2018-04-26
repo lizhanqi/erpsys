@@ -58,3 +58,20 @@
         textView.setText(
                 Html.fromHtml("<font size=\"60\" color='"+getResources().getColor(R.color.myValue_33)+"'>今天天气好吗？</font>" +
                 "<font size=\"12\"color='"+getResources().getColor(R.color.textHint_99)+"'><br/>挺好的<sub><small>fadf</small></sub></font>"));
+
+
+===================安卓空格说明===========================
+空格： & #160;
+窄空格： & #8201;
+一个汉字宽度的空格：& #160;& #160;& #8201;
+
+用两个空格（& #160;& #160;）占一个汉字的宽度时，两个空格比一个汉字略窄，三个空格（& #160;& #160;& #160;）比一个汉字略宽
+
+在实际使用中需要灵活使用 和 的组合。
+android:text=”真实姓名:”
+android:text=”身& #160;& #160;份& #160;& #160;证:”
+
+TextView实现首行缩进的方法：
+•在string资源文件中，在文字的前面加入”\u3000\u3000”即可实现首行缩进
+•在Java代码中，使用setText(“\u3000\u3000”+xxxxx);
+

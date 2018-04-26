@@ -30,6 +30,7 @@ package com.suxuantech.erpsys.ui.activity;
 
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,10 +44,13 @@ import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.fragment.CustomerInformationFragment;
+import com.suxuantech.erpsys.ui.fragment.DressMaterialFragment;
 import com.suxuantech.erpsys.ui.fragment.ProductDataFragment;
 import com.suxuantech.erpsys.ui.fragment.TabControlFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +58,7 @@ import java.util.Arrays;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
 
-public class OrderDetailActivity extends ImmersedBaseActivity {
+public class OrderDetailActivity extends ImmersedBaseActivity implements DressMaterialFragment.OnFragmentInteractionListener {
     private String[] stringArray;
     private PopupWindow mPopupWindow;
     private SwipeMenuRecyclerView recycleView;
@@ -125,7 +129,17 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
                     toTabFragement(2);
                     break;
                 case "礼服资料":
-                    toTabFragement(3);
+                 //   toTabFragement(3);
+                    if (findFragment(ProductDataFragment.class)==null) {
+                        DressMaterialFragment          dressMaterialFragment = new DressMaterialFragment();
+                        // loadRootFragment(R.id.container, serviceFeeFragment);
+                        mFragments[4] = dressMaterialFragment;
+                        String orderId = getIntent().getStringExtra("orderId");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId", orderId);
+                        dressMaterialFragment.setArguments(bundle);
+                        loadRootFragment(R.id.container, mFragments[4], false, true);
+                    }
                     break;
                 case "产品资料":
                     if (findFragment(ProductDataFragment.class)==null){
@@ -221,6 +235,11 @@ public class OrderDetailActivity extends ImmersedBaseActivity {
         } else {
             pw.showAsDropDown(anchor, xoff, yoff);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(@NotNull Uri uri) {
+
     }
 //    @Override
 //    protected int fragmentLayoutId() {

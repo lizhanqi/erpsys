@@ -226,5 +226,10 @@ public class Contact {
      *
      */
     public static  String CUSTOMER_PRODUCT="/SXWebErpAppStaff/SX_CustomerConsumptionContent?Token=%S&orderid=%S&Code=%S";
+    /**
+     * 客户礼服资料获取
+     */
+    public static  String CUSTOMER_DRESS= "/SXWebErpAppStaff/SX_CustomerDressCount?Token=%s&orderid=%s&Code=%s";
+
 
 }

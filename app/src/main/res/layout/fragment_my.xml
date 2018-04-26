@@ -110,6 +110,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:id="@+id/tv_department"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -144,6 +145,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:id="@+id/tv_store"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -178,6 +180,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:id="@+id/tv_staff_serial_number"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -212,6 +215,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:id="@+id/tv_staff_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -246,6 +250,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:id="@+id/tv_staff_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -289,7 +294,6 @@ clickable是防止页面穿透的点击事件的
                                 android:drawablePadding="@dimen/px35"
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
-                                android:text="@string/salesroom"
                                 android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
@@ -316,6 +320,8 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                android:text="未知版本"
+                                android:id="@+id/tv_verstion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -323,7 +329,6 @@ clickable是防止页面穿透的点击事件的
                                 android:drawablePadding="@dimen/px35"
                                 android:drawableRight="@drawable/arrows_right_gray"
                                 android:gravity="center_vertical"
-                                android:text="@string/salesroom"
                                 android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32" />
 
