@@ -30,6 +30,7 @@ import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import me.yokeyword.fragmentation.Fragmentation;
+import solid.ren.skinlibrary.loader.SkinManager;
 
 
 /**
@@ -82,6 +83,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initSkinPeeler();
+
         SDKInitializer.initialize(this);
        // FreelineCore.init(this);
         Utils.init(this);
@@ -106,6 +109,14 @@ public class App extends Application {
         JMessageClient.setDebugMode(ISDEBUG);
         JMessageClient.init(this);
     }
+
+    /**
+     * 换肤初始化
+     */
+    private void initSkinPeeler() {
+     SkinManager.getInstance().init(this);
+    }
+
     /**
      * dex 分包个别手机如果不在这里init还是会报错,经常报错找不到某某.class
      * @param base

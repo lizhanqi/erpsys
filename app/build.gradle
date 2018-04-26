@@ -148,6 +148,7 @@ dependencies {
     //  compile 'io.github.rockerhieu:emojicon:+'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation rootProject.ext.dependencies.jiaozivideoplayer
+    compile rootProject.ext.dependencies.skinlibrary
 }
 
 //删除release文件夹
