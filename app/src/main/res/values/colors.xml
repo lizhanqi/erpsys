@@ -3,6 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--自定义默认导航栏颜色-->
+    <color name="navigation">@color/themeColor</color>
+    <!--状态栏颜色-->
+    <color name="status">#FFFFFFFF</color>
+
+
+
+
     <color name="white">#FFFFFFFF</color>
     <color name="green">#F00ffFFF</color>
     <color name="copyrigth">#515050</color>

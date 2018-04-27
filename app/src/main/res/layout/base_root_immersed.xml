@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 状态栏沉浸-->
 <LinearLayout
+    skin:enable="true"
+    xmlns:skin="http://schemas.android.com/android/skin"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout_status_immersed"

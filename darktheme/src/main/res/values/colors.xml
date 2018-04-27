@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>//决定状态栏颜色
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#303F9F</color>
     <color name="green">#F00ffFFF</color>
     <color name="copyrigth">#515050</color>
     <color name="mainNav_66">#3786fc</color>
@@ -22,7 +22,7 @@
     <color name="color_f1430b">#f1430b</color>
     <color name="color_f1403b">#f1403b</color>
     <color name="color_b3">#b3b3b3</color>
-    <color name="themeColor">#3786fc</color>
+    <color name="themeColor">#5ac921</color>
     <color name="msgColor">#e60b0b</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparency">#00000000</color>

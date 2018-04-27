@@ -103,10 +103,12 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
         //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
         mImmersionBar.fitsSystemWindows(true);
         mImmersionBar.statusBarDarkFont(true,0.15f);
-        mImmersionBar .statusBarColor(R.color.white) ;
+        mImmersionBar .statusBarColor( R.color.status ) ;
         mImmersionBar.keyboardEnable(false);
-        mImmersionBar .navigationBarColor(R.color.themeColor) ;
+        mImmersionBar .navigationBarColor(  R.color.navigation  ) ;
         mImmersionBar.init();
+     //   dynamicAddView(tablayout, "tabLayoutIndicator", R.color.colorPrimaryDark);
+        //        SkinAttr skinAttr = AttrFactory.get("textColor", textColorId, entryName, typeName);
     }
 
     @Override
