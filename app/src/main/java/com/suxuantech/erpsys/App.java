@@ -30,6 +30,7 @@ import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import me.yokeyword.fragmentation.Fragmentation;
+import solid.ren.skinlibrary.SkinConfig;
 import solid.ren.skinlibrary.loader.SkinManager;
 
 
@@ -114,7 +115,13 @@ public class App extends Application {
      * 换肤初始化
      */
     private void initSkinPeeler() {
-     SkinManager.getInstance().init(this);
+         SkinManager.getInstance().init(this);
+        SkinConfig.setCanChangeStatusColor(true);
+        SkinConfig.setCanChangeFont(true);
+        SkinConfig.setDebug(true);
+     //   SkinConfig.addSupportAttr("tabLayoutIndicator", new TabLayoutIndicatorAttr());
+        //SkinConfig.addSupportAttr("button", new RadioButtonAttr());
+        SkinConfig.enableGlobalSkinApply();
     }
 
     /**

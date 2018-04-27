@@ -22,13 +22,11 @@
     <color name="color_f1430b">#f1430b</color>
     <color name="color_f1403b">#f1403b</color>
     <color name="color_b3">#b3b3b3</color>
-
     <color name="themeColor">#3786fc</color>
     <color name="msgColor">#e60b0b</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparency">#00000000</color>
     <color name="color_bb">#bbbbbb</color>
-
     <!--覆盖颜色-->
     <color name="bgColor_overlay">#60000000</color>
     <!--窗口背景颜色-->

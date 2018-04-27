@@ -86,7 +86,11 @@ public class Contact {
         signature = EncryptUtils.encryptMD5ToString(stringBuffer.toString()).toLowerCase();
        return  new  SignateInfo(signature,random,currentTimeMillis);
     }
-    public static String LOGIN = "/SXWebErpAppStaff/SX_CustomerPhotoInfoDay?Token=%s&userID=%s&userPwd=%s";
+
+    /**
+     *登录接口
+     */
+    public static String LOGIN = "/SXWebErpAppStaff/SX_LoginCheck?Token=%s&userID=%s&userPwd=%s";
     /**
      * 今日拍照
      */

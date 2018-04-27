@@ -8,13 +8,15 @@ clickable是防止页面穿透的点击事件的
 -->
 
 <com.suxuantech.erpsys.ui.widget.BounceScrollView
+    tools:ignore="MissingPrefix"
     android:id="@+id/dampView"
-
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    skin:enable="true"
     >
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -101,6 +103,7 @@ clickable是防止页面穿透的点击事件的
                             android:gravity="center_vertical">
 
                             <TextView
+                                skin:enable="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="@dimen/px55"
@@ -110,6 +113,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
+                                skin:enable="true"
                                 android:id="@+id/tv_department"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -233,7 +237,6 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px125"
@@ -267,6 +270,42 @@ clickable是防止页面穿透的点击事件的
                                 android:layout_height="@dimen/px2"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/mainNavline_e7" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_marginTop="@dimen/px30"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/px125"
+                            android:background="@color/white"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/px55"
+                                android:gravity="center_vertical"
+                                android:text="主题"
+                                android:textColor="@color/mainNav_66"
+                                android:textSize="@dimen/xs44" />
+                            <Switch
+                                android:id="@+id/switch_theme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginRight="@dimen/px55"
+                                android:drawablePadding="@dimen/px35"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/myValue_33"
+                                android:textSize="@dimen/px32"
+                                android:text="夜间模式" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/px2"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/mainNavline_e7"
+                                android:id="@+id/view" />
+
+
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -345,14 +384,13 @@ clickable是防止页面穿透的点击事件的
                             android:layout_marginTop="@dimen/px29"
                             android:background="@color/white"
                             android:gravity="center_vertical">
+
                             <Button
                                 android:id="@+id/btn_login_out"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/px152"
-                                android:layout_marginBottom="@dimen/px15"
-                                android:layout_marginLeft="@dimen/px55"
-                                android:layout_marginRight="@dimen/px55"
-                                android:layout_marginTop="@dimen/px60"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
                                 android:background="@drawable/login_button_sp"
                                 android:text="@string/action_login_out"
                                 android:textColor="@color/white" />

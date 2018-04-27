@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import me.yokeyword.fragmentation.SupportFragment;
+import solid.ren.skinlibrary.SkinConfig;
+import solid.ren.skinlibrary.SkinLoaderListener;
+import solid.ren.skinlibrary.loader.SkinManager;
 
-public class MyFragment extends SupportFragment {
+public class MyFragment extends BaseSupportFragment {
     @BindView(R.id.img_top)
     ImageView mImgTop;
     @BindView(R.id.tv_mine)
@@ -109,10 +112,41 @@ public class MyFragment extends SupportFragment {
          mTvStaffId.setText(App.getApplication().getUserInfor().getStaffname());
     }
 
-    @OnClick({R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out, R.id.content_view_linearlayout, R.id.root_layout_status_immersed, R.id.dampView})
+    @OnClick({R.id.switch_theme,R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out, R.id.content_view_linearlayout, R.id.root_layout_status_immersed, R.id.dampView})
     public void onClick(View v) {
         switch (v.getId()) {
+
             default:
+                break;
+            case R.id.switch_theme:
+               if( SkinConfig.isDefaultSkin(getContext()) ){
+                   SkinManager.getInstance().loadSkin("darktheme.skin",
+                           new SkinLoaderListener() {
+                               @Override
+                               public void onStart() {
+                                   Log.i("SkinLoaderListener", "正在切换中");
+                               }
+                               @Override
+                               public void onSuccess() {
+                                   Log.i("SkinLoaderListener", "切换成功");
+                               }
+
+                               @Override
+                               public void onFailed(String errMsg) {
+                                   Log.i("SkinLoaderListener", "切换失败:" + errMsg);
+                               }
+
+                               @Override
+                               public void onProgress(int progress) {
+                                   Log.i("SkinLoaderListener", "皮肤文件下载中:" + progress);
+
+                               }
+                           });
+
+               }else {
+                   SkinManager.getInstance().restoreDefaultTheme();
+               }
+
                 break;
             case R.id.img_top:
                 break;

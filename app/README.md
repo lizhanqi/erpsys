@@ -45,7 +45,7 @@
     compile 'com.bigkoo:alertview:1.0.3'//仿ios弹窗http://blog.csdn.net/da_caoyuan/article/details/70216112
      compile 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.2.0' recycleview 分组的适配器  https://github.com/donkingliang/GroupedRecyclerViewAdapter
      其实还有一个网上流传比较好的适配器BaseRecyclerViewAdapterHelper，这个有时间再换
-
+        //另一个刷新  效果爽到爆 https://github.com/scwang90/SmartRefreshLayout
 //TextView可以通过html有效加载的标签
   //这里换行标签是<br/>
   //font 的seize 无效 color可以

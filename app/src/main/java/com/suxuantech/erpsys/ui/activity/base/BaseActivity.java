@@ -11,9 +11,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -42,6 +45,14 @@ import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
 import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
+import solid.ren.skinlibrary.IDynamicNewView;
+import solid.ren.skinlibrary.ISkinUpdate;
+import solid.ren.skinlibrary.SkinConfig;
+import solid.ren.skinlibrary.attr.base.DynamicAttr;
+import solid.ren.skinlibrary.loader.SkinInflaterFactory;
+import solid.ren.skinlibrary.loader.SkinManager;
+import solid.ren.skinlibrary.utils.SkinL;
+import solid.ren.skinlibrary.utils.SkinResourcesUtils;
 
 /**
  * ......................我佛慈悲....................
@@ -97,7 +108,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  *  那么必须在该页面一定要有一个方法用来接收消息，
  *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
-public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity {
+public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity, ISkinUpdate, IDynamicNewView  {
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
 
     /**
@@ -140,6 +151,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     private Unbinder unbinder;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+    private SkinInflaterFactory mSkinInflaterFactory;
     /**
      * 权限授予结果
      * @param permissions
@@ -279,7 +291,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * @param isLoading 实现显示加载框。
      * @param <T>       想请求到的数据类型。
      */
-    public <T> void request(int what, Request<T> request, HttpListener<T> callback,boolean canCancel, boolean isLoading) {
+    public <T> void request(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean isLoading) {
         request.setCancelSign(object);
         requestQueue.add(what, request, new HttpResponseListener<>(this, request, callback, canCancel, isLoading));
     }
@@ -289,7 +301,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     /* ----------------------------------------------网络end----------------------------------------------*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSkinInflaterFactory = new SkinInflaterFactory(this);
+        LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
+        changeStatusColor();
         mDelegate.onCreate(savedInstanceState);
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -301,11 +316,14 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     }
     @Override
     protected void onResume() {
+        SkinManager.getInstance().attach(this);
         super.onResume();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SkinManager.getInstance().detach(this);
+        mSkinInflaterFactory.clean();
         //加上判断
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -540,5 +558,46 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     @Override
     public boolean swipeBackPriority() {
         return mDelegate.swipeBackPriority();
+    }
+
+/*----------------换肤------------------*/
+    @Override
+    public void onThemeUpdate() {
+        SkinL.i(TAG, "onThemeUpdate");
+        mSkinInflaterFactory.applySkin();
+        changeStatusColor();
+    }
+
+    public SkinInflaterFactory getInflaterFactory() {
+        return mSkinInflaterFactory;
+    }
+
+    public void changeStatusColor() {
+        if (!SkinConfig.isCanChangeStatusColor()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int color = SkinResourcesUtils.getColorPrimaryDark();
+            if (color != -1) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(SkinResourcesUtils.getColorPrimaryDark());
+            }
+        }
+    }
+
+    @Override
+    public void dynamicAddView(View view, List<DynamicAttr> pDAttrs) {
+        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, pDAttrs);
+    }
+
+    @Override
+    public void dynamicAddView(View view, String attrName, int attrValueResId) {
+        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, attrName, attrValueResId);
+    }
+
+    @Override
+    public void dynamicAddFontView(TextView textView) {
+        mSkinInflaterFactory.dynamicAddFontEnableView(this, textView);
     }
 }
