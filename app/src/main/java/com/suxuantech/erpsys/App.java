@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.FalsifyFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
@@ -95,7 +99,14 @@ public class App extends Application {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                return new ClassicsHeader(context);//指定为经典Header，默认是 贝塞尔雷达Header\n
+                return new ClassicsHeader(context);//指定为 Header，默认是 贝塞尔雷达Header\n
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
+       return new FalsifyFooter(context);//指定为 Footer，默认是 BallPulseFooter;
             }
         });
         SDKInitializer.initialize(this);

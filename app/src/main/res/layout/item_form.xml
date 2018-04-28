@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_form"
+    style="@style/CustomerInformationContain">
+        <TextView
+            android:id="@+id/tv_form_key"
+            style="@style/CustomerInformationKey"
+           />
+        <TextView
+            android:id="@+id/tv_form_value"
+            style="@style/CustomerInformationValue"
+             />
+</LinearLayout>

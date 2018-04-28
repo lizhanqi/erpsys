@@ -94,7 +94,6 @@ public class SelectedPictureInformationFragment extends BaseSupportFragment {
             mTvSampleAfterFinishing.setText(data.getYhjxman());
             mTvSelectedPictrueRoom.setText(data.getSproom());
             //最后
-
             mTvImportNumber.setText(data.getSpImport_photocount()+"");
             mTvSelectedNumber.setText(data.getSpcount()+"");
             mTvEnteredNumber.setText(data.getSpbook_photocount()+"");

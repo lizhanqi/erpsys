@@ -1,11 +1,11 @@
 package com.suxuantech.erpsys.ui.adapter;
 
-import android.support.annotation.Nullable;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * ......................我佛慈悲....................
@@ -29,23 +29,35 @@ import java.util.List;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2018/4/9 0009 17:47 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @author Created by 李站旗 on 2018/4/28 0028 19:15 .
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
+ * @Description:
  */
-
-public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
-    public QuickAdapter(int layoutResId, @Nullable List<T> data)   {
-        super(layoutResId, data);
-    }
-    public void updateAll(List<T> data) {
-        if (data!=null){
-            mData=data;
-            notifyDataSetChanged();
-        }else {
-           mData.clear();
-           notifyDataSetChanged();
+public class MapQuickAdapter<T >  extends BaseQuickAdapter<T, BaseViewHolder> {
+   private Map<T,T> mapData;
+   private  T t;
+    public  MapQuickAdapter(int layoutResId, Map<T, T> maps ) {
+        super(layoutResId);
+        this.mapData=maps;
+        t=t;
+    //定义一个用来存放key列表
+        Iterator<T> iter=maps.keySet().iterator();
+        if (mData==null){
+            mData=new ArrayList<>();
+        }
+        while(iter.hasNext()){
+          mData  .add(iter.next());
         }
     }
+
+    @Override
+    final protected void convert(BaseViewHolder helper, T item) {
+        convert (helper,getData().lastIndexOf(item),item,mapData.get(item));
+    }
+
+    protected void convert (BaseViewHolder helper,int posstion, T key ,T value ) {
+
+    }
+
 }
