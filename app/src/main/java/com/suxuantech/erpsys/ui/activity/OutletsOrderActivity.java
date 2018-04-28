@@ -30,7 +30,7 @@ import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.presenter.OutletsOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.IOutletsOrderPresenter;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.DateUtil;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -51,7 +51,7 @@ import static com.suxuantech.erpsys.utils.DateUtil.DatePattern.JUST_DAY_NUMBER;
 /**
  * 门市开单
  */
-public class OutletsOrderActivity extends ImmersedBaseActivity implements IOutletsOrderPresenter {
+public class OutletsOrderActivity extends TitleNavigationActivity implements IOutletsOrderPresenter {
     @BindView(R.id.tv_order_id)
     TextView mTvOrderId;
     @BindView(R.id.tv_order_date)

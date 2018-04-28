@@ -3,7 +3,7 @@ package com.suxuantech.erpsys.ui.activity
 import android.os.Bundle
 import android.widget.TextView
 import com.suxuantech.erpsys.R
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
@@ -13,7 +13,7 @@ import java.util.*
 /**
  * 打卡
  */
-class PunchCardActivity : ImmersedBaseActivity() {
+class PunchCardActivity : TitleNavigationActivity() {
     private var rvPunchTyep: SwipeMenuRecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
@@ -25,7 +25,7 @@ import butterknife.OnClick;
 /**
  * 请假申请
  */
-public class LeaveRequestActivity extends ImmersedBaseActivity {
+public class LeaveRequestActivity extends TitleNavigationActivity {
     @BindView(R.id.btn_submint)
     Button mBtnSubmint;
     @BindView(R.id.tv_leave_type)

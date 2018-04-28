@@ -3,12 +3,12 @@ package com.suxuantech.erpsys.ui.activity;
 import android.os.Bundle;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
 /**
  * 服务详情
  */
-public class ServiceDetailsActivity extends ImmersedBaseActivity {
+public class ServiceDetailsActivity extends TitleNavigationActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

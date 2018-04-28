@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.OnPageChangeListener
 import android.view.View
 import com.suxuantech.erpsys.R
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter
 import com.suxuantech.erpsys.ui.fragment.BorrowFragment
 import java.util.*
@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 /**
  * 我的借阅
  */
-class MyBorrowActivity : ImmersedBaseActivity() ,  OnPageChangeListener{
+class MyBorrowActivity : TitleNavigationActivity() ,  OnPageChangeListener{
     override fun onPageScrollStateChanged(state: Int) {
     }
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

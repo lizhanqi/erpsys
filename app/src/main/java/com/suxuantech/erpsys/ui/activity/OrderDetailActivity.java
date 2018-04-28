@@ -40,7 +40,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.fragment.CustomerInformationFragment;
@@ -59,7 +59,7 @@ import java.util.Arrays;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
 
-public class OrderDetailActivity extends ImmersedBaseActivity implements DressMaterialFragment.OnFragmentInteractionListener {
+public class OrderDetailActivity extends TitleNavigationActivity implements DressMaterialFragment.OnFragmentInteractionListener {
     private String[] stringArray;
     private PopupWindow mPopupWindow;
     private SwipeMenuRecyclerView recycleView;

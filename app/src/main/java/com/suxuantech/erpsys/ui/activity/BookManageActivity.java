@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
 /**
  * 图书管理
  */
-public class BookManageActivity extends ImmersedBaseActivity {
+public class BookManageActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tiet_nav_search)
     OneKeyClearAutoCompleteText mTietNavSearch;

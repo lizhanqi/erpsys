@@ -19,7 +19,7 @@ import com.suxuantech.erpsys.eventmsg.BaseMsg
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.widget.ScrollEditText
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.ToastUtils
@@ -32,7 +32,7 @@ import java.util.*
 /**
  * 进客登记
  */
-class IntoGuestRegistrationActivity : ImmersedBaseActivity() {
+class IntoGuestRegistrationActivity : TitleNavigationActivity() {
     private var submit: Button? = null
     /**
      * 请填写姓名

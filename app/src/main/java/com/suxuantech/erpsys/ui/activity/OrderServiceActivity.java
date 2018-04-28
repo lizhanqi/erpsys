@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.yanzhenjie.album.Action;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
 /**
  * 订单服务
  */
-public class OrderServiceActivity extends ImmersedBaseActivity {
+public class OrderServiceActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tv_store_name)
     TextView mTvStoreName;

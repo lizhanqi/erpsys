@@ -6,14 +6,14 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.fragment.BorrowFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HistoryNoticeActivity extends ImmersedBaseActivity {
+public class HistoryNoticeActivity extends TitleNavigationActivity {
 //    @BindView(R.id.recycler_view)
 //    SwipeMenuRecyclerView mRecyclerView;
 //    @BindView(R.id.rotate_header_grid_view_frame)

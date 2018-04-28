@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 /**
  * 申请详情
  */
-public class ApplyDetailsAcitivity extends ImmersedBaseActivity {
+public class ApplyDetailsAcitivity extends TitleNavigationActivity {
     @BindView(R.id.tv_approvals)
     TextView mTvApprovals;
     @BindView(R.id.rv_cc)

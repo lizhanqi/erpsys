@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
@@ -47,7 +47,7 @@ import butterknife.OnClick;
  *         E-mail:lizhanqihd@163.com
  * @Description: 当日营收
  */
-public class TodayRevenueActivity extends ImmersedBaseActivity {
+public class TodayRevenueActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tv_nav_left)
     AdjustDrawableTextView mTvNavLeft;

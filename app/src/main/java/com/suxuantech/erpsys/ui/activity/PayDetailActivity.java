@@ -3,7 +3,7 @@ package com.suxuantech.erpsys.ui.activity;
 import android.os.Bundle;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
 /**
  * ......................我佛慈悲....................
@@ -31,7 +31,7 @@ import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
  *  E-mail:lizhanqihd@163.com
  * @Description: 付款明细页面
  */
-public class PayDetailActivity extends ImmersedBaseActivity {
+public class PayDetailActivity extends TitleNavigationActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

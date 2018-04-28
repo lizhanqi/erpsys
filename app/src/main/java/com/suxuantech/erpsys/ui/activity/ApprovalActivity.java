@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -45,7 +45,7 @@ import butterknife.OnClick;
  *         E-mail:lizhanqihd@163.com
  * @Description:  审批
  */
-public class ApprovalActivity extends ImmersedBaseActivity {
+public class ApprovalActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tv_apply_my)
     TextView mTvApplyMy;

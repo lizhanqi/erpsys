@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ import io.rong.imlib.model.Discussion;
 import io.rong.imlib.model.PublicServiceProfile;
 import io.rong.imlib.model.UserInfo;
 
-public class ConversationActivity extends ImmersedBaseActivity {
+public class ConversationActivity extends TitleNavigationActivity {
     /**
      * 对方id
      */

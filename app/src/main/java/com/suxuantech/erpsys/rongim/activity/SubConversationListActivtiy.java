@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
-public class SubConversationListActivtiy extends ImmersedBaseActivity {
+public class SubConversationListActivtiy extends TitleNavigationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

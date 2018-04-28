@@ -10,7 +10,7 @@ import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleLayout;
 import com.jeek.calendar.widget.calendar.week.WeekCalendarView;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -29,7 +29,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 工作排程
  */
-public class WorkScheduleActivity extends ImmersedBaseActivity {
+public class WorkScheduleActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tv_in_service)
     TextView mTvInService;

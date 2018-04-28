@@ -16,7 +16,7 @@ import com.suxuantech.erpsys.entity.RegisterEntity
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
 import com.suxuantech.erpsys.utils.DateUtil
@@ -26,7 +26,7 @@ import com.yanzhenjie.nohttp.rest.Response
 /**
  * 进店登记搜索
  */
-class RegisterIntoShopSearchActivity : ImmersedBaseActivity() {
+class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     var tietSearch: OneKeyClearAutoCompleteText? = null
     var imgSearch: ImageView? = null
     var tvAdd: TextView? = null

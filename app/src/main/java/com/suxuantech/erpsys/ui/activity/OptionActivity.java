@@ -25,7 +25,7 @@ import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -50,7 +50,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 跳转选择的页面这里
  */
-public class OptionActivity extends ImmersedBaseActivity {
+public class OptionActivity extends TitleNavigationActivity {
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)

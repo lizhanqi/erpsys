@@ -17,7 +17,7 @@ import com.suxuantech.erpsys.entity.UnremarkCustomerCountEntity
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.MyString
 import com.yanzhenjie.nohttp.RequestMethod
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_register_into_shop.*
  * 进店登记
  */
 
-class RegisterIntoShopActivity : ImmersedBaseActivity() {
+class RegisterIntoShopActivity : TitleNavigationActivity() {
     var llNewCustomer: LinearLayout? = null
     var llNotIntoShop: LinearLayout? = null
     var llNotInShop: LinearLayout? = null

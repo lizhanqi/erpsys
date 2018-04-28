@@ -30,7 +30,7 @@ import com.suxuantech.erpsys.entity.DistrictEntity;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.nohttp.StringRequest;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.ui.dialog.LoadDialog;
 import com.suxuantech.erpsys.ui.fragment.CRMFragment;
@@ -64,7 +64,7 @@ import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
 
-public class MainActivity extends ImmersedBaseActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private ArrayList<Fragment> fragments = new ArrayList<>();

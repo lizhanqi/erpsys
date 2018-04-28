@@ -3,7 +3,7 @@ package com.suxuantech.erpsys.ui.activity;
 import android.os.Bundle;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
 import butterknife.ButterKnife;
 
@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
  * 排程类型
  * 选择什么样的排程服务
  */
-public class ScheduleTypeActivity extends ImmersedBaseActivity {
+public class ScheduleTypeActivity extends TitleNavigationActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

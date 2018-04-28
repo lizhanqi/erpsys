@@ -29,7 +29,7 @@ import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.entity.SearchOrderInforEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
@@ -87,7 +87,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  *         E-mail:lizhanqihd@163.com
  * @Description: 订单搜索页面
  */
-public class SearchOrderActivity extends ImmersedBaseActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
+public class SearchOrderActivity extends TitleNavigationActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
     @BindView(R.id.tv_nav_search_left)
     AdjustDrawableTextView mTvNavLeft;
     @BindView(R.id.tiet_nav_search)

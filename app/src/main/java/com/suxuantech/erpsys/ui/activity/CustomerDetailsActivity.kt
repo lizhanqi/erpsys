@@ -8,12 +8,12 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.entity.RegisterEntity
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 
 /**
  * 客资详情
  */
-class CustomerDetailsActivity : ImmersedBaseActivity() {
+class CustomerDetailsActivity : TitleNavigationActivity() {
     var tvRegisterName: TextView?=null
     var tvRegisterType: TextView?=null
     var tvRegisterPhone: TextView?=null

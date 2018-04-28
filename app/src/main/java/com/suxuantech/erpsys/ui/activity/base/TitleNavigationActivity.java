@@ -40,10 +40,10 @@ import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
  * @author Created by 李站旗 on 2017/11/6 9:25 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: 状态栏和导航栏沉浸式（注意不要使用协调者布局,以及约束布局）
+ * @Description: 状态栏和导航栏沉浸式
  */
 
-abstract public  class ImmersedBaseActivity extends BaseActivity {
+abstract public  class TitleNavigationActivity extends BaseActivity {
     boolean immersionBarEnabled;
     private View rootViews;//填充的view
     //toolbar
@@ -441,7 +441,7 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
     //-----------------------------顶部导航end-------------------------------------
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
-        throw new UnsupportedOperationException("ImmersedBaseActivity:setContentView(view,params)该方法重写后被禁用");
+        throw new UnsupportedOperationException("TitleNavigationActivity:setContentView(view,params)该方法重写后被禁用");
     }
     /**
      * 将传入的LayoutID转换为View并添加到需要包裹view中

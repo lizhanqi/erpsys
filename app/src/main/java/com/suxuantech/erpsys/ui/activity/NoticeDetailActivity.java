@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
-public class NoticeDetailActivity extends ImmersedBaseActivity {
+public class NoticeDetailActivity extends TitleNavigationActivity {
 
     /**
      * 通知详情

@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
@@ -24,7 +24,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * 服务详情列表
  */
-public class ServiceDetailListActivity extends ImmersedBaseActivity {
+public class ServiceDetailListActivity extends TitleNavigationActivity {
 
     @BindView(R.id.recycler_view)
     SwipeMenuRecyclerView mRecyclerView;

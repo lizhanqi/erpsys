@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class MyApproveActivity extends ImmersedBaseActivity {
+public class MyApproveActivity extends TitleNavigationActivity {
 
     @BindView(R.id.tiet_nav_search)
     OneKeyClearAutoCompleteText mTietNavSearch;

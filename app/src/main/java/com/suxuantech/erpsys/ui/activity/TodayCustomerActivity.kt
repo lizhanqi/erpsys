@@ -3,10 +3,10 @@ package com.suxuantech.erpsys.ui.activity
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.suxuantech.erpsys.R
-import com.suxuantech.erpsys.ui.activity.base.ImmersedBaseActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.fragment.HomeDataFragement
 
-class TodayCustomerActivity : ImmersedBaseActivity() {
+class TodayCustomerActivity : TitleNavigationActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

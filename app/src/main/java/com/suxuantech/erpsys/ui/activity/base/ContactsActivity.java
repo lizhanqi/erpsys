@@ -6,7 +6,7 @@ import android.view.View;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.fragment.ContactsFragment;
 
-public class ContactsActivity extends ImmersedBaseActivity {
+public class ContactsActivity extends TitleNavigationActivity {
 
 
     @Override
