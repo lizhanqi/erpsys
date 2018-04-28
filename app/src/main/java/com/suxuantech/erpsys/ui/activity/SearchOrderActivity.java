@@ -22,6 +22,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lizhanqi.www.stepview.HorizontalStepView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HistoryEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
@@ -107,6 +108,12 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
     SwipeMenuRecyclerView mSmrHistory;
     @BindView(R.id.ptr_refresh)
     PtrClassicFrameLayout mPtrRefresh;
+
+    @BindView(R.id.smart_refresh)
+    SmartRefreshLayout smartRefreshLayout;
+
+
+
     private BaseRecyclerAdapter<HistoryEntity> historyAdapter;
     private SearchOrderPresenter mSearchOrderPresenter;
     private BaseRecyclerAdapter<SearchOrderEntity.DataBean> searchResultAdaputer;
@@ -219,6 +226,7 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
      * 初始化历史适配器
      */
     private void initHistoryAdapter() {
+        smartRefreshLayout.setEnabled(false);
         mPtrRefresh.setEnabled(false);
         mLlSearch.setVisibility(View.VISIBLE);
         //除去搜索的分割线，防止影响新设置添加的
@@ -623,7 +631,9 @@ public class SearchOrderActivity extends ImmersedBaseActivity implements ISearch
         mSmrHistory.addFooterView(defineLoadMoreView);
         mSmrHistory.setLoadMoreView(defineLoadMoreView);
         mPtrRefresh.refreshComplete();
+        smartRefreshLayout.finishRefresh();
         mPtrRefresh.setEnabled(true);
+        smartRefreshLayout.setEnabled(true);
         mSmrHistory.setAutoLoadMore(false);
         mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
             @Override

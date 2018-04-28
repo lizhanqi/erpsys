@@ -36,10 +36,12 @@ public class OpenWeddingOrderEntity extends BaseResult {
      */
     private String Msg;
     private String Data;
+    @Override
     public String getMsg() {
         return Msg;
     }
 
+    @Override
     public void setMsg(String Msg) {
         this.Msg = Msg;
     }

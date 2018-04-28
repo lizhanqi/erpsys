@@ -59,12 +59,15 @@ public class HomeDataFragement extends BaseSupportFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //这里一定要ButterKnife和返回的view是同一个,不然布局显示不出来
-        recyclerView = new RecyclerView(getActivity());
+
+   //     recyclerView = new RecyclerView(getActivity());
+        View inflate = inflater.inflate(R.layout.fun_game_battle_city_refresh, container, false);
+        recyclerView= inflate.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setBackgroundColor(getResources().getColor(R.color.gray_f9));
         recyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.gray_f9),30,30));
 //        getdata();
-        return recyclerView;
+        return inflate;
     }
 
     @Override

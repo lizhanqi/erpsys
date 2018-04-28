@@ -47,6 +47,7 @@ import com.suxuantech.erpsys.ui.fragment.CustomerInformationFragment;
 import com.suxuantech.erpsys.ui.fragment.DressMaterialFragment;
 import com.suxuantech.erpsys.ui.fragment.ProductDataFragment;
 import com.suxuantech.erpsys.ui.fragment.TabControlFragment;
+import com.suxuantech.erpsys.ui.fragment.TakeDataFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -77,7 +78,7 @@ public class OrderDetailActivity extends ImmersedBaseActivity implements DressMa
         gotoFragment();
     }
 
-    private SupportFragment[] mFragments = new SupportFragment[5];
+    private SupportFragment[] mFragments = new SupportFragment[10];
     @Override
     public void widgetClick(View v) {
         switch (v.getId()){
@@ -120,7 +121,21 @@ public class OrderDetailActivity extends ImmersedBaseActivity implements DressMa
                     }
                     break;
                 case "取件资料":
-                    toTabFragement(0);
+//                    toTabFragement(0);
+                    if (findFragment(TakeDataFragment.class)==null){
+                        TakeDataFragment     takeDataFragment = new TakeDataFragment();
+                        // loadRootFragment(R.id.container, serviceFeeFragment);
+                        mFragments[5]= takeDataFragment;
+                        String orderId = getIntent().getStringExtra("orderId");
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId",orderId);
+                        takeDataFragment.setArguments(bundle);
+                        loadRootFragment(R.id.container,  mFragments[5],false,true);
+                    }else {
+                        start(mFragments[5], ISupportFragment.SINGLETASK);
+                    }
+
+
                     break;
                 case "摄影资料":
                     toTabFragement(1);

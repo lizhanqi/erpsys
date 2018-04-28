@@ -234,6 +234,22 @@ public class Contact {
      * 客户礼服资料获取
      */
     public static  String CUSTOMER_DRESS= "/SXWebErpAppStaff/SX_CustomerDressCount?Token=%s&orderid=%s&Code=%s";
+    /***
+     *客户取件资料
+     */
+    public static  String CUSTOMER_TAKEDATA= "/SXWebErpAppStaff/SX_CustomerGetTakeawayItem?Token=%s&orderid=%s&Code=%s";
+
+
+    /**
+     *获取进店客户总数
+     */
+
+    public static  String CUSTOMER_INTO_STORE_COUNT="/SXWebErpAppStaff/SX_InquireGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    /**
+     *未标记客户进店日期的总数
+     */
+    public static  String UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT="/SXWebErpAppStaff/SX_DJRQWBJYYJDGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+
 
 
 }

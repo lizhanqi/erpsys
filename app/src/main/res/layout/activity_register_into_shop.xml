@@ -1,181 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".ui.activity.ScheduleTypeActivity">
+    tools:context="com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_new_customer"
-        style="@style/ScheduleType"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/icon_camera_schedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_camera_schedule" />
 
-        <LinearLayout
-            style="@style/ScheduleTypeWrap"
-            android:layout_alignLeft="@id/icon_camera_schedule">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="false"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <TextView
-                style="@style/ScheduleTypeName"
-                android:text="新进客资" />
 
-            <TextView
-                style="@style/ScheduleTypeInfromation"
-                android:text="@string/camera_schedule" />
-        </LinearLayout>
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/themeColor"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/themeColor"
+            app:toolbarId="@+id/toolbar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/arrows_right_gray" />
-    </LinearLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:title="进客登记" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <View style="@style/line" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnableLoadMore="false"
+        app:srlPrimaryColor="@color/themeColor">
 
-    <LinearLayout
-        android:id="@+id/ll_not_into_shop"
-        style="@style/ScheduleType"
-        android:orientation="horizontal">
+        <com.scwang.smartrefresh.header.PhoenixHeader
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <ImageView
-            android:id="@+id/icon_select_pictrue_schedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/icon_schedule_select_pictrue" />
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            style="@style/ScheduleTypeWrap"
-            android:layout_alignLeft="@id/icon_select_pictrue_schedule">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_f9"
+                android:orientation="vertical"
+                tools:context=".ui.activity.ScheduleTypeActivity">
 
-            <TextView
-                style="@style/ScheduleTypeName"
-                android:text="未进店" />
+                <LinearLayout
+                    android:id="@+id/ll_customer_all"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/ScheduleTypeInfromation"
-                android:text="选片排程" />
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/icon_customer_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_camera_schedule" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/arrows_right_gray" />
-    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_customer_all">
 
-    <View style="@style/line" />
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="所有客资" />
 
-    <LinearLayout
-        android:id="@+id/ll_not_in_shop"
-        style="@style/ScheduleType"
-        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_customer_all"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="今日所有客资" />
+                    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon_schedule_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/icon_schedule_menu" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
 
-        <LinearLayout
-            style="@style/ScheduleTypeWrap"
-            android:layout_alignLeft="@id/icon_schedule_menu">
+                <View style="@style/line" />
 
-            <TextView
-                style="@style/ScheduleTypeName"
-                android:text="进店未成" />
+                <LinearLayout
+                    android:id="@+id/ll_new_customer"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/ScheduleTypeInfromation"
-                android:text="@string/look_board_schedule" />
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/icon_camera_schedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_camera_schedule" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/arrows_right_gray" />
-    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_camera_schedule">
 
-    <View style="@style/line" />
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="新进客资" />
 
-    <LinearLayout
-        android:id="@+id/ll_make_bargain"
-        style="@style/ScheduleType"
-        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_new_customer"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="今日新进客资" />
+                    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/icon_schedule_take_pictrue" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
 
-        <LinearLayout
-            style="@style/ScheduleTypeWrap"
-            android:layout_alignLeft="@id/icon_box">
+                <View style="@style/line" />
 
-            <TextView
-                style="@style/ScheduleTypeName"
-                android:text="已成交" />
+                <LinearLayout
+                    android:id="@+id/ll_not_into_shop"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/ScheduleTypeInfromation"
-                android:text="@string/take_pictrue_schedule" />
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/icon_select_pictrue_schedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/icon_schedule_select_pictrue" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/arrows_right_gray" />
-    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_select_pictrue_schedule">
 
-    <View style="@style/line" />
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="未进店" />
 
-    <LinearLayout
-        android:id="@+id/ll_run_away"
-        style="@style/ScheduleType"
-        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_not_into_shop"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="今日未进店客资" />
+                    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon_schedule_option_dress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_schedule_option_dress" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
 
-        <LinearLayout
-            style="@style/ScheduleTypeWrap"
-            android:layout_alignLeft="@id/icon_schedule_option_dress">
+                <View style="@style/line" />
 
-            <TextView
-                style="@style/ScheduleTypeName"
-                android:text="流失客资" />
+                <LinearLayout
+                    android:id="@+id/ll_not_in_shop"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/ScheduleTypeInfromation"
-                android:text="@string/option_dress_schedule" />
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/icon_schedule_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/icon_schedule_menu" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/arrows_right_gray" />
-    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_schedule_menu">
 
-    <View style="@style/line" />
-</LinearLayout>
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="进店未成" />
+
+                        <TextView
+                            android:id="@+id/tv_not_in_shop"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="进店未成交客资" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
+
+                <View style="@style/line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_make_bargain"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/icon_schedule_take_pictrue" />
+
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_box">
+
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="已成交" />
+
+                        <TextView
+                            android:id="@+id/tv_make_bargain"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="进店成交客资" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
+
+                <View style="@style/line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_run_away"
+                    style="@style/ScheduleType"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_schedule_option_dress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_schedule_option_dress" />
+
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_schedule_option_dress">
+
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="流失客资" />
+
+                        <TextView
+                            android:id="@+id/tv_run_away"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="今日流失客资" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_unmarked_date"
+                    style="@style/ScheduleType"
+                    android:layout_marginTop="@dimen/px30"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_schedule_option_dress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_schedule_option_dress" />
+
+                    <LinearLayout
+                        style="@style/ScheduleTypeWrap"
+                        android:layout_alignLeft="@id/icon_schedule_option_dress">
+
+                        <TextView
+                            style="@style/ScheduleTypeName"
+                            android:text="未标记进店日期客资" />
+
+                        <TextView
+                            android:id="@+id/tv_unmarked_date"
+                            style="@style/ScheduleTypeInfromation"
+                            android:text="未标记进店客资" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrows_right_gray" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/appbar"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/icon_add_white" />
+
+</android.support.design.widget.CoordinatorLayout>
+

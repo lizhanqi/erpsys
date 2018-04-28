@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.ui.activity.base;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,8 +108,6 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
         mImmersionBar.keyboardEnable(false);
         mImmersionBar .navigationBarColor(  R.color.navigation  ) ;
         mImmersionBar.init();
-     //   dynamicAddView(tablayout, "tabLayoutIndicator", R.color.colorPrimaryDark);
-        //        SkinAttr skinAttr = AttrFactory.get("textColor", textColorId, entryName, typeName);
     }
 
     @Override
@@ -159,6 +158,11 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
             }
         return super.onOptionsItemSelected(item);
     }
+
+    public void setToolbar(Toolbar mToolbar) {
+        this.mToolbar = mToolbar;
+    }
+
     /**
      * 设置(内置)Toolbar支持
      * @return
@@ -170,6 +174,13 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
             return mToolbar;
         }
         return null;
+    }
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        mToolbar=toolbar;
+        super.setSupportActionBar(toolbar);
+
     }
 
     /**
@@ -195,7 +206,6 @@ abstract public  class ImmersedBaseActivity extends BaseActivity {
     public View getLineView(){
         return lineView;
     }
-
     public void setUserDefinedLineViewBG(@IntegerRes int  lineColor) {
         lineView.setBackground(null);
         lineView.setBackgroundColor(lineColor);

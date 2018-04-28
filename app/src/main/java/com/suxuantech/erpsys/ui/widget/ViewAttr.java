@@ -1,4 +1,9 @@
-package com.suxuantech.erpsys.entity;
+package com.suxuantech.erpsys.ui.widget;
+
+import android.view.View;
+
+import solid.ren.skinlibrary.attr.base.SkinAttr;
+import solid.ren.skinlibrary.utils.SkinResourcesUtils;
 
 /**
  * ......................我佛慈悲....................
@@ -22,36 +27,21 @@ package com.suxuantech.erpsys.entity;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/7 0007 15:29 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
- * @Description:  获取婚纱订单
+ * @author Created by 李站旗 on 2018/4/27 0027 13:59 .
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
+ * @Description: todo(用一句话描述该文件做什么)
  */
-
-public class OrderNumberEntity extends BaseResult {
-
-    /**
-     * Code : 666
-     * Msg : 成功
-     * Data  : b88afcc5-9e36-498b-934f-30c444965a75
-     */
-    private String Msg;
-    private String Data;
-    @Override
-    public String getMsg() {
-        return Msg;
-    }
+public class ViewAttr extends SkinAttr {
 
     @Override
-    public void setMsg(String Msg) {
-        this.Msg = Msg;
-    }
-
-    public String getData() {
-        return Data;
-    }
-
-    public void setData(String Data) {
-        this.Data = Data;
+    protected void applySkin(View view) {
+        if (view instanceof View) {
+            View tl = (View) view;
+            if (RES_TYPE_NAME_COLOR.equals(attrValueTypeName)) {
+                int color = SkinResourcesUtils.getColor(attrValueRefId);
+                view.setBackgroundColor(color);
+            }
+        }
     }
 }

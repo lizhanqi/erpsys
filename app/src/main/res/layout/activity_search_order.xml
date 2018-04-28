@@ -5,9 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.SearchOrderActivity">
     <include layout="@layout/navigation_search_haed"/>
     <include layout="@layout/head_search_history" android:id="@+id/in_head_search"/>
+
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:srlPrimaryColor="@color/colorPrimary"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnableHeaderTranslationContent="false"
+        app:srlEnableLoadMore="false">
+    <com.scwang.smartrefresh.header.WaveSwipeHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:layout_weight="1"
         android:id="@+id/ptr_refresh"
@@ -28,4 +44,5 @@
             android:layout_height="match_parent">
         </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

@@ -83,6 +83,7 @@ class RegisterIntoShopSearchActivity : ImmersedBaseActivity() {
         val value: QuickAdapter<RegisterEntity.DataBean> = object : QuickAdapter<RegisterEntity.DataBean>(R.layout.item_register_info, dataX) {
 
             override fun convert(helper: BaseViewHolder, item: RegisterEntity.DataBean) {
+
                 var name = helper.getView<TextView>(R.id.tv_register_name)
                 var type = helper.getView<TextView>(R.id.tv_register_type)
                 var phone = helper.getView<TextView>(R.id.tv_register_phone)

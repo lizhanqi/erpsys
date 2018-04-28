@@ -19,16 +19,20 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.HttpResponseListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
@@ -558,6 +562,24 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     @Override
     public boolean swipeBackPriority() {
         return mDelegate.swipeBackPriority();
+    }
+
+    /**
+     *临时请求获取数据暂用的一个请求入口
+     */
+    public void request(String url) {
+        //请求实体
+        JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(url, RequestMethod.POST, ProductEntity.class);
+        HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>() {
+            @Override
+            public void onSucceed(int what, Response<ProductEntity> response) {
+            }
+
+            @Override
+            public void onFailed(int what, Response<ProductEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
 /*----------------换肤------------------*/

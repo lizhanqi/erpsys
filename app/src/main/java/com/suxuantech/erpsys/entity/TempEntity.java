@@ -24,32 +24,19 @@ import java.util.List;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2018/4/16 0016 17:05 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * @author Created by 李站旗 on 2018/4/27 0027 15:05 .
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-
-public class CustomerIntentionEntity extends  BaseResult {
+public class TempEntity extends BaseResult  {
 
     /**
      * Code : 200
-     * Msg : success
-     * Data : [{"id":"1","intention_name":"低","shop_name":"","shop_code":"","setkey":""},{"id":"2","intention_name":"中","shop_name":"","shop_code":"","setkey":""}]
+     * Data : [{"allcount":"54","newcount":"38","wjdcount":"49","jdwccount":"4","ycjcount":"8","lscount":"3"}]
      */
 
-    private String Msg;
     private List<DataBean> Data;
-
-    @Override
-    public String getMsg() {
-        return Msg;
-    }
-
-    @Override
-    public void setMsg(String Msg) {
-        this.Msg = Msg;
-    }
 
     public List<DataBean> getData() {
         return Data;
@@ -61,57 +48,67 @@ public class CustomerIntentionEntity extends  BaseResult {
 
     public static class DataBean {
         /**
-         * id : 1
-         * intention_name : 低
-         * shop_name :
-         * shop_code :
-         * setkey :
+         * allcount : 54
+         * newcount : 38
+         * wjdcount : 49
+         * jdwccount : 4
+         * ycjcount : 8
+         * lscount : 3
          */
 
-        private String id;
-        private String intention_name;
-        private String shop_name;
-        private String shop_code;
-        private String setkey;
+        private String allcount;
+        private String newcount;
+        private String wjdcount;
+        private String jdwccount;
+        private String ycjcount;
+        private String lscount;
 
-        public String getId() {
-            return id;
+        public String getAllcount() {
+            return allcount;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setAllcount(String allcount) {
+            this.allcount = allcount;
         }
 
-        public String getIntention_name() {
-            return intention_name;
+        public String getNewcount() {
+            return newcount;
         }
 
-        public void setIntention_name(String intention_name) {
-            this.intention_name = intention_name;
+        public void setNewcount(String newcount) {
+            this.newcount = newcount;
         }
 
-        public String getShop_name() {
-            return shop_name;
+        public String getWjdcount() {
+            return wjdcount;
         }
 
-        public void setShop_name(String shop_name) {
-            this.shop_name = shop_name;
+        public void setWjdcount(String wjdcount) {
+            this.wjdcount = wjdcount;
         }
 
-        public String getShop_code() {
-            return shop_code;
+        public String getJdwccount() {
+            return jdwccount;
         }
 
-        public void setShop_code(String shop_code) {
-            this.shop_code = shop_code;
+        public void setJdwccount(String jdwccount) {
+            this.jdwccount = jdwccount;
         }
 
-        public String getSetkey() {
-            return setkey;
+        public String getYcjcount() {
+            return ycjcount;
         }
 
-        public void setSetkey(String setkey) {
-            this.setkey = setkey;
+        public void setYcjcount(String ycjcount) {
+            this.ycjcount = ycjcount;
+        }
+
+        public String getLscount() {
+            return lscount;
+        }
+
+        public void setLscount(String lscount) {
+            this.lscount = lscount;
         }
     }
 }

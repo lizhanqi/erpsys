@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.Utils;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
+import com.suxuantech.erpsys.ui.widget.ViewAttr;
 import com.suxuantech.erpsys.utils.JsonUtil;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -119,7 +120,7 @@ public class App extends Application {
         SkinConfig.setCanChangeStatusColor(true);
         SkinConfig.setCanChangeFont(true);
         SkinConfig.setDebug(true);
-     //   SkinConfig.addSupportAttr("tabLayoutIndicator", new TabLayoutIndicatorAttr());
+     SkinConfig.addSupportAttr("view", new ViewAttr());
         //SkinConfig.addSupportAttr("button", new RadioButtonAttr());
         SkinConfig.enableGlobalSkinApply();
     }

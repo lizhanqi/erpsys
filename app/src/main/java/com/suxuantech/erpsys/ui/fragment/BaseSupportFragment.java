@@ -7,12 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.HttpResponseListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
 
@@ -79,8 +83,24 @@ public class BaseSupportFragment extends SupportFragment    implements IDynamicN
      * @param <T>
      */
     public <T>   void    addRequestQueue(int what, Request<T> request, OnResponseListener<T> listener){
-
         getRequestQueue().add(what,request,listener);
+    }
+    /**
+     *临时请求获取数据暂用的一个请求入口
+     */
+    public void request(String url) {
+        //请求实体
+        JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(url, RequestMethod.POST, ProductEntity.class);
+        HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>() {
+            @Override
+            public void onSucceed(int what, Response<ProductEntity> response) {
+            }
+
+            @Override
+            public void onFailed(int what, Response<ProductEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
     /**
      * 发起请求。

@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.entity;
+package com.suxuantech.erpsys.entity
 
 /**
  * ......................我佛慈悲....................
@@ -22,36 +22,35 @@ package com.suxuantech.erpsys.entity;
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
  *
- * @author Created by 李站旗 on 2017/12/7 0007 15:29 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
- * @Description:  获取婚纱订单
+ * @author Created by 李站旗 on 2018/4/27 0027 15:05 .
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
+ * @Description: todo(用一句话描述该文件做什么)
  */
-
-public class OrderNumberEntity extends BaseResult {
+class CustomerIntoStoreCountEntity : BaseResult() {
 
     /**
-     * Code : 666
-     * Msg : 成功
-     * Data  : b88afcc5-9e36-498b-934f-30c444965a75
+     * Code : 200
+     * Data : [{"allcount":"54","newcount":"38","wjdcount":"49","jdwccount":"4","ycjcount":"8","lscount":"3"}]
      */
-    private String Msg;
-    private String Data;
-    @Override
-    public String getMsg() {
-        return Msg;
-    }
 
-    @Override
-    public void setMsg(String Msg) {
-        this.Msg = Msg;
-    }
+    var data: List<DataBean>? = null
 
-    public String getData() {
-        return Data;
-    }
+    class DataBean {
+        /**
+         * allcount : 54
+         * newcount : 38
+         * wjdcount : 49
+         * jdwccount : 4
+         * ycjcount : 8
+         * lscount : 3
+         */
 
-    public void setData(String Data) {
-        this.Data = Data;
+        var allcount: String? = null
+        var newcount: String? = null
+        var wjdcount: String? = null
+        var jdwccount: String? = null
+        var ycjcount: String? = null
+        var lscount: String? = null
     }
 }

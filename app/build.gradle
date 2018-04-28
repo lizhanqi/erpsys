@@ -149,6 +149,8 @@ dependencies {
     implementation files('libs/BaiduLBS_Android.jar')
     implementation rootProject.ext.dependencies.jiaozivideoplayer
     compile rootProject.ext.dependencies.skinlibrary
+    implementation rootProject.ext.dependencies.SmartRefreshLayout
+    implementation rootProject.ext.dependencies.SmartRefreshHeader
 }
 
 //删除release文件夹

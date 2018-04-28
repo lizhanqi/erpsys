@@ -9,6 +9,14 @@
     <color name="status">#FFFFFFFF</color>
 
 
+    <!--智能刷新的背景色-->
+    <color name="refresh_bg">#FFFFFFFF</color>
+    <!--智能刷新的字体颜色-->
+    <color name="refresh_textColor">#333333</color>
+
+
+
+
 
 
     <color name="white">#FFFFFFFF</color>

@@ -42,10 +42,12 @@ public class TodayCustomerEntity extends  BaseResult {
      */
     private String Msg;
     private List<DataBean> Data;
+    @Override
     public String getMsg() {
         return Msg;
     }
 
+    @Override
     public void setMsg(String Msg) {
         this.Msg = Msg;
     }

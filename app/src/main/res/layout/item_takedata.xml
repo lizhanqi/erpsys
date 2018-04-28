@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:paddingRight="@dimen/px55"
         android:paddingLeft="@dimen/px55"
@@ -41,6 +42,7 @@
             android:layout_width="@dimen/px240"
             android:layout_height="@dimen/px240" />
             <TextView
+                android:id="@+id/tv_take_info"
                 android:textColor="@color/textHint_99"
                 android:layout_marginLeft="@dimen/px24"
                 android:textSize="@dimen/px38"
