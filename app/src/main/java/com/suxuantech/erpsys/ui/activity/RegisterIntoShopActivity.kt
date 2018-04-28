@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.activity
 
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
@@ -17,7 +18,8 @@ import com.suxuantech.erpsys.entity.UnremarkCustomerCountEntity
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
-import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
+import com.suxuantech.erpsys.ui.AppBarStateChangeListener
+import com.suxuantech.erpsys.ui.activity.base.ImmersionActivity
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.MyString
 import com.yanzhenjie.nohttp.RequestMethod
@@ -26,11 +28,12 @@ import kotlinx.android.synthetic.main.activity_register_into_shop.*
 
 
 
+
 /**
  * 进店登记
  */
 
-class RegisterIntoShopActivity : TitleNavigationActivity() {
+class RegisterIntoShopActivity : ImmersionActivity() {
     var llNewCustomer: LinearLayout? = null
     var llNotIntoShop: LinearLayout? = null
     var llNotInShop: LinearLayout? = null
@@ -52,14 +55,26 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_register_into_shop)
         mToolbar = idGetView<android.support.v7.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { finish() }
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
         scrollView=  idGetView<NestedScrollView>(R.id.nsv_view)
-        scrollView?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY>100){
-                menus?.findItem(R.id.action_settings)?.setIcon(R.drawable.icon_add_white)?.setVisible(false)
-            }else{
-                menus?.findItem(R.id.action_settings)?.setVisible(true)
+
+        idGetView<AppBarLayout>(R.id.appbar).addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
+                if (state === State.EXPANDED) {
+                    //展开状态
+                    menus?.findItem(R.id.action_settings)?.setIcon(R.drawable.icon_add_white)?.setVisible(false)
+                } else if (state === State.COLLAPSED) {
+                    //折叠状态
+                        menus?.findItem(R.id.action_settings)?.setVisible(true)
+                } else {
+                    //中间状态
+                }
             }
+        })
+        scrollView?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+
         })
         llNewCustomer = idSetOnClick<LinearLayout>(R.id.ll_new_customer)
         llNotIntoShop = idSetOnClick<LinearLayout>(R.id.ll_not_into_shop) as LinearLayout
@@ -154,12 +169,17 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_right, menu)
         menus=menu;
+        //展开状态
+        menus?.findItem(R.id.action_settings)?.setIcon(R.drawable.icon_add_white)?.setVisible(false)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (android.R.id.home == item.itemId) {
             this.onBackPressed()
+        }
+        if (R.id.action_settings== item.itemId) {
+            startActivity(IntoGuestRegistrationActivity::class.java)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -168,15 +188,15 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
          super.initImmersionBar()
          mImmersionBar = ImmersionBar.with(this)
          //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
-         mImmersionBar.fitsSystemWindows(true)
-         mImmersionBar.statusBarDarkFont(true, 0.15f)
-         mImmersionBar.titleBar(mToolbar)
-         mImmersionBar .statusBarColorTransform(R.color.colorPrimaryDark)  //状态栏变色后的颜色
-         mImmersionBar .navigationBarColorTransform(R.color.colorPrimaryDark) //导航栏变色后的颜色
-         mImmersionBar.statusBarColor(R.color.themeColor)
-         mImmersionBar.keyboardEnable(false)
-         mImmersionBar.navigationBarColor(R.color.themeColor)
-         mImmersionBar.init()
+         mImmersionBar?.fitsSystemWindows(true)
+         mImmersionBar?.statusBarDarkFont(true, 0.15f)
+         mImmersionBar?.titleBar(mToolbar)
+         mImmersionBar?. statusBarColorTransform(R.color.colorPrimaryDark)  //状态栏变色后的颜色
+         mImmersionBar?. navigationBarColorTransform(R.color.colorPrimaryDark) //导航栏变色后的颜色
+         mImmersionBar?.statusBarColor(R.color.themeColor)
+         mImmersionBar?.keyboardEnable(false)
+         mImmersionBar?.navigationBarColor(R.color.themeColor)
+         mImmersionBar?.init()
      }
 
    override fun widgetClick(v: View?) {

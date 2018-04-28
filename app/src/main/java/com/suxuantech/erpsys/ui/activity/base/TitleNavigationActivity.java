@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 
@@ -43,7 +42,7 @@ import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
  * @Description: 状态栏和导航栏沉浸式
  */
 
-abstract public  class TitleNavigationActivity extends BaseActivity {
+abstract public  class TitleNavigationActivity extends ImmersionActivity {
     boolean immersionBarEnabled;
     private View rootViews;//填充的view
     //toolbar
@@ -59,8 +58,6 @@ abstract public  class TitleNavigationActivity extends BaseActivity {
     //当前Activity渲染用户的主要内容
     private View mContextView;
     private View lineView;
-    protected ImmersionBar mImmersionBar;
-
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
@@ -68,48 +65,6 @@ abstract public  class TitleNavigationActivity extends BaseActivity {
             onBackPressed();
         }
     }
-
-    @Override
-    protected void onRestart() {
-        initImmersionBar();
-        super.onRestart();
-    }
-    @Override
-    public void onStart() {
-        initImmersionBar();
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        initImmersionBar();
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-           //在销毁释放内存
-        if (mImmersionBar != null) {
-            mImmersionBar.destroy();
-        }
-        super.onDestroy();
-    }
-
-    /**
-     * 初始化沉浸式状态栏
-     */
-    protected void initImmersionBar() {
-        //在BaseActivity里初始化
-        mImmersionBar = ImmersionBar.with(this);
-        //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
-        mImmersionBar.fitsSystemWindows(true);
-        mImmersionBar.statusBarDarkFont(true,0.15f);
-        mImmersionBar .statusBarColor( R.color.status ) ;
-        mImmersionBar.keyboardEnable(false);
-        mImmersionBar .navigationBarColor(  R.color.navigation  ) ;
-        mImmersionBar.init();
-    }
-
     @Override
     public void setTitle(CharSequence title) {
         if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
@@ -124,7 +79,6 @@ abstract public  class TitleNavigationActivity extends BaseActivity {
         }
         super.setTitle(titleId);
     }
-
     //-----------------------------顶部导航-------------------------------------
     //获取自定义导航左侧view
     public AdjustDrawableTextView getNavLeftView() {

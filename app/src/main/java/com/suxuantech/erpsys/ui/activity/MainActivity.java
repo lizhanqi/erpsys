@@ -310,7 +310,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
      * 重写,禁用统一的
      */
     @Override
-    protected void initImmersionBar() {
+    public void initImmersionBar() {
 //        super.initImmersionBar();
     }
 
