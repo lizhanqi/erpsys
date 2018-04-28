@@ -12,20 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.SelectPictureEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import me.yokeyword.fragmentation.SupportFragment;
+import java.util.List;
 
 /**
  * QuickAdapter simple {@link Fragment} subclass.
  * 可以滑动切换fragment带有
  */
 
-public class TabControlFragment extends SupportFragment {
+public class TabControlFragment extends BaseSupportFragment {
     private ArrayList<Fragment> fragments;
     private ArrayList<Fragment> takeDataFragments;
     private ArrayList<Fragment> photographicDataFragments;
@@ -62,14 +68,105 @@ public class TabControlFragment extends SupportFragment {
         childFragmentManager = getChildFragmentManager();
         tablayout = view.findViewById(R.id.tablayout);
         pager= view.findViewById(R.id.vp);
-        initFragement();
+        if (witch==2){
+            getSelect();
+        }else {
+            initFragement();
+        }
+    }
+    private void    getSelect(){
+        String url      =Contact.getFullUrl(Contact.CUSTOMER_SELECTED_PICTURE,Contact.TOKEN,getArguments() .getString("orderId"), App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<SelectPictureEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SelectPictureEntity>(url, RequestMethod.POST, SelectPictureEntity.class);
+        HttpListener<SelectPictureEntity> searchByCustmor = new HttpListener<SelectPictureEntity>() {
+            @Override
+            public void onSucceed(int what, Response<SelectPictureEntity> response) {
+                if (response.get().isOK()){
+                    List<SelectPictureEntity.DataBean> data = response.get().getData();
+                    if (data!=null){
+                        initSelectFragment(data);
+                    }
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<SelectPictureEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
+
+    private void    getPhotoInfo(){
+        String url      =Contact.getFullUrl(Contact.CUSTOMER_SELECTED_PICTURE,Contact.TOKEN,getArguments() .getString("orderId"), App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<SelectPictureEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SelectPictureEntity>(url, RequestMethod.POST, SelectPictureEntity.class);
+        HttpListener<SelectPictureEntity> searchByCustmor = new HttpListener<SelectPictureEntity>() {
+            @Override
+            public void onSucceed(int what, Response<SelectPictureEntity> response) {
+                if (response.get().isOK()){
+                    List<SelectPictureEntity.DataBean> data = response.get().getData();
+                    if (data!=null){
+                        initSelectFragment(data);
+                    }
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<SelectPictureEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+    private void initSelectFragment(  List<SelectPictureEntity.DataBean> data ) {
+        ArrayList<String> strings = new ArrayList<>();
+        for (SelectPictureEntity.DataBean da:data){
+            String select_order_name = da.getSelect_order_name();
+            strings.add(select_order_name);
+        }
+        FragmentTransaction ft = childFragmentManager.beginTransaction();
+        for (Fragment f :   childFragmentManager.getFragments()) {
+            ft.remove(f);
+        }
+        ft.commit();
+        pager.removeAllViews();
+        pager.removeAllViewsInLayout();
+        pager.destroyDrawingCache();
+        //选片资料
+        if (selectedPictureInformationFragments==null) {
+            selectedPictureInformationFragments=new ArrayList<>();
+            for (int i=0;i<strings.size();i++){
+                SelectedPictureInformationFragment selectedPictureInformationFragment = new SelectedPictureInformationFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("orderid", getArguments() .getString("orderId"));
+                bundle.putParcelable("data",data.get(i));
+                selectedPictureInformationFragment.setArguments(bundle);
+                selectedPictureInformationFragments.add(selectedPictureInformationFragment);
+            }
+        }
+        fragments=selectedPictureInformationFragments;
+        defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
+            @Override
+            public Fragment getItemFragment(int positon) {
+
+                return fragments.get(positon);
+            }
+        });
+        pager.setAdapter(defaultFragmentAdapter);
+        tablayout.setupWithViewPager(pager);
+        if (fragments.size()>3){
+            tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+    }
     // 在HomeFragment.class中：
     @Override
     public void onNewBundle(Bundle newBundle){
         witch = newBundle.getInt("witch");
-        initFragement();
+        if (witch==2){
+            getSelect();
+        }else if (witch==1){
+            getPhotoInfo();
+        }else {
+            initFragement();
+        }
     }
     private void initFragement( ) {
         String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
@@ -81,6 +178,7 @@ public class TabControlFragment extends SupportFragment {
         pager.removeAllViews();
         pager.removeAllViewsInLayout();
         pager.destroyDrawingCache();
+
        childFragmentManager.executePendingTransactions();
         switch (witch) {
             case 0:

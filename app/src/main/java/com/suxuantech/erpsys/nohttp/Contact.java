@@ -249,7 +249,14 @@ public class Contact {
      *未标记客户进店日期的总数
      */
     public static  String UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT="/SXWebErpAppStaff/SX_DJRQWBJYYJDGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
-
+    /**
+     * 客户选片信息
+     */
+    public static  String CUSTOMER_SELECTED_PICTURE="/SXWebErpAppStaff/SX_CustomerXuanPian?Token=%s&orderid=%s&Code=%s";
+    /**
+     * 客户摄影资料
+     */
+    public static  String CUSTOMER_PHOTO_INFO="/SXWebErpAppStaff/SX_CustomerPhotoInfo?Token=%s&orderid=%s&Code=%s";
 
 
 }

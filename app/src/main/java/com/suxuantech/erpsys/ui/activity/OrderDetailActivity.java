@@ -176,6 +176,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     private void toTabFragement(int witch){
         Bundle bd=  new Bundle();
         bd.putInt("witch",witch);
+        bd.putString("orderId",getIntent().getStringExtra("orderId"));
         if (findFragment(TabControlFragment.class)==null){
             TabControlFragment tabControlFragment = new TabControlFragment();
             // loadRootFragment(R.id.container, serviceFeeFragment);

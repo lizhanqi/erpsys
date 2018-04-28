@@ -9,6 +9,11 @@ import android.support.multidex.MultiDex;
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.Utils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.ui.widget.ViewAttr;
@@ -86,7 +91,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initSkinPeeler();
-
+        //指定刷新默认的方式
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                return new ClassicsHeader(context);//指定为经典Header，默认是 贝塞尔雷达Header\n
+            }
+        });
         SDKInitializer.initialize(this);
        // FreelineCore.init(this);
         Utils.init(this);

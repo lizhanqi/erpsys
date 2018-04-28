@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            style="@style/CustomerInformationContain">
+            <TextView
+                style="@style/CustomerInformationKey"
+                android:text="@string/selected_pictrue_time" />
+            <TextView
+                android:id="@+id/tv_selected_pictrue_time"
+                style="@style/CustomerInformationValue"
+                 />
+        </LinearLayout>
+        <View style="@style/line"/>
+        <LinearLayout
+            style="@style/CustomerInformationContain">
+            <TextView
+                style="@style/CustomerInformationKey"
+                android:text="@string/selected_pictrue_status" />
+            <TextView
+                android:id="@+id/tv_selected_pictrue_status"
+                style="@style/CustomerInformationValue"
+                 />
+        </LinearLayout>
+        <View style="@style/line"/>
+        <LinearLayout
+            style="@style/CustomerInformationContain">
+            <TextView
+                style="@style/CustomerInformationKey"
+                android:text="@string/selected_picture_staff" />
+            <TextView
+                android:id="@+id/tv_selected_picture_staff"
+                style="@style/CustomerInformationValue"
+                />
+        </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="完成时间" />
+        <TextView
+            android:id="@+id/tv_selected_pictrue_finish_time"
+            style="@style/CustomerInformationValue"
+           />
+    </LinearLayout>
+    <!--看板-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="看板时间" />
+        <TextView
+            android:id="@+id/tv_look_layout_time"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="看板状态" />
+        <TextView
+            android:id="@+id/tv_look_layout_status"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:layout_height="wrap_content"
+            android:text="看板师" />
+        <TextView
+            android:id="@+id/tv_look_layout_staff"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="完成时间" />
+        <TextView
+            android:id="@+id/tv_look_layout_finish_time"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+
+    <!--设计-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="设计师" />
+        <TextView
+            android:id="@+id/tv_design_staff"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="样前美编" />
+        <TextView
+            android:id="@+id/tv_sample_before_art"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:layout_height="wrap_content"
+            android:text="排版设计" />
+        <TextView
+            android:id="@+id/tv_layout_designer_staff"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="样后精修" />
+        <TextView
+            android:id="@+id/tv_Sample_after_finishing"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="选片房间" />
+        <TextView
+            android:id="@+id/tv_selected_pictrue_room"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+
+
+    <!--设计-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/px30"
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="导片张数" />
+        <TextView
+            android:id="@+id/tv_import_number"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="选片张数" />
+        <TextView
+            android:id="@+id/tv_selected_number"
+            style="@style/CustomerInformationValue"
+                />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:layout_height="wrap_content"
+            android:text="入册张数" />
+        <TextView
+            android:id="@+id/tv_entered_number"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        style="@style/CustomerInformationContain">
+        <TextView
+            style="@style/CustomerInformationKey"
+            android:text="选片备注" />
+        <TextView
+            android:id="@+id/tv_selected_remarks"
+            style="@style/CustomerInformationValue"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

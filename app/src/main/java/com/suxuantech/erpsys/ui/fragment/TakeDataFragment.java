@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -42,9 +43,6 @@ public class TakeDataFragment extends BaseSupportFragment {
 //    PtrClassicFrameLayout mRotateHeaderGridViewFrame;
     @BindView(R.id.srl_fresh)
     SmartRefreshLayout smartRefreshLayout;
-
-
-
     private Unbinder unbinder;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,7 +160,19 @@ public class TakeDataFragment extends BaseSupportFragment {
                 }
             };
             mRecyclerView.setAdapter(dataBeanQuickAdapter);
+            dataBeanQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    dataBeanQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                        }
+                    });
+                }
+            });
         }
+
     }
 
 }
