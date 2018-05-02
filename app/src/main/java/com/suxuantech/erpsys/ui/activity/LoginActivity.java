@@ -141,6 +141,8 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
           loadingDialog.dismiss();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
+            dLog(System.currentTimeMillis()+"");
             finish();
         }
     }

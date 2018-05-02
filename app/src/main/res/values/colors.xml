@@ -13,8 +13,10 @@
     <color name="refresh_bg">#FFFFFFFF</color>
     <!--智能刷新的字体颜色-->
     <color name="refresh_textColor">#333333</color>
-
-
+    <!--渐变色的状态栏颜色值-->
+    <color name="gradual_change1">#5d8df7</color>
+    <color name="gradual_change2">#5EB9F8</color>
+    <color name="gradual_change3">#5CC2F8</color>
 
 
 

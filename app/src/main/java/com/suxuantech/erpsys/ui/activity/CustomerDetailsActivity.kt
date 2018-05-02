@@ -57,8 +57,10 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         mMenuPopWindow?.setOutsideTouchable(true)
         if (mMenuPopWindow!!.isShowing()) {
             mMenuPopWindow?.dismiss()
+            recoverImmersionBar()
         } else {
-            mMenuPopWindow?.showAsDropDown(navRightView, -120, 0 )
+            mMenuPopWindow?.showAsDropDown(navRightView, 0, 0 )
+            immersionBarDark()
         }
     }
     /**
@@ -72,10 +74,17 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         mMenuView.findViewById<TextView>(R.id.tv_not_into_shop).setOnClickListener(View.OnClickListener {
             mMenuPopWindow?.dismiss()
         })
-        mMenuView.findViewById<TextView>(R.id.tv_not_in_shop).setOnClickListener(View.OnClickListener {        mMenuPopWindow?.dismiss()})
-        mMenuView.findViewById<TextView>(R.id.tv_make_bargain).setOnClickListener(View.OnClickListener {       mMenuPopWindow?.dismiss() })
-        mMenuView.findViewById<TextView>(R.id.tv_run_away).setOnClickListener(View.OnClickListener {       mMenuPopWindow?.dismiss()})
-        mMenuPopWindow = PopupWindow(mMenuView, WindowManager.LayoutParams.WRAP_CONTENT,   WindowManager.LayoutParams.WRAP_CONTENT, true)
+        mMenuView.findViewById<TextView>(R.id.tv_not_in_shop).setOnClickListener(View.OnClickListener {
+            mMenuPopWindow?.dismiss()
+            recoverImmersionBar()
+        })
+        mMenuView.findViewById<TextView>(R.id.tv_make_bargain).setOnClickListener(View.OnClickListener {
+            recoverImmersionBar()
+            mMenuPopWindow?.dismiss() })
+        mMenuView.findViewById<TextView>(R.id.tv_run_away).setOnClickListener(View.OnClickListener {
+            recoverImmersionBar()
+            mMenuPopWindow?.dismiss()})
+        mMenuPopWindow = PopupWindow(mMenuView, WindowManager.LayoutParams.MATCH_PARENT,   WindowManager.LayoutParams.MATCH_PARENT, true)
             //进出场动画
         mMenuPopWindow?.setAnimationStyle(R.style.AnimationPreview);
    }

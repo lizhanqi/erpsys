@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="right"
+    android:background="@color/translucent_black_95"
+    android:layout_height="match_parent">
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="@dimen/px130"
+    android:layout_marginRight="@dimen/px30"
     android:background="@drawable/top_msg"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="100dp"
-    android:layout_height="200dp">
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_new_customer"
         android:padding="@dimen/px30"
-        android:text="新进客资"
+        android:text="进店客资"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_not_in_shop"
+        android:padding="@dimen/px30"
+        android:text="进店非客"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View style="@style/line"/>
@@ -20,17 +33,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View style="@style/line"/>
-    <TextView
-        android:id="@+id/tv_not_in_shop"
-        android:padding="@dimen/px30"
-        android:text="进店未成"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <View style="@style/line"/>
+
     <TextView
         android:id="@+id/tv_make_bargain"
         android:padding="@dimen/px30"
-        android:text="已成交"
+        android:text="转订单"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <View style="@style/line"/>
@@ -41,3 +48,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
+</RelativeLayout>

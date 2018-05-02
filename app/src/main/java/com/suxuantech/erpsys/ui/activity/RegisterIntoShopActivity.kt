@@ -191,8 +191,6 @@ class RegisterIntoShopActivity : ImmersionActivity() {
          mImmersionBar?.fitsSystemWindows(true)
          mImmersionBar?.statusBarDarkFont(true, 0.15f)
          mImmersionBar?.titleBar(mToolbar)
-         mImmersionBar?. statusBarColorTransform(R.color.colorPrimaryDark)  //状态栏变色后的颜色
-         mImmersionBar?. navigationBarColorTransform(R.color.colorPrimaryDark) //导航栏变色后的颜色
          mImmersionBar?.statusBarColor(R.color.themeColor)
          mImmersionBar?.keyboardEnable(false)
          mImmersionBar?.navigationBarColor(R.color.themeColor)

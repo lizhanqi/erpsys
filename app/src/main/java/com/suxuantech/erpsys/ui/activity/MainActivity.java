@@ -142,7 +142,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        dLog(System.currentTimeMillis()+"");
         // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
@@ -154,6 +154,15 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         ImmersionBar.with(MainActivity.this).navigationBarColor(R.color.translucent_black_90).init();
         // initFragement();
         initData();
+        String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
+        dLog(System.currentTimeMillis()+"");
+    }
+
+    @Override
+    protected void onResume() {
+        String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
+        dLog(System.currentTimeMillis()+"");
+        super.onResume();
     }
 
     /**
