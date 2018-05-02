@@ -214,7 +214,7 @@ public class Contact {
      *进客ID
      * 进店类型（数字类型1进店进客，2进店非进客）
      */
-    public  static String INTO_STORE_STATUS="SXWebErpAppStaff/SX_AlterIntoStore?Token=%s&JKID=%s&JDType=%s";
+    public  static String INTO_STORE_STATUS="/SXWebErpAppStaff/SX_AlterIntoStore?Token=%s&JKID=%s&JDType=%s";
     /**
      *修改未进店状态
      */
@@ -257,6 +257,5 @@ public class Contact {
      * 客户摄影资料
      */
     public static  String CUSTOMER_PHOTO_INFO="/SXWebErpAppStaff/SX_CustomerPhotoInfo?Token=%s&orderid=%s&Code=%s";
-
 
 }

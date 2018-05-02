@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 <LinearLayout
     android:layout_marginTop="@dimen/px130"
-    android:layout_marginRight="@dimen/px30"
+    android:layout_marginRight="@dimen/px100"
     android:background="@drawable/top_msg"
     android:orientation="vertical"
     android:gravity="center"

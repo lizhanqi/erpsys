@@ -94,6 +94,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        application=this;
+        context = this.getApplicationContext();
         initSkinPeeler();
         //指定刷新默认的方式
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
@@ -113,9 +115,9 @@ public class App extends Application {
        // FreelineCore.init(this);
         Utils.init(this);
         RongIM.init(this);
-        context = this.getApplicationContext();
+
         registerActivityListener();
-        application=this;
+
         newinitNohttp();
          Fragmentation.builder()
                  // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏

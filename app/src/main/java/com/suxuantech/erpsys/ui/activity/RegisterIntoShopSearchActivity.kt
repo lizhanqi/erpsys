@@ -108,6 +108,7 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
             val data = dataX.get(position);
             var it = Intent( baseContext , CustomerDetailsActivity::class.java);
             var vb = Bundle();
+            vb .putString("orderId",data  .customer_number)
             vb .putParcelable("data",data)
             it.putExtra("bundle",vb)
             startActivity(it)

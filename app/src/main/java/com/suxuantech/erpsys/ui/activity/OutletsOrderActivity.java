@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
@@ -23,6 +24,7 @@ import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
+import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.entity.ThemeEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
@@ -32,6 +34,7 @@ import com.suxuantech.erpsys.presenter.OutletsOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.IOutletsOrderPresenter;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -43,7 +46,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.suxuantech.erpsys.utils.DateUtil.DatePattern.JUST_DAY_NUMBER;
@@ -160,6 +162,9 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
     TextView mTvIntentionPackage;
     @BindView(R.id.ll_intention_package)
     LinearLayout mLlIntentionPackage;
+//    @BindView(R.id.srl_fresh)
+//    SmartRefreshLayout mSmartRefreshLayout;
+
     // @BindView(R.id.btn_submint_order)
     //Button mBtnSubmintOrder;
     private OutletsOrderPresenter outletsOrderPresenter;
@@ -170,13 +175,62 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlets_order_new);
-        ButterKnife.bind(this);
         useEventBus();
         useButterKnife();
-//        showUserDefinedNav();
+        initViewData();
+ //      mSmartRefreshLayout.autoRefresh();
         outletsOrderPresenter = new OutletsOrderPresenter(this, getRequestQueue());
+      //  mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+//            outletsOrderPresenter.getOrderNum();
+//        });
         outletsOrderPresenter.getOrderNum();
         mTvOrderDate.setText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY));
+    }
+    private void initViewData() {
+        RegisterEntity.DataBean parcelable = getIntent().getParcelableExtra("data");
+        if (parcelable == null) {
+            return;
+        }
+        mTvConsumptionType.setText(parcelable.getConsultation_type());
+        if (parcelable.getCustomer_sex().equals("男")) {
+            mEtCustomerNameM.setText(parcelable.getCustomer_name());
+            mEtCustomerNameW.setText(parcelable.getMate_name());
+
+            mTvCustomerBirthdayM.setText(DateUtil.String2String(parcelable.getCustomer_birthday(), DateUtil.DatePattern.JUST_DAY_NUMBER,
+                    DateUtil.DatePattern.ONLY_DAY));
+            mTvCustomerBirthdayW.setText(DateUtil.String2String(parcelable.getMate_birthday(),
+                    DateUtil.DatePattern.JUST_DAY_NUMBER,
+                    DateUtil.DatePattern.ONLY_DAY));
+
+            mEtCustomerPhoneM.setText(parcelable.getCustomer_tel());
+            mEtCustomerPhoneW.setText(parcelable.getMate_tel());
+
+            mEtCustomerWechatM.setText(parcelable.getCustomer_wechat());
+            mEtCustomerWechatW.setText(parcelable.getMate_wechat());
+
+        } else {
+
+            mEtCustomerNameW.setText(parcelable.getCustomer_name());
+            mEtCustomerNameM.setText(parcelable.getMate_name());
+
+            mTvCustomerBirthdayW.setText(DateUtil.String2String(parcelable.getCustomer_birthday(), DateUtil.DatePattern.JUST_DAY_NUMBER,
+                    DateUtil.DatePattern.ONLY_DAY));
+            mTvCustomerBirthdayM.setText(DateUtil.String2String(parcelable.getMate_birthday(), DateUtil.DatePattern.JUST_DAY_NUMBER,
+                    DateUtil.DatePattern.ONLY_DAY));
+
+            mEtCustomerPhoneW.setText(parcelable.getCustomer_tel());
+            mEtCustomerPhoneM.setText(parcelable.getMate_tel());
+
+            mEtCustomerWechatW.setText(parcelable.getCustomer_wechat());
+            mEtCustomerWechatM.setText(parcelable.getMate_wechat());
+        }
+        mTvReceptionMarket.setText(parcelable.getSales_staff());
+        mTvReception.setText(parcelable.getDj_staff());
+        mTvReceptionGovernor.setText(parcelable.getFp_staff());
+        mTvCustomerSource.setText(parcelable.getCustomer_cource());
+       // mTvCustomerSource.setText(parcelable.getShop_codeZD());
+
+
     }
 
     /**
@@ -308,25 +362,30 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
                 startActivity(optionHelp.creat());
                 break;
             case R.id.btn_submint_order:
-                commit(0);
+                if (getIntent().getParcelableExtra("data") != null) {
+                    commit(0);
+                } else {
+                    commit(1);
+                }
+
                 break;
             case R.id.rl_shoot_theme:
                 optionHelp.setTitle("摄影主题");
-             // optionHelp.setCheckedData(shootTheme);
+                // optionHelp.setCheckedData(shootTheme);
                 optionHelp.setUrlTag(OptionHelp.UrlTag.SHOOT_THEME);
                 optionHelp.setMultiple(true);
                 startActivity(optionHelp.creat());
                 break;
             case R.id.rl_drees_theme:
                 optionHelp.setTitle("礼服主题");
-                  optionHelp.setCheckedData(mTvCustomerSource.getText().toString());
+                optionHelp.setCheckedData(mTvCustomerSource.getText().toString());
                 optionHelp.setUrlTag(OptionHelp.UrlTag.DRESS_THEME);
                 optionHelp.setMultiple(true);
                 startActivity(optionHelp.creat());
                 break;
             case R.id.ll_intention_package:
                 optionHelp.setTitle("意向套系");
-                if (mTvIntentionPackage.getTag()!=null){
+                if (mTvIntentionPackage.getTag() != null) {
                     optionHelp.addCheckedData(mTvIntentionPackage.getTag().toString());
                 }
                 optionHelp.setUrlTag(OptionHelp.UrlTag.PACKAGE);
@@ -468,9 +527,21 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         HttpListener<OpenWeddingOrderEntity> searchByCustmor = new HttpListener<OpenWeddingOrderEntity>() {
             @Override
             public void onSucceed(int what, Response<OpenWeddingOrderEntity> response) {
-
+                if (response.get().isOK()) {
+                    toastShort("开单成功");
+                } else if (response.get().getCode().equals("700")) {
+                    AlertDialog.Builder builder = AlertDialog.newBuilder(OutletsOrderActivity.this);
+                    builder.setMessage(response.get().getMsg());
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("刷新单号", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            outletsOrderPresenter.getOrderNum();
+                        }
+                    });
+                    builder.show();
+                }
             }
-
             @Override
             public void onFailed(int what, Response<OpenWeddingOrderEntity> response) {
             }
@@ -487,7 +558,7 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         switch (urlTag) {
             default:
             case RECEPTION_MARKET:
-                    mTvReceptionMarket.setText(((OutletsReceptionEntity.DataBean) msg.getSingleChecked()).getStaffName());
+                mTvReceptionMarket.setText(((OutletsReceptionEntity.DataBean) msg.getSingleChecked()).getStaffName());
                 break;
             case SHOOT_THEME:
                 shootTheme = msg.getMultiSelected();
@@ -523,19 +594,19 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
                 mTvConsumptionType.setTag(consumptionType);
                 mTvConsumptionSub.setText(null);
                 break;
- //http://192.168.0.15:8033/SXWebErpAppStaff/SX_Open_WeddingOrder?Token=^******^&package_name=  &cid=  &Code=ZX002&shopname=沈阳时尚经典婚纱店&PZCode=VVC009&PZshopname=时尚经典抚顺店&PZCode1=VVC009&PZshopname1=时尚经典旗舰店&zktype=0&staffid=404
-  //    &shopname=%E6%B2%88%E9%98%B3%E6%97%B6%E5%B0%9A%E7%BB%8F%E5%85%B8%E5%A9%9A%E7%BA%B1%E5%BA%97&Code=ZX002&PZCode=ZX002&PZCode1=daxin123&zktype=0&PZshopname=%E6%B2%88%E9%98%B3%E6%97%B6%E5%B0%9A%E7%BB%8F%E5%85%B8%E5%A9%9A%E7%BA%B1%E5%BA%97&PZshopname1=%E5%A4%A7%E5%9E%8B%E6%97%97%E8%88%B0%E5%BA%97&staffid=404&package_name=7999%E4%B8%BD%E8%8E%8E%E6%B0%B4%E6%99%B6%E5%8C%85%E5%A5%97&cid=
+            //http://192.168.0.15:8033/SXWebErpAppStaff/SX_Open_WeddingOrder?Token=^******^&package_name=  &cid=  &Code=ZX002&shopname=沈阳时尚经典婚纱店&PZCode=VVC009&PZshopname=时尚经典抚顺店&PZCode1=VVC009&PZshopname1=时尚经典旗舰店&zktype=0&staffid=404
+            //    &shopname=%E6%B2%88%E9%98%B3%E6%97%B6%E5%B0%9A%E7%BB%8F%E5%85%B8%E5%A9%9A%E7%BA%B1%E5%BA%97&Code=ZX002&PZCode=ZX002&PZCode1=daxin123&zktype=0&PZshopname=%E6%B2%88%E9%98%B3%E6%97%B6%E5%B0%9A%E7%BB%8F%E5%85%B8%E5%A9%9A%E7%BA%B1%E5%BA%97&PZshopname1=%E5%A4%A7%E5%9E%8B%E6%97%97%E8%88%B0%E5%BA%97&staffid=404&package_name=7999%E4%B8%BD%E8%8E%8E%E6%B0%B4%E6%99%B6%E5%8C%85%E5%A5%97&cid=
             case PACKAGE:
                 PackageEntity.DataBean packageChecked = (PackageEntity.DataBean) msg.getSingleChecked();
                 mTvIntentionPackage.setText(packageChecked.getPackage_name());
                 mTvIntentionPackage.setTag(packageChecked.getId());
-                mEtIndoorClothes.setText(packageChecked.getShineifz()+"");//室内
-                mEtOutdoorClothes.setText(packageChecked.getWaijingfz()+"");//室外
-                mEtSeaviewClothes.setText(packageChecked.getNeijingfz()+"");//海景
-                mEtOverseasShootClothes.setText(packageChecked.getLvpaifz()+"");//旅拍
-                mEtShootNumber.setText(packageChecked.getPaizhaoshu()+"");//拍摄张数
-                mEtNumberSheets.setText(packageChecked.getRuceshu()+"");//入册
-                mEtTruingNumber.setText(packageChecked.getJingxiushu()+"");//精修
+                mEtIndoorClothes.setText(packageChecked.getShineifz() + "");//室内
+                mEtOutdoorClothes.setText(packageChecked.getWaijingfz() + "");//室外
+                mEtSeaviewClothes.setText(packageChecked.getNeijingfz() + "");//海景
+                mEtOverseasShootClothes.setText(packageChecked.getLvpaifz() + "");//旅拍
+                mEtShootNumber.setText(packageChecked.getPaizhaoshu() + "");//拍摄张数
+                mEtNumberSheets.setText(packageChecked.getRuceshu() + "");//入册
+                mEtTruingNumber.setText(packageChecked.getJingxiushu() + "");//精修
                 break;
             case OUTLETS_RECEPTION:
                 OutletsReceptionEntity.DataBean checked2 = (OutletsReceptionEntity.DataBean) msg.getSingleChecked();

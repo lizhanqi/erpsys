@@ -76,9 +76,17 @@ public abstract class BaseRequest<Result> extends Request<Result> {
       //  MultiValueMap paramKeyValues = getParamKeyValues();
         addHeader("Content-Type", "application/json");
         String jsonString = FastJsonUtils.toJSONString(jsonParam);
-        if (App.ISDEBUG){
-            Logger.d(jsonString);
-        }
+//        if (App.ISDEBUG){
+//            Logger.d(jsonString);
+//        }
         setDefineRequestBodyForJson(jsonString);
+    }
+
+    @Override
+    public Request setDefineRequestBodyForJson(String jsonBody) {
+        if (App.ISDEBUG){
+            Logger.d(jsonBody);
+        }
+        return super.setDefineRequestBodyForJson(jsonBody);
     }
 }
