@@ -358,7 +358,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                     }
                 });
 
-//                setSupportToolbar();
+//                supportToolbar();
 //                getToolbar().setTitle("我的会话");
 //                getToolbar().setBackground(null);
                 break;

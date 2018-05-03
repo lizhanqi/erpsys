@@ -2,8 +2,8 @@ package com.suxuantech.erpsys.ui.activity
 
 import android.os.Bundle
 import android.support.annotation.IntRange
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -15,6 +15,7 @@ import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
+import com.yanzhenjie.alertdialog.AlertDialog
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
 
@@ -78,12 +79,12 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
     public fun change(@IntRange(from = 1, to = 2) flag: Int) {
         //请求实体
         val districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.INTO_STORE_STATUS, Contact.TOKEN, parcelable?.id, flag), RequestMethod.POST, ProductEntity::class.java)
-        districtBeanJavaBeanRequest.addBodyJson("Customer_tel",parcelable?.customer_tel)
-        districtBeanJavaBeanRequest.addBodyJson("Customer_name",parcelable?.customer_name)
-        districtBeanJavaBeanRequest.addBodyJson("Mate_tel",parcelable?.mate_tel)
-        districtBeanJavaBeanRequest.addBodyJson("Brandid",  App.getApplication().userInfor.brandclass_id)
-        districtBeanJavaBeanRequest.addBodyJson("Shop_code",  App.getApplication().userInfor.shop_code)
-         districtBeanJavaBeanRequest.addBodyJson("From_index", parcelable?.from_index)
+        districtBeanJavaBeanRequest.addBodyJson("Customer_tel", parcelable?.customer_tel)
+        districtBeanJavaBeanRequest.addBodyJson("Customer_name", parcelable?.customer_name)
+        districtBeanJavaBeanRequest.addBodyJson("Mate_tel", parcelable?.mate_tel)
+        districtBeanJavaBeanRequest.addBodyJson("Brandid", App.getApplication().userInfor.brandclass_id)
+        districtBeanJavaBeanRequest.addBodyJson("Shop_code", App.getApplication().userInfor.shop_code)
+        districtBeanJavaBeanRequest.addBodyJson("From_index", parcelable?.from_index)
         districtBeanJavaBeanRequest.addBodyJson("Staffid", App.getApplication().userInfor.staff_id)
         districtBeanJavaBeanRequest.param2Json()
 //        districtBeanJavaBeanRequest.addBodyJson("Customer_wechat", parcelable?.customer_wechat)
@@ -122,10 +123,11 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
             override fun onSucceed(what: Int, response: Response<ProductEntity>) {
                 mMenuPopWindow?.dismiss()
                 recoverImmersionBar()
-                if(response.get().isOK){
-                //更新....
+                if (response.get().isOK) {
+                    //更新....
                 }
             }
+
             override fun onFailed(what: Int, response: Response<ProductEntity>) {
                 mMenuPopWindow?.dismiss()
                 recoverImmersionBar()
@@ -134,6 +136,78 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false)
     }
 
+    fun showR(title: String) {
+        val builder = AlertDialog.newBuilder(this@CustomerDetailsActivity)
+        builder.setTitle(title)
+        builder.setCancelable(true)
+        val editText = EditText(this)
+        editText.setPadding(50, 0, 50, 30)
+        editText.minLines = 3
+        editText.maxLines = 5
+        editText.gravity = Gravity.TOP or Gravity.LEFT
+        builder.setView(editText)
+        builder.setOnDismissListener() {
+            mMenuPopWindow?.dismiss()
+            recoverImmersionBar()
+        }
+        builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
+            aw(editText.text.toString(), title)
+        }
+        builder.show()
+    }
+
+    /**
+     *
+     */
+
+    fun aw(reason: String, title: String) {
+        if (title.equals("未成交")) {
+            var districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.RUN_AWAY, Contact.TOKEN, parcelable?.id, reason), RequestMethod.POST, ProductEntity::class.java)
+            districtBeanJavaBeanRequest.addBodyJson("customer_tel", parcelable?.customer_tel)
+            districtBeanJavaBeanRequest.addBodyJson("customer_name", parcelable?.customer_name)
+            districtBeanJavaBeanRequest.addBodyJson("mate_tel", parcelable?.mate_tel)
+            districtBeanJavaBeanRequest.addBodyJson("brandid", App.getApplication().userInfor.brandclass_id)
+            districtBeanJavaBeanRequest.addBodyJson("shop_code", App.getApplication().userInfor.shop_code)
+            districtBeanJavaBeanRequest.addBodyJson("brom_index", parcelable?.from_index)
+            districtBeanJavaBeanRequest.addBodyJson("staffid", App.getApplication().userInfor.staff_id)
+            districtBeanJavaBeanRequest.param2Json()
+            val searchByCustmor = object : HttpListener<ProductEntity> {
+                override fun onSucceed(what: Int, response: Response<ProductEntity>) {
+                    if (response.get().isOK) {
+                        toastShort("修改成功")
+                    } else {
+                        toastShort("修改失败")
+                    }
+                }
+
+                override fun onFailed(what: Int, response: Response<ProductEntity>) {}
+            }
+            request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false)
+        } else {
+            var districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.SB, Contact.TOKEN, parcelable?.id, reason), RequestMethod.POST, ProductEntity::class.java)
+            districtBeanJavaBeanRequest.addBodyJson("Customer_tel", parcelable?.customer_tel)
+            districtBeanJavaBeanRequest.addBodyJson("Customer_name", parcelable?.customer_name)
+            districtBeanJavaBeanRequest.addBodyJson("Mate_tel", parcelable?.mate_tel)
+            districtBeanJavaBeanRequest.addBodyJson("Brandid", App.getApplication().userInfor.brandclass_id)
+            districtBeanJavaBeanRequest.addBodyJson("Shop_code", App.getApplication().userInfor.shop_code)
+            districtBeanJavaBeanRequest.addBodyJson("From_index", parcelable?.from_index)
+            districtBeanJavaBeanRequest.addBodyJson("Staffid", App.getApplication().userInfor.staff_id)
+            districtBeanJavaBeanRequest.param2Json()
+            val searchByCustmor = object : HttpListener<ProductEntity> {
+                override fun onSucceed(what: Int, response: Response<ProductEntity>) {
+                    if (response.get().isOK) {
+                        toastShort("修改成功")
+                    } else {
+                        toastShort("修改失败")
+                    }
+                }
+
+                override fun onFailed(what: Int, response: Response<ProductEntity>) {}
+            }
+            request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false)
+        }
+
+    }
 
     /**
      * 初始化弹窗
@@ -149,17 +223,16 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
             mMenuPopWindow?.dismiss()
         })
         mMenuView.findViewById<TextView>(R.id.tv_not_in_shop).setOnClickListener(View.OnClickListener {
-            mMenuPopWindow?.dismiss()
-            recoverImmersionBar()
+            showR("未成交")
+
         })
         mMenuView.findViewById<TextView>(R.id.tv_make_bargain).setOnClickListener(View.OnClickListener {
             recoverImmersionBar()
             mMenuPopWindow?.dismiss()
-            startActivity(OutletsOrderActivity::class.java,intent.getBundleExtra("bundle"))
+            startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
         })
         mMenuView.findViewById<TextView>(R.id.tv_run_away).setOnClickListener(View.OnClickListener {
-            recoverImmersionBar()
-            mMenuPopWindow?.dismiss()
+            showR("流失原因")
         })
         mMenuPopWindow = PopupWindow(mMenuView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true)
         //进出场动画
@@ -167,16 +240,44 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
     }
 
     var parcelable: RegisterEntity.DataBean? = null;
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_settings -> {
+                change(1)
+            }
+            R.id.action_not_order -> {
+                change(2)
+            }
+            R.id.action_make_bargain -> {
+                startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
+            }
+            R.id.action_not_into_shop -> {
+                showR("未进店原因")
+            }
+            R.id.action_srun_away -> {
+                showR("流失原因")
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_flag, menu);
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_details)
-        showUserDefinedNav()
-        setTitle("客资详情")
+        supportToolbar(true)
+        hideUserDefinedNav()
+        // showUserDefinedNav()
+        //setTitle("客资详情")
         initPop()
         initView()
-        val drawable = resources.getDrawable(R.drawable.icon_ding)
-        drawable.setBounds(0,0,drawable.minimumHeight,drawable.minimumHeight)
-        setUseDefinedNavRightDrawable(drawable)
+//        val drawable = resources.getDrawable(R.drawable.icon_ding)
+//        drawable.setBounds(0, 0, drawable.minimumHeight, drawable.minimumHeight)
+//        setUseDefinedNavRightDrawable(drawable)
         var parcelable = intent.getBundleExtra("bundle").getParcelable<RegisterEntity.DataBean>("data")
         this.parcelable = parcelable;
         tvRegisterName!!.setText(parcelable.customer_name)

@@ -167,7 +167,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_into_guest_registration)
         initView()
         setTitle("进客登记")
-        setSupportToolbar()
+        supportToolbar()
         getSupportActionBar()?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.white)))
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
         useEventBus()

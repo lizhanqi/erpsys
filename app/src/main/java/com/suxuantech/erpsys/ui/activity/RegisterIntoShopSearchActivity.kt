@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,9 +36,10 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop_search)
-        showUserDefinedNav()
-        setTitle(   intent.getStringExtra("title"))
-        setUseDefinedNavRightText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY))
+        // showUserDefinedNav()
+        supportToolbar()
+        setCenterTitle(intent.getStringExtra("title"))
+        // setUseDefinedNavRightText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY))
         tietSearch = findViewById<OneKeyClearAutoCompleteText>(R.id.tiet_search)
         imgSearch = idSetOnClick<ImageView>(R.id.img_search)
         tvAdd = idSetOnClick<TextView>(R.id.tv_add)
@@ -45,13 +48,19 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
         search()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menu?.add(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY))?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        return super.onCreateOptionsMenu(menu)
+    }
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
         when (v!!.id) {
             R.id.img_search -> {
                 search()
             }
-            R.id.tv_add->{startActivity(IntoGuestRegistrationActivity::class.java)}
+            R.id.tv_add -> {
+                startActivity(IntoGuestRegistrationActivity::class.java)
+            }
         }
     }
 
@@ -98,19 +107,19 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
                 zone.text = "客户分区:" + item.customer_area
                 date.text = "进店日期:" + item.yjd_day
                 staff.text = "接待人:" + item.sales_staff
-                phone.text = "手机:"+item.shouji
+                phone.text = "手机:" + item.shouji
                 type.text = item.is_loss
-                llLossing!!.visibility= View.GONE
+                llLossing!!.visibility = View.GONE
 //                reason.text="流失原因:"
             }
         }
         value.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
             val data = dataX.get(position);
-            var it = Intent( baseContext , CustomerDetailsActivity::class.java);
+            var it = Intent(baseContext, CustomerDetailsActivity::class.java);
             var vb = Bundle();
-            vb .putString("orderId",data  .customer_number)
-            vb .putParcelable("data",data)
-            it.putExtra("bundle",vb)
+            vb.putString("orderId", data.customer_number)
+            vb.putParcelable("data", data)
+            it.putExtra("bundle", vb)
             startActivity(it)
         }
         rvRegister!!.adapter = value

@@ -9,21 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activity.OutletsOrderActivity">
+        <!--            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"  这个会影响返回按钮颜色-->
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
+         >
             <android.support.v7.widget.Toolbar
+                android:background="@color/status"
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/white"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:title="门市开单"
-                app:titleTextColor="@color/text_tab_title_def" />
+  />
         </android.support.design.widget.AppBarLayout>
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

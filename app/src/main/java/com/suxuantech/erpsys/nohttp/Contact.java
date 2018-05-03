@@ -224,7 +224,6 @@ public class Contact {
      */
     public static String RUN_AWAY="/SXWebErpAppStaff/SX_AlterLoss?Token=%s&JKID=%s&Statusremark=%s";
 
-
     /**
      * 获取客户产品.
      *

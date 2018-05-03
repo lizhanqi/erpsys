@@ -5,11 +5,13 @@ import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
@@ -58,6 +60,8 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
     //当前Activity渲染用户的主要内容
     private View mContextView;
     private View lineView;
+    private TextView tvToolbarCenterTilte;
+
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
@@ -65,6 +69,11 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
             onBackPressed();
         }
     }
+    public void setCenterTitle(CharSequence title) {
+       getSupportActionBar().setDisplayShowTitleEnabled(false);
+        tvToolbarCenterTilte.setText(title);
+    }
+
     @Override
     public void setTitle(CharSequence title) {
         if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
@@ -118,23 +127,42 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
     }
 
     /**
+     * 修改返回按钮的图标getSupportActionBar().setHomeAsUpIndicator(R.drawable.action_bar_icon_back_light);
      * 设置(内置)Toolbar支持
      * @return
      */
-    public Toolbar setSupportToolbar() {
+    public Toolbar supportToolbar() {
+       return supportToolbar(true);
+    }
+    public Toolbar supportToolbar(boolean showBack) {
+        hideUserDefinedNav();
         if (mToolbar != null) {
             mToolbar.setVisibility(View.VISIBLE);
             setSupportActionBar(mToolbar);
+            if (showBack){
+                getSupportActionBar().setHomeButtonEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onBackPressed();
+                    }
+                }) ;
+            }
             return mToolbar;
         }
         return null;
     }
 
+
+    /**
+     *
+     * @param toolbar
+     */
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         mToolbar=toolbar;
         super.setSupportActionBar(toolbar);
-
     }
 
     /**
@@ -419,7 +447,6 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
             createRootView();
             mContentViewlayout.addView(view);
             super.setContentView(rootViews);
-
     }
     /**
      * 加载外层
@@ -439,6 +466,14 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
        mTvNavRight = rootViews.findViewById(R.id.tv_nav_right);
        lineView = rootViews.findViewById(R.id.v_line);
        mTvNavRight.setOnClickListener(this);
+       tvToolbarCenterTilte = rootViews.findViewById(R.id.tv_toolbar_center_title);
+       tvToolbarCenterTilte.setOnClickListener(this);
        mContentViewlayout = rootViews.findViewById(R.id.content_view_layout);
    }
+    public  Menu    menu =null;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+            this.menu=menu;
+        return super.onCreateOptionsMenu(menu);
+    }
 }

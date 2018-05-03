@@ -11,7 +11,7 @@ class TodayCustomerActivity : TitleNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_today_customer)
-        setSupportToolbar()
+        supportToolbar()
         setTitle(intent.getStringExtra("title"))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.gray_f9)))

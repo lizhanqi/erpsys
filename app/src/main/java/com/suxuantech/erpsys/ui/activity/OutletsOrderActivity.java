@@ -178,14 +178,20 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         useEventBus();
         useButterKnife();
         initViewData();
- //      mSmartRefreshLayout.autoRefresh();
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+   supportToolbar();
+        //      mSmartRefreshLayout.autoRefresh();
         outletsOrderPresenter = new OutletsOrderPresenter(this, getRequestQueue());
-      //  mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+        //  mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> {
 //            outletsOrderPresenter.getOrderNum();
 //        });
         outletsOrderPresenter.getOrderNum();
         mTvOrderDate.setText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY));
     }
+
     private void initViewData() {
         RegisterEntity.DataBean parcelable = getIntent().getParcelableExtra("data");
         if (parcelable == null) {
@@ -228,9 +234,7 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         mTvReception.setText(parcelable.getDj_staff());
         mTvReceptionGovernor.setText(parcelable.getFp_staff());
         mTvCustomerSource.setText(parcelable.getCustomer_cource());
-       // mTvCustomerSource.setText(parcelable.getShop_codeZD());
-
-
+        // mTvCustomerSource.setText(parcelable.getShop_codeZD());
     }
 
     /**
@@ -542,12 +546,14 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
                     builder.show();
                 }
             }
+
             @Override
             public void onFailed(int what, Response<OpenWeddingOrderEntity> response) {
             }
         };
         request(11, districtBeanJavaBeanRequest, searchByCustmor, false, true);
     }
+
 
     /**
      * @param msg

@@ -23,8 +23,8 @@ package com.suxuantech.erpsys.ui.activity;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/23 0023 10:40 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description:订单详情，整个订单的所有信息都在这里了
  */
 
@@ -34,6 +34,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -66,22 +68,25 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
     String current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+        supportToolbar();
         showUserDefinedNav();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
-        current=stringArray[0];
+        current = stringArray[0];
         setUseDefinedNavTitle(current);
         gotoFragment();
     }
 
     private SupportFragment[] mFragments = new SupportFragment[10];
+
     @Override
     public void widgetClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_nav_title:
                 showpopupwindow();
                 break;
@@ -89,7 +94,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 finish();
                 break;
             case R.id.tv_nav_right:
-                if (mFragments[3]!=null){
+                if (mFragments[3] != null) {
                     productDataFragment.change();
                 }
                 break;
@@ -97,93 +102,116 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         }
     }
 
-    public void gotoFragment(){
-            switch (current){
-                default:
-                    if (findFragment(CustomerInformationFragment.class)==null){
-                        CustomerInformationFragment customerInformationFragment = new CustomerInformationFragment();
-                        mFragments[0]=customerInformationFragment;
-                        Bundle bund = getIntent().getBundleExtra("bund");
-                        customerInformationFragment.setArguments(bund);
-                        loadRootFragment(R.id.container,  mFragments[0],false,true);
-                    }else {
-                        start(mFragments[0], ISupportFragment.SINGLETASK);
-                    }
+    public void gotoFragment() {
+        if (menu != null) {
+            menu.clear();
+        }
+        switch (current) {
+            default:
+                if (findFragment(CustomerInformationFragment.class) == null) {
+                    CustomerInformationFragment customerInformationFragment = new CustomerInformationFragment();
+                    mFragments[0] = customerInformationFragment;
+                    Bundle bund = getIntent().getBundleExtra("bund");
+                    customerInformationFragment.setArguments(bund);
+                    loadRootFragment(R.id.container, mFragments[0], false, true);
+                } else {
+                    start(mFragments[0], ISupportFragment.SINGLETASK);
+                }
                 break;
-                case "服务费用":
-                    if (findFragment(ServiceFeeFragment.class)==null){
-                        ServiceFeeFragment serviceFeeFragment = new ServiceFeeFragment();
-                       // loadRootFragment(R.id.container, serviceFeeFragment);
-                        mFragments[1]=serviceFeeFragment;
-                        loadRootFragment(R.id.container,  mFragments[1],false,true);
-                    }else {
-                        start(mFragments[1], ISupportFragment.SINGLETASK);
-                    }
-                    break;
-                case "取件资料":
+            case "服务费用":
+                if (findFragment(ServiceFeeFragment.class) == null) {
+                    ServiceFeeFragment serviceFeeFragment = new ServiceFeeFragment();
+                    // loadRootFragment(R.id.container, serviceFeeFragment);
+                    mFragments[1] = serviceFeeFragment;
+                    loadRootFragment(R.id.container, mFragments[1], false, true);
+                } else {
+                    start(mFragments[1], ISupportFragment.SINGLETASK);
+                }
+                break;
+            case "取件资料":
+
 //                    toTabFragement(0);
-                    if (findFragment(TakeDataFragment.class)==null){
-                        TakeDataFragment     takeDataFragment = new TakeDataFragment();
-                        // loadRootFragment(R.id.container, serviceFeeFragment);
-                        mFragments[5]= takeDataFragment;
-                        String orderId = getIntent().getStringExtra("orderId");
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId",orderId);
-                        takeDataFragment.setArguments(bundle);
-                        loadRootFragment(R.id.container,  mFragments[5],false,true);
-                    }else {
-                        start(mFragments[5], ISupportFragment.SINGLETASK);
-                    }
+                if (findFragment(TakeDataFragment.class) == null) {
+                    TakeDataFragment takeDataFragment = new TakeDataFragment();
+                    // loadRootFragment(R.id.container, serviceFeeFragment);
+                    mFragments[5] = takeDataFragment;
+                    String orderId = getIntent().getStringExtra("orderId");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    takeDataFragment.setArguments(bundle);
+                    loadRootFragment(R.id.container, mFragments[5], false, true);
+                } else {
+                    start(mFragments[5], ISupportFragment.SINGLETASK);
+                }
 
 
-                    break;
-                case "摄影资料":
-                    toTabFragement(1);
-                    break;
-                case "选片资料":
-                    toTabFragement(2);
-                    break;
-                case "礼服资料":
-                 //   toTabFragement(3);
-                    if (findFragment(ProductDataFragment.class)==null) {
-                        DressMaterialFragment          dressMaterialFragment = new DressMaterialFragment();
-                        // loadRootFragment(R.id.container, serviceFeeFragment);
-                        mFragments[4] = dressMaterialFragment;
-                        String orderId = getIntent().getStringExtra("orderId");
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId);
-                        dressMaterialFragment.setArguments(bundle);
-                        loadRootFragment(R.id.container, mFragments[4], false, true);
-                    }
-                    break;
-                case "产品资料":
-                    if (findFragment(ProductDataFragment.class)==null){
-                        productDataFragment = new ProductDataFragment();
-                        // loadRootFragment(R.id.container, serviceFeeFragment);
-                        mFragments[3]= productDataFragment;
-                        String orderId = getIntent().getStringExtra("orderId");
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId",orderId);
-                        productDataFragment.setArguments(bundle);
-                        loadRootFragment(R.id.container,  mFragments[3],false,true);
-                    }else {
-                        start(mFragments[3], ISupportFragment.SINGLETASK);
-                    }
+                break;
+            case "摄影资料":
+                toTabFragement(1);
+                break;
+            case "选片资料":
+                toTabFragement(2);
+                break;
+            case "礼服资料":
+                //   toTabFragement(3);
+                if (findFragment(ProductDataFragment.class) == null) {
+                    DressMaterialFragment dressMaterialFragment = new DressMaterialFragment();
+                    // loadRootFragment(R.id.container, serviceFeeFragment);
+                    mFragments[4] = dressMaterialFragment;
+                    String orderId = getIntent().getStringExtra("orderId");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    dressMaterialFragment.setArguments(bundle);
+                    loadRootFragment(R.id.container, mFragments[4], false, true);
+                }
+                break;
+            case "产品资料":
+                /**
+                *  看一看menu.add方法的参数：
+                *  第一个int类型的group ID参数，代表的是组概念，你可以将几个菜单项归为一组，以便更好的以组的方式管理你的菜单按钮。
+                *  第二个int类型的item ID参数，代表的是项目编号。这个参数非常重要，一个item ID对应一个menu中的选项。在后面使用菜单的时候，就靠这个item ID来判断你使用的是哪个选项。
+                *  第三个int类型的order ID参数，代表的是菜单项的显示顺序。默认是0，表示菜单的显示顺序就是按照add的显示顺序来显示。
+                *  第四个String类型的title参数，表示选项中显示的文字。
+                 */
+             //   OneKeyClearAutoCompleteText oneKeyClearAutoCompleteText = new OneKeyClearAutoCompleteText(getApplicationContext());
+                View inflate = getLayoutInflater().inflate(R.layout.action_onekey, null);
+                menu.add(Menu.NONE, 1, 0,"sss")
+                        .setEnabled(true)
+                      .setActionView(inflate)
+                        .setOnMenuItemClickListener(menuItem -> {
+                            toastShort("sss");
+                            return  true;})
+                        .setIcon(R.drawable.icon_add_white)
+                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                if (findFragment(ProductDataFragment.class) == null) {
+                    productDataFragment = new ProductDataFragment();
+                    // loadRootFragment(R.id.container, serviceFeeFragment);
+                    mFragments[3] = productDataFragment;
+                    String orderId = getIntent().getStringExtra("orderId");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    productDataFragment.setArguments(bundle);
+                    loadRootFragment(R.id.container, mFragments[3], false, true);
+                } else {
+                    start(mFragments[3], ISupportFragment.SINGLETASK);
+                }
 
-                    break;
-            }
+                break;
+        }
     }
-    private void toTabFragement(int witch){
-        Bundle bd=  new Bundle();
-        bd.putInt("witch",witch);
-        bd.putString("orderId",getIntent().getStringExtra("orderId"));
-        if (findFragment(TabControlFragment.class)==null){
+
+
+    private void toTabFragement(int witch) {
+        Bundle bd = new Bundle();
+        bd.putInt("witch", witch);
+        bd.putString("orderId", getIntent().getStringExtra("orderId"));
+        if (findFragment(TabControlFragment.class) == null) {
             TabControlFragment tabControlFragment = new TabControlFragment();
             // loadRootFragment(R.id.container, serviceFeeFragment);
             tabControlFragment.setArguments(bd);
-            mFragments[2]=tabControlFragment;
-            loadRootFragment(R.id.container,  mFragments[2],false,true);
-        }else {
+            mFragments[2] = tabControlFragment;
+            loadRootFragment(R.id.container, mFragments[2], false, true);
+        } else {
             // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
             mFragments[2].putNewBundle(bd);
             start(mFragments[2], ISupportFragment.SINGLETASK);
@@ -193,9 +221,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     /**
      * 选择窗口
      */
-    public void showpopupwindow(){
+    public void showpopupwindow() {
         // 将一个布局文件填充为view
-        View vw = View.inflate(this, R.layout.pop_select_information,null);
+        View vw = View.inflate(this, R.layout.pop_select_information, null);
         recycleView = vw.findViewById(R.id.smrv_select);
         ArrayList<String> objects = new ArrayList<>(Arrays.asList(stringArray));
         recycleView.setSwipeItemClickListener(new SwipeItemClickListener() {
@@ -203,7 +231,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
             public void onItemClick(View itemView, int position) {
                 mPopupWindow.dismiss();
                 String temp = stringArray[position];
-                if (temp.equals(current)){
+                if (temp.equals(current)) {
                     return;
                 }
                 current = stringArray[position];
@@ -216,7 +244,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_type);
-                if (  current.equals(item)) {
+                if (current.equals(item)) {
                     holder.getView(R.id.ll_root_bg).setBackgroundColor(getResources().getColor(R.color.translucent_black_90));
                 }
                 view.setTextSize(15);
@@ -232,8 +260,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
         mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
-        showAsDropDown(mPopupWindow,getLineView(),0,0);
+        showAsDropDown(mPopupWindow, getLineView(), 0, 0);
     }
+
     /**
      *popupWindow 兼容7.0以下以及7.0,7.1,8.0
      * @param pw     popupWindow

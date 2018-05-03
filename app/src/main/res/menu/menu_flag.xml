@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="进店客资"
+        />
+    <item
+        android:id="@+id/action_not_order"
+        android:orderInCategory="100"
+        android:title="进店非客"
+        />
+    <item
+        android:id="@+id/action_make_bargain"
+        android:orderInCategory="100"
+        android:title="转单"
+        />
+    <item
+        android:id="@+id/action_not_into_shop"
+        android:orderInCategory="100"
+        android:title="未进店"
+        />
+    <item
+        android:id="@+id/action_srun_away"
+        android:orderInCategory="100"
+        android:title="流失"
+        />
+</menu>
