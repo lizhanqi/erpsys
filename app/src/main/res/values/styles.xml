@@ -1,12 +1,10 @@
 <resources>
-
     <!--启动页-->
     <style name="WelcomeStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -24,7 +22,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/themeColor</item>
         <item name="android:textColorHint">@color/copyrigth</item>
@@ -35,80 +32,120 @@
     </style>
     <!--Toolbar的-->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <!--
-        <style name="FullscreenTheme" parent="AppTheme">
-            <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-            <item name="android:windowActionBarOverlay">true</item>
-            <item name="android:windowBackground">@null</item>
-            <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-            <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
-        </style>
+    <!--融云loadingdiarlog-->
+    <style name="WinDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <!-- 右上角popupwindow -->
+    <style name="AnimationPreview">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+    <style name="convertion" parent="AppTheme">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
-        <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-            <item name="android:background">@color/black_overlay</item>
-        </style>
+    <!--修改toolbar的弹窗位置的样式-->
+    <style name="OverflowMenuStyle"  parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <item name="android:paddingRight">0dp</item>
+        <!-- 弹出层背景颜色 -->
+        <item name="android:popupBackground">@drawable/top_msg</item>
+        <!--<item name="android:background">@drawable/ic_menu_bg</item>-->
+        <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
+        <item name="android:dropDownVerticalOffset">-10dp</item>
+        <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
+        <item name="android:dropDownHorizontalOffset">-20dp</item>
+        <!-- 设置弹出菜单文字颜色 -->
+        <item name="android:textColor">@color/themeColor</item>
+        <!--<item name="android:dropDownListViewStyle">@style/AppDropDownListViewStyle</item>-->
+    </style>
 
-        <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
-    <!--开单-->
-    <!--ERP右边详情key(管理)-->
-    <style name="DetailsKey">
+    <!--ffffffffffffffffffffffffffffffffffffffffff控件属性fffffffffffffffffffffffffffffffffffffffff-->
+
+
+    <!--没有数据的-->
+    <style name="notData">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/bgColor_divier</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <!--一个横线-->
+    <style name="line">
+        <item name="android:id">@id/line</item>
+        <item name="android:background">@color/mainNavline_e7</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/px2</item>
+    </style>
+    <!--这个是标准的包裹内容,不要定义死了高度,否则文字大小不会影响高度-->
+    <style name="LinearLayoutStandard2">
+        <item name="android:background">@color/white</item>
+        <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:drawablePadding">@dimen/px32</item>
-        <item name="android:textSize">@dimen/xs42</item>
+        <item name="android:paddingRight">@dimen/px55</item>
+        <item name="android:paddingLeft">@dimen/px55</item>
+        <item name="android:paddingBottom">@dimen/px40</item>
+        <item name="android:paddingTop">@dimen/px40</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--key-->
+    <style name="DetailsKey" >
+        <item name="android:padding">@dimen/px10</item>
+        <item name="android:drawablePadding">@dimen/px30</item>
+        <item name="android:textSize">@dimen/xs44</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/myValue_33</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">top|left</item>
     </style>
-    <!--ERP右边数据-->
-    <style name="DetailsValue">
-        <item name="android:gravity">right|center_vertical</item>
+    <!--数据-->
+    <style name="DetailsValue" parent="DetailsKey">
+        <item name="android:layout_marginLeft">@dimen/px30</item>
         <item name="android:textColor">@color/textHint_99</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">@dimen/xs44</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColorHint">@color/textHint_99</item>
     </style>
-  <style name="Value">
-      <item name="android:layout_marginLeft">@dimen/px30</item>
-      <item name="android:gravity">left|center_vertical</item>
-      <item name="android:textColor">@color/myValue_33</item>
-      <item name="android:layout_weight">1</item>
-      <item name="android:textSize">@dimen/xs44</item>
-      <item name="android:layout_width">match_parent</item>
-      <item name="android:layout_height">match_parent</item>
-      <item name="android:textColorHint">@color/textHint_99</item>
-      <item name="android:drawablePadding">@dimen/px30</item>
-      <item name="android:background">@null</item>
-  </style>
-
     <!--表单值-->
-    <style name="FormValue" parent="Value">
+    <style name="FormValue" parent="DetailsValue">
         <item name="android:hint">请输入</item>
-
     </style>
-
     <!--文本域-->
     <style name="TextAreaKey" parent="DetailsKey">
-        <item name="android:gravity">top</item>
     </style>
-
     <style name="TextAreaValue" parent="FormValue">
         <item name="android:minLines">3</item>
     </style>
     <!--表单类型选择类的-->
-    <style name="FormSelectValue" parent="FormValue">
+    <style name="FormOptionValue" parent="FormValue">
         <item name="android:hint">请选择</item>
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
     </style>
-
+    <!--数字类型输入-->
     <style name="InputNumber" parent="FormValue">
         <item name="android:inputType">number</item>
     </style>
-
+    <!--小数类型输入-->
     <style name="InputDecimals" parent="FormValue">
         <item name="android:inputType">numberDecimal</item>
     </style>
-
+    <!--手机号类型输入-->
     <style name="InputPhone" parent="FormValue">
         <item name="android:drawableRight">@null</item>
         <item name="android:inputType">phone</item>
@@ -119,73 +156,29 @@
         <item name="android:textColor">@color/litte_red</item>
     </style>
     <!--必填项key-->
-    <style name="FormSelectValueMust" parent="FormSelectValue">
+    <style name="FormOptionValueMust" parent="FormOptionValue">
         <item name="android:hint">请选择(必选)</item>
     </style>
     <!--必填项key-->
     <style name="FormValueMust" parent="FormValue">
         <item name="android:hint">请输入(必选)</item>
     </style>
-    <!--一个横线-->
-    <style name="line">
-        <item name="android:id">@id/line</item>
-        <item name="android:background">@color/mainNavline_e7</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/px2</item>
-    </style>
-
-    <style name="customer_order_detail">
-        <item name="android:textSize">@dimen/xs42</item>
-        <item name="android:textColor">@color/textcolor_b6</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="customer_order_money">
-        <item name="android:textSize">@dimen/xs40</item>
-        <item name="android:textColor">@color/textHint_99</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
     <!--客户信息-->
-    <style name="CustomerInformationKey">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/mainNav_66</item>
-        <item name="android:textSize">@dimen/xs44</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">@dimen/px215</item>
+    <style name="CustomerInformationKey" parent="DetailsKey" >
     </style>
-
-    <style name="CustomerInformationValue" parent="CustomerInformationKey">
+    <style name="CustomerInformationValue" parent="DetailsValue">
         <item name="android:textColor">@color/myValue_33</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginLeft">@dimen/px18</item>
-        <item name="android:textColorHint">@color/textHint_99</item>
     </style>
 
     <style name="EditNormal" parent="CustomerInformationValue">
         <item name="android:editable">false</item>
         <item name="android:background">@null</item>
     </style>
-
-    <style name="CustomerInformationContain" parent="CustomerInformationKey">
-        <item name="android:background">@color/white</item>
+    <style name="CustomerInformationContain" parent="LinearLayoutStandard">
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingLeft">@dimen/px55</item>
         <item name="android:paddingRight">@dimen/px55</item>
-        <item name="android:layout_height">@dimen/px125</item>
-        <item name="android:layout_width">match_parent</item>
     </style>
-
-    <style name="PayDetail">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/xs44</item>
-        <item name="android:textColor">@color/myValue_33</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
     <!--这个是标准的包裹内容,不要定义死了高度,否则文字大小不会影响高度-->
     <style name="LinearLayoutStandard">
         <item name="android:background">@color/white</item>
@@ -198,18 +191,16 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <style name="Standard" parent="PayDetail">
-        <item name="android:layout_weight">1</item>
-        <item name="android:drawablePadding">@dimen/px30</item>
+    <style name="Standard" parent="DetailsValue">
     </style>
-
-    <style name="ArrowsRight" parent="PayDetail">
-        <item name="android:layout_weight">1</item>
-        <item name="android:drawablePadding">@dimen/px30</item>
+    <style name="ArrowsRight" parent="DetailsValue">
         <item name="android:drawableRight">@drawable/arrows_right_gray</item>
         <item name="android:textColor">@color/textHint_99</item>
     </style>
+
+
+
+
     <!--排程名称-->
     <style name="ScheduleTypeName">
         <item name="android:textColor">@color/myValue_33</item>
@@ -231,9 +222,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
     </style>
-
-
-
     <style name="ScheduleType">
         <item name="android:background">@color/white</item>
         <item name="android:layout_height">wrap_content</item>
@@ -244,52 +232,5 @@
         <item name="android:paddingLeft">@dimen/px55</item>
         <item name="android:paddingRight">@dimen/px55</item>
     </style>
-    <!--融云loadingdiarlog-->
-    <style name="WinDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-    <!-- 右上角popupwindow -->
-    <style name="AnimationPreview">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
-    </style>
 
-    <style name="convertion" parent="AppTheme">
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowDisablePreview">true</item>
-    </style>
-
-    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="notData">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/bgColor_divier</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-    <!--修改toolbar的弹窗位置的样式-->
-    <style name="OverflowMenuStyle"  parent="@style/Widget.AppCompat.PopupMenu.Overflow">
-        <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
-        <item name="overlapAnchor">false</item>
-        <item name="android:dropDownWidth">wrap_content</item>
-        <item name="android:paddingRight">0dp</item>
-        <!-- 弹出层背景颜色 -->
-        <item name="android:popupBackground">@drawable/top_msg</item>
-        <!--<item name="android:background">@drawable/ic_menu_bg</item>-->
-        <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
-        <item name="android:dropDownVerticalOffset">-10dp</item>
-        <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
-        <item name="android:dropDownHorizontalOffset">-20dp</item>
-        <!-- 设置弹出菜单文字颜色 -->
-        <item name="android:textColor">@color/themeColor</item>
-        <!--<item name="android:dropDownListViewStyle">@style/AppDropDownListViewStyle</item>-->
-    </style>
 </resources>

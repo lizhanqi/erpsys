@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,8 +22,10 @@ import com.suxuantech.erpsys.entity.TakeDataEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.ui.activity.TakeDataDetailsActivity;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
+import com.suxuantech.erpsys.utils.MyString;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -125,9 +128,8 @@ public class TakeDataFragment extends BaseSupportFragment {
 
     public void requestTakeData( ) {
         String takedata = Contact.getFullUrl(Contact.CUSTOMER_TAKEDATA, Contact.TOKEN, getArguments().get("orderId"), App.getApplication().getUserInfor().getShop_code());
-
         //请求实体
-        JavaBeanRequest<TakeDataEntity> takeDataEntityJavaBeanRequest = new JavaBeanRequest<TakeDataEntity>(takedata, RequestMethod.POST, TakeDataEntity.class);
+        JavaBeanRequest<TakeDataEntity> TakeDataEntityJavaBeanRequest = new JavaBeanRequest<TakeDataEntity>(takedata, RequestMethod.POST, TakeDataEntity.class);
         HttpListener<TakeDataEntity> searchByCustmor = new HttpListener<TakeDataEntity>() {
             @Override
             public void onSucceed(int what, Response<TakeDataEntity> response) {
@@ -140,12 +142,11 @@ public class TakeDataFragment extends BaseSupportFragment {
                     smartRefreshLayout.setNoMoreData(true);
                 }
             }
-
-            @Override
+                @Override
             public void onFailed(int what, Response<TakeDataEntity> response) {
             }
         };
-        request(0, takeDataEntityJavaBeanRequest, searchByCustmor, false, false);
+        request(0, TakeDataEntityJavaBeanRequest, searchByCustmor, false, false);
     }
 
     private void setAdaputer(List<TakeDataEntity.DataBean> data) {
@@ -154,9 +155,13 @@ public class TakeDataFragment extends BaseSupportFragment {
                 @Override
                 protected void convert(BaseViewHolder helper, TakeDataEntity.DataBean item) {
                     TextView view = helper.getView(R.id.tv_take_info);
-                    view.setText(item.getConsumption_name()+"\n");
-                    view.append("整件日期:"+item.getTake_can_date());
-                    view.append("\n取件日期:"+item.getTake_away_date()+"\u3000\u3000\u3000\u3000\u3000\u3000\u3000\u3000x"+item.getAmount());
+                    TextView productName = helper.getView(R.id.tv_product_name);
+                    TextView productStatus = helper.getView(R.id.tv_product_status);
+                    productName.setText(item.getConsumption_name());
+                    productStatus.setText(item.getWhether_already_take()+"\n");
+                    productStatus.append(new MyString("x "+item.getAmount()));
+                    view.setText("整件日期:"+item.getTake_can_date());
+                    view.append("\n取件日期:"+item.getTake_away_date() );
                 }
             };
             mRecyclerView.setAdapter(dataBeanQuickAdapter);
@@ -166,13 +171,18 @@ public class TakeDataFragment extends BaseSupportFragment {
                     dataBeanQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                            TakeDataEntity.DataBean dataBean = data.get(position);
+                            Intent intent = new Intent(getActivity(), TakeDataDetailsActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("data",dataBean);
+                            bundle.putString("dad","你妹");
+                            intent.putExtras(bundle);
+                            getActivity().startActivity(intent);
+                            //startActivity(intent);
                         }
                     });
                 }
             });
         }
-
     }
-
 }

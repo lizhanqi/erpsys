@@ -63,7 +63,7 @@
 
         <TextView
             android:id="@+id/tv_customer_birthday_w"
-            style="@style/FormSelectValue"
+            style="@style/FormOptionValue"
             android:hint="请选择日期" />
     </LinearLayout>
 </LinearLayout>

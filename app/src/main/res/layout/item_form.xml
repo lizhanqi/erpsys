@@ -4,10 +4,13 @@
     android:id="@+id/ll_form"
     style="@style/CustomerInformationContain">
         <TextView
+            android:gravity="top"
+            android:text="11"
             android:id="@+id/tv_form_key"
             style="@style/CustomerInformationKey"
            />
         <TextView
+            android:text="11"
             android:id="@+id/tv_form_value"
             style="@style/CustomerInformationValue"
              />

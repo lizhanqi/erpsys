@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.PayDetailActivity">
+    tools:context=".ui.activity.DetailsKeyActivity">
     <LinearLayout
         android:background="@color/white"
         android:gravity="center_vertical"
@@ -19,13 +19,13 @@
             android:drawablePadding="@dimen/px30"
             android:drawableLeft="@drawable/icon_receipt_date"
             android:text="收款日期"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
         <TextView
             android:id="@+id/tv_receipt_date"
             android:layout_weight="1"
             android:gravity="right"
             android:text="收款日期"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
     </LinearLayout>
     <View style="@style/line"/>
     <LinearLayout
@@ -39,13 +39,13 @@
             android:drawablePadding="@dimen/px30"
             android:drawableLeft="@drawable/icon_receipt_type"
             android:text="收款类型"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
         <TextView
             android:id="@+id/tv_receipt_type"
             android:layout_weight="1"
             android:gravity="right"
             android:text="收款日期"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
     </LinearLayout>
     <View style="@style/line"/>
     <LinearLayout
@@ -59,13 +59,13 @@
             android:drawablePadding="@dimen/px30"
             android:drawableLeft="@drawable/icon_receipt_staff"
             android:text="@string/receipt_staff"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
         <TextView
             android:id="@+id/tv_receipt_staff"
             android:layout_weight="1"
             android:gravity="right"
             android:text="收款日期"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
     </LinearLayout>
     <View style="@style/line"/>
     <LinearLayout
@@ -79,12 +79,12 @@
             android:drawablePadding="@dimen/px30"
             android:drawableLeft="@drawable/icon_pay_type"
             android:text="@string/pay_type"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
         <TextView
             android:id="@+id/tv_receipt_date"
             android:layout_weight="1"
             android:gravity="right"
             android:text="收款日期"
-            style="@style/PayDetail" />
+            style="@style/DetailsKey" />
     </LinearLayout>
 </LinearLayout>

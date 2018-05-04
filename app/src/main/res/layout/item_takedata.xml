@@ -37,10 +37,34 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView android:scaleType="fitXY"
             android:src="@drawable/logo"
             android:layout_width="@dimen/px240"
             android:layout_height="@dimen/px240" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:minLines="2"
+                    android:text="111"
+                    android:id="@+id/tv_product_name"
+                    android:maxLines="2"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="111"
+
+                    android:id="@+id/tv_product_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/tv_take_info"
                 android:textColor="@color/textHint_99"
@@ -50,5 +74,6 @@
                  android:text="取件状态:未取\n取件日期:2017年11月11日\n取件人:luck\n取件数量:1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

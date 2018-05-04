@@ -160,8 +160,14 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void onBackPressedSupport() {
-        super.onBackPressedSupport();
 
+        if (mSmrHistory!=null){
+           if( mSmrHistory.getAdapter() ==searchResultAdaputer   ){
+               initHistoryAdapter();
+               return ;
+           }
+        }
+        super.onBackPressedSupport();
     }
 
     private void initView() {

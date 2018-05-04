@@ -71,6 +71,6 @@
 
         <TextView
             android:id="@+id/tv_customer_birthday_m"
-            style="@style/FormSelectValue" />
+            style="@style/FormOptionValue" />
     </LinearLayout>
 </LinearLayout>

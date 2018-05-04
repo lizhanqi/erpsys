@@ -74,11 +74,12 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
         supportToolbar();
-        showUserDefinedNav();
+//        showUserDefinedNav();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
         current = stringArray[0];
-        setUseDefinedNavTitle(current);
+        setCenterTitle(current);
+        //setUseDefinedNavTitle(current);
         gotoFragment();
     }
 
@@ -87,6 +88,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_toolbar_center_title:
+                showpopupwindow();
+                break;
             case R.id.tv_nav_title:
                 showpopupwindow();
                 break;
@@ -129,7 +133,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 }
                 break;
             case "取件资料":
-
 //                    toTabFragement(0);
                 if (findFragment(TakeDataFragment.class) == null) {
                     TakeDataFragment takeDataFragment = new TakeDataFragment();
@@ -174,10 +177,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 *  第四个String类型的title参数，表示选项中显示的文字。
                  */
              //   OneKeyClearAutoCompleteText oneKeyClearAutoCompleteText = new OneKeyClearAutoCompleteText(getApplicationContext());
-                View inflate = getLayoutInflater().inflate(R.layout.action_onekey, null);
                 menu.add(Menu.NONE, 1, 0,"sss")
                         .setEnabled(true)
-                      .setActionView(inflate)
                         .setOnMenuItemClickListener(menuItem -> {
                             toastShort("sss");
                             return  true;})
@@ -236,7 +237,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 }
                 current = stringArray[position];
                 stringBaseRecyclerAdapter.notifyDataSetChanged();
-                setUseDefinedNavTitle(current);
+                setCenterTitle(current);
+              //  setUseDefinedNavTitle(current);
                 gotoFragment();
             }
         });
@@ -260,7 +262,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
         mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
-        showAsDropDown(mPopupWindow, getLineView(), 0, 0);
+
+        showAsDropDown(mPopupWindow, tvToolbarCenterTilte, 0, 0);
+        // showAsDropDown(mPopupWindow, getLineView(), 0, 0);
     }
 
     /**

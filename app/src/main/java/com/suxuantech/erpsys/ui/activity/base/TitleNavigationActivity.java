@@ -60,7 +60,7 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
     //当前Activity渲染用户的主要内容
     private View mContextView;
     private View lineView;
-    private TextView tvToolbarCenterTilte;
+    public TextView tvToolbarCenterTilte;
 
     @Override
     public void widgetClick(View v) {

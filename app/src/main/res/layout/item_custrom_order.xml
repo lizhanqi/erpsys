@@ -67,7 +67,7 @@
             android:id="@+id/tv_infor"
             android:lineSpacingExtra="@dimen/px48"
             android:text="552555"
-            style="@style/customer_order_detail"/>
+            style="@style/DetailsKey"/>
     <!--右边-->
         <!--这里测试一个制表符\t代表2个字符-->
         <TextView
@@ -75,7 +75,7 @@
             android:id="@+id/tv_money_details"
             android:layout_gravity="right"
             android:gravity="center_vertical|right"
-            style="@style/customer_order_detail"
+            style="@style/DetailsKey"
             android:text="¥:2\n\t\t\t\t\t总价"  />
     </LinearLayout>
         <View  style="@style/line"/>

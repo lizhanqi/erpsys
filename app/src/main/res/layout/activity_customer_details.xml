@@ -20,7 +20,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_wechat"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -34,7 +34,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_QQ"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_sex"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_birthday"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_source"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_intention"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -104,7 +104,7 @@
 
             <TextView
                 android:id="@+id/tv_order_address"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -118,7 +118,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_address"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -132,7 +132,7 @@
 
             <TextView
                 android:id="@+id/tv_make_date"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -146,7 +146,7 @@
 
             <TextView
                 android:id="@+id/tv_pre_shooting_date"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -160,7 +160,7 @@
 
             <TextView
                 android:id="@+id/tv_marry_date"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -174,7 +174,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_name"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -188,7 +188,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_phone"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -202,7 +202,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_wechat"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -216,7 +216,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_QQ"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -230,7 +230,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_sex"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -244,7 +244,7 @@
 
             <TextView
                 android:id="@+id/tv_mate_birthday"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 
@@ -258,7 +258,7 @@
 
             <TextView
                 android:id="@+id/tv_customer_remarks"
-                style="@style/Value"
+                style="@style/DetailsValue"
                  />
         </LinearLayout>
 

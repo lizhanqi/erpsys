@@ -61,7 +61,7 @@
 
                     <TextView
                         android:id="@+id/tv_order_date"
-                        style="@style/FormSelectValueMust"
+                        style="@style/FormOptionValueMust"
                           />
                 </LinearLayout>
 
@@ -77,7 +77,7 @@
 
                     <TextView
                         android:id="@+id/tv_consumption_type"
-                        style="@style/FormSelectValueMust"
+                        style="@style/FormOptionValueMust"
                        />
                 </LinearLayout>
 
@@ -93,7 +93,7 @@
 
                     <TextView
                         android:id="@+id/tv_consumption_sub"
-                        style="@style/FormSelectValue"
+                        style="@style/FormOptionValue"
                         android:hint="@string/please_select_consumption_type" />
                 </LinearLayout>
                 <!--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^男士^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-->
@@ -118,7 +118,7 @@
 
                     <TextView
                         android:id="@+id/tv_reception"
-                        style="@style/FormSelectValueMust"
+                        style="@style/FormOptionValueMust"
                      />
                 </LinearLayout>
 
@@ -134,7 +134,7 @@
 
                     <TextView
                         android:id="@+id/tv_reception_market"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -149,7 +149,7 @@
 
                     <TextView
                         android:id="@+id/tv_reception_governor"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
 
                 </LinearLayout>
 
@@ -165,7 +165,7 @@
 
                     <TextView
                         android:id="@+id/tv_marriage_date"
-                        style="@style/FormSelectValue"
+                        style="@style/FormOptionValue"
                         android:hint="@string/please_select_marriage_date" />
 
                 </LinearLayout>
@@ -222,7 +222,7 @@
                     <TextView
                         android:hint="请选择(与拍照店二选填一个)"
                         android:id="@+id/tv_photo_shop_one"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
                 </LinearLayout>
 
                 <View style="@style/line" />
@@ -238,7 +238,7 @@
 
                     <TextView
                         android:id="@+id/tvintention_shop"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
 
                 </LinearLayout>
 
@@ -255,7 +255,7 @@
                     <TextView
                         android:hint="请选择(与拍照店一选填一个)"
                         android:id="@+id/tv_photo_shop_two"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
 
                 </LinearLayout>
 
@@ -271,7 +271,7 @@
 
                     <TextView
                         android:id="@+id/tv_vip_zone"
-                        style="@style/FormSelectValueMust" />
+                        style="@style/FormOptionValueMust" />
 
                 </LinearLayout>
 
@@ -287,7 +287,7 @@
 
                     <TextView
                         android:id="@+id/tv_customer_source"
-                        style="@style/FormSelectValue" />
+                        style="@style/FormOptionValue" />
 
                 </LinearLayout>
                 <View style="@style/line" />
@@ -302,7 +302,7 @@
 
                     <TextView
                         android:id="@+id/tv_intention_package"
-                        style="@style/FormSelectValueMust" />
+                        style="@style/FormOptionValueMust" />
 
                 </LinearLayout>
 

@@ -26,4 +26,10 @@
             />
     </android.support.v7.widget.Toolbar>
     <include      android:visibility="gone" layout="@layout/navigation_haed_user_defined"/>
+    <View
+        android:background="@color/mainNavline_e7"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px2"/>
 </merge>
