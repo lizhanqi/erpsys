@@ -256,5 +256,8 @@ public class Contact {
      * 客户摄影资料
      */
     public static  String CUSTOMER_PHOTO_INFO="/SXWebErpAppStaff/SX_CustomerPhotoInfo?Token=%s&orderid=%s&Code=%s";
-
+    /**
+     * 首页数据汇总
+     */
+    public static  String HOME_SUM="/SXWebErpAppStaff/SX_DataSummary?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
 }

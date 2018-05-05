@@ -25,17 +25,29 @@ package com.suxuantech.erpsys.entity
  * @author Created by 李站旗 on 2018/4/27 0027 15:05 .
  * QQ:1032992210
  * E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description: 表单类型的校验
  */
 class FormEntity {
     var icon: Int = 0
+    var marginTop: Int = 0
     var edit: Boolean = false
-    var key: String? = null
-    var value: String? = null
-    var hint: String? = null
+    var key: String? = ""
+    var value: String? = ""
+    var hint: String? = ""
     var mustFill: Boolean = false
     var option: Boolean = false
     var flag: Any? = null
+    /**
+     * 校验必填项的值是否填入了
+     */
+    public fun valueNotNull(): Boolean {
+        if (mustFill) {
+            return value.isNullOrEmpty()
+        } else {
+            return true
+        }
+    }
+
     constructor(key: String, value: String) {
         this.key = key
         this.value = value
@@ -78,5 +90,16 @@ class FormEntity {
         this.hint = hint
         this.mustFill = mustFill
         this.option = option
+    }
+
+    constructor(edit: Boolean, key: String, value: String, hint: String, marginTop: Int) {
+        this.icon = icon
+        this.edit = edit
+        this.key = key
+        this.value = value
+        this.hint = hint
+        this.mustFill = mustFill
+        this.option = option
+        this.marginTop = marginTop
     }
 }

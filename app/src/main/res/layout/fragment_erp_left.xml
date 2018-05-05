@@ -388,7 +388,6 @@ clickable是防止页面穿透的点击事件的
                         android:padding="@dimen/px30"
                         android:background="@color/gray_f9"
                         android:id="@+id/rv_card"
-
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                     </android.support.v7.widget.RecyclerView>

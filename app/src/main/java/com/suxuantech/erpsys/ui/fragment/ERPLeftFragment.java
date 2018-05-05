@@ -13,8 +13,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HomeCustmoerCountEntity;
+import com.suxuantech.erpsys.entity.HomeSumEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -44,11 +47,12 @@ import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
-import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
+import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration2;
 import com.suxuantech.erpsys.ui.widget.MarqueTextView;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -105,7 +109,32 @@ public class ERPLeftFragment extends BaseLazyFragment {
     CoordinatorLayout mRootLayoutContentImmersed;
     @BindView(R.id.rv_card)
     RecyclerView mRvCard;
+    private View headView;
+    private View headView1;
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
+        initRefresh();
+        initCard();
+        //   initTabLayout();
+        //initBall(view);
+//                Intent intent = new Intent(getActivity(), OptionActivity.class);
+//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
+//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                multiple.setCheckedData("礼服");
+//                multiple.setTitle("选择");
+        //                multiple.setUrl("11111");
+
+//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
+//                intent.putExtra("Title","选择");
+//                intent.putExtra("Multiple",false);
+        //                startActivity(multiple.creat());
+    }
 
     @Override
     protected int setLayoutId() {
@@ -154,29 +183,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         }
     };
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
-        initRefresh();
-        initCard();
-        //   initTabLayout();
-        //initBall(view);
-//                Intent intent = new Intent(getActivity(), OptionActivity.class);
-//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
-//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData("礼服");
-//                multiple.setTitle("选择");
-        //                multiple.setUrl("11111");
-
-//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Title","选择");
-//                intent.putExtra("Multiple",false);
-        //                startActivity(multiple.creat());
-    }
-
     private void initCard() {
         String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         String Url = Contact.getFullUrl(Contact.HOME_CUSTOMER_COUNT, Contact.TOKEN, nowDate, nowDate, App.getApplication().getUserInfor().getShop_code());
@@ -197,29 +203,65 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+        String homesum = Contact.getFullUrl(Contact.HOME_SUM, Contact.TOKEN, nowDate, nowDate, App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<HomeSumEntity> homeSumRequset = new JavaBeanRequest<HomeSumEntity>(homesum, RequestMethod.POST, HomeSumEntity.class);
+        HttpListener<HomeSumEntity> homeSumListener = new HttpListener<HomeSumEntity>() {
+            @Override
+            public void onSucceed(int what, Response<HomeSumEntity> response) {
+                if (response.get().isOK()) {
+                    List<HomeSumEntity.DataBean> data = response.get().getData();
+                    TextView tvcn = headView.findViewById(R.id.tv_today_customer_number);
+                    TextView tvin = headView.findViewById(R.id.tv_today_income);
+                    TextView tvon = headView.findViewById(R.id.tv_today_order_number);
+                    TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
+                    tvcn.setText(new MyString("今日客资量\u3000" + data.get(0).getRentotal()).setSize(15));
+                    //   tvcn.append(new MyString("\n今日客资量").setSize(20));
+                    tvon.setText((new MyString("今日订单量\u3000" + data.get(0).getJktotal()).setSize(15)));
+                    //tvon.append(new MyString(" 今日订单量").setSize(20));
+
+                    tvin.setText((new MyString(data.get(0).getRealmoney()).setSize(20)));
+                    tvin.append(new MyString("\n今日营收").setSize(15));
+                    tvrt.setText((new MyString(data.get(0).getZongmoney()).setSize(20)));
+                    tvrt.append(new MyString("\n今日收款").setSize(15));
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<HomeSumEntity> response) {
+
+            }
+        };
+        request(33, homeSumRequset, homeSumListener, false, false);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        headView = inflater.inflate(R.layout.head_home, null, false);
+        headView1 = inflater.inflate(R.layout.head_home, null, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     private void setAdapter(List<HomeCustmoerCountEntity.DataBean> data) {
 //        ArrayList<String> strings = new ArrayList<>();
         String[] titles = getResources().getStringArray(R.array.home_title);
-        List<String>  strings= Arrays.asList(titles);
+        List<String> strings = Arrays.asList(titles);
         //网格布局管理器
         mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     mRefreshLayout.setEnableRefresh(false);
                 }
-                if (motionEvent.getAction()==MotionEvent.ACTION_UP||motionEvent.getAction()==MotionEvent.ACTION_CANCEL){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
                     mRefreshLayout.setEnableRefresh(true);
                 }
                 return false;
             }
         });
-        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9),30,30);
-        mRvCard.addItemDecoration(defaultItemDecoration );
+        DefaultItemDecoration2 defaultItemDecoration = new DefaultItemDecoration2(getResources().getColor(R.color.gray_f9), 30, 30, QuickAdapter.HEADER_VIEW, QuickAdapter.FOOTER_VIEW);
+        defaultItemDecoration.setHasHead(true);
         QuickAdapter<String> quickAdapter = new QuickAdapter<String>(R.layout.item_home_card, strings) {
             @Override
             protected void convert(BaseViewHolder helper, String item) {
@@ -228,31 +270,32 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 TextView tvName = (TextView) helper.getView(R.id.tv_name);
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
                 tvName.setText(item);
-                if (i==0){
+                if (i == 0) {
                     tvValues.setText(data.get(0).getJkyycount());
-                }else      if (i==1){
+                } else if (i == 1) {
                     tvValues.setText(data.get(0).getPzcount());
-                }else      if (i==2){
-                  tvValues.setText(data.get(0).getLfcount());
-                }else      if (i==3){
-                   tvValues.setText(data.get(0).getHzcount());
-                }else      if (i==4){
-                       tvValues.setText(data.get(0).getXpcount());
-                }else      if (i==5){
+                } else if (i == 2) {
+                    tvValues.setText(data.get(0).getLfcount());
+                } else if (i == 3) {
+                    tvValues.setText(data.get(0).getHzcount());
+                } else if (i == 4) {
+                    tvValues.setText(data.get(0).getXpcount());
+                } else if (i == 5) {
                     tvValues.setText(data.get(0).getQjcount());
-                }else      if (i==6){
-                  tvName.setText(strings.get(i));
-                   //   tvValues.setText(item.get());
+                } else if (i == 6) {
+                    tvName.setText(strings.get(i));
+                    //   tvValues.setText(item.get());
                 }
-
-
             }
         };
         quickAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-            intent.putExtra("title",strings.get(position));
-            startActivity( intent);
+            intent.putExtra("title", strings.get(position));
+            startActivity(intent);
         });
+
+        quickAdapter.addHeaderView(headView);
+        mRvCard.addItemDecoration(defaultItemDecoration);
         mRvCard.setAdapter(quickAdapter);
     }
 
@@ -278,7 +321,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
     }
-
 
     private ArrayList<Fragment> fragments;
 
