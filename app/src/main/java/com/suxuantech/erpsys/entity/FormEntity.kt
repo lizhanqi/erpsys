@@ -102,4 +102,13 @@ class FormEntity {
         this.option = option
         this.marginTop = marginTop
     }
+
+    constructor(icon: Int, key: String, value: String, marginTop: Int){
+        this.icon = icon
+        this.key = key
+        this.value = value
+        this.marginTop = marginTop
+    }
+
+
 }

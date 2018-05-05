@@ -197,7 +197,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                 new AlertView("产品次数", null, getString(R.string.cancel), null, s  , this, AlertView.Style.ACTIONSHEET, new OnItemClickListener(){
                                     @Override
                                     public void onItemClick(Object o, int position){//position -1是取消按钮
-
+                                        if (position<0){
+                                            return;
+                                        }
                                         OptionHelp optionHelp = new OptionHelp(OrderDetailActivity.this);
                                         optionHelp.setTitle(s[position]);
                                         optionHelp.setUrlTag(OptionHelp.UrlTag.PRODUCT);

@@ -103,7 +103,6 @@ abstract class ImmersionActivity : BaseActivity() {
                 if (surport!=null){
                     mImmersionBar   ?.addViewSupportTransformColor(surport)
                 }
-
         mImmersionBar?.barAlpha(alpha)
         mImmersionBar?.init();
 

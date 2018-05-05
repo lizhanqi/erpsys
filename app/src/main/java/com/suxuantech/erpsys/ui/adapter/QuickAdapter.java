@@ -32,13 +32,19 @@ import java.util.List;
  * @author Created by 李站旗 on 2018/4/9 0009 17:47 .
  *         QQ:1032992210
  *         E-mail:lizhanqihd@163.com
- * @Description: todo(用一句话描述该文件做什么)
+ * @Description:
+ *  kolin
+ *     var adapter = object : QuickAdapter<FormEntity>(R.layout.item_home_data, list) {
+        public override fun convert(helper: BaseViewHolder, item: FormEntity) {
+
+}
  */
 
 public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
     public QuickAdapter(int layoutResId, @Nullable List<T> data)   {
         super(layoutResId, data);
     }
+
     public void updateAll(List<T> data) {
         if (data!=null){
             mData=data;
@@ -48,4 +54,5 @@ public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHol
            notifyDataSetChanged();
         }
     }
+
 }

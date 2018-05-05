@@ -40,7 +40,6 @@ import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
-import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
@@ -455,7 +454,10 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 break;
             case R.id.tv_schedule:
-                startActivity(new Intent(getActivity(), ScheduleActivity.class));
+                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+                intent.putExtra("title","排程");
+                startActivity(intent);
+            //    startActivity(new Intent(getActivity(), ScheduleActivity.class));
                 break;
             case R.id.schedule_wave:
                 break;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_type"
+        style="@style/ScheduleType"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/img_icon_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_camera_schedule" />
+        <LinearLayout
+            style="@style/ScheduleTypeWrap"
+            android:layout_alignLeft="@id/img_icon_type">
+            <TextView
+                android:id="@+id/tv_type_name"
+                style="@style/ScheduleTypeName"
+                android:text="所有客资" />
+            <TextView
+                android:id="@+id/tv_type_value"
+                style="@style/ScheduleTypeInfromation"
+                android:text="今日所有客资" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrows_right_gray" />
+    </LinearLayout>

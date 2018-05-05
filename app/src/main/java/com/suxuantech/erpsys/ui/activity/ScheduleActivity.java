@@ -135,6 +135,10 @@ public class ScheduleActivity extends TitleNavigationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        supportToolbar();
+        if(getIntent().hasExtra("title") ){
+            setTitle(getIntent().getStringExtra("title"));
+        }
         initView();
         SwipeMenuRecyclerView mRecyclerView = findViewById(R.id.rvScheduleList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

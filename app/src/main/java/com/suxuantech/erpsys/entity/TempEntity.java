@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.entity;
 
+import java.util.List;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -27,56 +29,66 @@ package com.suxuantech.erpsys.entity;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class TempEntity {
-    int icon;
-    boolean edit;
-    String key;
-    String value;
-    String hint;
-    boolean mustFill;
-    boolean option;
-    Object flag;
+public class TempEntity  extends  BaseResult{
 
-    public TempEntity(String key, String value) {
-        this.key = key;
-        this.value = value;
+    /**
+     * Code : 200
+     * Data : [{"zongmoney":"","rentotal":"0","realmoney":"","jktotal":"0"}]
+     */
+
+    private List<DataBean> Data;
+
+    public List<DataBean> getData() {
+        return Data;
     }
 
-    public TempEntity(int icon, String key, String value) {
-        this.icon = icon;
-        this.key = key;
-        this.value = value;
+    public void setData(List<DataBean> Data) {
+        this.Data = Data;
     }
 
-    public TempEntity(int icon, String key, String value, String hint) {
-        this.icon = icon;
-        this.key = key;
-        this.value = value;
-        this.hint = hint;
-    }
+    public static class DataBean {
+        /**
+         * zongmoney :
+         * rentotal : 0
+         * realmoney :
+         * jktotal : 0
+         */
 
-    public TempEntity(int icon, String key, String value, String hint, boolean mustFill) {
-        this.icon = icon;
-        this.key = key;
-        this.value = value;
-        this.hint = hint;
-        this.mustFill = mustFill;
-    }
+        private String zongmoney;
+        private String rentotal;
+        private String realmoney;
+        private String jktotal;
 
-    public TempEntity(int icon, boolean edit, String key, String value) {
-        this.icon = icon;
-        this.edit = edit;
-        this.key = key;
-        this.value = value;
-    }
+        public String getZongmoney() {
+            return zongmoney;
+        }
 
-    public TempEntity(int icon, boolean edit, String key, String value, String hint, boolean mustFill, boolean option) {
-        this.icon = icon;
-        this.edit = edit;
-        this.key = key;
-        this.value = value;
-        this.hint = hint;
-        this.mustFill = mustFill;
-        this.option = option;
+        public void setZongmoney(String zongmoney) {
+            this.zongmoney = zongmoney;
+        }
+
+        public String getRentotal() {
+            return rentotal;
+        }
+
+        public void setRentotal(String rentotal) {
+            this.rentotal = rentotal;
+        }
+
+        public String getRealmoney() {
+            return realmoney;
+        }
+
+        public void setRealmoney(String realmoney) {
+            this.realmoney = realmoney;
+        }
+
+        public String getJktotal() {
+            return jktotal;
+        }
+
+        public void setJktotal(String jktotal) {
+            this.jktotal = jktotal;
+        }
     }
 }

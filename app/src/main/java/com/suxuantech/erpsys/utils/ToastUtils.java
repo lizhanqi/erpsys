@@ -114,41 +114,20 @@ public class ToastUtils {
         if (make!=null){
             make.dismiss();
         }
-        make = Snackbar.make(decorView, text, Snackbar.LENGTH_SHORT);
-        make.setText(text);
-        make  .setDuration(5000);
-        make .setAction(action, listener==null?new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        }:listener).show();
-    }
-    public static  void snackbarShort( int text,String action, View.OnClickListener listener){
-        Activity topActivity = App.getApplication().getTopActivity();
-        if (topActivity==null){
-            showShort(text);
-            return;
-        }
-        View decorView = topActivity.getWindow().getDecorView();
-        View viewById =  decorView.findViewById(R.id.content_view_layout);
-        if (viewById!=null){
-            decorView=viewById;
-        }
-        if (make!=null){
-            make.dismiss();
-        }
         make = Snackbar.make(decorView, text ,Snackbar.LENGTH_SHORT);
-        make.getView().setBackgroundColor(App.getApplication().getResources().getColor(R.color.noticeOrange));
+//        App.getApplication().getResources().getColor(R.color.noticeOrange);
+        View view = make.getView();
+        view .setBackgroundResource(R.color.noticeOrange);
         make.setText(text);
         make  .setDuration(5000);
-
         make .setAction(action, listener==null?new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         }:listener).show();
     }
 
+    public static  void snackbarShort( int text,String action, View.OnClickListener listener){
+        snackbarShort( App.getApplication().getResources().getString(text),action,listener);
+    }
 }
