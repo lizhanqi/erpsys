@@ -170,9 +170,9 @@ public class Contact {
     public static String PACKAGE = "/SXWebErpAppStaff/SX_PackageSet?Token=%s&code=%s";
 
     /**
-     * 获得包套
+     * 获得产品
      */
-    public static String PRODUCT = "/SXWebErpAppStaff/SX_SelPageConsumptionItms?Token=%s&code=%s";
+    public static String PRODUCT = "/SXWebErpAppStaff/SX_ConsumptionItmsSet?Token=%s&code=%s";
     /**
      * 开婚纱单
      */
@@ -260,4 +260,16 @@ public class Contact {
      * 首页数据汇总
      */
     public static  String HOME_SUM="/SXWebErpAppStaff/SX_DataSummary?Token=%s&StartDate=%s&EndDate=%s&Code=%s";
+    /**
+     * 添加包套
+     */
+    public static  String ADD_PACKAGE="/SXWebErpAppStaff/SX_AddPackage?Token=%s&orderid=%s&customerid=%s&package_name=%s&pid=%s&Code=%s&shopname=%s&txprice=%s&isyanzheng=%s&brandid=%s";
+
+
+    /**
+     * 添加产品
+     */
+    public static  String ADD_PRODUCTS="/SXWebErpAppStaff/SX_AddPackage?Token=%s&orderid=%s&customerid=%s&package_name=%s&pid=%s&Code=%s&shopname=%s&txprice=%s&isyanzheng=%s&brandid=%s";
+
+
 }

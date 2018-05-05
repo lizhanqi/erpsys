@@ -148,8 +148,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     SearchOrderEntity.DataBean dataBean  = datacopy.get(position);
                     intent.putExtra("orderId",dataBean .getOrderId());
                     Bundle bundle = new Bundle();
-                    bundle.putParcelable("customerAllInfor",dataBean);
-                    intent.putExtra("bund",bundle);
+                    bundle.putParcelable("data",dataBean);
+                    intent.putExtras( bundle);
                     startActivity(intent);
                     toastShort(position + "");
                 }

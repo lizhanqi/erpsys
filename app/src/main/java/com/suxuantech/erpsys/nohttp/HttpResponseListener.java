@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.BaseResult;
 import com.suxuantech.erpsys.ui.dialog.WaitDialog;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.error.NetworkError;
@@ -39,7 +40,7 @@ import org.json.JSONException;
  *
  * @author Yan Zhenjie.
  */
-public class HttpResponseListener<T> implements OnResponseListener<T> {
+public class HttpResponseListener<T extends BaseResult> implements OnResponseListener<T> {
     /**
      * Dialog.
      */
@@ -52,10 +53,12 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      * 结果回调.
      */
     private HttpListener<T> callback;
+
     /**
      * 是否提示错误信息
      */
     boolean isShowError;
+     boolean isSnake=true;
     /**
      * @param context      context用来实例化dialog.
      * @param request      请求对象.
@@ -88,6 +91,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         if (context instanceof App){
             context =((App) context).getTopActivity();
         }
+
         this.mRequest = request;
         this.isShowError = isShowError;
         if (context != null && isLoading) {
@@ -125,12 +129,20 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      * 成功回调.
      */
     @Override
-    public void onSucceed(int what, Response<T> response) {
+    public void onSucceed(int what, Response<T  > response) {
         if (callback != null) {
             // 这里判断一下http响应码，这个响应码问下你们的服务端你们的状态有几种，一般是200成功。
             // w3c标准http响应码：http://www.w3school.com.cn/tags/html_ref_httpmessages.asp
             if (response.get()!=null&&response.getHeaders().getResponseCode()==200){
                 callback.onSucceed(what, response);
+                if (! response.get().isOK()) {
+                    if (isSnake){
+                        ToastUtils.snackbarShort(response.get().getCode()+":"+response.get().getMsg(),"确定");
+                    }else {
+                        ToastUtils.showShort(response.get().getCode()+":"+response.get().getMsg());
+                    }
+
+                }
             }else {
                onFailed(what,response);
             }
@@ -144,27 +156,61 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
         Exception exception = response.getException();
         if (isShowError) {
             if (exception instanceof NetworkError) {
-                ToastUtils.showShort(R.string.error_please_check_network);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_please_check_network,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_please_check_network);
+                }
+
             } else if (exception instanceof TimeoutError) {
-                ToastUtils.showShort(R.string.error_timeout);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_timeout,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_timeout);
+                }
             } else if (exception instanceof UnKnownHostError) {
-                ToastUtils.showShort(R.string.error_not_found_server);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_not_found_server,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_not_found_server);
+                }
             } else if (exception instanceof URLError) {
-                ToastUtils.showShort(R.string.error_url_error);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_url_error,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_url_error);
+                }
             } else if (exception instanceof NotFoundCacheError) {
                 // 这个异常只会在仅仅查找缓存时没有找到缓存时返回
-                ToastUtils.showShort(R.string.error_not_found_cache);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_not_found_cache,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_not_found_cache);
+                }
             } else if (exception instanceof JSONException || exception instanceof com.alibaba.fastjson.JSONException) {
                 // 这个异常只会在解析数据出现问题后提示
-                ToastUtils.showShort(R.string.error_data_analysis);
+                if (isSnake){
+                    ToastUtils.snackbarShort(R.string.error_data_analysis,"确定");
+                }else {
+                    ToastUtils.showShort(R.string.error_data_analysis);
+                }
             } else if (response.getHeaders().getResponseCode()>=500){
-                ToastUtils.showShort(App.getApplication().getString(R.string.error_service)+response.getHeaders().getResponseCode());
+                if (isSnake){
+                    ToastUtils.snackbarShort(App.getApplication().getString(R.string.error_service) + response.getHeaders().getResponseCode(),"确定");
+                }else {
+                    ToastUtils.showShort(App.getApplication().getString(R.string.error_service) + response.getHeaders().getResponseCode());
+                }
             }  else{
                 String ex="";
                 if (response.getException()!=null&& response.getException().getMessage()!=null){
                     ex=   response.getException().getMessage();
                 }
-                ToastUtils.showShort(response.getHeaders().getResponseCode()+ex+App.getApplication().getString(R.string.error_unknow));
+                if (isSnake){
+                    ToastUtils.snackbarShort(response.getHeaders().getResponseCode()+ex+App.getApplication().getString(R.string.error_unknow),"确定");
+                }else {
+                    ToastUtils.showShort(response.getHeaders().getResponseCode()+ex+App.getApplication().getString(R.string.error_unknow));
+                }
+
             }
         }
         if (callback != null){

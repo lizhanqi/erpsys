@@ -297,7 +297,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      */
     public <T> void request(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean isLoading) {
         request.setCancelSign(object);
-        requestQueue.add(what, request, new HttpResponseListener<>(this, request, callback, canCancel, isLoading));
+        requestQueue.add(what, request, new HttpResponseListener (this, request, callback, canCancel, isLoading));
     }
     protected void cancelAll() {
         requestQueue.cancelAll();

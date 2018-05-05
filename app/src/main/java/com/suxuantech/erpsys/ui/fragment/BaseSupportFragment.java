@@ -18,6 +18,8 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import me.yokeyword.fragmentation.SupportFragment;
@@ -60,11 +62,48 @@ public class BaseSupportFragment extends SupportFragment    implements IDynamicN
      * 网络队列,默认每个Activity都应该有一个队列,用这个队列在页面销毁可以全部取消major
      */
     private RequestQueue requestQueue;
+    private  boolean useEventBus;
     Object object=new Object();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestQueue = NoHttp.newRequestQueue();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //加上判断
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    /**
+     * 使用EventBus
+     *  如果使用EventBus
+     *  那么必须在在该页面有一个方法用来接收消息，
+     *  当然这个方法需要注解：@Subscribe 且方法必须是public
+     */
+    public  void  useEventBus(){
+        useEventBus=true;
+        //加上判断
+        if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //加上判断
+        if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     /**

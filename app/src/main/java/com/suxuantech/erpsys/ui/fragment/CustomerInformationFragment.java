@@ -85,7 +85,7 @@ public class CustomerInformationFragment extends BaseSupportFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SearchOrderEntity.DataBean data = getArguments().getParcelable("customerAllInfor");
+        SearchOrderEntity.DataBean data = getArguments().getParcelable("data");
         mTvStoreName.setText(data.getShop_name());
 
         mCustomerId.setText(data.getOrderId());

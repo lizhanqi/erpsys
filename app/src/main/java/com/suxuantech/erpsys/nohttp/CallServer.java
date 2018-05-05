@@ -17,7 +17,8 @@ package com.suxuantech.erpsys.nohttp;
 
 import android.content.Context;
 
-        import com.yanzhenjie.nohttp.NoHttp;
+import com.suxuantech.erpsys.entity.BaseResult;
+import com.yanzhenjie.nohttp.NoHttp;
         import com.yanzhenjie.nohttp.rest.Request;
         import com.yanzhenjie.nohttp.rest.RequestQueue;
 
@@ -47,7 +48,7 @@ public class CallServer {
      * @param canCancel 请求是否能被用户取消
      * @param isLoading 是否显示dialog
      */
-    public <T> void add(Context context, Request<T> request, HttpListener<T> callback, int what,  boolean canCancel, boolean  isLoading) {
+    public <T extends BaseResult> void add(Context context, Request<T> request, HttpListener<T> callback, int what, boolean canCancel, boolean  isLoading) {
         if (queue==null){
             queue = NoHttp.getRequestQueueInstance();
         }
@@ -65,7 +66,7 @@ public class CallServer {
      * @param isShowError
      */
     public <T> void add(Context context, Request<T> request, HttpListener<T> callback, int what,  boolean canCancel, boolean  isLoading,boolean isShowError) {
-        queue.add(what, request, new HttpResponseListener<>( context, request, callback, canCancel, isLoading,isShowError));
+        queue.add(what, request, new HttpResponseListener ( context, request, callback, canCancel, isLoading,isShowError));
     }
 }
 

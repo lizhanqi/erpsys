@@ -16,15 +16,24 @@ import com.allen.library.SuperTextView;
 import com.bigkoo.alertview.AlertView;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.CustomerProductEntity;
+import com.suxuantech.erpsys.entity.PackageEntity;
+import com.suxuantech.erpsys.entity.SearchOrderEntity;
+import com.suxuantech.erpsys.entity.SimpleEntity;
+import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
 import com.suxuantech.erpsys.utils.ScreenUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -52,8 +61,6 @@ public class ProductDataFragment extends BaseSupportFragment {
     RelativeLayout mRlDelete;
     @BindView(R.id.stv_one_package)
     SuperTextView mStvOnePackage;
-
-
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer2;
     private ProductGroupAdaputer productGroupAdaputer;
@@ -66,10 +73,48 @@ public class ProductDataFragment extends BaseSupportFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
-       // ((OrderDetailActivity) getActivity()).setUseDefinedNavRightText("1111");
+        // ((OrderDetailActivity) getActivity()).setUseDefinedNavRightText("1111");
+        useEventBus();
         initView(view);
         getProduct();
         return view;
+    }
+
+    /**
+     * @param msg
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BaseMsg msg) {
+        OptionHelp.UrlTag urlTag = msg.getUrlTag();
+        switch (urlTag) {
+            case PACKAGE:
+                PackageEntity.DataBean packageChecked = (PackageEntity.DataBean) msg.getSingleChecked();
+                String orderId = getArguments().getString("orderId");
+                SearchOrderEntity.DataBean data = getArguments().getParcelable("data");
+                String url = Contact.getFullUrl(Contact.ADD_PACKAGE, Contact.TOKEN, orderId, data.getCustomerid(),
+                        packageChecked.getPackage_name(), packageChecked.getId(), App.getApplication().getUserInfor().getShop_code(),
+                        App.getApplication().getUserInfor().getShop_name(), packageChecked.getPackage_price(), 0, App.getApplication().getUserInfor().getBrandclass_id());
+                addPackage(url);
+                break;
+        }
+    }
+
+    public void addPackage(String url) {
+        //请求实体
+        JavaBeanRequest<SimpleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SimpleEntity>(url, RequestMethod.POST, SimpleEntity.class);
+        HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
+            @Override
+            public void onSucceed(int what, Response<SimpleEntity> response) {
+                if (response.get().isOK()){
+                    ToastUtils.showShort("添加套系成功");
+                    getProduct();
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<SimpleEntity> response) {
+            }
+        };
+        request(2, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
     @Override
@@ -77,8 +122,9 @@ public class ProductDataFragment extends BaseSupportFragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
-    public void setData(CustomerProductEntity.DataBean dataBean){
-        productGroupAdaputer = new ProductGroupAdaputer(getActivity(), true,dataBean);
+
+    public void setData(CustomerProductEntity.DataBean dataBean) {
+        productGroupAdaputer = new ProductGroupAdaputer(getActivity(), true, dataBean);
         mRecyclerOneProduct.setAdapter(productGroupAdaputer);
         //recycleview和其他view滑动冲突可以禁用
         mRecyclerOneProduct.setLayoutManager(new LinearLayoutManager(getActivity()) {
@@ -91,8 +137,8 @@ public class ProductDataFragment extends BaseSupportFragment {
         );
         productGroupAdaputer2 = new ProductGroupAdaputer(getActivity(), false, dataBean);
         mRecyclerTwoProduct.setLayoutManager(new LinearLayoutManager(getActivity()) {
-            @Override
-            public boolean canScrollVertically() {
+                                                 @Override
+                                                 public boolean canScrollVertically() {
                                                      // 直接禁止垂直滑动
                                                      return false;
                                                  }
@@ -173,10 +219,10 @@ public class ProductDataFragment extends BaseSupportFragment {
             public void onSucceed(int what, Response<CustomerProductEntity> response) {
 
                 if (response.get().isOK()) {
-                    CustomerProductEntity.DataBean dataBean = response.get().getData() ;
+                    CustomerProductEntity.DataBean dataBean = response.get().getData();
                     if (dataBean != null) {
                         List<CustomerProductEntity.DataBean.YxBean.YxpBean> yxp = dataBean.getYx().getYxp();
-                        List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf =  dataBean.getYx().getYxf();
+                        List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
                         mStvOnePackage.setLeftString(yxp.get(0).getConsumption_name());
                         mStvOnePackage.setRightString("¥:" + yxp.get(0).getPrice());
                         mStvOnePackage.setRightTextColor(getResources().getColor(R.color.litte_red));

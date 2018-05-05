@@ -15,11 +15,15 @@
  */
 package com.suxuantech.erpsys.utils;
 
+import android.app.Activity;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.suxuantech.erpsys.App;
+import com.suxuantech.erpsys.R;
 
 /**
  * Created by Yan Zhenjie on 2016/10/16.
@@ -82,4 +86,69 @@ public class ToastUtils {
             mToast = null;
         }
     }
+    static  Snackbar make;
+    public static  void snackbarShort( String text ){
+        snackbarShort( text,null,null);
+    }
+    public static  void snackbarShort( int text ){
+        snackbarShort( text,null,null);
+    }
+    public static  void snackbarShort( String text ,String  action){
+        snackbarShort( text,action,null);
+    }
+    public static  void snackbarShort( int text,String  action ){
+        snackbarShort( text,action,null);
+    }
+
+    public static  void snackbarShort( String text,String action, View.OnClickListener listener){
+        Activity topActivity = App.getApplication().getTopActivity();
+        if (topActivity==null){
+            showShort(text);
+            return;
+        }
+        View decorView = topActivity.getWindow().getDecorView();
+        View viewById =  decorView.findViewById(R.id.content_view_layout);
+        if (viewById!=null){
+            decorView=viewById;
+        }
+        if (make!=null){
+            make.dismiss();
+        }
+        make = Snackbar.make(decorView, text, Snackbar.LENGTH_SHORT);
+        make.setText(text);
+        make  .setDuration(5000);
+        make .setAction(action, listener==null?new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }:listener).show();
+    }
+    public static  void snackbarShort( int text,String action, View.OnClickListener listener){
+        Activity topActivity = App.getApplication().getTopActivity();
+        if (topActivity==null){
+            showShort(text);
+            return;
+        }
+        View decorView = topActivity.getWindow().getDecorView();
+        View viewById =  decorView.findViewById(R.id.content_view_layout);
+        if (viewById!=null){
+            decorView=viewById;
+        }
+        if (make!=null){
+            make.dismiss();
+        }
+        make = Snackbar.make(decorView, text ,Snackbar.LENGTH_SHORT);
+        make.getView().setBackgroundColor(App.getApplication().getResources().getColor(R.color.noticeOrange));
+        make.setText(text);
+        make  .setDuration(5000);
+
+        make .setAction(action, listener==null?new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }:listener).show();
+    }
+
 }

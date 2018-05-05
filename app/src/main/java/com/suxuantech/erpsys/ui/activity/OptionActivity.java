@@ -289,12 +289,11 @@ public class OptionActivity extends TitleNavigationActivity {
             default:
             case PRODUCT:
                 //包套
-                Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, 0);
+                Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
                     getProduct();
                 }
                 break;
-
             case PACKAGE:
                 //包套
                 Url = Contact.getFullUrl(Contact.PACKAGE, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
