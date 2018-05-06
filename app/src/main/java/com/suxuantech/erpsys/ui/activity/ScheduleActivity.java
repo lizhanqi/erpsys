@@ -3,6 +3,9 @@ package com.suxuantech.erpsys.ui.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,9 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import solid.ren.skinlibrary.SkinConfig;
+import solid.ren.skinlibrary.SkinLoaderListener;
+import solid.ren.skinlibrary.loader.SkinManager;
 
 /**
  * ......................我佛慈悲....................
@@ -219,6 +225,48 @@ public class ScheduleActivity extends TitleNavigationActivity {
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
+        int childCount = decorView.getChildCount();
+       iLog(childCount+"");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("ka").setOnMenuItemClickListener(i->{
+            if( SkinConfig.isDefaultSkin(this) ){
+                SkinManager.getInstance().loadSkin("darktheme.skin",
+                        new SkinLoaderListener() {
+                            @Override
+                            public void onStart() {
+                                Log.i("SkinLoaderListener", "正在切换中");
+                            }
+                            @Override
+                            public void onSuccess() {
+                                initImmersionBar();Log.i("SkinLoaderListener", "切换成功");
+                            }
+
+                            @Override
+                            public void onFailed(String errMsg) {
+                                Log.i("SkinLoaderListener", "切换失败:" + errMsg);
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+                                Log.i("SkinLoaderListener", "皮肤文件下载中:" + progress);
+                            }
+                        });
+
+            }else {
+                SkinManager.getInstance().restoreDefaultTheme();
+            }
+            return true;}).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     protected List<String> createDataList(int start) {
         List<String> strings = new ArrayList<>();
         for (int i = start; i < start + 50; i++) {

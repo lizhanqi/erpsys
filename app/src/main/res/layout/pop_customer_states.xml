@@ -7,7 +7,7 @@
 <LinearLayout
     android:layout_marginTop="@dimen/px130"
     android:layout_marginRight="@dimen/px100"
-    android:background="@drawable/top_msg"
+    android:background="@drawable/bg_login"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="100dp"

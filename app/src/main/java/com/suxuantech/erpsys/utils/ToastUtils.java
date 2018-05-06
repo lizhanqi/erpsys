@@ -20,6 +20,8 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Toast;
 
 import com.suxuantech.erpsys.App;
@@ -114,9 +116,10 @@ public class ToastUtils {
         if (make!=null){
             make.dismiss();
         }
-        make = Snackbar.make(decorView, text ,Snackbar.LENGTH_SHORT);
+        make = Snackbar.make(decorView, text ,Snackbar.LENGTH_INDEFINITE);
 //        App.getApplication().getResources().getColor(R.color.noticeOrange);
         View view = make.getView();
+        ViewGroup parent = (ViewGroup) view.getParent();
         view .setBackgroundResource(R.color.noticeOrange);
         make.setText(text);
         make  .setDuration(5000);
@@ -126,7 +129,6 @@ public class ToastUtils {
             }
         }:listener).show();
     }
-
     public static  void snackbarShort( int text,String action, View.OnClickListener listener){
         snackbarShort( App.getApplication().getResources().getString(text),action,listener);
     }
