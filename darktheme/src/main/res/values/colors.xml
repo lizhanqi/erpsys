@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>//决定状态栏颜色
+    <!--    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    -->
+
+    <color name="colorPrimary">@color/themeColor</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#303F9F</color>
+    <!--自定义默认导航栏颜色-->
+    <color name="navigation">@color/color_5ac921</color>
+    <!--状态栏颜色-->
+    <color name="status">@color/color_5ac921</color>
+    <!--智能刷新的背景色-->
+    <color name="refresh_bg">@color/white</color>
+    <!--智能刷新的字体颜色-->
+    <color name="refresh_textColor">#333333</color>
+    <!--渐变色的状态栏颜色值-->
+    <color name="gradual_change1">#5d8df7</color>
+    <color name="gradual_change2">#5EB9F8</color>
+    <color name="gradual_change3">#5CC2F8</color>
+
+    <color name="white">@android:color/white</color>
     <color name="green">#F00ffFFF</color>
     <color name="copyrigth">#515050</color>
-    <color name="mainNav_66">#3786fc</color>
+    <color name="mainNav_66">#666666</color>
     <color name="mainNavline_e7">#e7e7e7</color>
     <color name="myBackground_f7">#f7f7f7</color>
-    <color name="myValue_33">#5ac921</color>
+    <color name="myValue_33">#333333</color>
     <color name="noticeOrange">#ff8e13</color>
     <color name="gray_f9">#f9f9f9</color>
     <color name="wavel">#ffd5a7</color>
@@ -22,7 +39,7 @@
     <color name="color_f1430b">#f1430b</color>
     <color name="color_f1403b">#f1403b</color>
     <color name="color_b3">#b3b3b3</color>
-    <color name="themeColor">#5ac921</color>
+    <color name="themeColor">#3786fc</color>
     <color name="msgColor">#e60b0b</color>
     <color name="black_overlay">#66000000</color>
     <color name="transparency">#00000000</color>
@@ -50,7 +67,6 @@
     <color name="bgColor_alert_button_press">#EAEAEA</color>
     <!--actionsheet模式的取消按钮背景颜色-->
     <color name="bgColor_actionsheet_cancel_nor">#ffffff</color>
-
     <!--白色透明度-->
     <color name="translucent_white_05">#f2ffffff</color>
     <color name="translucent_white_10">#e6ffffff</color>
@@ -70,7 +86,6 @@
     <color name="translucent_white_80">#33ffffff</color>
     <color name="translucent_white_90">#26ffffff</color>
     <color name="translucent_white_95">#0dffffff</color>
-
     <!--黑色透明度-->
     <color name="translucent_black_05">#f2000000</color>
     <color name="translucent_black_10">#e6000000</color>
@@ -90,14 +105,13 @@
     <color name="translucent_black_80">#33000000</color>
     <color name="translucent_black_90">#26000000</color>
     <color name="translucent_black_95">#0d000000</color>
+
     <color name="rong_text_color">#353535</color>
     <color name="seal_bg">#f0f0f6</color>
     <color name="de_title_bg">#0195ff</color>
     <color name="press">#e8e8e8</color>
     <color name="jmui_chat_detail_split_line_color">#d4d4d4</color>
-
-
-    <color name="litte_red">#EF3B4F</color>
+    <color name="litte_red">@color/colorAccent</color>
     <color name="black">#000000</color>
     <color name="base_shallow_black">#818181</color>
     <color name="text_tab_title_def">@color/base_shallow_black</color>

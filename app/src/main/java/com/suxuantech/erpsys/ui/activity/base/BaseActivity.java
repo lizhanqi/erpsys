@@ -587,7 +587,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     public void onThemeUpdate() {
         SkinL.i(TAG, "onThemeUpdate");
         mSkinInflaterFactory.applySkin();
-        changeStatusColor();
+       // changeStatusColor();
     }
 
     public SkinInflaterFactory getInflaterFactory() {
@@ -615,6 +615,9 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     @Override
     public void dynamicAddView(View view, String attrName, int attrValueResId) {
+        if (view==null){
+            return;
+        }
         mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, attrName, attrValueResId);
     }
 

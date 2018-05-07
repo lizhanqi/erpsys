@@ -136,6 +136,15 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         }
         // recyclerView?.addItemDecoration(DefaultItemDecoration2(resources.getColor(R.color.mainNavline_e7),10))
         recyclerView?.layoutManager = LinearLayoutManager(this);
+        adapter.setOnItemClickListener { adapter, view, position ->
+            val bundle = Bundle();
+            bundle.putString("title",list.get(position).key);
+            if ( intent.hasExtra("title")) {
+                startActivity(ScheduleActivity::class.java, bundle)
+            }else{
+                startActivity(RegisterIntoShopSearchActivity::class.java, bundle)
+            }
+        }
         recyclerView?.adapter = adapter;
         smartRefreshLayout.setOnRefreshListener(OnRefreshListener {
             getData();
@@ -248,37 +257,5 @@ class RegisterIntoShopActivity : ImmersionActivity() {
 
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
-        var bd = Bundle();
-        when (v!!.id) {
-            R.id.fab_add -> {
-                startActivity(IntoGuestRegistrationActivity::class.java)
-            }
-            R.id.ll_new_customer -> {
-                bd.putString("title", "新进客资");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-            R.id.ll_customer_all -> {
-                bd.putString("title", "全部客资");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-            R.id.ll_not_into_shop -> {
-                bd.putString("title", "未进店");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-            R.id.ll_not_in_shop -> {
-                bd.putString("title", "进店未成");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-
-            R.id.ll_make_bargain -> {
-                bd.putString("title", "已成交");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-            R.id.ll_run_away -> {
-                bd.putString("title", "流失客资");
-                startActivity(RegisterIntoShopSearchActivity::class.java, bd)
-            }
-        }
-
     }
 }

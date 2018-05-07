@@ -21,7 +21,6 @@ import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Toast;
 
 import com.suxuantech.erpsys.App;
@@ -36,12 +35,15 @@ public class ToastUtils {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
+
     private static Toast mToast;
+
     /**
      * 弹出一个吐司
+     *
      * @param msg
      */
-    public static void showShort(  CharSequence msg) {
+    public static void showShort(CharSequence msg) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_SHORT);
         mToast.show();
@@ -49,87 +51,97 @@ public class ToastUtils {
 
     /**
      * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
+     *
      * @param msg
      */
-    public static void showLong(  CharSequence msg) {
+    public static void showLong(CharSequence msg) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_LONG);
         mToast.show();
     }
 
-    public static void show(  CharSequence msg,int toastTime) {
+    public static void show(CharSequence msg, int toastTime) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, toastTime);
         mToast.show();
     }
-    public static void showInCenterShort(  CharSequence msg) {
+
+    public static void showInCenterShort(CharSequence msg) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), msg, Toast.LENGTH_SHORT);
-        mToast.setGravity(Gravity.CENTER,0,0);
+        mToast.setGravity(Gravity.CENTER, 0, 0);
         mToast.show();
     }
 
-    public static void showShort( @StringRes int stringId) {
+    public static void showShort(@StringRes int stringId) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), stringId, Toast.LENGTH_SHORT);
         mToast.show();
     }
-    public static void show( @StringRes int stringId,int toastTime) {
+
+    public static void show(@StringRes int stringId, int toastTime) {
         cancelToast();
         mToast = Toast.makeText(App.getApplication(), stringId, toastTime);
         mToast.show();
     }
+
     /**
-     *toast取消
+     * toast取消
      */
-    public static void cancelToast(){
-        if(mToast != null){
+    public static void cancelToast() {
+        if (mToast != null) {
             mToast.cancel();
             mToast = null;
         }
     }
-    static  Snackbar make;
-    public static  void snackbarShort( String text ){
-        snackbarShort( text,null,null);
-    }
-    public static  void snackbarShort( int text ){
-        snackbarShort( text,null,null);
-    }
-    public static  void snackbarShort( String text ,String  action){
-        snackbarShort( text,action,null);
-    }
-    public static  void snackbarShort( int text,String  action ){
-        snackbarShort( text,action,null);
+
+    static Snackbar make;
+
+    public static void snackbarShort(String text) {
+        snackbarShort(text, null, null);
     }
 
-    public static  void snackbarShort( String text,String action, View.OnClickListener listener){
+    public static void snackbarShort(int text) {
+        snackbarShort(text, null, null);
+    }
+
+    public static void snackbarShort(String text, String action) {
+        snackbarShort(text, action, null);
+    }
+
+    public static void snackbarShort(int text, String action) {
+        snackbarShort(text, action, null);
+    }
+
+    public static void snackbarShort(String text, String action, View.OnClickListener listener) {
         Activity topActivity = App.getApplication().getTopActivity();
-        if (topActivity==null){
+        if (topActivity == null) {
             showShort(text);
             return;
         }
-        View decorView = topActivity.getWindow().getDecorView();
-        View viewById =  decorView.findViewById(R.id.content_view_layout);
-        if (viewById!=null){
-            decorView=viewById;
+        View decorView =   topActivity.getWindow().getDecorView();
+        View viewById = decorView.findViewById(R.id.content_view_layout);
+        if (viewById != null) {
+            decorView =   viewById;
         }
-        if (make!=null){
+        if (make != null) {
             make.dismiss();
         }
-        make = Snackbar.make(decorView, text ,Snackbar.LENGTH_INDEFINITE);
+        make = Snackbar.make(decorView, text, Snackbar.LENGTH_INDEFINITE);
 //        App.getApplication().getResources().getColor(R.color.noticeOrange);
         View view = make.getView();
         ViewGroup parent = (ViewGroup) view.getParent();
-        view .setBackgroundResource(R.color.noticeOrange);
+        view.setBackgroundResource(R.color.noticeOrange);
         make.setText(text);
-        make  .setDuration(5000);
-        make .setAction(action, listener==null?new View.OnClickListener() {
+        make.setDuration(5000);
+        make.setAction(action, listener == null ? new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             }
-        }:listener).show();
+        } : listener).show();
     }
-    public static  void snackbarShort( int text,String action, View.OnClickListener listener){
-        snackbarShort( App.getApplication().getResources().getString(text),action,listener);
+
+    public static void snackbarShort(int text, String action, View.OnClickListener listener) {
+        snackbarShort(App.getApplication().getResources().getString(text), action, listener);
     }
 }

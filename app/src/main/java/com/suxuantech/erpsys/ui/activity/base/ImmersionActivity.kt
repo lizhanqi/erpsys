@@ -3,7 +3,6 @@ package com.suxuantech.erpsys.ui.activity.base
 import android.view.View
 import com.gyf.barlibrary.ImmersionBar
 import com.suxuantech.erpsys.R
-import solid.ren.skinlibrary.loader.SkinManager
 
 /**
  * ......................我佛慈悲....................
@@ -70,6 +69,8 @@ abstract class ImmersionActivity : BaseActivity() {
         mImmersionBar = ImmersionBar.with(this)
         var status= window.decorView.findViewById<View>(android.R.id.statusBarBackground);
         var nav= window.decorView.findViewById<View>(android.R.id.navigationBarBackground);
+        dynamicAddView(nav, "background", R.color.navigation)
+        dynamicAddView(status, "background", R.color.status)
        // dynamicAddView(nav,"backgrangd")
         //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
         mImmersionBar!!.fitsSystemWindows(true)
