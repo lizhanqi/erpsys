@@ -270,6 +270,18 @@ public class Contact {
      * 添加产品
      */
     public static  String ADD_PRODUCTS="/SXWebErpAppStaff/SX_AddPackage?Token=%s&orderid=%s&customerid=%s&package_name=%s&pid=%s&Code=%s&shopname=%s&txprice=%s&isyanzheng=%s&brandid=%s";
+    /**
+     * 某一个月可拍照排程情况
+     */
+    public static  String PHOTO_SCHEME_BY_MONTH="/SXWebErpAppStaff/SX_PhotoPaiChengMonthinfo?Token=%s&vPcday=%s&Code=%s";
+    /**
+     * 当天可拍照排程
+     */
+    public static  String PHOTO_SCHEME_BY_DAY="/SXWebErpAppStaff/SX_PhotoPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
+    /**
+     * 登陆人权限
+     */
+   public  static  String LOGIN_PERMISSION="/SXWebErpAppStaff/SX_HQFunction?Token=%s&worktype=%s&gwcode=%s&Code=%s";
 
 
 }

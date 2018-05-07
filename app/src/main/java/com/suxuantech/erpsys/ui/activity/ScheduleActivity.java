@@ -3,9 +3,7 @@ package com.suxuantech.erpsys.ui.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +12,19 @@ import android.widget.TextView;
 import com.jeek.calendar.widget.calendar.BingText;
 import com.jeek.calendar.widget.calendar.OnCalendarClickListener;
 import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
+import com.jeek.calendar.widget.calendar.month.MonthView;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleLayout;
 import com.jeek.calendar.widget.calendar.week.WeekCalendarView;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.PhotoSchemeMonthEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.GroupAdaputer;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
@@ -33,9 +39,6 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
-import solid.ren.skinlibrary.SkinConfig;
-import solid.ren.skinlibrary.SkinLoaderListener;
-import solid.ren.skinlibrary.loader.SkinManager;
 
 /**
  * ......................我佛慈悲....................
@@ -203,12 +206,12 @@ public class ScheduleActivity extends TitleNavigationActivity {
 
         @Override
         public String bingText(int year, int month, int day) {
-            return "";
+            return "400";
         }
     };
+
     private void initView() {
         weekCalendarView = findViewById(R.id.week_calendar);
-
         monthCalendarView = findViewById(R.id.month_calendar);
         monthCalendarView.setTodayToView();
 
@@ -222,8 +225,8 @@ public class ScheduleActivity extends TitleNavigationActivity {
             public void onPageChange(int year, int month, int day) {
             }
         });
-
-
+        SparseArray<MonthView> monthViews = monthCalendarView.getMonthViews();
+        monthCalendarView.getCurrentMonthView().bingUserText(bt);
     }
 
     @Override
@@ -233,40 +236,28 @@ public class ScheduleActivity extends TitleNavigationActivity {
         int childCount = decorView.getChildCount();
        iLog(childCount+"");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("ka").setOnMenuItemClickListener(i->{
-            if( SkinConfig.isDefaultSkin(this) ){
-                SkinManager.getInstance().loadSkin("darktheme.skin",
-                        new SkinLoaderListener() {
-                            @Override
-                            public void onStart() {
-                                Log.i("SkinLoaderListener", "正在切换中");
-                            }
-                            @Override
-                            public void onSuccess() {
-                                initImmersionBar();Log.i("SkinLoaderListener", "切换成功");
-                            }
-
-                            @Override
-                            public void onFailed(String errMsg) {
-                                Log.i("SkinLoaderListener", "切换失败:" + errMsg);
-                            }
-
-                            @Override
-                            public void onProgress(int progress) {
-                                Log.i("SkinLoaderListener", "皮肤文件下载中:" + progress);
-                            }
-                        });
-
-            }else {
-                SkinManager.getInstance().restoreDefaultTheme();
+    public void  get(){
+        String fullUrl = Contact.getFullUrl(Contact.PHOTO_SCHEME_BY_MONTH, Contact.TOKEN, "2018-05-01", App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<PhotoSchemeMonthEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoSchemeMonthEntity>(fullUrl, RequestMethod.POST, PhotoSchemeMonthEntity.class);
+        HttpListener<PhotoSchemeMonthEntity> searchByCustmor = new HttpListener<PhotoSchemeMonthEntity>() {
+            @Override
+            public void onSucceed(int what, Response<PhotoSchemeMonthEntity> response) {
+                if (response.get().isOK()){
+                    List<PhotoSchemeMonthEntity.DataBean> data = response.get().getData();
+                    setMonthAdapter(data);
+                }
             }
-            return true;}).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return super.onCreateOptionsMenu(menu);
-    }
 
+            @Override
+            public void onFailed(int what, Response<PhotoSchemeMonthEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+    private void setMonthAdapter(List<PhotoSchemeMonthEntity.DataBean> data) {
+
+    }
     protected List<String> createDataList(int start) {
         List<String> strings = new ArrayList<>();
         for (int i = start; i < start + 50; i++) {

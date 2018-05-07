@@ -55,7 +55,9 @@ public class WorkScheduleActivity extends TitleNavigationActivity {
         int currentSelectDay = mScheduleLayout.getCurrentSelectDay();
         setUseDefinedNavRightText(currentSelectDay+"");
         ArrayList<String> strings = new ArrayList<>();
-        strings.add("111");        strings.add("111");        strings.add("111");        strings.add("111");        strings.add("111");
+        strings.add("111");
+        strings.add("111");
+        strings.add("111");        strings.add("111");        strings.add("111");
         new BaseRecyclerAdapter<String>(mRvScheduleList, strings, R.layout.item_work_schedule) {
             @Override
             public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {

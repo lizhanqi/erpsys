@@ -35,6 +35,7 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.entity.LoginEntity;
+import com.suxuantech.erpsys.entity.PermissionEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -134,19 +135,55 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 
     }
 
-    boolean isLoginOneSucceed;
+    boolean isLoginOneSucceed,hasPermission;
+
+    /**
+     * 获取登录人权限
+     */
+    public void getPermisstion() {
+        if (App.getApplication().getUserInfor().getMain_work_type().isEmpty()) {
+            ToastUtils.snackbarShort("未设置工作类型!无法获取权限");
+            return;
+        }
+        if (App.getApplication().getUserInfor().getMain_position_code().isEmpty()) {
+            ToastUtils.snackbarShort("未设置主岗位,无法获取权限");
+            return;
+        }
+        String string = Contact.getFullUrl(Contact.LOGIN_PERMISSION, Contact.TOKEN, App.getApplication().getUserInfor().getMain_work_type() + "," + App.getApplication().getUserInfor().getWork_type(),
+                App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(),App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest<PermissionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PermissionEntity>(string, RequestMethod.POST, PermissionEntity.class);
+        HttpListener<PermissionEntity> searchByCustmor = new HttpListener<PermissionEntity>() {
+            @Override
+            public void onSucceed(int what, Response<PermissionEntity> response) {
+                if (response.get().isOK()||response.get().getData()!=null){
+                    hasPermission=true;
+                    LoginSucceed();
+                    List<String> data = response.get().getData();
+                    App.getApplication().setUserPermission(data);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<PermissionEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+
+    }
 
     public void LoginSucceed() {
         if (isLoginOneSucceed) {
-          loadingDialog.dismiss();
+            loadingDialog.dismiss();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
-            dLog(System.currentTimeMillis()+"");
+            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(System.currentTimeMillis() * 1000));
+            dLog(System.currentTimeMillis() + "");
             finish();
         }
     }
+
     Dialog loadingDialog;
+
     //登录极光
     void login(String name, String password) {
         //登录极光
@@ -155,7 +192,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         isLoginOneSucceed = false;
         name = "小飞";
         password = "0";
-       loadingDialog.show();
+        loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
         HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
             @Override
@@ -163,6 +200,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 if (response.get().isOK()) {
                     //保存登录信息
                     CacheUtils.getInstance().put(App.LOGINFILENAME, FastJsonUtils.toJSONString(response.get()));
+                    getPermisstion();
                     LoginSucceed();
                     isLoginOneSucceed = true;
                 } else {
@@ -170,6 +208,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                     toastShort(response.get().getMsg());
                 }
             }
+
             @Override
             public void onFailed(int what, Response<LoginEntity> response) {
                 loginFailed();
@@ -177,11 +216,13 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         };
         request(0, stringRequest, httpListener, false, false);
     }
+
     public void loginFailed() {
         loadingDialog.dismiss();
         if (isLoginOneSucceed) {
             loadingDialog.dismiss();
         }
+        hasPermission=false;
         isLoginOneSucceed = false;
     }
 
@@ -199,6 +240,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
@@ -227,7 +269,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
+                login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
             }
         });
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
