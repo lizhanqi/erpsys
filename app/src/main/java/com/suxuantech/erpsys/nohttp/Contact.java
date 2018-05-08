@@ -283,7 +283,7 @@ public class Contact {
      */
    public  static  String LOGIN_PERMISSION="/SXWebErpAppStaff/SX_HQFunction?Token=%s&worktype=%s&gwcode=%s&Code=%s";
     /**
-     *
+     *获得客户化妆资料信息
      */
     public  static String MAKE_UP="/SXWebErpAppStaff/SX_CustomerMakeupCount?Token=%s&orderid=%s&Code=%s";
 }

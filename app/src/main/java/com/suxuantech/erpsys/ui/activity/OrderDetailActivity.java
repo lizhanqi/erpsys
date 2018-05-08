@@ -54,6 +54,7 @@ import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.fragment.CustomerInformationFragment;
 import com.suxuantech.erpsys.ui.fragment.DressMaterialFragment;
+import com.suxuantech.erpsys.ui.fragment.MakeUpFragment;
 import com.suxuantech.erpsys.ui.fragment.ProductDataFragment;
 import com.suxuantech.erpsys.ui.fragment.TabControlFragment;
 import com.suxuantech.erpsys.ui.fragment.TakeDataFragment;
@@ -164,12 +165,23 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
             case "摄影资料":
                 toTabFragement(1);
                 break;
+            case "化妆资料":
+                if (findFragment(MakeUpFragment.class) == null) {
+                    MakeUpFragment makeUpFragment = new MakeUpFragment();
+                    // loadRootFragment(R.id.container, serviceFeeFragment);
+                    mFragments[6] = makeUpFragment;
+                  //  String orderId = getIntent().getStringExtra("orderId");
+                    Bundle data = getIntent().getExtras();
+//                    bundle.putString("orderId", orderId);
+                    makeUpFragment.setArguments(data);
+                    loadRootFragment(R.id.container, mFragments[6], false, true);
+                }
+                break;
             case "选片资料":
                 toTabFragement(2);
                 break;
             case "礼服资料":
                 //   toTabFragement(3);
-
                 if (findFragment(ProductDataFragment.class) == null) {
                     DressMaterialFragment dressMaterialFragment = new DressMaterialFragment();
                     // loadRootFragment(R.id.container, serviceFeeFragment);
@@ -238,7 +250,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 } else {
                     start(mFragments[3], ISupportFragment.SINGLETASK);
                 }
-
                 break;
         }
     }

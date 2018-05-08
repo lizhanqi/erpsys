@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:drawablePadding="@dimen/px30"
+        android:drawableLeft="@drawable/icon_camera"
+        android:padding="@dimen/px30"
+        android:id="@+id/tv_store_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_make_up_info1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_make_up_info2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <TextView
+        android:id="@+id/tv_make_up_remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

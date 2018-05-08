@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.entity;
 
+import java.util.List;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -27,7 +29,22 @@ package com.suxuantech.erpsys.entity;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class TempEntity  extends  BaseResult{
+public class MakeUpEntity  extends  BaseResult{
+
+    /**
+     * Code : 200
+     * Data : [{"id":8,"orderId":"SY18011900004","customerid":"933f197c-bf86-4970-97cd-bf536fc83dda","makeupstate":"","makeupdate":"20180103","makeuptime":"1111","start_makeup_Time":"20180119","over_makeup_Time":null,"voucher_name":"化妆单据3","makeup_money":0,"havepaymen_moneyt":0,"nonpaymen_moneyt":0,"completion_date":null,"makeup_remarks":"lkpil","sellman":"姜一雁","shop_code":"ZX002","shop_name":"沈阳时尚经典婚纱店","create_time":"2018-01-19 00:00:00.000"}]
+     */
+
+    private List<DataBean> Data;
+
+    public List<DataBean> getData() {
+        return Data;
+    }
+
+    public void setData(List<DataBean> Data) {
+        this.Data = Data;
+    }
 
     public static class DataBean {
         /**
@@ -58,12 +75,12 @@ public class TempEntity  extends  BaseResult{
         private String makeupdate;
         private String makeuptime;
         private String start_makeup_Time;
-        private Object over_makeup_Time;
+        private String over_makeup_Time;
         private String voucher_name;
         private int makeup_money;
         private int havepaymen_moneyt;
         private int nonpaymen_moneyt;
-        private Object completion_date;
+        private String completion_date;
         private String makeup_remarks;
         private String sellman;
         private String shop_code;
@@ -126,11 +143,11 @@ public class TempEntity  extends  BaseResult{
             this.start_makeup_Time = start_makeup_Time;
         }
 
-        public Object getOver_makeup_Time() {
+        public String getOver_makeup_Time() {
             return over_makeup_Time;
         }
 
-        public void setOver_makeup_Time(Object over_makeup_Time) {
+        public void setOver_makeup_Time(String over_makeup_Time) {
             this.over_makeup_Time = over_makeup_Time;
         }
 
@@ -166,11 +183,11 @@ public class TempEntity  extends  BaseResult{
             this.nonpaymen_moneyt = nonpaymen_moneyt;
         }
 
-        public Object getCompletion_date() {
+        public String getCompletion_date() {
             return completion_date;
         }
 
-        public void setCompletion_date(Object completion_date) {
+        public void setCompletion_date(String completion_date) {
             this.completion_date = completion_date;
         }
 

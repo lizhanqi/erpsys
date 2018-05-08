@@ -143,6 +143,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     mTietNavSearch.setFocusableInTouchMode(true);
                     mTietNavSearch.setFocusable(true);
                 } else {
+
                     Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
                 //    SearchOrderInforEntity.DataBean dataBean = data.get(position);
                     SearchOrderEntity.DataBean dataBean  = datacopy.get(position);
