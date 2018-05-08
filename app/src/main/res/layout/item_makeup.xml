@@ -30,6 +30,7 @@
     </LinearLayout>
     <View style="@style/line"/>
     <TextView
+        android:padding="@dimen/px30"
         android:id="@+id/tv_make_up_remarks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

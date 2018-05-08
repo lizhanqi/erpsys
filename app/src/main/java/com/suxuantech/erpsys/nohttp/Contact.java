@@ -286,4 +286,9 @@ public class Contact {
      *获得客户化妆资料信息
      */
     public  static String MAKE_UP="/SXWebErpAppStaff/SX_CustomerMakeupCount?Token=%s&orderid=%s&Code=%s";
+    /**
+     * 获得客户化妆产品明细资料信息
+     */
+    public  static String MAKE_UP_DATEILES="/SXWebErpAppStaff/SX_CustomerMakeupMingXi?Token=%s&orderId=%s&MakeupId=%s&Code=%s";
+
 }

@@ -1,5 +1,7 @@
 package com.suxuantech.erpsys.entity;
 
+import java.util.List;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -29,43 +31,50 @@ package com.suxuantech.erpsys.entity;
  */
 public class TempEntity  extends  BaseResult{
 
+    /**
+     * Code : 200
+     * Data : [{"id":23,"makeupid":25,"orderId":"SY18040200061","customerid":"6bfba44b-6583-436b-b357-fdafb6e20810","makeupItems":"唇彩","amount":1,"makeup_price":35,"makeup_total":35,"sellman":"","makeuptype":"早妆","makeupman":"","shop_code":"ZX002","shop_name":"沈阳时尚经典婚纱店","create_time":"2018-04-16 00:00:00.000"}]
+     */
+
+    private List<DataBean> Data;
+
+    public List<DataBean> getData() {
+        return Data;
+    }
+
+    public void setData(List<DataBean> Data) {
+        this.Data = Data;
+    }
+
     public static class DataBean {
         /**
-         * id : 8
-         * orderId : SY18011900004
-         * customerid : 933f197c-bf86-4970-97cd-bf536fc83dda
-         * makeupstate :
-         * makeupdate : 20180103
-         * makeuptime : 1111
-         * start_makeup_Time : 20180119
-         * over_makeup_Time : null
-         * voucher_name : 化妆单据3
-         * makeup_money : 0
-         * havepaymen_moneyt : 0
-         * nonpaymen_moneyt : 0
-         * completion_date : null
-         * makeup_remarks : lkpil
-         * sellman : 姜一雁
+         * id : 23
+         * makeupid : 25
+         * orderId : SY18040200061
+         * customerid : 6bfba44b-6583-436b-b357-fdafb6e20810
+         * makeupItems : 唇彩
+         * amount : 1
+         * makeup_price : 35
+         * makeup_total : 35
+         * sellman :
+         * makeuptype : 早妆
+         * makeupman :
          * shop_code : ZX002
          * shop_name : 沈阳时尚经典婚纱店
-         * create_time : 2018-01-19 00:00:00.000
+         * create_time : 2018-04-16 00:00:00.000
          */
 
         private int id;
+        private int makeupid;
         private String orderId;
         private String customerid;
-        private String makeupstate;
-        private String makeupdate;
-        private String makeuptime;
-        private String start_makeup_Time;
-        private Object over_makeup_Time;
-        private String voucher_name;
-        private int makeup_money;
-        private int havepaymen_moneyt;
-        private int nonpaymen_moneyt;
-        private Object completion_date;
-        private String makeup_remarks;
+        private String makeupItems;
+        private int amount;
+        private int makeup_price;
+        private int makeup_total;
         private String sellman;
+        private String makeuptype;
+        private String makeupman;
         private String shop_code;
         private String shop_name;
         private String create_time;
@@ -76,6 +85,14 @@ public class TempEntity  extends  BaseResult{
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getMakeupid() {
+            return makeupid;
+        }
+
+        public void setMakeupid(int makeupid) {
+            this.makeupid = makeupid;
         }
 
         public String getOrderId() {
@@ -94,92 +111,36 @@ public class TempEntity  extends  BaseResult{
             this.customerid = customerid;
         }
 
-        public String getMakeupstate() {
-            return makeupstate;
+        public String getMakeupItems() {
+            return makeupItems;
         }
 
-        public void setMakeupstate(String makeupstate) {
-            this.makeupstate = makeupstate;
+        public void setMakeupItems(String makeupItems) {
+            this.makeupItems = makeupItems;
         }
 
-        public String getMakeupdate() {
-            return makeupdate;
+        public int getAmount() {
+            return amount;
         }
 
-        public void setMakeupdate(String makeupdate) {
-            this.makeupdate = makeupdate;
+        public void setAmount(int amount) {
+            this.amount = amount;
         }
 
-        public String getMakeuptime() {
-            return makeuptime;
+        public int getMakeup_price() {
+            return makeup_price;
         }
 
-        public void setMakeuptime(String makeuptime) {
-            this.makeuptime = makeuptime;
+        public void setMakeup_price(int makeup_price) {
+            this.makeup_price = makeup_price;
         }
 
-        public String getStart_makeup_Time() {
-            return start_makeup_Time;
+        public int getMakeup_total() {
+            return makeup_total;
         }
 
-        public void setStart_makeup_Time(String start_makeup_Time) {
-            this.start_makeup_Time = start_makeup_Time;
-        }
-
-        public Object getOver_makeup_Time() {
-            return over_makeup_Time;
-        }
-
-        public void setOver_makeup_Time(Object over_makeup_Time) {
-            this.over_makeup_Time = over_makeup_Time;
-        }
-
-        public String getVoucher_name() {
-            return voucher_name;
-        }
-
-        public void setVoucher_name(String voucher_name) {
-            this.voucher_name = voucher_name;
-        }
-
-        public int getMakeup_money() {
-            return makeup_money;
-        }
-
-        public void setMakeup_money(int makeup_money) {
-            this.makeup_money = makeup_money;
-        }
-
-        public int getHavepaymen_moneyt() {
-            return havepaymen_moneyt;
-        }
-
-        public void setHavepaymen_moneyt(int havepaymen_moneyt) {
-            this.havepaymen_moneyt = havepaymen_moneyt;
-        }
-
-        public int getNonpaymen_moneyt() {
-            return nonpaymen_moneyt;
-        }
-
-        public void setNonpaymen_moneyt(int nonpaymen_moneyt) {
-            this.nonpaymen_moneyt = nonpaymen_moneyt;
-        }
-
-        public Object getCompletion_date() {
-            return completion_date;
-        }
-
-        public void setCompletion_date(Object completion_date) {
-            this.completion_date = completion_date;
-        }
-
-        public String getMakeup_remarks() {
-            return makeup_remarks;
-        }
-
-        public void setMakeup_remarks(String makeup_remarks) {
-            this.makeup_remarks = makeup_remarks;
+        public void setMakeup_total(int makeup_total) {
+            this.makeup_total = makeup_total;
         }
 
         public String getSellman() {
@@ -188,6 +149,22 @@ public class TempEntity  extends  BaseResult{
 
         public void setSellman(String sellman) {
             this.sellman = sellman;
+        }
+
+        public String getMakeuptype() {
+            return makeuptype;
+        }
+
+        public void setMakeuptype(String makeuptype) {
+            this.makeuptype = makeuptype;
+        }
+
+        public String getMakeupman() {
+            return makeupman;
+        }
+
+        public void setMakeupman(String makeupman) {
+            this.makeupman = makeupman;
         }
 
         public String getShop_code() {

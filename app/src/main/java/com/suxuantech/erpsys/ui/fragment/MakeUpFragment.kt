@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.fragment
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.suxuantech.erpsys.entity.SearchOrderEntity
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
+import com.suxuantech.erpsys.ui.activity.MakeUpDetailsActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.utils.MyString
 import com.yanzhenjie.nohttp.RequestMethod
@@ -47,19 +49,19 @@ class MakeUpFragment : BaseSupportFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val string = arguments?.getString("orderId");
         tvSumMoney = view.findViewById<View>(R.id.tv_sum_money) as TextView
         tvPaidMoney =view. findViewById<View>(R.id.tv_paid_money) as TextView
         tvDebtMoney =view. findViewById<View>(R.id.tv_debt_money) as TextView
         rvMakeUp = view.findViewById<View>(R.id.rv_make_up) as RecyclerView
         smart_refresh = view.findViewById<View>(R.id.smrl_make_up) as SmartRefreshLayout
-        super.onViewCreated(view, savedInstanceState)
+        smart_refresh?.autoRefresh()
         smart_refresh?.setOnRefreshListener(OnRefreshListener {
             if(!TextUtils.isEmpty(string )){
                 getData(string)
             }
         })
-
        var  data = arguments?.getParcelable< SearchOrderEntity.DataBean>("data")
         if (data!=null){
             data.makeupnonpay;
@@ -68,9 +70,9 @@ class MakeUpFragment : BaseSupportFragment() {
             tvDebtMoney?.setText("欠款金额\n¥"+data.makeuppay)
 
         }
-        if(!TextUtils.isEmpty(string )){
-            getData(string)
-        }
+//        if(!TextUtils.isEmpty(string )){
+//            getData(string)
+//        }
 
     }
     fun  getData(string: String?) {
@@ -79,12 +81,14 @@ class MakeUpFragment : BaseSupportFragment() {
         val districtBeanJavaBeanRequest = JavaBeanRequest(url, RequestMethod.POST, MakeUpEntity::class.java)
         val searchByCustmor = object : HttpListener<MakeUpEntity> {
             override fun onSucceed(what: Int, response: Response<MakeUpEntity>) {
-
+                smart_refresh?.finishRefresh()
                 if (    response.get().isOK){
                     setAdapter(response.get().data)
                 }
             }
-            override fun onFailed(what: Int, response: Response<MakeUpEntity>) {}
+            override fun onFailed(what: Int, response: Response<MakeUpEntity>) {
+                smart_refresh?.finishRefresh()
+            }
         }
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false)
     }
@@ -110,12 +114,16 @@ class MakeUpFragment : BaseSupportFragment() {
              info1.append( s3)
              info1.append( s6)
              info2.setText( "¥"+item?.makeup_money+"\n"+item?.sellman)
-             remark.setText( item?.makeup_remarks)
+             remark.setText( "备注:"+item?.makeup_remarks)
          }
      }
         rvMakeUp?.layoutManager= LinearLayoutManager(context)
         rvMakeUp?.adapter=adaputer;
         adaputer.setOnItemClickListener { adapter, view, position ->
+           var intent =  Intent(context,MakeUpDetailsActivity::class.java);
+            intent.putExtra("orderId",   data.get(position).orderId)
+            intent.putExtra("makeUpId",    ""+data.get(position).id)
+            startActivity(intent);
         }
     }
 
