@@ -73,9 +73,8 @@ public class ProductDataFragment extends BaseSupportFragment {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
         useEventBus();
-        initView(view);
+        onCheckedChange( );
         getProduct();
-
         return view;
     }
 
@@ -145,7 +144,6 @@ public class ProductDataFragment extends BaseSupportFragment {
     }
 
     boolean isShowCheckBox;
-
     /**
      * 编辑产品
      */
@@ -161,7 +159,7 @@ public class ProductDataFragment extends BaseSupportFragment {
         productGroupAdaputer.setShowCheckBox(isShowCheckBox);
     }
 
-    private void initView(View view) {
+    private void onCheckedChange( ) {
         mCbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -171,11 +169,12 @@ public class ProductDataFragment extends BaseSupportFragment {
         mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                productGroupAdaputer.setCheckAll(isChecked);
-                productGroupAdaputer.notifyDataSetChanged();
+                    mCbAll.setChecked(isChecked);
+                    productGroupAdaputer.setCheckAll(isChecked);
             }
         });
     }
+
 
     public void addPackageOrProductWindow() {
         AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
@@ -190,7 +189,6 @@ public class ProductDataFragment extends BaseSupportFragment {
             alertView.show();
         }
     }
-
     public void getProduct() {
         String orderId = getArguments().getString("orderId");
         String url = Contact.getFullUrl(Contact.CUSTOMER_PRODUCT, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
@@ -221,31 +219,32 @@ public class ProductDataFragment extends BaseSupportFragment {
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
-
     @Subscribe
     @MainThread
     public void onEventMainThread(String add) {
         if (add.equals("edit")) {
             editProduct();
+        }else  if (add.equals("checkAll")){
+            mCbOneAll.setOnCheckedChangeListener(null);
+            mCbAll.setOnCheckedChangeListener(null);
+            mCbOneAll.setChecked(true);
+            mCbAll.setChecked(true);
+            onCheckedChange();
+        }else  if (add.equals("checkNone")){
+            mCbOneAll.setOnCheckedChangeListener(null);
+            mCbAll.setOnCheckedChangeListener(null);
+            mCbOneAll.setChecked(false);
+            mCbAll.setChecked(false);
+            onCheckedChange();
         }
     }
 
-    @OnClick({R.id.cb_all, R.id.tv_delete, R.id.rl_delete, R.id.cb_one_all, R.id.stv_one_package, R.id.recycler_one_product})
+    @OnClick({ R.id.tv_delete })
     public void onClick(View v) {
         switch (v.getId()) {
             default:
                 break;
-            case R.id.cb_all:
-                break;
             case R.id.tv_delete:
-                break;
-            case R.id.rl_delete:
-                break;
-            case R.id.cb_one_all:
-                break;
-            case R.id.stv_one_package:
-                break;
-            case R.id.recycler_one_product:
                 break;
         }
     }

@@ -4,4 +4,7 @@
     <item type="id" name="nimei">false</item>
     <item type="id" name="id_autolayout" />
     <item type="id" name="id_voice_image" />
+
+    <item type="id" name="groupPosition" />
+    <item type="id" name="childPosition" />
 </resources>

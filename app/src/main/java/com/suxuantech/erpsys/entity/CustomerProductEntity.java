@@ -93,6 +93,15 @@ public class CustomerProductEntity extends  BaseResult {
         public static class YxBean {
             private List<YxpBean> yxp;
             private List<YxfBean> yxf;
+            boolean isCheckedAll;
+
+            public boolean isCheckedAll() {
+                return isCheckedAll;
+            }
+
+            public void setCheckedAll(boolean checkedAll) {
+                isCheckedAll = checkedAll;
+            }
 
             public List<YxpBean> getYxp() {
                 return yxp;
@@ -393,6 +402,7 @@ public class CustomerProductEntity extends  BaseResult {
         }
 
         public static class ExBean {
+            boolean isCheckedAll;
             private List<ExfBean> exf;
 
             public List<ExfBean> getExf() {
@@ -401,6 +411,14 @@ public class CustomerProductEntity extends  BaseResult {
 
             public void setExf(List<ExfBean> exf) {
                 this.exf = exf;
+            }
+
+            public boolean isCheckedAll() {
+                return isCheckedAll;
+            }
+
+            public void setCheckedAll(boolean checkedAll) {
+                isCheckedAll = checkedAll;
             }
 
             public static class ExfBean {
