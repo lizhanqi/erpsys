@@ -35,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
@@ -59,6 +60,8 @@ import com.suxuantech.erpsys.ui.fragment.TakeDataFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -79,8 +82,10 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+        useEventBus();
         supportToolbar();
 //        showUserDefinedNav();
+
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
         current = stringArray[0];
@@ -105,14 +110,14 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 break;
             case R.id.tv_nav_right:
                 if (mFragments[3] != null) {
-                    productDataFragment.change();
+                    productDataFragment.editProduct();
                 }
                 break;
             default:
         }
     }
 
-
+    boolean hasPackage = false;
     public void gotoFragment() {
         if (menu != null) {
             menu.clear();
@@ -188,16 +193,16 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 DrawableCompat.setTint(drawable, getResources().getColor(R.color.themeColor));
                 int heit = (int) (drawable.getMinimumHeight() * 0.7);
                 drawable.setBounds(0, 0, heit, heit);
-                menu.add(Menu.NONE, 1, 0, "sss")
+                menu.add(Menu.NONE, 1, 1, "sss")
                         .setEnabled(true)
                         .setOnMenuItemClickListener(menuItem -> {
-                            boolean hasPackage = true;
+
                             if (hasPackage) {
-                                String[] s ={"一销产品","二销产品"};
-                                new AlertView("产品次数", null, getString(R.string.cancel), null, s  , this, AlertView.Style.ACTIONSHEET, new OnItemClickListener(){
+                                String[] s = {"一销产品", "二销产品"};
+                                new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(Object o, int position){//position -1是取消按钮
-                                        if (position<0){
+                                    public void onItemClick(Object o, int position) {//position -1是取消按钮
+                                        if (position < 0) {
                                             return;
                                         }
                                         OptionHelp optionHelp = new OptionHelp(OrderDetailActivity.this);
@@ -234,7 +239,20 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 break;
         }
     }
-
+    @Subscribe
+    @MainThread
+    public void onEventMainThread(String add) {
+        MenuItem item = menu.findItem(0);
+        if (add .equals("80")  && item == null) {
+            boolean hasPackage = true;
+            menu.add(Menu.NONE, 1, 0, "10").setIcon(getResources().getDrawable(R.drawable.icon_id))
+                    .setOnMenuItemClickListener(menuItem -> {
+                        EventBus.getDefault().post("edit");
+                        return true;
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+    }
 
     private void toTabFragement(int witch) {
         Bundle bd = new Bundle();
@@ -325,8 +343,4 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     public void onFragmentInteraction(@NotNull Uri uri) {
 
     }
-//    @Override
-//    protected int fragmentLayoutId() {
-//        return R.id.container;
-//    }
 }

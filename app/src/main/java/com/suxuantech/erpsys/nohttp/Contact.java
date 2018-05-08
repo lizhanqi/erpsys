@@ -282,6 +282,8 @@ public class Contact {
      * 登陆人权限
      */
    public  static  String LOGIN_PERMISSION="/SXWebErpAppStaff/SX_HQFunction?Token=%s&worktype=%s&gwcode=%s&Code=%s";
-
-
+    /**
+     *
+     */
+    public  static String MAKE_UP="/SXWebErpAppStaff/SX_CustomerMakeupCount?Token=%s&orderid=%s&Code=%s";
 }

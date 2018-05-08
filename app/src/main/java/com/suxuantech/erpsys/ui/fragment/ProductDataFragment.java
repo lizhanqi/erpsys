@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -39,31 +41,28 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
  * 产品资料
  */
 public class ProductDataFragment extends BaseSupportFragment {
-    @BindView(R.id.recycler_one_product)
-    SwipeMenuRecyclerView mRecyclerOneProduct;
-    @BindView(R.id.recycler_two_product)
-    SwipeMenuRecyclerView mRecyclerTwoProduct;
-    @BindView(R.id.cb_one_all)
-    CheckBox mCbOneAll;
-    @BindView(R.id.cb_two_all)
-    CheckBox mCbTwoAll;
     @BindView(R.id.cb_all)
     CheckBox mCbAll;
     @BindView(R.id.tv_delete)
     TextView mTvDelete;
     @BindView(R.id.rl_delete)
     RelativeLayout mRlDelete;
+    @BindView(R.id.cb_one_all)
+    CheckBox mCbOneAll;
     @BindView(R.id.stv_one_package)
     SuperTextView mStvOnePackage;
+    @BindView(R.id.recycler_one_product)
+    SwipeMenuRecyclerView mRecyclerOneProduct;
     private Unbinder unbinder;
-    private ProductGroupAdaputer productGroupAdaputer2;
     private ProductGroupAdaputer productGroupAdaputer;
+    private View view;
 
     public ProductDataFragment() {
     }
@@ -73,10 +72,10 @@ public class ProductDataFragment extends BaseSupportFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
-        // ((OrderDetailActivity) getActivity()).setUseDefinedNavRightText("1111");
         useEventBus();
         initView(view);
         getProduct();
+
         return view;
     }
 
@@ -105,11 +104,12 @@ public class ProductDataFragment extends BaseSupportFragment {
         HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
             @Override
             public void onSucceed(int what, Response<SimpleEntity> response) {
-                if (response.get().isOK()){
+                if (response.get().isOK()) {
                     ToastUtils.showShort("添加套系成功");
                     getProduct();
                 }
             }
+
             @Override
             public void onFailed(int what, Response<SimpleEntity> response) {
             }
@@ -131,20 +131,11 @@ public class ProductDataFragment extends BaseSupportFragment {
                                                  @Override
                                                  public boolean canScrollVertically() {
                                                      // 直接禁止垂直滑动
-                                                     return false;
+                                                    // return false;
+                                                     return true;
                                                  }
                                              }
         );
-        productGroupAdaputer2 = new ProductGroupAdaputer(getActivity(), false, dataBean);
-        mRecyclerTwoProduct.setLayoutManager(new LinearLayoutManager(getActivity()) {
-                                                 @Override
-                                                 public boolean canScrollVertically() {
-                                                     // 直接禁止垂直滑动
-                                                     return false;
-                                                 }
-                                             }
-        );
-        mRecyclerTwoProduct.setAdapter(productGroupAdaputer2);
     }
 
     @Override
@@ -155,20 +146,19 @@ public class ProductDataFragment extends BaseSupportFragment {
 
     boolean isShowCheckBox;
 
-    public void change() {
-        addPackageOrProductWindow();
+    /**
+     * 编辑产品
+     */
+    public void editProduct() {
         isShowCheckBox = !isShowCheckBox;
         if (isShowCheckBox) {
             mRlDelete.setVisibility(View.VISIBLE);
             mCbOneAll.setVisibility(View.VISIBLE);
-            mCbTwoAll.setVisibility(View.VISIBLE);
         } else {
             mRlDelete.setVisibility(View.GONE);
             mCbOneAll.setVisibility(View.GONE);
-            mCbTwoAll.setVisibility(View.GONE);
         }
         productGroupAdaputer.setShowCheckBox(isShowCheckBox);
-        productGroupAdaputer2.setShowCheckBox(isShowCheckBox);
     }
 
     private void initView(View view) {
@@ -176,7 +166,6 @@ public class ProductDataFragment extends BaseSupportFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCbOneAll.setChecked(isChecked);
-                mCbTwoAll.setChecked(isChecked);
             }
         });
         mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -186,14 +175,6 @@ public class ProductDataFragment extends BaseSupportFragment {
                 productGroupAdaputer.notifyDataSetChanged();
             }
         });
-        mCbTwoAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                productGroupAdaputer2.setCheckAll(isChecked);
-                productGroupAdaputer2.notifyDataSetChanged();
-            }
-        });
-
     }
 
     public void addPackageOrProductWindow() {
@@ -221,12 +202,15 @@ public class ProductDataFragment extends BaseSupportFragment {
                 if (response.get().isOK()) {
                     CustomerProductEntity.DataBean dataBean = response.get().getData();
                     if (dataBean != null) {
+                        EventBus.getDefault().post("80");
                         List<CustomerProductEntity.DataBean.YxBean.YxpBean> yxp = dataBean.getYx().getYxp();
-                        List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
+                        mStvOnePackage.setVisibility(View.VISIBLE);
                         mStvOnePackage.setLeftString(yxp.get(0).getConsumption_name());
                         mStvOnePackage.setRightString("¥:" + yxp.get(0).getPrice());
                         mStvOnePackage.setRightTextColor(getResources().getColor(R.color.litte_red));
                         setData(dataBean);
+                    }else {
+                        mStvOnePackage.setVisibility(View.GONE);
                     }
                 }
             }
@@ -236,5 +220,33 @@ public class ProductDataFragment extends BaseSupportFragment {
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
+    @Subscribe
+    @MainThread
+    public void onEventMainThread(String add) {
+        if (add.equals("edit")) {
+            editProduct();
+        }
+    }
+
+    @OnClick({R.id.cb_all, R.id.tv_delete, R.id.rl_delete, R.id.cb_one_all, R.id.stv_one_package, R.id.recycler_one_product})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            default:
+                break;
+            case R.id.cb_all:
+                break;
+            case R.id.tv_delete:
+                break;
+            case R.id.rl_delete:
+                break;
+            case R.id.cb_one_all:
+                break;
+            case R.id.stv_one_package:
+                break;
+            case R.id.recycler_one_product:
+                break;
+        }
     }
 }

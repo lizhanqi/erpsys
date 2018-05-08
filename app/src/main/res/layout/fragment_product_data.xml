@@ -42,16 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <ScrollView
-        android:layout_above="@id/rl_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
     <LinearLayout
-    android:background="@color/white"
-    android:clickable="true"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:layout_above="@id/rl_delete"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -78,36 +73,7 @@
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/recycler_one_product"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
     </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <CheckBox
-            android:visibility="gone"
-            android:textColor="@color/mainNav_66"
-            android:id="@+id/cb_two_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    <com.allen.library.SuperTextView
-        app:sLeftTvDrawableLeft="@drawable/icon_product_package"
-        app:sTextViewDrawablePadding="@dimen/px30"
-        app:sLeftTextColor="@color/myValue_33"
-        app:sLeftTextSize="@dimen/xs50"
-        app:sLeftTextString="xxx(一包套)"
-        android:layout_width="match_parent"
-        app:sRightTextSize="@dimen/xs40"
-        app:sRightTextColor="@color/color_f1430b"
-        app:sRightTopTextString="¥:0"
-        android:layout_height="@dimen/px160">
-    </com.allen.library.SuperTextView>
     </LinearLayout>
-        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-        android:id="@+id/recycler_two_product"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-</LinearLayout>
-    </ScrollView>
 </RelativeLayout>
