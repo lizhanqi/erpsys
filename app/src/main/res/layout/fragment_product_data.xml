@@ -63,7 +63,7 @@
         app:sTextViewDrawablePadding="@dimen/px30"
         app:sLeftTextColor="@color/myValue_33"
         app:sLeftTextSize="@dimen/xs50"
-        app:sLeftTextString="xxx(一包套)"
+        app:sLeftTextString="xxx(包套)"
         android:layout_width="match_parent"
         app:sRightTextSize="@dimen/xs40"
         app:sRightTextColor="@color/color_f1430b"

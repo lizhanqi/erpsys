@@ -196,12 +196,12 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 menu.add(Menu.NONE, 1, 1, "sss")
                         .setEnabled(true)
                         .setOnMenuItemClickListener(menuItem -> {
-
                             if (hasPackage) {
                                 String[] s = {"一销产品", "二销产品"};
-                                new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
+                                AlertView alertView =  new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
                                     @Override
                                     public void onItemClick(Object o, int position) {//position -1是取消按钮
+                                        recoverImmersionBar();
                                         if (position < 0) {
                                             return;
                                         }
@@ -212,8 +212,11 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                         Intent creat = optionHelp.creat();
                                         startActivity(creat);
                                     }
-                                }).show();
-
+                                });
+                                alertView.setMarginBottom(30);
+                                alertView .show();
+                                //EventBus.getDefault().post("addProductWindow");
+                                  immersionBarDark( );
                             } else {
                                 OptionHelp optionHelp = new OptionHelp(this);
                                 optionHelp.setTitle("添加包套");
@@ -244,7 +247,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     public void onEventMainThread(String add) {
         MenuItem item = menu.findItem(0);
         if (add .equals("80")  && item == null) {
-            boolean hasPackage = true;
+              hasPackage = true;
             menu.add(Menu.NONE, 1, 0, "10").setIcon(getResources().getDrawable(R.drawable.icon_id))
                     .setOnMenuItemClickListener(menuItem -> {
                         EventBus.getDefault().post("edit");

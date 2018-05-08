@@ -233,4 +233,21 @@
         <item name="android:paddingRight">@dimen/px55</item>
     </style>
 
+    <!--仿小米弹窗-->
+    <!--Dialog动画-->
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_animation_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_animation_out</item>
+    </style>
+
+    <style name="style_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+    <!--仿照小米end-->
+
+
 </resources>

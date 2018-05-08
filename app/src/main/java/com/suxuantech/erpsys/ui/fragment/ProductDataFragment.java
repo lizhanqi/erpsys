@@ -27,7 +27,6 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
-import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -96,6 +95,16 @@ public class ProductDataFragment extends BaseSupportFragment {
                 break;
         }
     }
+    /**
+     * @param msg
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String msg) {
+        if (msg.equals("addProductWindow")){
+            addProductWindow();
+        }
+    }
+
 
     public void addPackage(String url) {
         //请求实体
@@ -104,7 +113,7 @@ public class ProductDataFragment extends BaseSupportFragment {
             @Override
             public void onSucceed(int what, Response<SimpleEntity> response) {
                 if (response.get().isOK()) {
-                    ToastUtils.showShort("添加套系成功");
+                    ToastUtils.snackbarShort("添加套系成功");
                     getProduct();
                 }
             }
@@ -119,7 +128,6 @@ public class ProductDataFragment extends BaseSupportFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     public void setData(CustomerProductEntity.DataBean dataBean) {
@@ -166,17 +174,16 @@ public class ProductDataFragment extends BaseSupportFragment {
                 mCbOneAll.setChecked(isChecked);
             }
         });
-        mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mCbAll.setChecked(isChecked);
-                    productGroupAdaputer.setCheckAll(isChecked);
-            }
-        });
+       mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               productGroupAdaputer.setCheckAll(isChecked);
+           }
+       });
     }
 
 
-    public void addPackageOrProductWindow() {
+    public void addProductWindow() {
         AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
         Button bn = views.findViewById(R.id.btn_add_package);
@@ -184,10 +191,7 @@ public class ProductDataFragment extends BaseSupportFragment {
         alertView.addExtView(views);
         alertView.setCancelable(true);
         alertView.setContentContainerMargins(0, 0, 0, 0);
-        if (ScreenUtils.checkDeviceHasNavigationBar(getContext())) {
-            alertView.setRootViewMarginBootom(ScreenUtils.getNavigationBarHeight(getContext()));
-            alertView.show();
-        }
+        alertView.show();
     }
     public void getProduct() {
         String orderId = getArguments().getString("orderId");
@@ -210,6 +214,10 @@ public class ProductDataFragment extends BaseSupportFragment {
                     }else {
                         mStvOnePackage.setVisibility(View.GONE);
                     }
+                }else
+                {
+                    mStvOnePackage.setVisibility(View.GONE);
+
                 }
             }
 
@@ -239,10 +247,16 @@ public class ProductDataFragment extends BaseSupportFragment {
         }
     }
 
-    @OnClick({ R.id.tv_delete })
+    @OnClick({ R.id.tv_delete,R.id.cb_all, R.id.cb_one_all})
     public void onClick(View v) {
         switch (v.getId()) {
             default:
+                break;
+            case R.id.cb_all:
+                mCbAll.setChecked( mCbAll.isChecked());
+                break;
+            case R.id.cb_one_all:
+                mCbAll.setChecked( mCbAll.isChecked());
                 break;
             case R.id.tv_delete:
                 break;

@@ -45,6 +45,7 @@ import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
+import com.suxuantech.erpsys.ui.dialog.CustomBottomDialog;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration2;
 import com.suxuantech.erpsys.ui.widget.MarqueTextView;
@@ -454,9 +455,12 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 break;
             case R.id.tv_schedule:
-                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
-                intent.putExtra("title","排程");
-                startActivity(intent);
+                CustomBottomDialog customBottomDialog = new CustomBottomDialog(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null), getActivity(), R.style.style_dialog);
+                customBottomDialog.show();
+
+//                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+//                intent.putExtra("title","排程");
+//                startActivity(intent);
             //    startActivity(new Intent(getActivity(), ScheduleActivity.class));
                 break;
             case R.id.schedule_wave:

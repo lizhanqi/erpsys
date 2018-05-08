@@ -131,7 +131,7 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
                     CustomerProductEntity.DataBean.ExBean.ExfBean exfBean = dataBean.getEx().getExf().get(childPosition);
                     exfBean.setChecked(b);
                 }
-                if (isCheckAll()) {
+                    if (isCheckAll()) {
                     EventBus.getDefault().post("checkAll");
                 } else {
                     EventBus.getDefault().post("checkNone");
@@ -192,12 +192,14 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
             for (CustomerProductEntity.DataBean.YxBean.YxfBean y : yxf) {
                 y.setChecked(checkAll);
             }
+            dataBean.getYx().setCheckedAll(checkAll);
         }
         if (dataBean.getEx() != null && dataBean.getEx().getExf() != null) {
             List<CustomerProductEntity.DataBean.ExBean.ExfBean> exf = dataBean.getEx().getExf();
             for (CustomerProductEntity.DataBean.ExBean.ExfBean e : exf) {
                 e.setChecked(checkAll);
             }
+            dataBean.getEx().setCheckedAll(checkAll);
         }
         notifyDataSetChanged();
     }

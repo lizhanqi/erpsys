@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity.base
 
+import android.support.annotation.FloatRange
 import android.view.View
 import com.gyf.barlibrary.ImmersionBar
 import com.suxuantech.erpsys.R
@@ -95,8 +96,18 @@ abstract class ImmersionActivity : BaseActivity() {
      */
     public  fun  immersionBarDark( ){
         mImmersionBar    ?.statusBarColor (R.color.translucent_black_95)
-         ?.navigationBarColor(R.color.translucent_black_95)
-        mImmersionBar?.barAlpha(0f)
+                ?.navigationBarColor(R.color.translucent_black_95)
+        mImmersionBar?.barAlpha(0.8f)
+        mImmersionBar?.init();
+    }
+
+    /**
+     * 设置暗色度数
+     */
+    public  fun  immersionBarDark(@FloatRange(from = 0.0, to = 1.0) color:Float ){
+        mImmersionBar    ?.statusBarColor (R.color.translucent_black_95)
+                ?.navigationBarColor(R.color.translucent_black_95)
+        mImmersionBar?.barAlpha(color)
         mImmersionBar?.init();
     }
 
