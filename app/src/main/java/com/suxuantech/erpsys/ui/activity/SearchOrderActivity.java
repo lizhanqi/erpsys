@@ -121,10 +121,19 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private DefaultItemDecoration searchItemDecoration;
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
+    private QuickAdapter quickAdapter;
+
+    public enum SearchType{
+        NOMAL, OPTION_PANEL,PHOTOGRAPH
+    }
+    SearchType searchType=SearchType.NOMAL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
+        if(getIntent().hasExtra("type")){
+            searchType = (SearchType) getIntent().getSerializableExtra("type");
+        }
         useButterKnife();
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         initView();
@@ -161,7 +170,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void onBackPressedSupport() {
-
         if (mSmrHistory!=null){
            if( mSmrHistory.getAdapter() ==searchResultAdaputer   ){
                initHistoryAdapter();
@@ -353,6 +361,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         new AlertView("清除历史记录", "确认清除历史记录?", null, new String[]{"取消", "确定"}, null, this, AlertView.Style.ALERT, new OnItemClickListener() {
             @Override
             public void onItemClick(Object o, int position) {
+                recoverImmersionBar();
                 if (position == 0) {
                     mTvNearlySearch.setCompoundDrawables(null, null, null, null);
                     mSearchOrderPresenter.clear();
@@ -362,6 +371,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 }
             }
         }).setAlertRightColor(getResources().getColor(R.color.themeColor)).show();
+        immersionBarDark();
     }
 
     /**
@@ -526,7 +536,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private void searchResultAdaptercopy(List<SearchOrderEntity.DataBean> data, boolean isRefesh) {
         if (isRefesh) {
             reset();
-
         }
         if (searchResultAdaputer != null) {
             if (isRefesh) {
@@ -545,33 +554,49 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             return;
         }
         datacopy=data;
-        QuickAdapter quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, data) {
-            @Override
-            protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
-                TextView tvName;
-                TextView tvMoney;
-                TextView tvOrderId;
-                TextView tvStatus;
-                TextView tvConsumptionType;
-                TextView tvPackageName;
-                TextView tvOrderDate;
+  if (SearchType.OPTION_PANEL==searchType||SearchType.PHOTOGRAPH==searchType){
+      quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_search_option_panel, data) {
+          @Override
+          protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+              TextView   tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
+              TextView   tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
+              TextView   tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
+              tvCustomerNames.setText(""+item.getXingming());
+              tvOrderId.setText("订单编号"+item.getOrderId());
+              if (SearchType.OPTION_PANEL==searchType){
+                  tvCustomerInfos.setText("拍照日期:"+item.getPhotodate());
+                  tvCustomerInfos.append("\n选片日期:"+item.getSelectday());
+              }else {
+                  tvCustomerInfos.setText("订单日期:"+item.getTargetdate());
+                  tvCustomerInfos.append("\n拍照日期:"+item.getPhotodate());
+              }
+              tvCustomerInfos.append("\n客户分区:"+item.getArea());
+          }
+      };
+    }else {
+                quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, data) {
+                    @Override
+                    protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+                         TextView tvName = (TextView) helper.getView(R.id.tv_name);
+                        TextView tvMoney = (TextView) helper.getView(R.id.tv_money);
+                        TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
+                        TextView tvStatus = (TextView) helper.getView(R.id.tv_status);
+                        TextView tvConsumptionType = (TextView) helper.getView(R.id.tv_consumption_type);
+                        TextView tvPackageName = (TextView) helper.getView(R.id.tv_package_name);
+                        TextView tvOrderDate = (TextView) helper.getView(R.id.tv_order_date);
+                        tvName.setText(item.getXingming());
+                        tvMoney.setText("¥ " + item.getNopayment_money());
+                        tvOrderId.setText(item.getOrderId());
+                        tvStatus.setText(item.getNopayment_money() > 0 ? "欠款" : "");
+                        tvConsumptionType.setText("消费类型:" + item.getConsumption_type());
+                        tvOrderDate.setText("订单日期:" + item.getTargetdate());
+                        tvPackageName.setText("包套名称:" + item.getPayment_money());
+                    }
+                };
 
-                tvName = (TextView) helper.getView(R.id.tv_name);
-                tvMoney = (TextView)  helper.getView(R.id.tv_money);
-                tvOrderId = (TextView)  helper.getView(R.id.tv_order_id);
-                tvStatus = (TextView)  helper.getView(R.id.tv_status);
-                tvConsumptionType = (TextView)  helper.getView(R.id.tv_consumption_type);
-                tvPackageName = (TextView)  helper.getView(R.id.tv_package_name);
-                tvOrderDate = (TextView)  helper.getView(R.id.tv_order_date);
-                tvName.setText(item.getXingming());
-                tvMoney.setText("¥ "+item.getNopayment_money());
-                tvOrderId.setText(item.getOrderId());
-                 tvStatus.setText(item.getNopayment_money()>0?"欠款":"");
-                tvConsumptionType.setText("消费类型:"+item.getConsumption_type());
-                tvOrderDate.setText("订单日期:"+item.getTargetdate());
-                tvPackageName.setText("包套名称:"+item.getPayment_money());
             }
-        };
+
+
         mSmrHistory.setAdapter(quickAdapter);
 
 

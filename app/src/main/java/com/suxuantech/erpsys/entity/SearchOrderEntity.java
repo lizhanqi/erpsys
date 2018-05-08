@@ -37,7 +37,7 @@ public class SearchOrderEntity extends BaseResult {
 
     /**
      * Code : 200
-     * Data : [{"id":95,"mname":"","mphone":"","wname":"幺叔","wphone":"18801299876","viptype":"","vipnum":"","area":"VIP,-三楼","iswhethercantake":"","order_type_name":null,"shareshoplist":"","ordertopic":"","from_index":"","order_type":0,"isalreadytake":"","id1":95,"orderId":"SY18041900067","customerid":"52a38bd4-9142-4117-903c-f9f0d5f7777f","order_type1":0,"consumption_type":"情侣照","package_name":"8999丽莎水晶包套","targetdate":"20180419","targetime":null,"storeconsuitant1":"test1ren","storeconsuitant2":"test2-ren","acceptor_address":null,"total_money":0,"payment_money":0,"nopayment_money":0,"supplementary_money":0,"bargain_money":0,"allfinishfate":null,"payoervedate":null,"firstpaydate":null,"dressmony":0,"sellmoney":0,"ordernote":"","vipnum1":null,"shop_order_name":null,"shop_code":"ZX002","shop_name":"沈阳时尚经典婚纱店","create_time":"2018-04-19 13:27:00.000","blankoutannal":0,"blankoutannalremark":null,"iswhethercantake1":0,"isalreadytake1":0,"whethercantakedate":null,"alreadytakedate":null,"take_takaddress":null,"dresstotal":0,"dresspay":0,"dressnonpay":0,"uploadoriginal":0,"uploaddesign":0,"makeuptotal":0,"makeuppay":0,"makeupnonpay":0,"spImport_photocount":0,"spcount":0,"spbook_photocount":0,"sendtime":null,"getDate":null,"shareshoplist1":"","opershop":"ZX002","turntype":null,"server1":2,"server2":0,"server3":0,"server4":0,"server5":0,"server6":0,"server7":0,"refund":0,"refunddate":null,"reservelock":0,"addlock":0,"order_type_name1":null,"ordertopic1":"","customernote":"","qj_producttype":0,"qj_sjgetDate":null,"qj_bzname":null,"qj_produceover":0,"qj_produceoverday":null,"sj_sendnumber":0,"qj_staymark":"","qj_staymarkday":"","qj_staymarkbz":null,"storeconsuitant3":"春娜","indoordresscount":0,"outerdresscount":0,"seadresscount":0,"travelresscount":0,"dresstheme":"礼服主题3|礼服主题4|礼服主题5","oeder_newclass":"正常3","paizhaocount":0,"rucecount":0,"jingxiucount":0,"qj_psjdate":"","qj_renname":"","customerphoto":"","xingming":" 幺叔","shouji":" 18801299876","blankoutannal1":"","refund1":"","mwechat":"","wwechat":"","mqq":null,"wqq":null,"cssname":"网络老顾客转介绍","refunddate1":null,"area1":"VIP,-三楼","mbirthdate":"","wbirthdate":"","midtype":null,"mid":null,"introducerid":null,"introducer_name":null,"weddingdate":"20180419","wIdtype":null,"wid":null,"mid1":null,"mid2":null,"customernote1":null,"email":"","customerid1":"52a38bd4-9142-4117-903c-f9f0d5f7777f","address":"","vipdiscount":"10"},{"id":96,"mname":"","mphone":"","wname":"幺叔","wphone":"18801299876","viptype":"贵宾卡","vipnum":"","area":"VIP,-三楼","iswhethercantake":"","order_type_name":null,"shareshoplist":"","ordertopic":"","from_index":"","order_type":0,"isalreadytake":"","id1":96,"orderId":"SY18041900068","customerid":"c8d9e682-00fc-4686-ac44-4ded7c4e4e7a","order_type1":0,"consumption_type":"情侣照","package_name":"8999丽莎水晶包套","targetdate":"20180419","targetime":null,"storeconsuitant1":"test1ren","storeconsuitant2":"test2-ren","acceptor_address":null,"total_money":0,"payment_money":0,"nopayment_money":0,"supplementary_money":0,"bargain_money":0,"allfinishfate":null,"payoervedate":null,"firstpaydate":null,"dressmony":0,"sellmoney":0,"ordernote":"","vipnum1":null,"shop_order_name":null,"shop_code":"ZX002","shop_name":"沈阳时尚经典婚纱店","create_time":"2018-04-19 13:49:06.000","blankoutannal":0,"blankoutannalremark":null,"iswhethercantake1":0,"isalreadytake1":0,"whethercantakedate":null,"alreadytakedate":null,"take_takaddress":null,"dresstotal":0,"dresspay":0,"dressnonpay":0,"uploadoriginal":0,"uploaddesign":0,"makeuptotal":0,"makeuppay":0,"makeupnonpay":0,"spImport_photocount":0,"spcount":0,"spbook_photocount":0,"sendtime":null,"getDate":null,"shareshoplist1":"","opershop":"ZX002","turntype":null,"server1":2,"server2":0,"server3":0,"server4":0,"server5":0,"server6":0,"server7":0,"refund":0,"refunddate":null,"reservelock":0,"addlock":0,"order_type_name1":null,"ordertopic1":"","customernote":"","qj_producttype":0,"qj_sjgetDate":null,"qj_bzname":null,"qj_produceover":0,"qj_produceoverday":null,"sj_sendnumber":0,"qj_staymark":"","qj_staymarkday":"","qj_staymarkbz":null,"storeconsuitant3":"春娜","indoordresscount":0,"outerdresscount":0,"seadresscount":0,"travelresscount":0,"dresstheme":"礼服主题3|礼服主题4|礼服主题5","oeder_newclass":"正常3","paizhaocount":0,"rucecount":0,"jingxiucount":0,"qj_psjdate":"","qj_renname":"","customerphoto":"","xingming":" 幺叔","shouji":" 18801299876","blankoutannal1":"","refund1":"","mwechat":"","wwechat":"","mqq":null,"wqq":null,"cssname":"网络老顾客转介绍","refunddate1":null,"area1":"VIP,-三楼","mbirthdate":"","wbirthdate":"","midtype":null,"mid":null,"introducerid":null,"introducer_name":null,"weddingdate":"20180419","wIdtype":null,"wid":null,"mid1":null,"mid2":null,"customernote1":null,"email":"","customerid1":"c8d9e682-00fc-4686-ac44-4ded7c4e4e7a","address":"","vipdiscount":"10"}]
+     * Data : [{"id":52,"mname":"小斐","mphone":"15623657854","wname":"张雯","wphone":"12352456578","viptype":"","vipnum":"","area":"V2-五楼","iswhethercantake":"","order_type_name":null,"shareshoplist":"ZX002,","ordertopic":"水晶之恋|巴黎经典","from_index":null,"order_type":0,"isalreadytake":"","id1":52,"orderId":"SY18032100043","customerid":"42ca4038-70eb-46ed-8780-814ab313042f","order_type1":0,"consumption_type":"婚纱照","package_name":null,"targetdate":"20180321","targetime":null,"storeconsuitant1":"海芹","storeconsuitant2":"高丽艳 ","acceptor_address":null,"total_money":0,"payment_money":0,"nopayment_money":0,"supplementary_money":0,"bargain_money":0,"allfinishfate":null,"payoervedate":"","firstpaydate":null,"dressmony":0,"sellmoney":0,"ordernote":"2","vipnum1":null,"shop_order_name":null,"shop_code":"ZX002","shop_name":"沈阳时尚经典婚纱店","create_time":"2018-03-21 14:52:23.000","blankoutannal":0,"blankoutannalremark":null,"iswhethercantake1":0,"isalreadytake1":0,"whethercantakedate":null,"alreadytakedate":null,"take_takaddress":null,"dresstotal":230,"dresspay":0,"dressnonpay":230,"uploadoriginal":0,"uploaddesign":0,"makeuptotal":0,"makeuppay":0,"makeupnonpay":0,"spImport_photocount":0,"spcount":0,"spbook_photocount":0,"sendtime":null,"getDate":null,"shareshoplist1":"ZX002,","opershop":"ZX002","turntype":null,"server1":2,"server2":0,"server3":0,"server4":0,"server5":0,"server6":0,"server7":0,"refund":0,"refunddate":null,"reservelock":0,"addlock":0,"order_type_name1":null,"ordertopic1":"水晶之恋|巴黎经典","customernote":"","qj_producttype":0,"qj_sjgetDate":null,"qj_bzname":null,"qj_produceover":0,"qj_produceoverday":null,"sj_sendnumber":0,"qj_staymark":"","qj_staymarkday":"","qj_staymarkbz":null,"storeconsuitant3":"田昭亮 ","indoordresscount":3,"outerdresscount":2,"seadresscount":5,"travelresscount":6,"dresstheme":"礼服主题4|礼服主题5","oeder_newclass":"","paizhaocount":0,"rucecount":0,"jingxiucount":0,"qj_psjdate":"","qj_renname":"","customerphoto":"","sj_state":"","packagecount":0,"xingming":"小斐 张雯","shouji":"15623657854 12352456578","blankoutannal1":"","refund1":"","mwechat":"123456","wwechat":"123456","mqq":null,"wqq":null,"cssname":"门市指名转介绍","refunddate1":null,"area1":"V2-五楼","mbirthdate":"20180321","wbirthdate":"20180331","midtype":null,"mid":null,"introducerid":null,"introducer_name":null,"weddingdate":"20180325","wIdtype":null,"wid":null,"mid1":null,"mid2":null,"customernote1":null,"email":"854658784@qq.com","customerid1":"42ca4038-70eb-46ed-8780-814ab313042f","address":"朝阳区","vipdiscount":"10","photodate":"2018-03-26 00:00:00.000","phototime":"1300","cameraman":"高丽艳 ","photostate":0,"phototype":"补拍","selectday":"20180326","selectTime":"1000","sptstate":0,"kanbanriqi":"20180414","kanbanshijian":"1300","kanbanstate":5}]
      */
 
     private List<DataBean> Data;
@@ -52,31 +52,31 @@ public class SearchOrderEntity extends BaseResult {
 
     public static class DataBean implements Parcelable {
         /**
-         * id : 95
-         * mname :
-         * mphone :
-         * wname : 幺叔
-         * wphone : 18801299876
+         * id : 52
+         * mname : 小斐
+         * mphone : 15623657854
+         * wname : 张雯
+         * wphone : 12352456578
          * viptype :
          * vipnum :
-         * area : VIP,-三楼
+         * area : V2-五楼
          * iswhethercantake :
          * order_type_name : null
-         * shareshoplist :
-         * ordertopic :
-         * from_index :
+         * shareshoplist : ZX002,
+         * ordertopic : 水晶之恋|巴黎经典
+         * from_index : null
          * order_type : 0
          * isalreadytake :
-         * id1 : 95
-         * orderId : SY18041900067
-         * customerid : 52a38bd4-9142-4117-903c-f9f0d5f7777f
+         * id1 : 52
+         * orderId : SY18032100043
+         * customerid : 42ca4038-70eb-46ed-8780-814ab313042f
          * order_type1 : 0
-         * consumption_type : 情侣照
-         * package_name : 8999丽莎水晶包套
-         * targetdate : 20180419
+         * consumption_type : 婚纱照
+         * package_name : null
+         * targetdate : 20180321
          * targetime : null
-         * storeconsuitant1 : test1ren
-         * storeconsuitant2 : test2-ren
+         * storeconsuitant1 : 海芹
+         * storeconsuitant2 : 高丽艳
          * acceptor_address : null
          * total_money : 0
          * payment_money : 0
@@ -84,16 +84,16 @@ public class SearchOrderEntity extends BaseResult {
          * supplementary_money : 0
          * bargain_money : 0
          * allfinishfate : null
-         * payoervedate : null
+         * payoervedate :
          * firstpaydate : null
          * dressmony : 0
          * sellmoney : 0
-         * ordernote :
+         * ordernote : 2
          * vipnum1 : null
          * shop_order_name : null
          * shop_code : ZX002
          * shop_name : 沈阳时尚经典婚纱店
-         * create_time : 2018-04-19 13:27:00.000
+         * create_time : 2018-03-21 14:52:23.000
          * blankoutannal : 0
          * blankoutannalremark : null
          * iswhethercantake1 : 0
@@ -101,9 +101,9 @@ public class SearchOrderEntity extends BaseResult {
          * whethercantakedate : null
          * alreadytakedate : null
          * take_takaddress : null
-         * dresstotal : 0
+         * dresstotal : 230
          * dresspay : 0
-         * dressnonpay : 0
+         * dressnonpay : 230
          * uploadoriginal : 0
          * uploaddesign : 0
          * makeuptotal : 0
@@ -114,7 +114,7 @@ public class SearchOrderEntity extends BaseResult {
          * spbook_photocount : 0
          * sendtime : null
          * getDate : null
-         * shareshoplist1 :
+         * shareshoplist1 : ZX002,
          * opershop : ZX002
          * turntype : null
          * server1 : 2
@@ -129,7 +129,7 @@ public class SearchOrderEntity extends BaseResult {
          * reservelock : 0
          * addlock : 0
          * order_type_name1 : null
-         * ordertopic1 :
+         * ordertopic1 : 水晶之恋|巴黎经典
          * customernote :
          * qj_producttype : 0
          * qj_sjgetDate : null
@@ -140,46 +140,59 @@ public class SearchOrderEntity extends BaseResult {
          * qj_staymark :
          * qj_staymarkday :
          * qj_staymarkbz : null
-         * storeconsuitant3 : 春娜
-         * indoordresscount : 0
-         * outerdresscount : 0
-         * seadresscount : 0
-         * travelresscount : 0
-         * dresstheme : 礼服主题3|礼服主题4|礼服主题5
-         * oeder_newclass : 正常3
+         * storeconsuitant3 : 田昭亮
+         * indoordresscount : 3
+         * outerdresscount : 2
+         * seadresscount : 5
+         * travelresscount : 6
+         * dresstheme : 礼服主题4|礼服主题5
+         * oeder_newclass :
          * paizhaocount : 0
          * rucecount : 0
          * jingxiucount : 0
          * qj_psjdate :
          * qj_renname :
          * customerphoto :
-         * xingming :  幺叔
-         * shouji :  18801299876
+         * sj_state :
+         * packagecount : 0
+         * xingming : 小斐 张雯
+         * shouji : 15623657854 12352456578
          * blankoutannal1 :
          * refund1 :
-         * mwechat :
-         * wwechat :
+         * mwechat : 123456
+         * wwechat : 123456
          * mqq : null
          * wqq : null
-         * cssname : 网络老顾客转介绍
+         * cssname : 门市指名转介绍
          * refunddate1 : null
-         * area1 : VIP,-三楼
-         * mbirthdate :
-         * wbirthdate :
+         * area1 : V2-五楼
+         * mbirthdate : 20180321
+         * wbirthdate : 20180331
          * midtype : null
          * mid : null
          * introducerid : null
          * introducer_name : null
-         * weddingdate : 20180419
+         * weddingdate : 20180325
          * wIdtype : null
          * wid : null
          * mid1 : null
          * mid2 : null
          * customernote1 : null
-         * email :
-         * customerid1 : 52a38bd4-9142-4117-903c-f9f0d5f7777f
-         * address :
+         * email : 854658784@qq.com
+         * customerid1 : 42ca4038-70eb-46ed-8780-814ab313042f
+         * address : 朝阳区
          * vipdiscount : 10
+         * photodate : 2018-03-26 00:00:00.000
+         * phototime : 1300
+         * cameraman : 高丽艳
+         * photostate : 0
+         * phototype : 补拍
+         * selectday : 20180326
+         * selectTime : 1000
+         * sptstate : 0
+         * kanbanriqi : 20180414
+         * kanbanshijian : 1300
+         * kanbanstate : 5
          */
 
         private int id;
@@ -283,6 +296,8 @@ public class SearchOrderEntity extends BaseResult {
         private String qj_psjdate;
         private String qj_renname;
         private String customerphoto;
+        private String sj_state;
+        private int packagecount;
         private String xingming;
         private String shouji;
         private String blankoutannal1;
@@ -310,6 +325,17 @@ public class SearchOrderEntity extends BaseResult {
         private String customerid1;
         private String address;
         private String vipdiscount;
+        private String photodate;
+        private String phototime;
+        private String cameraman;
+        private int photostate;
+        private String phototype;
+        private String selectday;
+        private String selectTime;
+        private int sptstate;
+        private String kanbanriqi;
+        private String kanbanshijian;
+        private int kanbanstate;
 
         public int getId() {
             return id;
@@ -1119,6 +1145,22 @@ public class SearchOrderEntity extends BaseResult {
             this.customerphoto = customerphoto;
         }
 
+        public String getSj_state() {
+            return sj_state;
+        }
+
+        public void setSj_state(String sj_state) {
+            this.sj_state = sj_state;
+        }
+
+        public int getPackagecount() {
+            return packagecount;
+        }
+
+        public void setPackagecount(int packagecount) {
+            this.packagecount = packagecount;
+        }
+
         public String getXingming() {
             return xingming;
         }
@@ -1335,6 +1377,94 @@ public class SearchOrderEntity extends BaseResult {
             this.vipdiscount = vipdiscount;
         }
 
+        public String getPhotodate() {
+            return photodate;
+        }
+
+        public void setPhotodate(String photodate) {
+            this.photodate = photodate;
+        }
+
+        public String getPhototime() {
+            return phototime;
+        }
+
+        public void setPhototime(String phototime) {
+            this.phototime = phototime;
+        }
+
+        public String getCameraman() {
+            return cameraman;
+        }
+
+        public void setCameraman(String cameraman) {
+            this.cameraman = cameraman;
+        }
+
+        public int getPhotostate() {
+            return photostate;
+        }
+
+        public void setPhotostate(int photostate) {
+            this.photostate = photostate;
+        }
+
+        public String getPhototype() {
+            return phototype;
+        }
+
+        public void setPhototype(String phototype) {
+            this.phototype = phototype;
+        }
+
+        public String getSelectday() {
+            return selectday;
+        }
+
+        public void setSelectday(String selectday) {
+            this.selectday = selectday;
+        }
+
+        public String getSelectTime() {
+            return selectTime;
+        }
+
+        public void setSelectTime(String selectTime) {
+            this.selectTime = selectTime;
+        }
+
+        public int getSptstate() {
+            return sptstate;
+        }
+
+        public void setSptstate(int sptstate) {
+            this.sptstate = sptstate;
+        }
+
+        public String getKanbanriqi() {
+            return kanbanriqi;
+        }
+
+        public void setKanbanriqi(String kanbanriqi) {
+            this.kanbanriqi = kanbanriqi;
+        }
+
+        public String getKanbanshijian() {
+            return kanbanshijian;
+        }
+
+        public void setKanbanshijian(String kanbanshijian) {
+            this.kanbanshijian = kanbanshijian;
+        }
+
+        public int getKanbanstate() {
+            return kanbanstate;
+        }
+
+        public void setKanbanstate(int kanbanstate) {
+            this.kanbanstate = kanbanstate;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -1443,6 +1573,8 @@ public class SearchOrderEntity extends BaseResult {
             dest.writeString(this.qj_psjdate);
             dest.writeString(this.qj_renname);
             dest.writeString(this.customerphoto);
+            dest.writeString(this.sj_state);
+            dest.writeInt(this.packagecount);
             dest.writeString(this.xingming);
             dest.writeString(this.shouji);
             dest.writeString(this.blankoutannal1);
@@ -1470,6 +1602,17 @@ public class SearchOrderEntity extends BaseResult {
             dest.writeString(this.customerid1);
             dest.writeString(this.address);
             dest.writeString(this.vipdiscount);
+            dest.writeString(this.photodate);
+            dest.writeString(this.phototime);
+            dest.writeString(this.cameraman);
+            dest.writeInt(this.photostate);
+            dest.writeString(this.phototype);
+            dest.writeString(this.selectday);
+            dest.writeString(this.selectTime);
+            dest.writeInt(this.sptstate);
+            dest.writeString(this.kanbanriqi);
+            dest.writeString(this.kanbanshijian);
+            dest.writeInt(this.kanbanstate);
         }
 
         public DataBean() {
@@ -1577,6 +1720,8 @@ public class SearchOrderEntity extends BaseResult {
             this.qj_psjdate = in.readString();
             this.qj_renname = in.readString();
             this.customerphoto = in.readString();
+            this.sj_state = in.readString();
+            this.packagecount = in.readInt();
             this.xingming = in.readString();
             this.shouji = in.readString();
             this.blankoutannal1 = in.readString();
@@ -1604,6 +1749,17 @@ public class SearchOrderEntity extends BaseResult {
             this.customerid1 = in.readString();
             this.address = in.readString();
             this.vipdiscount = in.readString();
+            this.photodate = in.readString();
+            this.phototime = in.readString();
+            this.cameraman = in.readString();
+            this.photostate = in.readInt();
+            this.phototype = in.readString();
+            this.selectday = in.readString();
+            this.selectTime = in.readString();
+            this.sptstate = in.readInt();
+            this.kanbanriqi = in.readString();
+            this.kanbanshijian = in.readString();
+            this.kanbanstate = in.readInt();
         }
 
         public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {
