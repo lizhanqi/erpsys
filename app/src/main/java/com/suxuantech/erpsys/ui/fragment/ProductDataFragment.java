@@ -100,8 +100,8 @@ public class ProductDataFragment extends BaseSupportFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String msg) {
-        if (msg.equals("addProductWindow")){
-            addProductWindow();
+        if (msg.equals("pop")){
+            addPackageOrProductWindow();
         }
     }
 
@@ -183,7 +183,7 @@ public class ProductDataFragment extends BaseSupportFragment {
     }
 
 
-    public void addProductWindow() {
+    public void addPackageOrProductWindow() {
         AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
         Button bn = views.findViewById(R.id.btn_add_package);

@@ -256,7 +256,7 @@
         <item>摄影资料</item>
         <item>选片资料</item>
         <item>取件资料</item>
-        <item>服务费用</item>
+        <item>付款明细</item>
     </string-array>
     <string-array name="takedata_information_item">
         <item>婚纱摄影</item>

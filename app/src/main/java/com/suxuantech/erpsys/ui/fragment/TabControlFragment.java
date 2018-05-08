@@ -23,9 +23,11 @@ import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static com.suxuantech.erpsys.ui.fragment.TabControlFragment.whichInFragement.OPTION_PANEL;
 
 /**
  * QuickAdapter simple {@link Fragment} subclass.
@@ -33,21 +35,30 @@ import java.util.List;
  */
 
 public class TabControlFragment extends BaseSupportFragment {
+
     private ArrayList<Fragment> fragments;
-    private ArrayList<Fragment> takeDataFragments;
-    private ArrayList<Fragment> photographicDataFragments;
-    private ArrayList<Fragment> selectedPictureInformationFragments;
-    private ArrayList<Fragment> takePictureDressDataFragments;
-
-
-    int witch;
+    whichInFragement witch;
     private ViewPager pager;
     private TabLayout tablayout;
     private View view;
     private FragmentManager childFragmentManager;
     private DefaultFragmentAdapter defaultFragmentAdapter;
+   public enum  whichInFragement implements Serializable {
+       SHOOT   ("摄影资料", 1), OPTION_PANEL("选片资料", 2),   PAY_DETAILS("付款明细", 3);
+        private String name ;
+        private int index ;
+        private whichInFragement( String name , int index ){
+            this.name = name ;
+            this.index = index ;
+        }
+        public String getName() {
+            return name;
+        }
+        public int getIndex() {
+            return index;
+        }
+    }
     //    设置参数确定子Fragment加载
-
     /**
      * 0是取件资料的
      * 1是摄影资料
@@ -56,8 +67,7 @@ public class TabControlFragment extends BaseSupportFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        witch = getArguments().getInt("witch");
-        // Inflate the layout for this fragment
+        witch = getArguments().getParcelable("witch");
         view = inflater.inflate(R.layout.fragment_tab_control, container, false);
         return view;
     }
@@ -69,15 +79,12 @@ public class TabControlFragment extends BaseSupportFragment {
         childFragmentManager = getChildFragmentManager();
         tablayout = view.findViewById(R.id.tablayout);
         pager = view.findViewById(R.id.vp);
-        if (witch == 2) {
-            getSelect();
-        } else if (witch == 1) {
-            getPhotoInfo();
-        } else {
-            initFragement();
-        }
+        onNewBundle(getArguments());
     }
 
+    /**
+     * 选片
+     */
     private void getSelect() {
         String url = Contact.getFullUrl(Contact.CUSTOMER_SELECTED_PICTURE, Contact.TOKEN, getArguments().getString("orderId"), App.getApplication().getUserInfor().getShop_code());
         //请求实体
@@ -100,7 +107,9 @@ public class TabControlFragment extends BaseSupportFragment {
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
-
+    /**
+     * 摄影资料
+     */
     private void getPhotoInfo() {
         String url = Contact.getFullUrl(Contact.CUSTOMER_PHOTO_INFO, Contact.TOKEN, getArguments().getString("orderId"), App.getApplication().getUserInfor().getShop_code());
         //请求实体
@@ -116,14 +125,13 @@ public class TabControlFragment extends BaseSupportFragment {
                 }
             }
 
-
-
             @Override
             public void onFailed(int what, Response<CustomerPhotoEntity> response) {
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
     private void initPhotoFragement(List<CustomerPhotoEntity.DataBean> data) {
         ArrayList<String> strings = new ArrayList<>();
         for (CustomerPhotoEntity.DataBean da : data) {
@@ -134,18 +142,18 @@ public class TabControlFragment extends BaseSupportFragment {
             strings.add(select_order_name);
         }
         resetpager();
-        if (photographicDataFragments == null) {
-            photographicDataFragments = new ArrayList<>();
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+        }
+        fragments.clear();
             for (int i = 0; i < strings.size(); i++) {
                 PhotographicDataFragment selectedPictureInformationFragment = new PhotographicDataFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("orderid", getArguments().getString("orderId"));
                 bundle.putParcelable("data", data.get(i));
                 selectedPictureInformationFragment.setArguments(bundle);
-                photographicDataFragments.add(selectedPictureInformationFragment);
-            }
+                fragments.add(selectedPictureInformationFragment);
         }
-        fragments = photographicDataFragments;
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
@@ -172,22 +180,21 @@ public class TabControlFragment extends BaseSupportFragment {
         }
         resetpager();
         //选片资料
-        if (selectedPictureInformationFragments == null) {
-            selectedPictureInformationFragments = new ArrayList<>();
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+        }
+        fragments.clear();
             for (int i = 0; i < strings.size(); i++) {
                 SelectedPictureInformationFragment selectedPictureInformationFragment = new SelectedPictureInformationFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("orderid", getArguments().getString("orderId"));
                 bundle.putParcelable("data", data.get(i));
                 selectedPictureInformationFragment.setArguments(bundle);
-                selectedPictureInformationFragments.add(selectedPictureInformationFragment);
-            }
+                fragments.add(selectedPictureInformationFragment);
         }
-        fragments = selectedPictureInformationFragments;
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
-
                 return fragments.get(positon);
             }
         });
@@ -202,6 +209,9 @@ public class TabControlFragment extends BaseSupportFragment {
      * 重置状态
      */
     private void resetpager() {
+        if (childFragmentManager==null){
+            childFragmentManager = getChildFragmentManager();
+        }
         FragmentTransaction ft = childFragmentManager.beginTransaction();
         for (Fragment f : childFragmentManager.getFragments()) {
             ft.remove(f);
@@ -216,75 +226,51 @@ public class TabControlFragment extends BaseSupportFragment {
     // 在HomeFragment.class中：
     @Override
     public void onNewBundle(Bundle newBundle) {
-        witch = newBundle.getInt("witch");
-        if (witch == 2) {
+        setArguments(newBundle);
+        witch = (whichInFragement) newBundle.getSerializable("witch");
+        if (witch==OPTION_PANEL) {
             getSelect();
-        } else if (witch == 1) {
+        } else if (witch  == whichInFragement.SHOOT ) {
             getPhotoInfo();
-        } else {
-            initFragement();
+        }else if (witch == whichInFragement.PAY_DETAILS) {
+            initPaymentFragment();
         }
     }
 
     /**
-     * 初始化固定的
+     * 初始化网络控制Fragement
+     *
      */
-    private void initFragement() {
-        String[] stringArray = getResources().getStringArray(R.array.takedata_information_item);
+    private void initPaymentFragment( ) {
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("门市收款");
+        strings.add("礼服收款");
+        strings.add("化妆收款");
         resetpager();
-        switch (witch) {
-            case 0:
-                //取件资料
-                if (takeDataFragments == null) {
-                    takeDataFragments = new ArrayList<>();
-                    takeDataFragments.add(new TakeDataFragment());
-                    takeDataFragments.add(new TakeDataFragment());
-                    takeDataFragments.add(new TakeDataFragment());
-                }
-                fragments = takeDataFragments;
-                break;
-            case 1:
-                //摄影资料
-                if (photographicDataFragments == null) {
-                    photographicDataFragments = new ArrayList<>();
-                    photographicDataFragments.add(new PhotographicDataFragment());
-                    photographicDataFragments.add(new PhotographicDataFragment());
-                    photographicDataFragments.add(new PhotographicDataFragment());
-                }
-                fragments = photographicDataFragments;
-                break;
-            case 2:
-                //选片资料
-                if (selectedPictureInformationFragments == null) {
-                    selectedPictureInformationFragments = new ArrayList<>();
-                    selectedPictureInformationFragments.add(new SelectedPictureInformationFragment());
-                    selectedPictureInformationFragments.add(new SelectedPictureInformationFragment());
-                    selectedPictureInformationFragments.add(new SelectedPictureInformationFragment());
-                }
-                fragments = selectedPictureInformationFragments;
-                break;
-            case 3:
-                //拍照礼服(礼服资料)
-                if (takePictureDressDataFragments == null) {
-                    takePictureDressDataFragments = new ArrayList<>();
-                    takePictureDressDataFragments.add(new TakePictureDressFragment());
-                    takePictureDressDataFragments.add(new TakePictureDressFragment());
-                    takePictureDressDataFragments.add(new TakePictureDressFragment());
-                }
-                fragments = takePictureDressDataFragments;
-                break;
-            default:
+        //选片资料
+        if (fragments == null) {
+            fragments = new ArrayList<>();
         }
-        defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, new ArrayList<>(Arrays.asList(stringArray)), new DefaultFragmentAdapter.FragmentShow() {
+        fragments.clear();
+            for (int i = 0; i < strings.size(); i++) {
+                PaymentDetailFragment paymentDetailFragment = new PaymentDetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("orderid", getArguments().getString("orderId"));
+                bundle.putString("mmp", "order"+i);
+                paymentDetailFragment.setArguments(bundle);
+                fragments.add(paymentDetailFragment);
+            }
+
+        defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
-
                 return fragments.get(positon);
             }
         });
         pager.setAdapter(defaultFragmentAdapter);
-        pager.setOffscreenPageLimit(1);
         tablayout.setupWithViewPager(pager);
+        if (fragments.size() > 4) {
+            tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
     }
-
 }

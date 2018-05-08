@@ -86,7 +86,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         useEventBus();
         supportToolbar();
 //        showUserDefinedNav();
-
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
         current = stringArray[0];
@@ -138,18 +137,18 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
             case "服务费用":
                 if (findFragment(ServiceFeeFragment.class) == null) {
                     ServiceFeeFragment serviceFeeFragment = new ServiceFeeFragment();
-                    // loadRootFragment(R.id.container, serviceFeeFragment);
                     mFragments[1] = serviceFeeFragment;
                     loadRootFragment(R.id.container, mFragments[1], false, true);
                 } else {
                     start(mFragments[1], ISupportFragment.SINGLETASK);
                 }
                 break;
+            case "付款明细":
+                toTabFragement(TabControlFragment.whichInFragement.PAY_DETAILS);
+                break;
             case "取件资料":
-//                    toTabFragement(0);
                 if (findFragment(TakeDataFragment.class) == null) {
                     TakeDataFragment takeDataFragment = new TakeDataFragment();
-                    // loadRootFragment(R.id.container, serviceFeeFragment);
                     mFragments[5] = takeDataFragment;
                     String orderId = getIntent().getStringExtra("orderId");
                     Bundle bundle = new Bundle();
@@ -159,32 +158,25 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 } else {
                     start(mFragments[5], ISupportFragment.SINGLETASK);
                 }
-
-
                 break;
             case "摄影资料":
-                toTabFragement(1);
+                toTabFragement(TabControlFragment.whichInFragement.SHOOT);
                 break;
             case "化妆资料":
                 if (findFragment(MakeUpFragment.class) == null) {
                     MakeUpFragment makeUpFragment = new MakeUpFragment();
-                    // loadRootFragment(R.id.container, serviceFeeFragment);
                     mFragments[6] = makeUpFragment;
-                  //  String orderId = getIntent().getStringExtra("orderId");
                     Bundle data = getIntent().getExtras();
-//                    bundle.putString("orderId", orderId);
                     makeUpFragment.setArguments(data);
                     loadRootFragment(R.id.container, mFragments[6], false, true);
                 }
                 break;
             case "选片资料":
-                toTabFragement(2);
+                toTabFragement(TabControlFragment.whichInFragement.OPTION_PANEL);;
                 break;
             case "礼服资料":
-                //   toTabFragement(3);
                 if (findFragment(ProductDataFragment.class) == null) {
                     DressMaterialFragment dressMaterialFragment = new DressMaterialFragment();
-                    // loadRootFragment(R.id.container, serviceFeeFragment);
                     mFragments[4] = dressMaterialFragment;
                     String orderId = getIntent().getStringExtra("orderId");
                     Bundle bundle = new Bundle();
@@ -242,7 +234,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 if (findFragment(ProductDataFragment.class) == null) {
                     productDataFragment = new ProductDataFragment();
-                    // loadRootFragment(R.id.container, serviceFeeFragment);
                     mFragments[3] = productDataFragment;
                     Bundle bundle = getIntent().getExtras();
                     productDataFragment.setArguments(bundle);
@@ -268,20 +259,24 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         }
     }
 
-    private void toTabFragement(int witch) {
+    /**
+     *
+     * @param witch
+     */
+    private void toTabFragement(TabControlFragment.whichInFragement witch) {
         Bundle bd = new Bundle();
-        bd.putInt("witch", witch);
+        bd.putSerializable("witch", witch);
         bd.putString("orderId", getIntent().getStringExtra("orderId"));
         if (findFragment(TabControlFragment.class) == null) {
             TabControlFragment tabControlFragment = new TabControlFragment();
-            // loadRootFragment(R.id.container, serviceFeeFragment);
-            tabControlFragment.setArguments(bd);
             mFragments[2] = tabControlFragment;
+            tabControlFragment.setArguments(bd);
             loadRootFragment(R.id.container, mFragments[2], false, true);
+
         } else {
             // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
-            mFragments[2].putNewBundle(bd);
             start(mFragments[2], ISupportFragment.SINGLETASK);
+            mFragments[2].onNewBundle(bd);
         }
     }
 
@@ -304,7 +299,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 current = stringArray[position];
                 stringBaseRecyclerAdapter.notifyDataSetChanged();
                 setCenterTitle(current);
-                //  setUseDefinedNavTitle(current);
                 gotoFragment();
             }
         });

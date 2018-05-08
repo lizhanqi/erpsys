@@ -122,7 +122,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
     private QuickAdapter quickAdapter;
-
     public enum SearchType{
         NOMAL, OPTION_PANEL,PHOTOGRAPH
     }
