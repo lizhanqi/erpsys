@@ -243,11 +243,11 @@ public class Contact {
      *获取进店客户总数
      */
 
-    public static  String CUSTOMER_INTO_STORE_COUNT="/SXWebErpAppStaff/SX_InquireGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    public static  String CUSTOMER_INTO_STORE_COUNT="/SXWebErpAppStaff/SX_InquireGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s&salesstaff=%s&djstaff=%s";
     /**
      *未标记客户进店日期的总数
      */
-    public static  String UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT="/SXWebErpAppStaff/SX_DJRQWBJYYJDGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+       public static  String UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT="/SXWebErpAppStaff/SX_DJRQWBJYYJDGuestInfoCount?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s&salesstaff=%s&djstaff=%s";
     /**
      * 客户选片信息
      */

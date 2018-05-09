@@ -37,6 +37,7 @@ class FormEntity {
     var mustFill: Boolean = false
     var option: Boolean = false
     var flag: Any? = null
+    var hide =false;
     /**
      * 校验必填项的值是否填入了
      */

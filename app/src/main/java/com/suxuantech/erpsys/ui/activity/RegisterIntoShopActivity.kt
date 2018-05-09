@@ -55,6 +55,25 @@ class RegisterIntoShopActivity : ImmersionActivity() {
     var mToolbar: android.support.v7.widget.Toolbar? = null
     var scrollView: NestedScrollView? = null
     var recyclerView: RecyclerView? = null
+    var list = ArrayList<FormEntity>();
+    var adapter = object : QuickAdapter<FormEntity>(R.layout.item_type, list) {
+        public override fun convert(helper: BaseViewHolder, item: FormEntity) {
+            var root = helper.getView<LinearLayout>(R.id.ll_type)
+            val layoutParams = root.layoutParams as RecyclerView.LayoutParams
+            layoutParams.setMargins(0, item.marginTop, 0, 0)
+            var name = helper.getView<TextView>(R.id.tv_type_name)
+            var value = helper.getView<TextView>(R.id.tv_type_value)
+            var icon = helper.getView<ImageView>(R.id.img_icon_type)
+            name.setText(item.key)
+            value.setText(item.value)
+            icon.setImageDrawable(resources.getDrawable(item.icon))
+            var temp=0;
+            if( item.flag!=null ){
+                temp= item.flag as Int
+            }
+            value?.append(MyString(temp.toString()).setColor(resources.getColor(R.color.litte_red)))
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop)
@@ -85,7 +104,6 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             }
         })
         scrollView?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-
         })
         llNewCustomer = idSetOnClick<LinearLayout>(R.id.ll_new_customer)
         llNotIntoShop = idSetOnClick<LinearLayout>(R.id.ll_not_into_shop) as LinearLayout
@@ -103,8 +121,6 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         tvUnmarkedDate = idGetView<TextView>(R.id.tv_unmarked_date);
         tvCustomerAll = idGetView<TextView>(R.id.tv_customer_all);
         recyclerView = idGetView<RecyclerView>(R.id.rv_list);
-
-        var list = ArrayList<FormEntity>();
         if (!intent.hasExtra("title")) {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "所有客资", "今日所有客资", 5))
             list.add(FormEntity(R.drawable.icon_camera_schedule, "新进客资", "今日新进客资", 5))
@@ -120,19 +136,6 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "取件排程", "进店可排", 5))
             list.add(FormEntity(R.drawable.icon_camera_schedule, "礼服排程", "今日可排", 5))
             list.add(FormEntity(R.drawable.icon_camera_schedule, "流失客资", "今日可排", 5))
-        }
-        var adapter = object : QuickAdapter<FormEntity>(R.layout.item_type, list) {
-            public override fun convert(helper: BaseViewHolder, item: FormEntity) {
-                var root = helper.getView<LinearLayout>(R.id.ll_type)
-                val layoutParams = root.layoutParams as RecyclerView.LayoutParams
-                layoutParams.setMargins(0, item.marginTop, 0, 0)
-                var name = helper.getView<TextView>(R.id.tv_type_name)
-                var value = helper.getView<TextView>(R.id.tv_type_value)
-                var icon = helper.getView<ImageView>(R.id.img_icon_type)
-                name.setText(item.key)
-                value.setText(item.value)
-                icon.setImageDrawable(resources.getDrawable(item.icon))
-            }
         }
         // recyclerView?.addItemDecoration(DefaultItemDecoration2(resources.getColor(R.color.mainNavline_e7),10))
         recyclerView?.layoutManager = LinearLayoutManager(this);
@@ -150,40 +153,42 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             getData();
         })
     }
-
-
     fun getData() {
+        var name1=App.getApplication().userInfor.staffname;
+        var name2=App.getApplication().userInfor.staffname;
+        if (App.getApplication().hasPermission("K14")){
+            name1="k14"
+        }
+        if (App.getApplication().hasPermission("K15")){
+            name1="k15"
+        }
         var url = Contact.getFullUrl(Contact.CUSTOMER_INTO_STORE_COUNT, Contact.TOKEN,
                 "20160808", DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER),
-                "", 0, 0, App.getApplication().userInfor.shop_code)
+                "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
         var url2 = Contact.getFullUrl(Contact.UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT, Contact.TOKEN,
                 DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER), DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER),
-                "", 0, 0, App.getApplication().userInfor.shop_code)
+                "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
         //请求实体
         val requset = JavaBeanRequest(url, RequestMethod.POST, CustomerIntoStoreCountEntity::class.java)
         val customerIntoStoreCountEntity = object : HttpListener<CustomerIntoStoreCountEntity> {
             override fun onSucceed(what: Int, response: Response<CustomerIntoStoreCountEntity>) {
                 if (response.get().isOK) {
-                    //  [{"allcount":"54","newcount":"38","wjdcount":"49","jdwccount":"4","ycjcount":"8","lscount":"3"}]}
-//                    @{@"newcount":@[@"新进客资",@"今日新进客资",@"kc_new_z"],
-//                        @"jdwccount":@[@"进店未成",@"进店未成交客资",@"kc_jindianweicheng_z"],
-//                        @"ycjcount":@[@"已成交",@"进店成交客资",@"kc_chengjiao_z"],
-//                        @"lscount":@[@"流失客资",@"今日流失客资",@"kc_lose_z"],
-//                        @"wjdcount":@[@"未进店",@"今日未进店客资",@"kdz_weijindian_z"],
-//                        @"allcount":@[@"所有客资",@"今日所有客资",@"kc_sy_z"]
-                    tvNewCustomer?.setText("今日新进客资")
-                    tvNewCustomer?.append(MyString(response.get().data?.get(0)?.newcount).setColor(resources.getColor(R.color.litte_red)))
-                    //进店未成交
-                    tvNotInShop?.setText("今日进店未成交")
-                    tvNotInShop?.append(MyString(response.get().data?.get(0)?.jdwccount).setColor(resources.getColor(R.color.litte_red)))
-                    tvNotIntoShop?.setText("未进店客客资")
-                    tvNotIntoShop?.append(MyString(response.get().data?.get(0)?.wjdcount).setColor(resources.getColor(R.color.litte_red)))
-                    tvMakeBargain?.setText("今日成交客资")
-                    tvMakeBargain?.append(MyString(response.get().data?.get(0)?.ycjcount).setColor(resources.getColor(R.color.litte_red)))
-                    tvRunAway?.setText("今日流失客资")
-                    tvRunAway?.append(MyString(response.get().data?.get(0)?.lscount).setColor(resources.getColor(R.color.litte_red)))
-                    tvCustomerAll?.setText("今日所有客资")
-                    tvCustomerAll?.append(MyString(response.get().data?.get(0)?.allcount).setColor(resources.getColor(R.color.litte_red)))
+                    list.forEach {
+                       if (it.key.equals("今日新进客资")){
+                           it.flag= response.get().data?.get(0)?.newcount;
+                       }else  if (it.key.equals("今日进店未成交")){
+                           it.flag= response.get().data?.get(0)?.jdwccount;
+                       }else  if (it.key.equals("未进店客客资")){
+                           it.flag= response.get().data?.get(0)?.wjdcount;
+                        }else  if (it.key.equals("今日成交客资")){
+                        it.flag= response.get().data?.get(0)?.ycjcount;
+                       }else  if (it.key.equals("今日流失客资")){
+                           it.flag= response.get().data?.get(0)?.lscount;
+                       }else  if (it.key.equals("今日所有客资")){
+                           it.flag= response.get().data?.get(0)?.allcount;
+                       }
+                        adapter.notifyDataSetChanged()
+                    }
                     refreshLayout.finishRefresh();
                     refreshLayout.setNoMoreData(false);
                 } else {
@@ -191,7 +196,6 @@ class RegisterIntoShopActivity : ImmersionActivity() {
                     refreshLayout.setNoMoreData(true);
                 }
             }
-
             override fun onFailed(what: Int, response: Response<CustomerIntoStoreCountEntity>) {
                 refreshLayout.finishRefresh();
                 refreshLayout.setNoMoreData(true);
@@ -203,8 +207,12 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         val unremarkCustomerCountEntity = object : HttpListener<UnremarkCustomerCountEntity> {
             override fun onSucceed(what: Int, response: Response<UnremarkCustomerCountEntity>) {
                 if (response.get().isOK) {
-                    tvUnmarkedDate?.setText("未标记日期")
-                    tvUnmarkedDate?.append(MyString("" + response.get().data?.get(0)?.wycount).setColor(resources.getColor(R.color.litte_red)))
+                    list.forEach {
+                        if (it.key.equals("未标记日期")) {
+                            it.flag = response.get().data?.get(0)?.wycount;
+                        }
+                    }
+                    adapter.notifyItemChanged(list.size-1)
                     refreshLayout.finishRefresh();
                     refreshLayout.setNoMoreData(false);
                 } else {
