@@ -258,6 +258,7 @@ public class TabControlFragment extends BaseSupportFragment {
                 PaymentDetailFragment paymentDetailFragment = new PaymentDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("orderId", getArguments().getString("orderId"));
+                bundle.putSerializable("data", data);
                 paymentDetailFragment.setArguments(bundle);
                 fragments.add(paymentDetailFragment);
             }

@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -15,6 +16,7 @@
             android:layout_width="2dp"
             android:layout_height="8dp"/>
         <TextView
+            android:textColor="@color/themeColor"
             android:id="@+id/tv_order_id"
             android:layout_marginLeft="@dimen/px30"
             android:layout_weight="1"

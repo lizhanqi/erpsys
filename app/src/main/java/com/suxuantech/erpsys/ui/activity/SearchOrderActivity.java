@@ -221,6 +221,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         super.onBackPressedSupport();
     }
 
+    @Override
+    public void initImmersionBar() {
+        setStatusBarFollow(mLlSearchNav);
+        super.initImmersionBar();
+    }
+
     private void initView() {
         mTvNearlySearch.setDrawableRightClick(new TextViewDrawableClickView.DrawableRightClickListener() {
             @Override
