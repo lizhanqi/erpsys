@@ -9,7 +9,7 @@
     <color name="colorAccent">#FF4081</color>
     <!--自定义默认导航栏颜色-->
     <color name="navigation">@color/themeColor</color>
-    <!--状态栏颜色-->
+    <!--状态栏颜色(如果不跟随View的情况下)-->
     <color name="status">@color/white</color>
     <!--智能刷新的背景色-->
     <color name="refresh_bg">@color/white</color>

@@ -77,9 +77,7 @@ public class OptionActivity extends TitleNavigationActivity {
     private List<PhotoShopEntity.DataBean> photoShopData;
     private List<NewOrderTypeEntity.DataBean> newOrderTyepData;
     private List<ThemeEntity.DataBean> themeData;
-
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
-
     /**
      * 加载更多。
      */
@@ -288,7 +286,7 @@ public class OptionActivity extends TitleNavigationActivity {
         switch (urlTag) {
             default:
             case PRODUCT:
-                //包套
+                //产品
                 Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
                     getProduct();
@@ -501,7 +499,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }
+               }
             }
             finish();
         }
@@ -537,7 +535,7 @@ public class OptionActivity extends TitleNavigationActivity {
     //------------------网络专区-----------------------------------------
 
     /**
-     * 获取包套
+     * 获取产品
      */
     private void getProduct() {
         //请求实体
@@ -913,7 +911,7 @@ public class OptionActivity extends TitleNavigationActivity {
     }
 
     /**
-     * 获取新单类型
+     * 获取拍摄主题
      */
     public void getThemeData() {
         //请求实体
