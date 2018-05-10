@@ -35,6 +35,14 @@ import com.suxuantech.erpsys.R
 
 abstract class ImmersionActivity : BaseActivity() {
     public var mImmersionBar: ImmersionBar? = null
+    /*
+     *状态栏背景跟随那个View
+     */
+    var statusBarFollow: View? = null
+
+    /**
+     * 设置状态栏背景跟随那个view(必须顶部的)
+     */
     override fun onRestart() {
         initImmersionBar()
         super.onRestart()
@@ -58,8 +66,9 @@ abstract class ImmersionActivity : BaseActivity() {
         }
         super.onDestroy()
     }
-    public  fun diarlog(){
-    //    mImmersionBar.barParams.co
+
+    public fun diarlog() {
+        //    mImmersionBar.barParams.co
     }
 
     /**
@@ -67,35 +76,37 @@ abstract class ImmersionActivity : BaseActivity() {
      */
     public open fun initImmersionBar() {
         //在BaseActivity里初始化
-        mImmersionBar = ImmersionBar.with(this)
-        var status= window.decorView.findViewById<View>(android.R.id.statusBarBackground);
-        var nav= window.decorView.findViewById<View>(android.R.id.navigationBarBackground);
-        dynamicAddView(nav, "background", R.color.navigation)
-        dynamicAddView(status, "background", R.color.status)
-       // dynamicAddView(nav,"backgrangd")
-        //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
-        mImmersionBar!!.fitsSystemWindows(true)
+        if (mImmersionBar == null) {
+            mImmersionBar = ImmersionBar.with(this)
+        }
+        if (statusBarFollow != null) {
+            mImmersionBar!!.titleBar(statusBarFollow)
+        } else {
+            mImmersionBar!!.statusBarColor(R.color.status)
+            mImmersionBar!!.fitsSystemWindows(true)
+        }
         mImmersionBar!!.statusBarDarkFont(true, 0.15f)
-        mImmersionBar!!.statusBarColor(R.color.status)
         mImmersionBar!!.keyboardEnable(false)
         mImmersionBar!!.navigationBarColor(R.color.navigation)
         mImmersionBar?.addTag("default")  //给上面参数打标记，以后可以通过标记恢复
         mImmersionBar!!.init()
     }
+
     /**
      * 设置透明度给导航
      */
-    public  fun  alphaImmersionBar(targColor:Int, alpha:Float){
-        mImmersionBar    ?.statusBarColor (targColor)
+    public fun alphaImmersionBar(targColor: Int, alpha: Float) {
+        mImmersionBar?.statusBarColor(targColor)
                 ?.navigationBarColor(targColor)
         mImmersionBar?.barAlpha(alpha)
         mImmersionBar?.init();
     }
+
     /**
      * 增加暗色
      */
-    public  fun  immersionBarDark( ){
-        mImmersionBar    ?.statusBarColor (R.color.translucent_black_95)
+    public fun immersionBarDark() {
+        mImmersionBar?.statusBarColor(R.color.translucent_black_95)
                 ?.navigationBarColor(R.color.translucent_black_95)
         mImmersionBar?.barAlpha(0.8f)
         mImmersionBar?.init();
@@ -104,8 +115,8 @@ abstract class ImmersionActivity : BaseActivity() {
     /**
      * 设置暗色度数
      */
-    public  fun  immersionBarDark(@FloatRange(from = 0.0, to = 1.0) color:Float ){
-        mImmersionBar    ?.statusBarColor (R.color.translucent_black_95)
+    public fun immersionBarDark(@FloatRange(from = 0.0, to = 1.0) color: Float) {
+        mImmersionBar?.statusBarColor(R.color.translucent_black_95)
                 ?.navigationBarColor(R.color.translucent_black_95)
         mImmersionBar?.barAlpha(color)
         mImmersionBar?.init();
@@ -114,23 +125,22 @@ abstract class ImmersionActivity : BaseActivity() {
     /**
      *
      */
-    public fun immersionBarTransformColor( targColor:Int,alpha: Float, surport: View){
+    public fun immersionBarTransformColor(targColor: Int, alpha: Float, surport: View) {
         mImmersionBar?.statusBarColorTransform(targColor)
                 ?.navigationBarColorTransform(targColor)
-                if (surport!=null){
-                    mImmersionBar   ?.addViewSupportTransformColor(surport)
-                }
+        if (surport != null) {
+            mImmersionBar?.addViewSupportTransformColor(surport)
+        }
         mImmersionBar?.barAlpha(alpha)
         mImmersionBar?.init();
 
     }
 
 
-
     /**
      *
      */
-    public  fun   recoverImmersionBar(){
+    public fun recoverImmersionBar() {
         mImmersionBar?.getTag("default")?.init() //根据tag标记来恢复
     }
 }

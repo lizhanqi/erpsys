@@ -2,6 +2,7 @@
 <!--自定义顶部导航view组合-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_search_root"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">

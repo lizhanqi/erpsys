@@ -39,13 +39,12 @@ import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/6 9:25 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 状态栏和导航栏沉浸式
  */
 
-abstract public  class TitleNavigationActivity extends ImmersionActivity {
-    boolean immersionBarEnabled;
+abstract public class TitleNavigationActivity extends ImmersionActivity {
     private View rootViews;//填充的view
     //toolbar
     private Toolbar mToolbar;
@@ -65,81 +64,88 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
     @Override
     public void widgetClick(View v) {
         super.widgetClick(v);
-        if (v.getId()==R.id.tv_nav_left){
+        if (v.getId() == R.id.tv_nav_left) {
             onBackPressed();
         }
     }
+
     public void setCenterTitle(CharSequence title) {
-       getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         tvToolbarCenterTilte.setText(title);
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
+        if (mHeadNavUseDefinedRoot.getVisibility() == View.VISIBLE) {
             setUseDefinedNavTitle(title);
         }
         super.setTitle(title);
     }
+
     @Override
     public void setTitle(int titleId) {
-        if(mHeadNavUseDefinedRoot.getVisibility()==View.VISIBLE){
-            setUseDefinedNavTitle(getResources().getString(titleId ));
+        if (mHeadNavUseDefinedRoot.getVisibility() == View.VISIBLE) {
+            setUseDefinedNavTitle(getResources().getString(titleId));
         }
         super.setTitle(titleId);
     }
+
     //-----------------------------顶部导航-------------------------------------
     //获取自定义导航左侧view
     public AdjustDrawableTextView getNavLeftView() {
         return mTvNavLeft;
     }
+
     //获取自定义导航标题
     public AdjustDrawableTextView getNavTitleView() {
         return mTvNavTitle;
     }
+
     //获取自定义导航右侧view
     public AdjustDrawableTextView getNavRightView() {
         return mTvNavRight;
     }
+
     /**
      * 获取自定义导航头最大父布局
+     *
      * @return
      */
     public RelativeLayout getHeadNavUseDefinedRootView() {
         return mHeadNavUseDefinedRoot;
     }
+
     /**
      * 获取提供的Toolbar
      */
     public Toolbar getToolbar() {
         return mToolbar;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-            if (android.R.id.home==item.getItemId()){
-                this.onBackPressed();
-            }
+        if (android.R.id.home == item.getItemId()) {
+            this.onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setToolbar(Toolbar mToolbar) {
-        this.mToolbar = mToolbar;
     }
 
     /**
      * 修改返回按钮的图标getSupportActionBar().setHomeAsUpIndicator(R.drawable.action_bar_icon_back_light);
      * 设置(内置)Toolbar支持
+     *
      * @return
      */
     public Toolbar supportToolbar() {
-       return supportToolbar(true);
+        return supportToolbar(true);
     }
+
     public Toolbar supportToolbar(boolean showBack) {
         hideUserDefinedNav();
         if (mToolbar != null) {
             mToolbar.setVisibility(View.VISIBLE);
             setSupportActionBar(mToolbar);
-            if (showBack){
+            if (showBack) {
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -147,21 +153,18 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
                     public void onClick(View view) {
                         onBackPressed();
                     }
-                }) ;
+                });
             }
             return mToolbar;
         }
         return null;
     }
-
-
     /**
-     *
      * @param toolbar
      */
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        mToolbar=toolbar;
+        mToolbar = toolbar;
         super.setSupportActionBar(toolbar);
     }
 
@@ -173,99 +176,116 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
             mToolbar.setVisibility(View.GONE);
         }
     }
+
     /**
      * 显示用户自定义导航
      */
-    public void showUserDefinedNav(){
+    public void showUserDefinedNav() {
         mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
     }
+
     /**
      * 隐藏用户自定义导航
      */
-    public void hideUserDefinedNav(){
+    public void hideUserDefinedNav() {
         mHeadNavUseDefinedRoot.setVisibility(View.GONE);
     }
-    public View getLineView(){
+
+    public View getLineView() {
         return lineView;
     }
-    public void setUserDefinedLineViewBG(@IntegerRes int  lineColor) {
+
+    public void setUserDefinedLineViewBG(@IntegerRes int lineColor) {
         lineView.setBackground(null);
         lineView.setBackgroundColor(lineColor);
     }
     //----------------自定义导航标题--------------
+
     /**
-     *
      * @param title 自定义导航处标题
      */
     public void setUseDefinedNavTitle(CharSequence title) {
-        if (mHeadNavUseDefinedRoot.getVisibility()!=View.VISIBLE){
+        if (mHeadNavUseDefinedRoot.getVisibility() != View.VISIBLE) {
             mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
         }
-        if (mTvNavTitle.getVisibility()!=View.VISIBLE){
+        if (mTvNavTitle.getVisibility() != View.VISIBLE) {
             mTvNavTitle.setVisibility(View.VISIBLE);
         }
         mTvNavTitle.setText(title);
     }
+
     /**
      * 标题文本大小
+     *
      * @param fontSize
      */
-    public void setUseDefinedNavTitleTextSize(int fontSize){
+    public void setUseDefinedNavTitleTextSize(int fontSize) {
         mTvNavTitle.setTextSize(fontSize);
     }
+
     /**
      * 标题文本颜色
+     *
      * @param mColor
      */
-    public void setUseDefinedNavTitleTextColor(int mColor){
+    public void setUseDefinedNavTitleTextColor(int mColor) {
         mTvNavTitle.setTextColor(mColor);
     }
     //---------------------自定义导航左侧-------------
+
     /**
      * 设置自定义导航左侧文本
+     *
      * @param title
      */
     public void setUseDefinedNavLeftText(CharSequence title) {
-        if (mHeadNavUseDefinedRoot.getVisibility()!=View.VISIBLE){
+        if (mHeadNavUseDefinedRoot.getVisibility() != View.VISIBLE) {
             mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
         }
-        if (mTvNavLeft.getVisibility()!=View.VISIBLE){
+        if (mTvNavLeft.getVisibility() != View.VISIBLE) {
             mTvNavLeft.setVisibility(View.VISIBLE);
         }
         mTvNavLeft.setText(title);
     }
+
     /**
      * 左侧图片
+     *
      * @param drawable
      */
-    public void setUseDefinedNavLeftDrawable(Drawable drawable){
-        if (drawable!=null){
+    public void setUseDefinedNavLeftDrawable(Drawable drawable) {
+        if (drawable != null) {
             setUseDefinedNavLeftDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        }else {
-            setUseDefinedNavLeftDrawable(null, 0,0);
+        } else {
+            setUseDefinedNavLeftDrawable(null, 0, 0);
 
         }
 
     }
+
     /**
      * 左侧图片指定宽高
+     *
      * @param drawable
      * @param width
      * @param heigth
      */
-    public void setUseDefinedNavLeftDrawable(Drawable drawable,int width,int heigth){
-        if (mHeadNavUseDefinedRoot.getVisibility()!=View.VISIBLE){
+    public void setUseDefinedNavLeftDrawable(Drawable drawable, int width, int heigth) {
+        if (mHeadNavUseDefinedRoot.getVisibility() != View.VISIBLE) {
             mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
         }
-        if (mTvNavLeft.getVisibility()!=View.VISIBLE){
+        if (mTvNavLeft.getVisibility() != View.VISIBLE) {
             mTvNavLeft.setVisibility(View.VISIBLE);
         }
         //先定义好宽度,在进行绘制,避免设置不生效
-        mTvNavLeft.setDrawableSize(width,heigth, AdjustDrawableTextView.InWhere.LEFTONTEXT);
+        mTvNavLeft.setDrawableSize(width, heigth, AdjustDrawableTextView.InWhere.LEFTONTEXT);
         //绘制
-        mTvNavLeft.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+        mTvNavLeft.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
     }
-    /**设置左侧标题和一个图标,并指定图标大小
+
+    /**
+     * 设置左侧标题和一个图标,并指定图标大小
+     *
      * @param title
      * @param drawable
      * @param drawableWith
@@ -273,30 +293,35 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
      */
     public void setUseDefinedNavLeft(CharSequence title, Drawable drawable, int drawableWith, int drawableheight) {
         setUseDefinedNavLeftText(title);
-        setUseDefinedNavLeftDrawable(drawable,drawableWith,drawableheight);
+        setUseDefinedNavLeftDrawable(drawable, drawableWith, drawableheight);
     }
-    /**设置左侧标题和一个图标图标大小默认的
+
+    /**
+     * 设置左侧标题和一个图标图标大小默认的
+     *
      * @param title
      * @param drawable
      */
-    public void setUseDefinedNavLeft(CharSequence title, Drawable drawable)   {
+    public void setUseDefinedNavLeft(CharSequence title, Drawable drawable) {
         setUseDefinedNavLeftText(title);
         setUseDefinedNavLeftDrawable(drawable);
     }
 
     /**
      * 左侧文本大小
+     *
      * @param fontSize
      */
-    public void setUseDefinedNavLeftTextSize(int fontSize){
+    public void setUseDefinedNavLeftTextSize(int fontSize) {
         mTvNavLeft.setTextSize(fontSize);
     }
 
     /**
      * 左侧文本颜色
+     *
      * @param mColor
      */
-    public void setUseDefinedNavLeftTextColor(int mColor){
+    public void setUseDefinedNavLeftTextColor(int mColor) {
         mTvNavLeft.setTextColor(mColor);
     }
     //---------------------自定义导航左侧end-------------
@@ -305,48 +330,55 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
 
     /**
      * 设置自定义导航右侧文本
+     *
      * @param title
      */
     public void setUseDefinedNavRightText(CharSequence title) {
-        if (mHeadNavUseDefinedRoot.getVisibility()!=View.VISIBLE){
+        if (mHeadNavUseDefinedRoot.getVisibility() != View.VISIBLE) {
             mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
         }
-        if (mTvNavRight.getVisibility()!=View.VISIBLE){
+        if (mTvNavRight.getVisibility() != View.VISIBLE) {
             mTvNavRight.setVisibility(View.VISIBLE);
         }
         mTvNavRight.setText(title);
     }
+
     /**
      * 右侧图片
+     *
      * @param drawable
      */
-    public void setUseDefinedNavRightDrawable(Drawable drawable){
-        if (drawable!=null){
+    public void setUseDefinedNavRightDrawable(Drawable drawable) {
+        if (drawable != null) {
             setUseDefinedNavRightDrawable(drawable, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        }else {
-            setUseDefinedNavRightDrawable(null, 0,0);
+        } else {
+            setUseDefinedNavRightDrawable(null, 0, 0);
         }
     }
+
     /**
      * 右侧图片指定宽高
+     *
      * @param drawable
      * @param width
      * @param heigth
      */
-    public void setUseDefinedNavRightDrawable(Drawable drawable,int width,int heigth){
-        if (mHeadNavUseDefinedRoot.getVisibility()!=View.VISIBLE){
+    public void setUseDefinedNavRightDrawable(Drawable drawable, int width, int heigth) {
+        if (mHeadNavUseDefinedRoot.getVisibility() != View.VISIBLE) {
             mHeadNavUseDefinedRoot.setVisibility(View.VISIBLE);
         }
-        if (mTvNavRight.getVisibility()!=View.VISIBLE){
+        if (mTvNavRight.getVisibility() != View.VISIBLE) {
             mTvNavRight.setVisibility(View.VISIBLE);
         }
         //先定义好宽度,在进行绘制,避免设置不生效
-        mTvNavRight.setDrawableSize(width,heigth, AdjustDrawableTextView.InWhere.LEFTONTEXT);
+        mTvNavRight.setDrawableSize(width, heigth, AdjustDrawableTextView.InWhere.LEFTONTEXT);
         //绘制
-        mTvNavRight.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+        mTvNavRight.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
     }
 
-    /**设置右侧标题和一个图标,并指定图标大小
+    /**
+     * 设置右侧标题和一个图标,并指定图标大小
+     *
      * @param title
      * @param drawable
      * @param drawableWith
@@ -354,28 +386,35 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
      */
     public void setUseDefinedNavRight(CharSequence title, Drawable drawable, int drawableWith, int drawableheight) {
         setUseDefinedNavRightText(title);
-        setUseDefinedNavRightDrawable(drawable,drawableWith,drawableheight);
+        setUseDefinedNavRightDrawable(drawable, drawableWith, drawableheight);
     }
-    /**设置右侧标题和一个图标图标大小默认的
+
+    /**
+     * 设置右侧标题和一个图标图标大小默认的
+     *
      * @param title
      * @param drawable
      */
-    public void setUseDefinedNavRight(CharSequence title, Drawable drawable)   {
+    public void setUseDefinedNavRight(CharSequence title, Drawable drawable) {
         setUseDefinedNavRightText(title);
         setUseDefinedNavRightDrawable(drawable);
     }
+
     /**
      * 右侧文本大小
+     *
      * @param fontSize
      */
-    public void setUseDefinedNavRightTextSize(int fontSize){
+    public void setUseDefinedNavRightTextSize(int fontSize) {
         mTvNavRight.setTextSize(fontSize);
     }
+
     /**
      * 右侧文本颜色
+     *
      * @param Color
      */
-    public void setUseDefinedNavRightTextColor(int Color){
+    public void setUseDefinedNavRightTextColor(int Color) {
         mTvNavRight.setTextColor(Color);
     }
 
@@ -384,47 +423,53 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
     }
 
     //---------------------自定义导航右侧end-------------
+
     /**
      * 自定义导航控件的距离父view位置
+     *
      * @param whoView
      * @param letf
      * @param top
      * @param right
      * @param bottom
      */
-    public void setUserDefinedNavMargin(WhichView whoView, int letf, int top, int right, int bottom ){
-        RelativeLayout.LayoutParams re = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        re.setMargins(letf,top,right,bottom);
-        if (whoView== WhichView.LEFTVIEW){
+    public void setUserDefinedNavMargin(WhichView whoView, int letf, int top, int right, int bottom) {
+        RelativeLayout.LayoutParams re = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        re.setMargins(letf, top, right, bottom);
+        if (whoView == WhichView.LEFTVIEW) {
             mTvNavLeft.setLayoutParams(re);
-        }else  if (whoView== WhichView.TITLEVIEW){
+        } else if (whoView == WhichView.TITLEVIEW) {
             mTvNavTitle.setLayoutParams(re);
-        }else  if (whoView== WhichView.RIGHTVIEW){
+        } else if (whoView == WhichView.RIGHTVIEW) {
             mTvNavRight.setLayoutParams(re);
         }
     }
+
     /**
      * 自定义导航控件的距离父view位置
+     *
      * @param whoView
      * @param letf
      * @param top
      * @param right
      * @param bottom
      */
-    public void setUserDefinedNavPadding(WhichView whoView, int letf, int top, int right, int bottom ){
-        if (whoView== WhichView.LEFTVIEW){
-            mTvNavLeft.setPadding(letf,top,right,bottom);
-        }else  if (whoView== WhichView.TITLEVIEW){
-            mTvNavTitle.setPadding(letf,top,right,bottom);
-        }else  if (whoView== WhichView.RIGHTVIEW){
-            mTvNavRight.setPadding(letf,top,right,bottom);
+    public void setUserDefinedNavPadding(WhichView whoView, int letf, int top, int right, int bottom) {
+        if (whoView == WhichView.LEFTVIEW) {
+            mTvNavLeft.setPadding(letf, top, right, bottom);
+        } else if (whoView == WhichView.TITLEVIEW) {
+            mTvNavTitle.setPadding(letf, top, right, bottom);
+        } else if (whoView == WhichView.RIGHTVIEW) {
+            mTvNavRight.setPadding(letf, top, right, bottom);
         }
     }
+
     //-----------------------------顶部导航end-------------------------------------
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         throw new UnsupportedOperationException("TitleNavigationActivity:setContentView(view,params)该方法重写后被禁用");
     }
+
     /**
      * 将传入的LayoutID转换为View并添加到需要包裹view中
      *
@@ -437,6 +482,7 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
         //添加到最外层的需要包裹的view
         setContentView(mContextView);
     }
+
     /**
      * 将View添加到自己的 最外层的包裹中
      *
@@ -444,36 +490,50 @@ abstract public  class TitleNavigationActivity extends ImmersionActivity {
      */
     @Override
     public void setContentView(View view) {
-            createRootView();
-            mContentViewlayout.addView(view);
-            super.setContentView(rootViews);
+        createRootView();
+        mContentViewlayout.addView(view);
+        super.setContentView(rootViews);
     }
+
     /**
      * 加载外层
      *
      * @return
      */
-   private void createRootView() {
-       rootViews = View.inflate(this, R.layout.base_root_immersed, null);
-       //toolbar
-       mToolbar  = rootViews.findViewById(R.id.toolbar);
-       //自定义
-       mHeadNavUseDefinedRoot = rootViews.findViewById(R.id.head_nav_use_defined_root);
-       mTvNavLeft =  rootViews. findViewById(R.id.tv_nav_left);
-       mTvNavLeft.setOnClickListener(this);
-       mTvNavTitle = rootViews.findViewById(R.id.tv_nav_title);
-       mTvNavTitle.setOnClickListener(this);
-       mTvNavRight = rootViews.findViewById(R.id.tv_nav_right);
-       lineView = rootViews.findViewById(R.id.v_line);
-       mTvNavRight.setOnClickListener(this);
-       tvToolbarCenterTilte = rootViews.findViewById(R.id.tv_toolbar_center_title);
-       tvToolbarCenterTilte.setOnClickListener(this);
-       mContentViewlayout = rootViews.findViewById(R.id.content_view_layout);
-   }
-    public  Menu    menu =null;
+    private void createRootView() {
+        rootViews = View.inflate(this, R.layout.base_root_immersed, null);
+        //toolbar
+        mToolbar = rootViews.findViewById(R.id.toolbar);
+        //自定义
+        mHeadNavUseDefinedRoot = rootViews.findViewById(R.id.head_nav_use_defined_root);
+        mTvNavLeft = rootViews.findViewById(R.id.tv_nav_left);
+        mTvNavLeft.setOnClickListener(this);
+        mTvNavTitle = rootViews.findViewById(R.id.tv_nav_title);
+        mTvNavTitle.setOnClickListener(this);
+        mTvNavRight = rootViews.findViewById(R.id.tv_nav_right);
+        lineView = rootViews.findViewById(R.id.v_line);
+        mTvNavRight.setOnClickListener(this);
+        tvToolbarCenterTilte = rootViews.findViewById(R.id.tv_toolbar_center_title);
+        tvToolbarCenterTilte.setOnClickListener(this);
+        mContentViewlayout = rootViews.findViewById(R.id.content_view_layout);
+    }
+
+    @Override
+    public void initImmersionBar() {
+        if (mToolbar!=null&&mToolbar.getVisibility()==View.VISIBLE) {
+            setStatusBarFollow(mToolbar);
+        }else  if (getHeadNavUseDefinedRootView().getVisibility()==View.VISIBLE){
+            setStatusBarFollow(getHeadNavUseDefinedRootView());
+        }
+        super.initImmersionBar();
+    }
+
+    public Menu menu = null;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            this.menu=menu;
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
+
 }

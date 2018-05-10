@@ -5,12 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <!--        android:background="@drawable/bg_login"-->
     <android.support.v7.widget.Toolbar
         android:visibility="gone"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/status"
+        android:background="@drawable/sp_gradual_change"
         app:popupTheme="@style/OverflowMenuStyle">
         <TextView
             android:textStyle="bold"
