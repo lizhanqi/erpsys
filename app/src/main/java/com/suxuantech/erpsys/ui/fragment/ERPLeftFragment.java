@@ -54,6 +54,7 @@ import com.suxuantech.erpsys.ui.widget.WaveView;
 import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.ScreenUtils;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -204,9 +205,9 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     //   tvcn.append(new MyString("\n今日客资量").setSize(20));
                     tvon.setText((new MyString("今日订单量\u3000" + data.get(0).getJktotal()).setSize(15)));
                     //tvon.append(new MyString(" 今日订单量").setSize(20));
-                    tvin.setText((new MyString(data.get(0).getRealmoney()).setSize(20)));
+                    tvin.setText((new MyString("¥"+StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)));
                     tvin.append(new MyString("\n今日营收").setSize(15));
-                    tvrt.setText((new MyString(data.get(0).getZongmoney()).setSize(20)));
+                    tvrt.setText((new MyString("¥"+StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20)));
                     tvrt.append(new MyString("\n今日收款").setSize(15));
                 }
             }
@@ -241,7 +242,9 @@ public class ERPLeftFragment extends BaseLazyFragment {
           startActivity( intent  );
       });
       headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l->{
-        //home
+          Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+          intent.putExtra("title","今日收款");
+          startActivity( intent  );
       });
         headView1 = inflater.inflate(R.layout.head_home, null, false);
         return super.onCreateView(inflater, container, savedInstanceState);

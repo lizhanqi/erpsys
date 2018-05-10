@@ -1,6 +1,4 @@
-package com.suxuantech.erpsys.entity;
-
-import java.util.List;
+package com.suxuantech.erpsys.entity
 
 /**
  * ......................我佛慈悲....................
@@ -29,24 +27,16 @@ import java.util.List;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class TempEntity  extends  BaseResult{
+class TodayMoneyEntity : BaseResult() {
 
     /**
      * Code : 200
      * Data : [{"id":82,"orderId":"SY18022300026","payclass":"门市收款","paytype":"现金","paymentdate":"20180510","payment_money":200,"cashierman":"海芹","fundname":"定金","xingming":" 文宇","shouji":" 12121121212"},{"id":83,"orderId":"SY18050500102","payclass":"门市收款","paytype":"现金","paymentdate":"20180510","payment_money":3000,"cashierman":"海芹","fundname":"定金","xingming":" kilo","shouji":" 18801266363"},{"id":84,"orderId":"SY18050500102","payclass":"门市收款","paytype":"刷卡","paymentdate":"20180510","payment_money":500,"cashierman":"海芹","fundname":"拍照款","xingming":" kilo","shouji":" 18801266363"},{"id":85,"orderId":"SY18050500102","payclass":"礼服收款","paytype":"现金","paymentdate":"20180510","payment_money":360,"cashierman":"海芹","fundname":"定金","xingming":" kilo","shouji":" 18801266363"},{"id":86,"orderId":"SY18050800103","payclass":"化妆收款","paytype":"现金","paymentdate":"20180510","payment_money":800,"cashierman":"海芹","fundname":"定金","xingming":"夏娟 ","shouji":"15863522451 "},{"id":87,"orderId":"SY18050800103","payclass":"门市收款","paytype":"支付宝转账","paymentdate":"20180510","payment_money":100,"cashierman":"海芹","fundname":"定金","xingming":"夏娟 ","shouji":"15863522451 "}]
      */
 
-    private List<DataBean> Data;
+    var data: List<DataBean>? = null
 
-    public List<DataBean> getData() {
-        return Data;
-    }
-
-    public void setData(List<DataBean> Data) {
-        this.Data = Data;
-    }
-
-    public static class DataBean {
+    class DataBean {
         /**
          * id : 82
          * orderId : SY18022300026
@@ -60,95 +50,15 @@ public class TempEntity  extends  BaseResult{
          * shouji :  12121121212
          */
 
-        private int id;
-        private String orderId;
-        private String payclass;
-        private String paytype;
-        private String paymentdate;
-        private int payment_money;
-        private String cashierman;
-        private String fundname;
-        private String xingming;
-        private String shouji;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(String orderId) {
-            this.orderId = orderId;
-        }
-
-        public String getPayclass() {
-            return payclass;
-        }
-
-        public void setPayclass(String payclass) {
-            this.payclass = payclass;
-        }
-
-        public String getPaytype() {
-            return paytype;
-        }
-
-        public void setPaytype(String paytype) {
-            this.paytype = paytype;
-        }
-
-        public String getPaymentdate() {
-            return paymentdate;
-        }
-
-        public void setPaymentdate(String paymentdate) {
-            this.paymentdate = paymentdate;
-        }
-
-        public int getPayment_money() {
-            return payment_money;
-        }
-
-        public void setPayment_money(int payment_money) {
-            this.payment_money = payment_money;
-        }
-
-        public String getCashierman() {
-            return cashierman;
-        }
-
-        public void setCashierman(String cashierman) {
-            this.cashierman = cashierman;
-        }
-
-        public String getFundname() {
-            return fundname;
-        }
-
-        public void setFundname(String fundname) {
-            this.fundname = fundname;
-        }
-
-        public String getXingming() {
-            return xingming;
-        }
-
-        public void setXingming(String xingming) {
-            this.xingming = xingming;
-        }
-
-        public String getShouji() {
-            return shouji;
-        }
-
-        public void setShouji(String shouji) {
-            this.shouji = shouji;
-        }
+        var id: Int = 0
+        var orderId: String? = null
+        var payclass: String? = null
+        var paytype: String? = null
+        var paymentdate: String? = null
+        var payment_money: Int = 0
+        var cashierman: String? = null
+        var fundname: String? = null
+        var xingming: String? = null
+        var shouji: String? = null
     }
 }

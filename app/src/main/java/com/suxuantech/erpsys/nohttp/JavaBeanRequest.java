@@ -36,7 +36,7 @@ public class JavaBeanRequest<T> extends BaseRequest<T> {
      * @param clazz
      */
     public JavaBeanRequest(String url, Class<T> clazz) {
-        this(url, RequestMethod.GET, clazz);
+        this(url, RequestMethod.POST, clazz);
     }
     public JavaBeanRequest(String url, RequestMethod requestMethod, Class<T> clazz) {
         super(url, requestMethod);

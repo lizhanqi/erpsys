@@ -275,7 +275,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+                //login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
 

@@ -298,5 +298,5 @@ public class Contact {
      * 订单付款历史列表
      */
     public static String PAYMENT = "/SXWebErpAppStaff/SX_Paymentcontent?Token=%s&orderid=%s&Code=%s";
-
+    public  static String TODAY_COLLECTION_MONEY="/SXWebErpAppStaff/SX_MSPaymentcontent?Token=%s&StartDate=%s&EndDate=%s&pageIndex=%s&pageSize=%s&Code=%s";
 }
