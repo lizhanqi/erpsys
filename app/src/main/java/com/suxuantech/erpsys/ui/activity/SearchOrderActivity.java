@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.HistoryEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
-import com.suxuantech.erpsys.entity.SearchOrderInforEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
@@ -42,8 +42,6 @@ import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,10 +53,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * ......................我佛慈悲....................
@@ -83,8 +77,8 @@ import in.srain.cube.views.ptr.PtrHandler;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/18 0018 16:16 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 订单搜索页面
  */
 public class SearchOrderActivity extends TitleNavigationActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
@@ -104,16 +98,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     TextViewDrawableClickView mTvNearlySearch;
     @BindView(R.id.in_head_search)
     LinearLayout mLlSearch;
+    @BindView(R.id.in_search_nav)
+    LinearLayout mLlSearchNav;
     @BindView(R.id.smr_history)
-    SwipeMenuRecyclerView mSmrHistory;
-    @BindView(R.id.ptr_refresh)
-    PtrClassicFrameLayout mPtrRefresh;
-
+    RecyclerView mSmrHistory;
     @BindView(R.id.smart_refresh)
     SmartRefreshLayout smartRefreshLayout;
-
-
-
     private BaseRecyclerAdapter<HistoryEntity> historyAdapter;
     private SearchOrderPresenter mSearchOrderPresenter;
     private BaseRecyclerAdapter<SearchOrderEntity.DataBean> searchResultAdaputer;
@@ -122,58 +112,108 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
     private QuickAdapter quickAdapter;
-    public enum SearchType{
-        NOMAL, OPTION_PANEL,PHOTOGRAPH
+
+    public enum SearchType {
+        NOMAL, OPTION_PANEL, PHOTOGRAPH
     }
-    SearchType searchType=SearchType.NOMAL;
+
+    SearchType searchType = SearchType.NOMAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
-        if(getIntent().hasExtra("type")){
+        useButterKnife();
+        if (getIntent().hasExtra("type")) {
             searchType = (SearchType) getIntent().getSerializableExtra("type");
         }
-        useButterKnife();
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         initView();
         initSearchEditTextView();
-        //初始化刷新
-        initRefresh();
-        mSmrHistory.setSwipeItemClickListener(new SwipeItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                //有焦点的时候搜索历史的条目点击
-                if (mTietNavSearch.isFocusableInTouchMode()) {
-                    mTietNavSearch.setText(mSearchOrderPresenter.getSearchHosiery().get(position).getName());
-                    mTietNavSearch.setSelection(mSearchOrderPresenter.getSearchHosiery().get(position).getName().length());
-                    mTietNavSearch.dismissDropDown();
-                    search();
-                    mTietNavSearch.setFocusableInTouchMode(true);
-                    mTietNavSearch.setFocusable(true);
-                } else {
-
-                    Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
-                //    SearchOrderInforEntity.DataBean dataBean = data.get(position);
-                    SearchOrderEntity.DataBean dataBean  = datacopy.get(position);
-                    intent.putExtra("orderId",dataBean .getOrderId());
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("data",dataBean);
-                    intent.putExtras( bundle);
-                    startActivity(intent);
-                    toastShort(position + "");
-                }
+        initDataAdapter();
+        if (getIntent().getBooleanExtra("hideSearch", false)) {
+            supportToolbar();
+            if (getIntent().hasExtra("title")) {
+                String title = getIntent().getStringExtra("title");
+                setTitle(title);
             }
+            mBtnStartDate.setText(DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER));
+            mBtnEndDate.setText(DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER));
+            mLlSearch.setVisibility(View.GONE);
+            mLlSearchNav.setVisibility(View.GONE);
+            search(true);
+        }
+        smartRefreshLayout.setOnLoadMoreListener(load -> {
+            mSearchOrderPresenter.sosoNetLoadmore();
+        });
+        smartRefreshLayout.setOnRefreshListener(load -> {
+            search(false);
         });
         hideUserDefinedNav();
     }
 
+    /**
+     * 初始化适配器
+     */
+    private void initDataAdapter() {
+        if (SearchType.OPTION_PANEL == searchType || SearchType.PHOTOGRAPH == searchType) {
+            quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_search_option_panel, null) {
+                @Override
+                protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+                    TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
+                    TextView tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
+                    TextView tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
+                    tvCustomerNames.setText("" + item.getXingming());
+                    tvOrderId.setText("订单编号" + item.getOrderId());
+                    if (SearchType.OPTION_PANEL == searchType) {
+                        tvCustomerInfos.setText("拍照日期:" + item.getPhotodate());
+                        tvCustomerInfos.append("\n选片日期:" + item.getSelectday());
+                    } else {
+                        tvCustomerInfos.setText("订单日期:" + item.getTargetdate());
+                        tvCustomerInfos.append("\n拍照日期:" + item.getPhotodate());
+                    }
+                    tvCustomerInfos.append("\n客户分区:" + item.getArea());
+                }
+            };
+        } else {
+            quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, null) {
+                @Override
+                protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+                    TextView tvName = (TextView) helper.getView(R.id.tv_name);
+                    TextView tvMoney = (TextView) helper.getView(R.id.tv_money);
+                    TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
+                    TextView tvStatus = (TextView) helper.getView(R.id.tv_status);
+                    TextView tvConsumptionType = (TextView) helper.getView(R.id.tv_consumption_type);
+                    TextView tvPackageName = (TextView) helper.getView(R.id.tv_package_name);
+                    TextView tvOrderDate = (TextView) helper.getView(R.id.tv_order_date);
+                    tvName.setText(item.getXingming());
+                    tvMoney.setText("¥ " + item.getNopayment_money());
+                    tvOrderId.setText(item.getOrderId());
+                    tvStatus.setText(item.getNopayment_money() > 0 ? "欠款" : "");
+                    tvConsumptionType.setText("消费类型:" + item.getConsumption_type());
+                    tvOrderDate.setText("订单日期:" + item.getTargetdate());
+                    tvPackageName.setText("包套名称:" + item.getPayment_money());
+                }
+            };
+        }
+        quickAdapter.setOnItemClickListener( (adapter,   view,   position)->{
+                Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
+                SearchOrderEntity.DataBean dataBean  = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
+                intent.putExtra("orderId",dataBean .getOrderId());
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("data",dataBean);
+                intent.putExtras( bundle);
+                startActivity(intent);
+        });
+    }
+
     @Override
     public void onBackPressedSupport() {
-        if (mSmrHistory!=null){
-           if( mSmrHistory.getAdapter() ==searchResultAdaputer   ){
-               initHistoryAdapter();
-               return ;
-           }
+        if (mSmrHistory != null) {
+            if (mSmrHistory.getAdapter() == null || mSmrHistory.getAdapter() != historyAdapter) {
+                initHistoryAdapter();
+                return;
+            }
         }
         super.onBackPressedSupport();
     }
@@ -192,7 +232,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
-
         drawable = getResources().getDrawable(R.drawable.icon_qrcode_scan);
         //2:先调用DrawableCompat的wrap方法
         drawable = DrawableCompat.wrap(drawable);
@@ -200,20 +239,18 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         DrawableCompat.setTint(drawable, getResources().getColor(R.color.themeColor));
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
-
     }
 
     /**
      * 初始化搜索文本框
      */
-    @SuppressLint("ClickableViewAccessibility")
     private void initSearchEditTextView() {
         mTietNavSearch.setLeftDrawableClickListen(this);
         mTietNavSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search();
+                    search(true);
                     return true;
                 }
                 return false;
@@ -222,7 +259,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         mTietNavSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                search();
+                search(true);
             }
         });
         mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
@@ -237,22 +274,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     }
 
     /**
-     * 初始化历史适配器
+     * 初始化历史适配器(并显示)
      */
     private void initHistoryAdapter() {
         smartRefreshLayout.setEnabled(false);
-        mPtrRefresh.setEnabled(false);
         mLlSearch.setVisibility(View.VISIBLE);
-        //除去搜索的分割线，防止影响新设置添加的
-        mSmrHistory.removeItemDecoration(searchItemDecoration);
-        mSmrHistory.removeItemDecoration(histroyItemDecoration);
-        //设置搜索历史的分割线
-        mSmrHistory.addItemDecoration(histroyItemDecoration);
-        if (mSmrHistory.getFooterItemCount() > 0) {
-            mSmrHistory.removeFooterView(defineLoadMoreView);
-        }
-        mSmrHistory.removeAllViews();
-        mSmrHistory.setAdapter(null);
+        resetRecycleView(false);
         if (mSearchOrderPresenter.getSearchHosiery().size() <= 0) {
             mTvNearlySearch.setCompoundDrawables(null, null, null, null);
         }
@@ -263,30 +290,13 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 view.setText(item.getName());
             }
         };
-    }
-
-    /**
-     * 初始化刷控件
-     */
-    private void initRefresh() {
-        mPtrRefresh.setLastUpdateTimeRelateObject(this);
-        // the following are default settings
-        mPtrRefresh.setResistance(1.7f);
-        mPtrRefresh.setRatioOfHeaderHeightToRefresh(1.2f);
-        mPtrRefresh.setDurationToClose(200);
-        mPtrRefresh.setDurationToCloseHeader(1000);
-        // default mPtrRefresh.setPullToRefresh(false);
-        // default is true
-        mPtrRefresh.setKeepHeaderWhenRefresh(true);
-        mPtrRefresh.setPtrHandler(new PtrHandler() {
+        historyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                search();
-            }
-
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            public void onItemClick(View view, Object data, int position) {
+                mTietNavSearch.setText(mSearchOrderPresenter.getSearchHosiery().get(position).getName());
+                mTietNavSearch.setSelection(mSearchOrderPresenter.getSearchHosiery().get(position).getName().length());
+                mTietNavSearch.dismissDropDown();
+                search(true);
             }
         });
     }
@@ -295,21 +305,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     public void onClicks(View v) {
         switch (v.getId()) {
             case R.id.tv_nav_search_right:
-
-//                isShowSimple = !isShowSimple;
-//                if (isShowSimple) {
-//                    Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
-//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-//                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
-//                } else {
-//                    Drawable drawable = getResources().getDrawable(R.drawable.icon_all_data);
-//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
-//                    mTvNavRight.setCompoundDrawables(null, null, drawable, null);
-//
-//                }
-//                if (searchResultAdaputer != null) {
-//                    searchResultAdaputer.notifyDataSetChanged();
-//                }
                 startActivity(QRCodeScanActivity.class);
                 break;
             case R.id.tv_nav_search_left:
@@ -321,7 +316,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 mTietNavSearch.setSelection(mTietNavSearch.getText().toString().length());
                 initHistoryAdapter();
                 break;
-
             default:
             case R.id.btn_start_date:
                 showDataSelect(mBtnStartDate);
@@ -376,7 +370,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     /**
      * 搜索
      */
-    private void search() {
+    private void search(boolean showWindow) {
         mTietNavSearch.dismissDropDown();
         //隐藏键盘
         KeyBoardUtils.closeKeybord(mTietNavSearch, this);
@@ -394,13 +388,17 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             mTvNearlySearch.setCompoundDrawables(null, null, drawable, null);
             mTvNearlySearch.postInvalidate();
         }
+        if (quickAdapter != null) {
+            quickAdapter.setEnableLoadMore(false);
+        }
         //网络搜搜
-        mSearchOrderPresenter.sosoNetOrder ( key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(),true);
+        mSearchOrderPresenter.sosoNetOrder(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
+        hiddenHistory();
     }
 
     @Override
     public void onClickLeftDrawable() {
-        search();
+        search(true);
     }
 
     /**
@@ -414,8 +412,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 showOn.setText(DateUtil.dateToString(date, DateUtil.DatePattern.ONLY_DAY));
             }
         };
-//                DateUtil.dateToString()
-//年月日时分秒 的显示与否，不设置则默认全部显示
+        //年月日时分秒 的显示与否，不设置则默认全部显示
         TimePickerView.Builder timePickerView = new TimePickerView.Builder(this, timPic) //年月日时分秒 的显示与否，不设置则默认全部显示
                 .setTitleText(showOn == mBtnStartDate ? getString(R.string.start_time) : getString(R.string.end_time))
                 .setLineSpacingMultiplier(4).setType(new boolean[]{true, true, true, false, false, false})
@@ -423,61 +420,42 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         timePickerView.build().show();
     }
-
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
-        mTietNavSearch.setFocusableInTouchMode(false);
-        mTietNavSearch.setFocusable(false);
-        searchResultAdaptercopy(data, isRefesh);
-    }
-
-    @Override
-    public void searchSucceed(List<SearchOrderInforEntity.DataBean> data) {
-        mTietNavSearch.setFocusableInTouchMode(false);
-        mTietNavSearch.setFocusable(false);
-        searchResultAdapter2(data, true);
+        smartRefreshLayout.setEnabled(true);
+        smartRefreshLayout.setEnableRefresh(true);
+        smartRefreshLayout.setEnableLoadMore(true);
+        smartRefreshLayout.setEnableAutoLoadMore(true);
+        if (isRefesh) {
+            smartRefreshLayout.finishRefresh();
+            resetRecycleView(true);
+            mSmrHistory.setAdapter(quickAdapter);
+            quickAdapter.updateAll(data);
+        } else {
+            smartRefreshLayout.finishLoadMore();
+            quickAdapter.apped(data);
+            smartRefreshLayout.finishLoadMore();
+        }
+        if (!hasMore){
+            //完成加载并标记没有更多数据 1.0.4
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+        }
     }
 
     @Override
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
-        if (response.get() != null) {
-            if (response.get().getCode() != null && response.get().getCode().equals("0003")) {
-                if (searchResultAdaputer != null) {
-                    mLlSearch.setVisibility(View.GONE);
-                    mSmrHistory.setAdapter(searchResultAdaputer);
-                    if (response.get().getData().size() <= 0) {
-                        searchResultAdapter(null, pageIndex == 0);
-                    }
-                } else {
-                    searchResultAdapter(null, pageIndex == 0);
-                }
-                mSmrHistory.loadMoreError(1, "加载失败!请稍后重试");
-            }
-        }
+        smartRefreshLayout.setEnabled(true);
+        smartRefreshLayout.setEnableRefresh(true);
+      //  if (pageIndex!=0){
+        ///结束加载（加载失败）
+        smartRefreshLayout.finishLoadMore(false);//结束加载（加载失败）
+      //  }
     }
-
     /**
      * 搜索结果适配器
-     * (如果你没得到我的真传,那么这段代码勿动,因为这里不能随便更改顺序)
+     * 另一个版本的item
      */
     private void searchResultAdapter(List<SearchOrderEntity.DataBean> data, boolean isRefesh) {
-        if (isRefesh) {
-            reset();
-        }
-        if (searchResultAdaputer != null) {
-            if (isRefesh) {
-                searchResultAdaputer.refresh(data);
-                mSmrHistory.setAdapter(searchResultAdaputer);
-                mSmrHistory.loadMoreFinish(data != null, true);
-            } else {
-                if (data == null) {
-                    mSmrHistory.loadMoreFinish(true, false);
-                } else {
-                    searchResultAdaputer.notifyAppendDataSetChanged(data, true);
-                }
-            }
-            return;
-        }
         searchResultAdaputer = new BaseRecyclerAdapter<SearchOrderEntity.DataBean>(mSmrHistory, data, R.layout.item_custrom_order) {
             @SuppressLint("ResourceType")
             @Override
@@ -531,151 +509,32 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             }
         };
     }
-    List<SearchOrderEntity.DataBean> datacopy;
-    private void searchResultAdaptercopy(List<SearchOrderEntity.DataBean> data, boolean isRefesh) {
-        if (isRefesh) {
-            reset();
+
+    /**
+     * 重置
+     */
+    private void resetRecycleView(boolean formData) {
+        mSmrHistory.setAdapter(null);
+        //移除所有的横线
+        mSmrHistory.removeItemDecoration(histroyItemDecoration);
+        mSmrHistory.removeItemDecoration(searchItemDecoration);
+        if (formData){
+            mSmrHistory.addItemDecoration(searchItemDecoration);
+        }else {
+            mSmrHistory.addItemDecoration(histroyItemDecoration);
         }
-        if (searchResultAdaputer != null) {
-            if (isRefesh) {
-                datacopy=data;
-                // searchResultAdaputer.refresh(data);
-                mSmrHistory.setAdapter(searchResultAdaputer);
-                mSmrHistory.loadMoreFinish(data != null, true);
-            } else {
-                if (data == null) {
-                    mSmrHistory.loadMoreFinish(true, false);
-                } else {
-                    datacopy.addAll(data);
-                    //  searchResultAdaputer.notifyAppendDataSetChanged(data, true);
-                }
-            }
-            return;
-        }
-        datacopy=data;
-  if (SearchType.OPTION_PANEL==searchType||SearchType.PHOTOGRAPH==searchType){
-      quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_search_option_panel, data) {
-          @Override
-          protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
-              TextView   tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
-              TextView   tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
-              TextView   tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
-              tvCustomerNames.setText(""+item.getXingming());
-              tvOrderId.setText("订单编号"+item.getOrderId());
-              if (SearchType.OPTION_PANEL==searchType){
-                  tvCustomerInfos.setText("拍照日期:"+item.getPhotodate());
-                  tvCustomerInfos.append("\n选片日期:"+item.getSelectday());
-              }else {
-                  tvCustomerInfos.setText("订单日期:"+item.getTargetdate());
-                  tvCustomerInfos.append("\n拍照日期:"+item.getPhotodate());
-              }
-              tvCustomerInfos.append("\n客户分区:"+item.getArea());
-          }
-      };
-    }else {
-                quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, data) {
-                    @Override
-                    protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
-                         TextView tvName = (TextView) helper.getView(R.id.tv_name);
-                        TextView tvMoney = (TextView) helper.getView(R.id.tv_money);
-                        TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
-                        TextView tvStatus = (TextView) helper.getView(R.id.tv_status);
-                        TextView tvConsumptionType = (TextView) helper.getView(R.id.tv_consumption_type);
-                        TextView tvPackageName = (TextView) helper.getView(R.id.tv_package_name);
-                        TextView tvOrderDate = (TextView) helper.getView(R.id.tv_order_date);
-                        tvName.setText(item.getXingming());
-                        tvMoney.setText("¥ " + item.getNopayment_money());
-                        tvOrderId.setText(item.getOrderId());
-                        tvStatus.setText(item.getNopayment_money() > 0 ? "欠款" : "");
-                        tvConsumptionType.setText("消费类型:" + item.getConsumption_type());
-                        tvOrderDate.setText("订单日期:" + item.getTargetdate());
-                        tvPackageName.setText("包套名称:" + item.getPayment_money());
-                    }
-                };
-
-            }
-
-
-        mSmrHistory.setAdapter(quickAdapter);
-
 
     }
 
-
-    List<SearchOrderInforEntity.DataBean> data;
-    private void searchResultAdapter2(List<SearchOrderInforEntity.DataBean> data, boolean isRefesh) {
-        this.data=data;
-        if (isRefesh) {
-            reset();
-        }
-        if (searchResultAdaputer != null) {
-            if (isRefesh) {
-                // searchResultAdaputer.refresh(data);
-                mSmrHistory.setAdapter(searchResultAdaputer);
-                mSmrHistory.loadMoreFinish(data != null, true);
-            } else {
-                if (data == null) {
-                    mSmrHistory.loadMoreFinish(true, false);
-                } else {
-                    //  searchResultAdaputer.notifyAppendDataSetChanged(data, true);
-                }
-            }
-            return;
-        }
-        QuickAdapter quickAdapter = new QuickAdapter<SearchOrderInforEntity.DataBean>(R.layout.item_new_search_order_info, data) {
-            @Override
-            protected void convert(BaseViewHolder helper, SearchOrderInforEntity.DataBean item) {
-                  TextView tvName;
-                  TextView tvMoney;
-                  TextView tvOrderId;
-                  TextView tvStatus;
-                  TextView tvConsumptionType;
-                  TextView tvPackageName;
-                  TextView tvOrderDate;
-
-                tvName = (TextView) helper.getView(R.id.tv_name);
-                tvMoney = (TextView)  helper.getView(R.id.tv_money);
-                tvOrderId = (TextView)  helper.getView(R.id.tv_order_id);
-                tvStatus = (TextView)  helper.getView(R.id.tv_status);
-                tvConsumptionType = (TextView)  helper.getView(R.id.tv_consumption_type);
-                tvPackageName = (TextView)  helper.getView(R.id.tv_package_name);
-                tvOrderDate = (TextView)  helper.getView(R.id.tv_order_date);
-                tvName.setText(item.getMname() +"  "+ item.getMname());
-                tvMoney.setText("¥ "+item.getNopayment_money());
-                tvOrderId.setText(item.getOrderId());
-                tvStatus.setText(item.getNopayment_money()>0?"欠款":"");
-                tvConsumptionType.setText("消费类型:"+item.getConsumption_type());
-                tvOrderDate.setText("订单日期:"+item.getTargetdate());
-                tvPackageName.setText("包套名称:"+item.getPayment_money());
-            }
-        };
-        mSmrHistory.setAdapter(quickAdapter);
-
-
-    }
-
-    private void reset() {
-        if (mSmrHistory.getFooterItemCount() > 0) {
-            mSmrHistory.removeFooterView(defineLoadMoreView);
-        }
+    /**
+     * 隐藏搜索历史
+     */
+    private void hiddenHistory() {
         mSmrHistory.removeAllViews();
-        mSmrHistory.addFooterView(defineLoadMoreView);
-        mSmrHistory.setLoadMoreView(defineLoadMoreView);
-        mPtrRefresh.refreshComplete();
-        smartRefreshLayout.finishRefresh();
-        mPtrRefresh.setEnabled(true);
-        smartRefreshLayout.setEnabled(true);
-        mSmrHistory.setAutoLoadMore(false);
-        mSmrHistory.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mSearchOrderPresenter.sosoNetLoadmore();
-            }
-        });
         mLlSearch.setVisibility(View.GONE);
         mSmrHistory.setAdapter(null);
         mSmrHistory.removeItemDecoration(histroyItemDecoration);
         mSmrHistory.removeItemDecoration(searchItemDecoration);
-        mSmrHistory.addItemDecoration(searchItemDecoration);
     }
+
 }

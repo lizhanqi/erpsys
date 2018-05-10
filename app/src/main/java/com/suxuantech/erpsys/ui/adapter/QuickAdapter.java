@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.adapter;
 
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -40,19 +41,39 @@ import java.util.List;
 }
  */
 
-public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder> {
-    public QuickAdapter(int layoutResId, @Nullable List<T> data)   {
+public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder>      {
+    public QuickAdapter(@LayoutRes int layoutResId, @Nullable List<T> data)   {
         super(layoutResId, data);
     }
 
+    /**
+     * 全部更新
+     * @param data
+     */
     public void updateAll(List<T> data) {
         if (data!=null){
             mData=data;
             notifyDataSetChanged();
         }else {
-           mData.clear();
-           notifyDataSetChanged();
+            mData.clear();
+            notifyDataSetChanged();
         }
     }
 
+    /**
+     * 追加
+     * @param data
+     */
+    public void apped(List<T> data) {
+        if (data!=null){
+            mData.addAll(data);
+            notifyDataSetChanged();
+        }
+    }
+    public boolean areAllItemsEnabled() {
+        return true;
+    }
+    public boolean isEnabled(int position) {
+        return true;
+    }
 }

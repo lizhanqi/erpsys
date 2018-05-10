@@ -1,7 +1,6 @@
 package com.suxuantech.erpsys.presenter.connector;
 
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
-import com.suxuantech.erpsys.entity.SearchOrderInforEntity;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.List;
@@ -42,7 +41,6 @@ public interface ISearchOrderPresenter {
      * @param hasMore 是否还有更多
      */
     void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore);
-    void searchSucceed (List<SearchOrderInforEntity.DataBean> data );
     /**
      * 搜索失败结果
      * @param response

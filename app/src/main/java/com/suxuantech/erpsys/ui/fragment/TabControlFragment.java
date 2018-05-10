@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.CustomerPhotoEntity;
+import com.suxuantech.erpsys.entity.PaymentDetailsEntity;
 import com.suxuantech.erpsys.entity.SelectPictureEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -67,7 +68,7 @@ public class TabControlFragment extends BaseSupportFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        witch = getArguments().getParcelable("witch");
+        witch = (whichInFragement) getArguments().getSerializable("witch");
         view = inflater.inflate(R.layout.fragment_tab_control, container, false);
         return view;
     }
@@ -233,15 +234,16 @@ public class TabControlFragment extends BaseSupportFragment {
         } else if (witch  == whichInFragement.SHOOT ) {
             getPhotoInfo();
         }else if (witch == whichInFragement.PAY_DETAILS) {
-            initPaymentFragment();
+            getPayDetails();
         }
     }
 
     /**
      * 初始化网络控制Fragement
      *
+     * @param data
      */
-    private void initPaymentFragment( ) {
+    private void initPaymentFragment(PaymentDetailsEntity.DataBean data) {
         ArrayList<String> strings = new ArrayList<>();
         strings.add("门市收款");
         strings.add("礼服收款");
@@ -255,12 +257,10 @@ public class TabControlFragment extends BaseSupportFragment {
             for (int i = 0; i < strings.size(); i++) {
                 PaymentDetailFragment paymentDetailFragment = new PaymentDetailFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("orderid", getArguments().getString("orderId"));
-                bundle.putString("mmp", "order"+i);
+                bundle.putString("orderId", getArguments().getString("orderId"));
                 paymentDetailFragment.setArguments(bundle);
                 fragments.add(paymentDetailFragment);
             }
-
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
@@ -272,5 +272,23 @@ public class TabControlFragment extends BaseSupportFragment {
         if (fragments.size() > 4) {
             tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
+    }
+    public void getPayDetails(){
+        String url = Contact.getFullUrl(Contact.PAYMENT, Contact.TOKEN, getArguments().getString("orderId"), App.getApplication().getUserInfor().getShop_code());
+        //请求实体
+        JavaBeanRequest<PaymentDetailsEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PaymentDetailsEntity>(url, RequestMethod.POST, PaymentDetailsEntity.class);
+        HttpListener<PaymentDetailsEntity> searchByCustmor = new HttpListener<PaymentDetailsEntity>() {
+            @Override
+            public void onSucceed(int what, Response<PaymentDetailsEntity> response) {
+                if (response.get().isOK()){
+                    initPaymentFragment(response.get().getData() );
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<PaymentDetailsEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 }

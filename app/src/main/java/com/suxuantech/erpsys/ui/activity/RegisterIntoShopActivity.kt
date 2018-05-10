@@ -31,12 +31,9 @@ import com.suxuantech.erpsys.utils.MyString
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
 import kotlinx.android.synthetic.main.activity_register_into_shop.*
-
-
 /**
  * 进店登记
  */
-
 class RegisterIntoShopActivity : ImmersionActivity() {
     var llNewCustomer: LinearLayout? = null
     var llNotIntoShop: LinearLayout? = null
@@ -160,7 +157,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             name1="k14"
         }
         if (App.getApplication().hasPermission("K15")){
-            name1="k15"
+            name2="k15"
         }
         var url = Contact.getFullUrl(Contact.CUSTOMER_INTO_STORE_COUNT, Contact.TOKEN,
                 "20160808", DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER),

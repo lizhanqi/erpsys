@@ -42,7 +42,7 @@ import java.util.List;
  * 以及RecyclerView的.setLayoutManager(new LinearLayoutManager(v.getContext()));
  * 我这里默认就给你代理了我这使用的是LinearLayoutManager,如果你想用其他的那么你自己再重新设置就好
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerHolder> {
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerHolder>   {
 
     protected List<T> realDatas;
     protected final int mItemLayoutId;
@@ -182,7 +182,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
         notifyDataSetChanged();
     }
-
+    public boolean areAllItemsEnabled() {
+        return true;
+    }
+    public boolean isEnabled(int position) {
+        return true;
+    }
 
 
 }

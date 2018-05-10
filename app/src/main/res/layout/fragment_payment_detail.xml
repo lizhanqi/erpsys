@@ -4,16 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.PaymentDetailFragment">
-    <TextView
-        android:id="@+id/tvss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_payment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
     </android.support.v7.widget.RecyclerView>
 </FrameLayout>

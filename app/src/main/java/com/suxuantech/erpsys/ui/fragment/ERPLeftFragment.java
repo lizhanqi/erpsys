@@ -40,6 +40,7 @@ import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
+import com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
@@ -110,8 +111,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     RecyclerView mRvCard;
     private View headView;
     private View headView1;
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -120,19 +119,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         initCard();
         //   initTabLayout();
         //initBall(view);
-//                Intent intent = new Intent(getActivity(), OptionActivity.class);
-//                OptionHelp multiple = new OptionHelp(getActivity()).setMultiple(false);
-//                multiple.setAllData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData(new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                multiple.setCheckedData("礼服");
-//                multiple.setTitle("选择");
-        //                multiple.setUrl("11111");
-
-//                intent.putExtra("All",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Checked",new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.steps))));
-//                intent.putExtra("Title","选择");
-//                intent.putExtra("Multiple",false);
-        //                startActivity(multiple.creat());
     }
 
     @Override
@@ -218,7 +204,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     //   tvcn.append(new MyString("\n今日客资量").setSize(20));
                     tvon.setText((new MyString("今日订单量\u3000" + data.get(0).getJktotal()).setSize(15)));
                     //tvon.append(new MyString(" 今日订单量").setSize(20));
-
                     tvin.setText((new MyString(data.get(0).getRealmoney()).setSize(20)));
                     tvin.append(new MyString("\n今日营收").setSize(15));
                     tvrt.setText((new MyString(data.get(0).getZongmoney()).setSize(20)));
@@ -233,10 +218,29 @@ public class ERPLeftFragment extends BaseLazyFragment {
         };
         request(33, homeSumRequset, homeSumListener, false, false);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         headView = inflater.inflate(R.layout.head_home, null, false);
+      headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l->{
+            //进店登记的搜索
+          Intent intent = new Intent(getActivity(), RegisterIntoShopSearchActivity.class);
+          intent.putExtra("title","今日客资");
+          intent.putExtra("hideSearch",true);
+          startActivity( intent  );
+      });
+      headView.findViewById(R.id.tv_today_income).setOnClickListener(l->{
+          //订单搜索,
+          Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+          intent.putExtra("title","今日订单");
+          intent.putExtra("hideSearch",true);
+          startActivity( intent  );
+      });
+      headView.findViewById(R.id.tv_today_order_number).setOnClickListener(l->{
+          //订单搜索,
+      });
+      headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l->{
+        //home
+      });
         headView1 = inflater.inflate(R.layout.head_home, null, false);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -373,7 +377,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         if (fragments == null) {
             fragments = new ArrayList<Fragment>();
             for (int i = 0; i < arryTitle.length; i++) {
-
                 HomeDataFragement homeDataFragement = new HomeDataFragement();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", arryTitle[i]);

@@ -88,7 +88,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
 //        showUserDefinedNav();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
-        current = stringArray[0];
+        current = stringArray[  getIntent().getIntExtra("showOnPosition",0)];
         setCenterTitle(current);
         //setUseDefinedNavTitle(current);
         gotoFragment();

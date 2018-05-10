@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/gray_f9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity">
     <LinearLayout
+        android:id="@+id/ll_serach"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"

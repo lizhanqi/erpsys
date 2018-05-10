@@ -38,13 +38,16 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_register_into_shop_search)
         // showUserDefinedNav()
         supportToolbar()
-        setCenterTitle(intent.getStringExtra("title"))
-        // setUseDefinedNavRightText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY))
+         setCenterTitle(intent.getStringExtra("title"))
         tietSearch = findViewById<OneKeyClearAutoCompleteText>(R.id.tiet_search)
+        if(  intent.getBooleanExtra("hideSearch",false)){
+            findViewById<LinearLayout>(R.id.ll_serach).visibility=View.GONE;
+        }
         imgSearch = idSetOnClick<ImageView>(R.id.img_search)
         tvAdd = idSetOnClick<TextView>(R.id.tv_add)
         rvRegister = findViewById<RecyclerView>(R.id.rv_register)
         rvRegister!!.layoutManager = LinearLayoutManager(baseContext)
+
         search()
     }
 
@@ -67,11 +70,19 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     var pageIndex = 0;
     var pageSize = 10;
     private fun search() {
+        var name1=App.getApplication().userInfor.staffname;
+        var name2=App.getApplication().userInfor.staffname;
+        if (App.getApplication().hasPermission("K14")){
+            name1="k14"
+        }
+        if (App.getApplication().hasPermission("K15")){
+            name2="k15"
+        }
         val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         var url = Contact.getFullUrl(Contact.INQUIRE_GUEST_INFO, Contact.TOKEN
                 , 20170101, nowDate, tietSearch!!.text.toString(),
                 pageIndex, pageSize,
-                App.getApplication().userInfor.shop_code, ""
+                App.getApplication().userInfor.shop_code, "",name1,name2
         )
         val districtBeanJavaBeanRequest = JavaBeanRequest(url, RequestMethod.POST, RegisterEntity::class.java)
         val searchByCustmor = object : HttpListener<RegisterEntity> {

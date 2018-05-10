@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:padding="@dimen/px30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_payment_date_key"
+            style="@style/DetailsKey"
+            android:text="收款日期" />
+
+        <TextView
+            android:id="@+id/tv_payment_date_value"
+            style="@style/DetailsValue"
+            android:gravity="right" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_payee_type_key"
+            style="@style/DetailsKey"
+            android:text="收款类型" />
+
+        <TextView
+            android:id="@+id/tv_payee_type_value"
+            style="@style/DetailsValue"
+            android:gravity="right" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_payment_payee_key"
+            style="@style/DetailsKey"
+            android:text="收款人" />
+
+        <TextView
+            android:id="@+id/tv_payment_payee_value"
+            style="@style/DetailsValue"
+            android:gravity="right" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_payment_type_key"
+            style="@style/DetailsKey"
+            android:text="付款类型" />
+
+        <TextView
+            android:id="@+id/tv_payment_type_value"
+            style="@style/DetailsValue"
+            android:gravity="right" />
+    </LinearLayout>
+    <View style="@style/line"/>
+    <LinearLayout
+        android:padding="@dimen/px30"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_payment_money_key"
+            style="@style/DetailsKey"
+            android:text="收款金额" />
+
+        <TextView
+            android:id="@+id/tv_payment_money_value"
+            style="@style/DetailsValue"
+            android:gravity="right" />
+    </LinearLayout>
+</LinearLayout>
