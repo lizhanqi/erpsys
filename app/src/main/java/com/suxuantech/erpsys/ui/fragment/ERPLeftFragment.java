@@ -229,14 +229,16 @@ public class ERPLeftFragment extends BaseLazyFragment {
           startActivity( intent  );
       });
       headView.findViewById(R.id.tv_today_income).setOnClickListener(l->{
-          //订单搜索,
           Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
           intent.putExtra("title","今日订单");
           intent.putExtra("hideSearch",true);
           startActivity( intent  );
       });
       headView.findViewById(R.id.tv_today_order_number).setOnClickListener(l->{
-          //订单搜索,
+          Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+          intent.putExtra("title","今日订单");
+          intent.putExtra("hideSearch",true);
+          startActivity( intent  );
       });
       headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l->{
         //home
