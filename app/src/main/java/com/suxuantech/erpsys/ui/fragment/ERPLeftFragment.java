@@ -462,12 +462,13 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 break;
             case R.id.tv_schedule:
-                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-                intent.putExtra("type",SearchOrderActivity.SearchType.PHOTOGRAPH);
-                startActivity(intent);
+                request("http://192.168.0.12/api.php?m=login&a=getDepartments");
+
+//                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+//                intent.putExtra("type",SearchOrderActivity.SearchType.PHOTOGRAPH);
+//                startActivity(intent);
 //                CustomBottomDialog customBottomDialog = new CustomBottomDialog(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null), getActivity(), R.style.style_dialog);
 //                customBottomDialog.show();
-
 //                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
 //                intent.putExtra("title","排程");
 //                startActivity(intent);

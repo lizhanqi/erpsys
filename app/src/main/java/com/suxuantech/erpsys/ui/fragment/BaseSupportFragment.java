@@ -130,6 +130,9 @@ public class BaseSupportFragment extends SupportFragment    implements IDynamicN
     public void request(String url) {
         //请求实体
         JavaBeanRequest<ProductEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<ProductEntity>(url, RequestMethod.POST, ProductEntity.class);
+        districtBeanJavaBeanRequest.add("shop_code", "vvc001");
+        districtBeanJavaBeanRequest.addHeader("Content-Type","multipart/form-data");
+      districtBeanJavaBeanRequest  .setMultipartFormEnable(true);
         HttpListener<ProductEntity> searchByCustmor = new HttpListener<ProductEntity>() {
             @Override
             public void onSucceed(int what, Response<ProductEntity> response) {

@@ -1,79 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android
-        ="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.ProductDataFragment"
-    >
+    tools:context=".ui.fragment.ProductDataFragment">
+
     <RelativeLayout
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
         android:id="@+id/rl_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="0"
+        android:background="@color/myBackground_f7"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/px80"
         android:paddingLeft="@dimen/px55"
         android:paddingRight="@dimen/px55"
-        android:background="@color/myBackground_f7"
         android:paddingTop="@dimen/px80"
-        android:paddingBottom="@dimen/px80"
-        android:gravity="center_vertical"
-        android:layout_weight="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
+
         <CheckBox
-            android:textColor="@color/mainNav_66"
-            android:text="全选"
             android:id="@+id/cb_all"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="全选"
+            android:textColor="@color/mainNav_66" />
+
         <TextView
             android:id="@+id/tv_delete"
-            android:paddingTop="@dimen/px32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:background="@drawable/sl_delete_gray_red"
             android:paddingBottom="@dimen/px32"
             android:paddingLeft="@dimen/px90"
             android:paddingRight="@dimen/px90"
-            android:background="@drawable/sl_delete_gray_red"
-            android:textColor="@color/white"
-            android:textSize="@dimen/px46"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
+            android:paddingTop="@dimen/px32"
             android:text="@string/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/px46" />
     </RelativeLayout>
-    <LinearLayout
-        android:layout_above="@id/rl_delete"
-        android:orientation="vertical"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <CheckBox
-            android:visibility="gone"
-            android:textColor="@color/mainNav_66"
-            android:id="@+id/cb_one_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    <com.allen.library.SuperTextView
-        android:id="@+id/stv_one_package"
-        app:sLeftTvDrawableLeft="@drawable/icon_product_package"
-        app:sTextViewDrawablePadding="@dimen/px30"
-        app:sLeftTextColor="@color/myValue_33"
-        app:sLeftTextSize="@dimen/xs50"
-        app:sLeftTextString="xxx(包套)"
-        android:layout_width="match_parent"
-        app:sRightTextSize="@dimen/xs40"
-        app:sRightTextColor="@color/color_f1430b"
-        android:layout_height="@dimen/px160">
-    </com.allen.library.SuperTextView>
-    </LinearLayout>
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-        android:id="@+id/recycler_one_product"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rl_delete"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/cb_one_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mainNav_66"
+                    android:visibility="gone" />
+
+                <com.allen.library.SuperTextView
+                    android:id="@+id/stv_one_package"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px160"
+                    app:sLeftTextColor="@color/myValue_33"
+                    app:sLeftTextSize="@dimen/xs50"
+                    app:sLeftTextString="xxx(包套)"
+                    app:sLeftTvDrawableLeft="@drawable/icon_product_package"
+                    app:sRightTextColor="@color/color_f1430b"
+                    app:sRightTextSize="@dimen/xs40"
+                    app:sTextViewDrawablePadding="@dimen/px30"></com.allen.library.SuperTextView>
+            </LinearLayout>
+
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:id="@+id/recycler_one_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+        </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

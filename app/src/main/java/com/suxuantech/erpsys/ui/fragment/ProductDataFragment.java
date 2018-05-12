@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.SuperTextView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
@@ -58,9 +59,11 @@ public class ProductDataFragment extends BaseSupportFragment {
     SuperTextView mStvOnePackage;
     @BindView(R.id.recycler_one_product)
     SwipeMenuRecyclerView mRecyclerOneProduct;
+    @BindView(R.id.smart_refresh)
+    SmartRefreshLayout smartRefreshLayout;
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer;
-    private View view;
+
 
     public ProductDataFragment() {
     }
@@ -72,7 +75,10 @@ public class ProductDataFragment extends BaseSupportFragment {
         unbinder = ButterKnife.bind(this, view);
         useEventBus();
         onCheckedChange( );
-        getProduct();
+        smartRefreshLayout.autoRefresh();
+        smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            getProduct();
+        });
         return view;
     }
 
@@ -101,6 +107,8 @@ public class ProductDataFragment extends BaseSupportFragment {
     public void onMessageEvent(String msg) {
         if (msg.equals("pop")){
             addPackageOrProductWindow();
+        } else if (msg.equals("freshProduct")) {
+            smartRefreshLayout.autoRefresh();
         }
     }
 
@@ -111,14 +119,16 @@ public class ProductDataFragment extends BaseSupportFragment {
         HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
             @Override
             public void onSucceed(int what, Response<SimpleEntity> response) {
+
                 if (response.get().isOK()) {
                     ToastUtils.snackbarShort("添加套系成功");
-                    getProduct();
+                    smartRefreshLayout.autoRefresh();
                 }
             }
 
             @Override
             public void onFailed(int what, Response<SimpleEntity> response) {
+                smartRefreshLayout.finishRefresh(false);
             }
         };
         request(2, districtBeanJavaBeanRequest, searchByCustmor, false, false);
@@ -206,7 +216,7 @@ public class ProductDataFragment extends BaseSupportFragment {
         HttpListener<CustomerProductEntity> searchByCustmor = new HttpListener<CustomerProductEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerProductEntity> response) {
-
+                smartRefreshLayout.finishRefresh();
                 if (response.get().isOK()) {
                     CustomerProductEntity.DataBean dataBean = response.get().getData();
                     if (dataBean != null) {
@@ -229,6 +239,7 @@ public class ProductDataFragment extends BaseSupportFragment {
 
             @Override
             public void onFailed(int what, Response<CustomerProductEntity> response) {
+                smartRefreshLayout.finishRefresh(false);
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);

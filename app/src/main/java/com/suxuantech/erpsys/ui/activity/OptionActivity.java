@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
@@ -24,6 +25,7 @@ import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
+import com.suxuantech.erpsys.entity.SimpleEntity;
 import com.suxuantech.erpsys.entity.ThemeEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
@@ -130,11 +132,10 @@ public class OptionActivity extends TitleNavigationActivity {
                 shoppingCartAdapter.notifyDataSetChanged();
                 dialog.show();
                 break;
-            case R.id.tv_nav_right://多选确定时候关闭页面的
-                setMultipleResult();
-                break;
-            case R.id.tv_nav_left:
-                finish();
+            case R.id.tv_add_product:
+                if (productDataAdded.size() > 0) {
+                    addProduct();
+                }
                 break;
         }
     }
@@ -183,9 +184,10 @@ public class OptionActivity extends TitleNavigationActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
+        supportToolbar();
         useButterKnife();
         idSetOnClick(R.id.img_shopping);
-        showUserDefinedNav();
+        idSetOnClick(R.id.tv_add_product);
         //初始化传过来的IntentData
         initIntentData(getIntent());
         //初始化recycleview
@@ -208,7 +210,6 @@ public class OptionActivity extends TitleNavigationActivity {
             setAdapterCtrl();
         }
     }
-
 
     /**
      * 初始化设置刷新View
@@ -254,10 +255,7 @@ public class OptionActivity extends TitleNavigationActivity {
      * 初始化RecycleView
      */
     private void initRecycleView() {
-        if (urlTag != OptionHelp.UrlTag.PRODUCT) {
-            mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
-        }
-//       mRecyclerView.useDefaultLoadMore();
+        mRecyclerView.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
         DefineLoadMoreView defineLoadMoreView = new DefineLoadMoreView(this);
         mRecyclerView.addFooterView(defineLoadMoreView);
         mRecyclerView.setLoadMoreView(defineLoadMoreView);
@@ -267,8 +265,18 @@ public class OptionActivity extends TitleNavigationActivity {
             public void onItemClick(View itemView, int position) {
                 singleResult(position);
             }
-
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mMultiple) {
+            menu.add(Menu.NONE, 0, 0, getString(R.string.complete)).setOnMenuItemClickListener(menuItem -> {
+                setMultipleResult();
+                return true;
+            });
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -281,13 +289,10 @@ public class OptionActivity extends TitleNavigationActivity {
         if (intent != null) {
             //获取是否是多选
             mMultiple = intent.getBooleanExtra("Multiple", false);
-            if (mMultiple) {
-                setUseDefinedNavRightText(getString(R.string.complete));
-            }
             tag = intent.getStringExtra("Tag");
             title = intent.getStringExtra("Title");
             //设置标题
-            setTitle(title);
+            setCenterTitle(title);
             checkedData = intent.getStringArrayListExtra("Checked");
             //已经选中的
             if (checkedData == null) {
@@ -311,10 +316,12 @@ public class OptionActivity extends TitleNavigationActivity {
             default:
             case PRODUCT:
                 initBottomSheet();
+                if (menu != null) {
+                    menu.clear();
+                }
                 if (getMImmersionBar() != null) {
                     getMImmersionBar().navigationBarColor(R.color.mainNav_66).init();
                 }
-
                 //产品
                 Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
@@ -416,6 +423,9 @@ public class OptionActivity extends TitleNavigationActivity {
      * 初始化弹窗
      */
     private void initBottomSheet() {
+        if (dialog != null) {
+            return;
+        }
         mLlsum.setVisibility(View.VISIBLE);
         dialog = new BottomSheetDialog(this);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -449,6 +459,7 @@ public class OptionActivity extends TitleNavigationActivity {
         });
         addedRecy = inflate.findViewById(R.id.rv_product);
         productShoppingCart();
+        addedRecy.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
         dialog.setContentView(inflate);
     }
 
@@ -1301,10 +1312,14 @@ public class OptionActivity extends TitleNavigationActivity {
         productSumInfo.append("\n共计" + count + "件商品");
         tvPopProductSumInfo.setText("¥:" + money);
         tvPopProductSumInfo.append("\n共计" + count + "件商品");
-        if (count==0){
+        tvPopAddProduct.setBackground(null);
+        addProduct.setBackground(null);
+        if (count == 0) {
             tvPopAddProduct.setBackgroundColor(getResources().getColor(R.color.noticeOrange));
-            addProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
-        }else {
+            addProduct.setBackgroundColor(getResources().getColor(R.color.noticeOrange));
+            btnPopDeleteAll.setVisibility(View.GONE);
+        } else {
+            btnPopDeleteAll.setVisibility(View.VISIBLE);
             tvPopAddProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
             addProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
         }
@@ -1316,6 +1331,42 @@ public class OptionActivity extends TitleNavigationActivity {
     public void resetNumber() {
         for (ProductEntity.DataBean da : productData) {
             da.setNumber(0);
+        }
+    }
+
+    public void addProduct() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("orderId") && intent.hasExtra("customerId")) {
+            String orderId = intent.getExtras().getString("orderId");
+            String customerId = intent.getExtras().getString("customerId");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (ProductEntity.DataBean pd : productDataAdded) {
+//                产品ID|数量|单价;
+                stringBuilder.append(pd.getId());
+                stringBuilder.append("|");
+                stringBuilder.append(pd.getNumber());
+                stringBuilder.append("|");
+                stringBuilder.append(pd.getNow_price());
+                stringBuilder.append(";");
+            }
+            stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(";"));
+            String fullUrl = Contact.getFullUrl(Contact.ADD_PRODUCT, Contact.TOKEN, orderId, customerId, stringBuilder.toString(), 0, 0, App.getApplication().getUserInfor().getShop_code(),
+                    App.getApplication().getUserInfor().getShop_name(), App.getApplication().getUserInfor().getBrandclass_id());
+            //请求实体
+            JavaBeanRequest<SimpleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SimpleEntity>(fullUrl, SimpleEntity.class);
+            HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
+                @Override
+                public void onSucceed(int what, Response<SimpleEntity> response) {
+                    if (response.get().isOK()){
+                    EventBus.getDefault().post("freshProduct");
+                    onBackPressed();
+                    }
+                }
+                @Override
+                public void onFailed(int what, Response<SimpleEntity> response) {
+                }
+            };
+            request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
         }
     }
 }

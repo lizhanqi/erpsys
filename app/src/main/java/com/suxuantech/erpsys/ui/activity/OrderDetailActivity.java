@@ -212,12 +212,13 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                         optionHelp.setUrlTag(OptionHelp.UrlTag.PRODUCT);
                                         optionHelp.setMultiple(true);
                                         Intent creat = optionHelp.creat();
+                                        creat.putExtras(getIntent().getExtras());
                                         startActivity(creat);
                                     }
                                 });
                                 alertView.setMarginBottom(30);
                                 alertView .show();
-                                //EventBus.getDefault().post("addProductWindow");
+                             EventBus.getDefault().post("addProductWindow");
                                   //immersionBarDark( );
                             } else {
                                 OptionHelp optionHelp = new OptionHelp(this);

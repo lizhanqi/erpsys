@@ -199,7 +199,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         quickAdapter.setOnItemClickListener( (adapter,   view,   position)->{
                 Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
                 SearchOrderEntity.DataBean dataBean  = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
-                intent.putExtra("orderId",dataBean .getOrderId());
+            intent.putExtra("orderId",dataBean .getOrderId());
+            intent.putExtra("customerId",dataBean .getCustomerid());
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("data",dataBean);
                 intent.putExtras( bundle);
