@@ -3,18 +3,17 @@ package com.suxuantech.erpsys.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.SuperTextView;
-import com.bigkoo.alertview.AlertView;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
@@ -182,16 +181,23 @@ public class ProductDataFragment extends BaseSupportFragment {
        });
     }
 
-
+    BottomSheetDialog dialog;
     public void addPackageOrProductWindow() {
-        AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
-        Button bn = views.findViewById(R.id.btn_add_package);
-        bn.setClickable(true);
-        alertView.addExtView(views);
-        alertView.setCancelable(true);
-        alertView.setContentContainerMargins(0, 0, 0, 0);
-        alertView.show();
+      if (dialog==null){
+        dialog =new BottomSheetDialog(getActivity())  ;
+          dialog.setContentView(views);
+      }
+      if (!dialog.isShowing()){
+          dialog.show();
+      }
+//        AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
+//        Button bn = views.findViewById(R.id.btn_add_package);
+//        bn.setClickable(true);
+//        alertView.addExtView(views);
+//        alertView.setCancelable(true);
+//        alertView.setContentContainerMargins(0, 0, 0, 0);
+//        alertView.show();
     }
     public void getProduct() {
         String orderId = getArguments().getString("orderId");

@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.ui.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -31,30 +32,36 @@ import java.util.List;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2018/4/9 0009 17:47 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
- * @Description:
- *  kolin
- *     var adapter = object : QuickAdapter<FormEntity>(R.layout.item_home_data, list) {
-        public override fun convert(helper: BaseViewHolder, item: FormEntity) {
-
-}
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
+ * @Description: kolin
+ * var adapter = object : QuickAdapter<FormEntity>(R.layout.item_home_data, list) {
+ * public override fun convert(helper: BaseViewHolder, item: FormEntity) {
+ * <p>
+ * }
  */
 
-public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHolder>      {
-    public QuickAdapter(@LayoutRes int layoutResId, @Nullable List<T> data)   {
-        super(layoutResId, data);
+public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> {
+    private RecyclerView recyclerView;
+
+    public QuickAdapter(@LayoutRes int layoutResId, @Nullable List<T> data) {
+        this(null,layoutResId, data);
     }
 
+    public QuickAdapter(RecyclerView recyclerView, @LayoutRes int layoutResId, @Nullable List<T> data) {
+        super(layoutResId, data);
+        this.recyclerView=recyclerView;
+    }
     /**
      * 全部更新
+     *
      * @param data
      */
     public void updateAll(List<T> data) {
-        if (data!=null){
-            mData=data;
+        if (data != null) {
+            mData = data;
             notifyDataSetChanged();
-        }else {
+        } else {
             mData.clear();
             notifyDataSetChanged();
         }
@@ -62,17 +69,32 @@ public   abstract class QuickAdapter<T> extends BaseQuickAdapter<T,  BaseViewHol
 
     /**
      * 追加
+     *
      * @param data
      */
     public void apped(List<T> data) {
-        if (data!=null){
+        if (data != null) {
             mData.addAll(data);
             notifyDataSetChanged();
         }
     }
+
+    /**
+     * 追加
+     *
+     * @param data
+     */
+    public void apped(T data) {
+        if (data != null) {
+            mData.add(data);
+            notifyDataSetChanged();
+        }
+    }
+
     public boolean areAllItemsEnabled() {
         return true;
     }
+
     public boolean isEnabled(int position) {
         return true;
     }

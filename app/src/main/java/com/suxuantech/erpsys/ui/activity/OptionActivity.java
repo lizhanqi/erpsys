@@ -1,9 +1,14 @@
 package com.suxuantech.erpsys.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suxuantech.erpsys.App;
@@ -55,6 +60,14 @@ public class OptionActivity extends TitleNavigationActivity {
     SwipeMenuRecyclerView mRecyclerView;
     @BindView(R.id.rotate_header_grid_view_frame)
     PtrClassicFrameLayout mRotateHeaderGridViewFrame;
+    @BindView(R.id.ll_sum)
+    LinearLayout mLlsum;
+    @BindView(R.id.img_shopping)
+    ImageButton btnShopping;
+    @BindView(R.id.tv_product_sum_info)
+    TextView productSumInfo;
+    @BindView(R.id.tv_add_product)
+    TextView addProduct;
     /**
      * checkedData当前选中的，单选的话只认下表为0的那个才是
      * mAllData全部选项
@@ -101,12 +114,22 @@ public class OptionActivity extends TitleNavigationActivity {
     private String title;
     private List<PackageEntity.DataBean> packageData;
     private List<ProductEntity.DataBean> productData;
-    private BaseRecyclerAdapter<ProductEntity.DataBean> productAdapter;
+    private List<ProductEntity.DataBean> productDataAdded = new ArrayList<>();
+    private BaseRecyclerAdapter<ProductEntity.DataBean> productAdapter, shoppingCartAdapter;
+    private RecyclerView addedRecy;
+    TextView tvPopAddProduct;
+    TextView tvPopProductSumInfo;
+    TextView btnPopDeleteAll;
 
     @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
             default:
+            case R.id.img_shopping:
+                shoppingCartAdapter.refresh(productDataAdded);
+                shoppingCartAdapter.notifyDataSetChanged();
+                dialog.show();
+                break;
             case R.id.tv_nav_right://多选确定时候关闭页面的
                 setMultipleResult();
                 break;
@@ -127,7 +150,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     }
                 }
             }
-            BaseMsg<ThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg (themeData, dataBeans, mMultiple);
+            BaseMsg<ThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg(themeData, dataBeans, mMultiple);
             dataBeanBaseMsg.setmTitle(title);
             dataBeanBaseMsg.setTag(tag);
             dataBeanBaseMsg.setUrl(Url);
@@ -154,13 +177,14 @@ public class OptionActivity extends TitleNavigationActivity {
         finish();
     }
 
-
+    BottomSheetDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refresh_and_recyclerview);
         useButterKnife();
+        idSetOnClick(R.id.img_shopping);
         showUserDefinedNav();
         //初始化传过来的IntentData
         initIntentData(getIntent());
@@ -170,7 +194,6 @@ public class OptionActivity extends TitleNavigationActivity {
          * 设置一下刷新控件属性
          */
         initRefreshView();
-
         //如果路径不为空直接调用自动刷新（这个一定要在initIntentData后执行，Url有没有数据是那里获取到的）
         if (urlTag != null) {
             getUrlAndDataCtrl(false);
@@ -185,6 +208,7 @@ public class OptionActivity extends TitleNavigationActivity {
             setAdapterCtrl();
         }
     }
+
 
     /**
      * 初始化设置刷新View
@@ -286,6 +310,11 @@ public class OptionActivity extends TitleNavigationActivity {
         switch (urlTag) {
             default:
             case PRODUCT:
+                initBottomSheet();
+                if (getMImmersionBar() != null) {
+                    getMImmersionBar().navigationBarColor(R.color.mainNav_66).init();
+                }
+
                 //产品
                 Url = Contact.getFullUrl(Contact.PRODUCT, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
@@ -381,6 +410,46 @@ public class OptionActivity extends TitleNavigationActivity {
                 }
                 break;
         }
+    }
+
+    /**
+     * 初始化弹窗
+     */
+    private void initBottomSheet() {
+        mLlsum.setVisibility(View.VISIBLE);
+        dialog = new BottomSheetDialog(this);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                resetNumber();
+                for (ProductEntity.DataBean dataBean : productDataAdded) {
+                    int id = dataBean.getId();
+                    for (ProductEntity.DataBean dd : productData) {
+                        if (dd.getId() == id) {
+                            dd.setNumber(dd.getNumber() + dataBean.getNumber());
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+                getSum();
+                dialog.dismiss();
+            }
+        });
+        View inflate = getLayoutInflater().inflate(R.layout.bottom_sheet_product, null);
+        tvPopProductSumInfo = (TextView) inflate.findViewById(R.id.tv_product_sum_info);
+        tvPopAddProduct = (TextView) inflate.findViewById(R.id.tv_add_product);
+        btnPopDeleteAll = (TextView) inflate.findViewById(R.id.btn_delete_all);
+        btnPopDeleteAll.setOnClickListener(i -> {
+            productDataAdded.clear();
+            shoppingCartAdapter.refresh(productDataAdded);
+            getSum();
+        });
+        addedRecy = inflate.findViewById(R.id.rv_product);
+        productShoppingCart();
+        dialog.setContentView(inflate);
     }
 
     /**
@@ -499,7 +568,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-               }
+                }
             }
             finish();
         }
@@ -515,11 +584,11 @@ public class OptionActivity extends TitleNavigationActivity {
             return;
         }
         if (productAdapter != null) {
-            productAdapter.notifyDataSetChanged();
+            productAdapter.refresh(productData);
             return;
         }
         if (urlTag == OptionHelp.UrlTag.PRODUCT) {
-            productAdapter();
+            productAdapterNew();
         } else if (urlTag == OptionHelp.UrlTag.PACKAGE) {
             packageAdapter();
         } else {
@@ -548,6 +617,8 @@ public class OptionActivity extends TitleNavigationActivity {
                 if (ok) {
                     mAllData.clear();
                     productData = response.get().getData();
+                    productDataAdded.clear();
+                    getSum();
                     if (productData != null) {
                         setAdapterCtrl();
                     } else {
@@ -1026,7 +1097,6 @@ public class OptionActivity extends TitleNavigationActivity {
                                 holder.getView(R.id.item_package_root_layout).setBackgroundColor(getResources().getColor(R.color.myBackground_f7));
                             }
                         }
-
                     }
                 } else {
 
@@ -1036,7 +1106,7 @@ public class OptionActivity extends TitleNavigationActivity {
     }
 
     /**
-     * 产品的适配器
+     * 产品的适配器(多选勾选的)
      */
     private void productAdapter() {
         //单选
@@ -1091,5 +1161,161 @@ public class OptionActivity extends TitleNavigationActivity {
         };
     }
 
+    /**
+     * 产品的适配器
+     */
+    private void productAdapterNew() {
+        //单选
+        productAdapter = new BaseRecyclerAdapter<ProductEntity.DataBean>(mRecyclerView, productData, R.layout.item_option_product) {
+            @Override
+            public void convert(RecyclerHolder holder, final ProductEntity.DataBean item, int position, boolean isScrolling) {
+                if (!isScrolling) {
+                    TextView tvProductInfo = (TextView) holder.getView(R.id.tv_product_info);
+                    TextView tvNowPrice = (TextView) holder.getView(R.id.tv_now_price);
+                    ImageButton btMinus = (ImageButton) holder.getView(R.id.bt_minus);
+                    TextView tvNumber = (TextView) holder.getView(R.id.tv_number);
+                    ImageButton btPlus = (ImageButton) holder.getView(R.id.bt_plus);
+                    tvProductInfo.setText(item.getItem_name());
+                    tvProductInfo.append("\n¥:" + item.getItem_price());
+                    btPlus.setOnClickListener(l -> {
+                                item.setNumber((item.getNumber() + 1));
+                                ProductEntity.DataBean dataBean = new ProductEntity.DataBean();
+                                dataBean.setId(item.getId());
+                                dataBean.setItem_name(item.getItem_name());
+                                dataBean.setItem_price(item.getItem_price());
+                                dataBean.setNow_price(item.getItem_price());
+                                dataBean.setNumber(1);
+                                productDataAdded.add(dataBean);
+                                productAdapter.notifyItemChanged(position);
+                                getSum();
+                            }
+                    );
+                    if (item.getNumber() > 0) {
+                        tvNumber.setVisibility(View.VISIBLE);
+                        btMinus.setVisibility(View.VISIBLE);
+                        tvNumber.setText(item.getNumber() + "");
+                    } else {
+                        tvNumber.setVisibility(View.GONE);
+                        btMinus.setVisibility(View.GONE);
+                    }
+                    if (item.getNumber() > 0) {
+                        tvNumber.setVisibility(View.VISIBLE);
+                        tvNumber.setText(item.getNumber() + "");
+                        btMinus.setVisibility(View.VISIBLE);
+                        btMinus.setOnClickListener(l -> {
+                            item.setNumber((item.getNumber() - 1));
+                            removeProduct(item.getId());
+                            getSum();
+                            productAdapter.notifyDataSetChanged();
 
+                        });
+                    }
+                }
+            }
+        };
+    }
+
+    /**
+     * 移除产品的id
+     *
+     * @param id
+     */
+    public void removeProduct(int id) {
+        int ps = -1;
+        for (ProductEntity.DataBean d : productDataAdded) {
+            if (d.getId() == id) {
+                ps = productDataAdded.lastIndexOf(d);
+            }
+        }
+        if (ps >= 0) {
+            int number = productDataAdded.get(ps).getNumber() - 1;
+            if (number > 0) {
+                productDataAdded.get(ps).setNumber(number);
+            } else {
+                productDataAdded.remove(ps);
+            }
+        }
+    }
+
+    /**
+     * 购物车
+     */
+    private void productShoppingCart() {
+        //单选
+        shoppingCartAdapter = new BaseRecyclerAdapter<ProductEntity.DataBean>(addedRecy, productDataAdded, R.layout.item_option_product) {
+            @Override
+            public void convert(RecyclerHolder holder, final ProductEntity.DataBean item, int position, boolean isScrolling) {
+                if (!isScrolling && recyclerView.isComputingLayout()) {
+                    TextView tvProductInfo = (TextView) holder.getView(R.id.tv_product_info);
+                    TextView tvNowPrice = (TextView) holder.getView(R.id.tv_now_price);
+                    ImageButton btMinus = (ImageButton) holder.getView(R.id.bt_minus);
+                    TextView tvNumber = (TextView) holder.getView(R.id.tv_number);
+                    ImageButton btPlus = (ImageButton) holder.getView(R.id.bt_plus);
+                    tvNowPrice.setText("¥:" + item.getNow_price());
+                    tvNowPrice.setOnClickListener(l -> {
+                    });
+                    tvProductInfo.setText(item.getItem_name());
+                    tvProductInfo.append("\n¥:" + item.getItem_price());
+                    btPlus.setOnClickListener(l -> {
+                                item.setNumber((item.getNumber() + 1));
+                                productDataAdded.get(position).setNumber(item.getNumber());
+                                shoppingCartAdapter.notifyDataSetChanged();
+                                getSum();
+                            }
+                    );
+                    if (item.getNumber() > 0) {
+                        tvNumber.setVisibility(View.VISIBLE);
+                        tvNumber.setText(item.getNumber() + "");
+                        btMinus.setVisibility(View.VISIBLE);
+                        btMinus.setOnClickListener(l -> {
+                            item.setNumber((item.getNumber() - 1));
+                            if (item.getNumber() == 0) {
+                                productDataAdded.remove(position);
+                                shoppingCartAdapter.refresh(productDataAdded);
+                            } else {
+                                productDataAdded.get(position).setNumber(item.getNumber());
+                                shoppingCartAdapter.notifyDataSetChanged();
+                            }
+                            getSum();
+                        });
+                    } else {
+                        productDataAdded.remove(item);
+                        shoppingCartAdapter.remove(position);
+                    }
+                }
+            }
+        };
+    }
+
+    /**
+     * 计算总价并显示到只听
+     */
+    public void getSum() {
+        double money = 0;
+        int count = 0;
+        for (ProductEntity.DataBean d : productDataAdded) {
+            count += d.getNumber();
+            money += (d.getNow_price() * d.getNumber());
+        }
+        productSumInfo.setText("¥:" + money);
+        productSumInfo.append("\n共计" + count + "件商品");
+        tvPopProductSumInfo.setText("¥:" + money);
+        tvPopProductSumInfo.append("\n共计" + count + "件商品");
+        if (count==0){
+            tvPopAddProduct.setBackgroundColor(getResources().getColor(R.color.noticeOrange));
+            addProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
+        }else {
+            tvPopAddProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
+            addProduct.setBackgroundColor(getResources().getColor(R.color.themeColor));
+        }
+    }
+
+    /**
+     * 重置所有条目中的数量
+     */
+    public void resetNumber() {
+        for (ProductEntity.DataBean da : productData) {
+            da.setNumber(0);
+        }
+    }
 }

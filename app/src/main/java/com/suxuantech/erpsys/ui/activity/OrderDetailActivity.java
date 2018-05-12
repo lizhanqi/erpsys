@@ -85,12 +85,10 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         setContentView(R.layout.activity_order_detail);
         useEventBus();
         supportToolbar();
-//        showUserDefinedNav();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
         current = stringArray[  getIntent().getIntExtra("showOnPosition",0)];
         setCenterTitle(current);
-            //setUseDefinedNavTitle(current);
         gotoFragment();
     }
 
@@ -220,7 +218,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                 alertView.setMarginBottom(30);
                                 alertView .show();
                                 //EventBus.getDefault().post("addProductWindow");
-                                  immersionBarDark( );
+                                  //immersionBarDark( );
                             } else {
                                 OptionHelp optionHelp = new OptionHelp(this);
                                 optionHelp.setTitle("添加包套");
@@ -322,8 +320,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
         mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
-
-        showAsDropDown(mPopupWindow, tvToolbarCenterTilte, 0, 0);
+        showAsDropDown(mPopupWindow, findViewById(R.id.v_line), 0, 0);
         // showAsDropDown(mPopupWindow, getLineView(), 0, 0);
     }
 

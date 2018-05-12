@@ -31,51 +31,61 @@ import java.util.ArrayList;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/12/2 0002 13:42 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 跳转到Option页面的帮助类帮助生成跳转意图并且携带一些参数意图
  */
 public class OptionHelp {
     /**
      * 网络接口标志
      */
-    public  enum UrlTag implements Serializable {
-        CONSUMPTION_TYPE,OUTLETS_RECEPTION,ORDER_RECEIVING_SITE,CUSTOMER_ZONE,PACKAGE,PRODUCT,CUSTOMER_SOURCE,CUSTOMER_INTENTION,RECEPTION_MARKET
-  ,PHOTO_SHOP ,NEW_ORDER_TYPE ,SHOOT_THEME,DRESS_THEME}
+    public enum UrlTag implements Serializable {
+        CONSUMPTION_TYPE(0,"消费类型"), OUTLETS_RECEPTION(1,"门市人员"), ORDER_RECEIVING_SITE(2,"接单点"), CUSTOMER_ZONE(3,"消费类型"), PACKAGE(4,"选择包套"),
+        PRODUCT(5,"选择产品"), CUSTOMER_SOURCE(6,"客户来源"), CUSTOMER_INTENTION(7,"客户意向"),
+        RECEPTION_MARKET(8,"网销人员"), PHOTO_SHOP(9,"拍摄店面"), NEW_ORDER_TYPE(10,"新单类型"), SHOOT_THEME(11,"摄影主题"), DRESS_THEME(12,"礼服主题");
+        UrlTag(int id,String title){
+            this.id=id;
+            this.title=title;
+        }
+        int id;
+        String title;
+        }
+
     private UrlTag urlTag;
     boolean isMultiple;
     ArrayList<String> checkedDatas;
     Context context;
-    String  tag;
+    String tag;
     String Title;
     ArrayList<String> allData;
-    public OptionHelp(Context context){
-         if (context==null){
-            throw  new IllegalArgumentException("Context不能为空");
+
+    public OptionHelp(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context不能为空");
         }
-        this.context=context;
+        this.context = context;
     }
 
-    public Intent creat(){
+    public Intent creat() {
         Intent intent = new Intent(context, OptionActivity.class);
-        if (urlTag==null&&allData==null){
-            throw  new IllegalArgumentException("urlTag和allData必须有一个");
+        if (urlTag == null && allData == null) {
+            throw new IllegalArgumentException("urlTag和allData必须有一个");
         }
-        if (urlTag!=null){
-            intent.putExtra("UrlTag",urlTag);
+        if (urlTag != null) {
+            intent.putExtra("UrlTag", urlTag);
         }
-        if (tag!=null){
-            intent.putExtra("Tag",tag);
+        if (tag != null) {
+            intent.putExtra("Tag", tag);
         }
-        intent.putExtra("Multiple",isMultiple);
-        if (Title!=null){
-            intent.putExtra("Title",Title);
+        intent.putExtra("Multiple", isMultiple);
+        if (Title != null) {
+            intent.putExtra("Title", Title);
         }
-        if (checkedDatas!=null){
-            intent.putExtra("Checked",checkedDatas);
+        if (checkedDatas != null) {
+            intent.putExtra("Checked", checkedDatas);
         }
-        if (allData!=null){
-            intent.putExtra("All",allData);
+        if (allData != null) {
+            intent.putExtra("All", allData);
         }
         return intent;
     }
@@ -83,47 +93,54 @@ public class OptionHelp {
 
     /**
      * 设置url标志，这里会根据这个标志进行或相应的网络地址
+     *
      * @param urlTag
      */
     public void setUrlTag(UrlTag urlTag) {
         this.urlTag = urlTag;
     }
+
     /**
      * 是否多选
+     *
      * @param multiple
      * @return
      */
     public OptionHelp setMultiple(boolean multiple) {
         isMultiple = multiple;
-        return  this;
-    }
-    /**
-     * 可以设置一个自己的标志
-     * @param tag
-     * @return
-     */
-    public   OptionHelp setTag(String tag){
-        this.tag=tag;
-        allData=null;
-        return  this;
+        return this;
     }
 
     /**
-     *    已经选中的数据（多选）
+     * 可以设置一个自己的标志
+     *
+     * @param tag
+     * @return
+     */
+    public OptionHelp setTag(String tag) {
+        this.tag = tag;
+        allData = null;
+        return this;
+    }
+
+    /**
+     * 已经选中的数据（多选）
+     *
      * @param checkedData
      * @return
      */
-    public   OptionHelp setCheckedData(ArrayList<String> checkedData){
-        checkedDatas=checkedData;
-        return  this;
+    public OptionHelp setCheckedData(ArrayList<String> checkedData) {
+        checkedDatas = checkedData;
+        return this;
     }
 
     /**
      * 设置当前选中的数据（单选的）
+     *
      * @param checkedData
      * @return
      */
-    public   OptionHelp setCheckedData(String checkedData) {
+    public OptionHelp setCheckedData(String checkedData) {
         if (checkedDatas == null) {
             checkedDatas = new ArrayList<>();
         }
@@ -132,7 +149,7 @@ public class OptionHelp {
         return this;
     }
 
-    public   OptionHelp addCheckedData(String checkedData) {
+    public OptionHelp addCheckedData(String checkedData) {
         if (checkedDatas == null) {
             checkedDatas = new ArrayList<>();
         }
@@ -143,22 +160,24 @@ public class OptionHelp {
 
     /**
      * 设置全部数据(本地的非网络)
+     *
      * @param allData
      * @return
      */
-    public OptionHelp setAllData(ArrayList<String > allData){
-        this.allData=allData;
-        urlTag=null;
+    public OptionHelp setAllData(ArrayList<String> allData) {
+        this.allData = allData;
+        urlTag = null;
         return this;
     }
 
     /**
      * 设置标题（顶部中间的）
+     *
      * @param Title
      * @return
      */
-    public OptionHelp setTitle(String Title){
-        this.Title=Title;
+    public OptionHelp setTitle(String Title) {
+        this.Title = Title;
         return this;
     }
 

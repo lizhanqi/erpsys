@@ -58,7 +58,7 @@ public class ProductEntity extends BaseResult {
         this.Data = Data;
     }
 
-    public static class DataBean {
+    public static class DataBean extends Object {
         /**
          * item_name : 放大
          * item_price : 10.0
@@ -67,6 +67,25 @@ public class ProductEntity extends BaseResult {
 
         private String item_name;
         private double item_price;
+
+        public double getNow_price() {
+            return now_price;
+        }
+
+        public void setNow_price(double now_price) {
+            this.now_price = now_price;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
+        }
+
+        private double now_price;
+        private int number=0;
         private int id;
 
         public String getItem_name() {

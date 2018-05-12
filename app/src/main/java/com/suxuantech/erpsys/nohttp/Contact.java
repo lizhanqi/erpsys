@@ -299,4 +299,6 @@ public class Contact {
      */
     public static String PAYMENT = "/SXWebErpAppStaff/SX_Paymentcontent?Token=%s&orderid=%s&Code=%s";
     public  static String TODAY_COLLECTION_MONEY="/SXWebErpAppStaff/SX_MSPaymentcontent?Token=%s&StartDate=%s&EndDate=%s&pageIndex=%s&pageSize=%s&Code=%s";
+
+    public static String ADD_PRODUCT="/SXWebErpAppStaff/SX_AddConsumptioncontent?Token=%s&orderid=%s&customerid=%s&cid=%s&issources=%s&isyanzheng=%s&Code=%s&shopname=%s&brandid=%s";
 }

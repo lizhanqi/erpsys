@@ -43,15 +43,20 @@ import java.util.List;
  * 我这里默认就给你代理了我这使用的是LinearLayoutManager,如果你想用其他的那么你自己再重新设置就好
  */
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerHolder>   {
-
     protected List<T> realDatas;
     protected final int mItemLayoutId;
     protected boolean isScrolling;
     protected Context cxt;
     private OnItemClickListener listener;
+    public  RecyclerView recyclerView;
     private boolean useListener=false;//是否使用这个的监听（如果不调用setListenername就不会有回调避免了跟SwipeMenuRecyclerView的点击事件冲突）
     public interface OnItemClickListener {
         void onItemClick(View view, Object data, int position);
+    }
+
+    public void remove(int posstion){
+        realDatas.remove(posstion);
+        notifyItemRemoved(posstion);
     }
 
     public BaseRecyclerAdapter(RecyclerView recyclerView, Collection<T> datas, int itemLayoutId) {
@@ -63,6 +68,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
             realDatas = new ArrayList<>(datas);
         }
         mItemLayoutId = itemLayoutId;
+        this.recyclerView=recyclerView;
         cxt = recyclerView.getContext();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -144,6 +150,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         } else {
             realDatas = new ArrayList<>(datas);
         }
+        notifyDataSetChanged();
         return this;
     }
     /**

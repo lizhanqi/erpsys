@@ -99,6 +99,7 @@ class JLoginActivity : ChatBaseActivity() {
                 loadingDialog.dismiss()
                 var v = Intent(  baseContext,ConversationListActivity::class.java)
                 startActivity( v)
+                HandleResponseCode.onHandle(mContext, status, false)
 //                if (status == 0) {
 //                    if(tname.equals("123456")){
 //                        tochat("10086")

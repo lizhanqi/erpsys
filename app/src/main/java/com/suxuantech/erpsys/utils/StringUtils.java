@@ -175,6 +175,13 @@ public class StringUtils {
         return matcher.matches();
     }
 
+    public static String safetyString(String content) {
+        if (empty(content)){
+            return "";
+        }else {
+            return content;
+        }
+    }
     public static boolean empty(String content) {
         return content==null||content.length()==0;
     }
