@@ -43,6 +43,8 @@ import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 import com.suxuantech.erpsys.utils.FastJsonUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.suxuantech.erpsys.utils.core.FingerprintCore;
+import com.suxuantech.erpsys.utils.core.KeyguardLockScreenManager;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -135,7 +137,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 
     }
 
-    boolean isLoginOneSucceed,hasPermission;
+    boolean isLoginOneSucceed, hasPermission;
 
     /**
      * 获取登录人权限
@@ -150,13 +152,13 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             return;
         }
         String string = Contact.getFullUrl(Contact.LOGIN_PERMISSION, Contact.TOKEN, App.getApplication().getUserInfor().getMain_work_type() + "," + App.getApplication().getUserInfor().getWork_type(),
-                App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(),App.getApplication().getUserInfor().getShop_code());
+                App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(), App.getApplication().getUserInfor().getShop_code());
         JavaBeanRequest<PermissionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PermissionEntity>(string, RequestMethod.POST, PermissionEntity.class);
         HttpListener<PermissionEntity> searchByCustmor = new HttpListener<PermissionEntity>() {
             @Override
             public void onSucceed(int what, Response<PermissionEntity> response) {
-                if (response.get().isOK()||response.get().getData()!=null){
-                    hasPermission=true;
+                if (response.get().isOK() || response.get().getData() != null) {
+                    hasPermission = true;
                     LoginSucceed();
                     List<String> data = response.get().getData();
                     App.getApplication().setUserPermission(data);
@@ -222,7 +224,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         if (isLoginOneSucceed) {
             loadingDialog.dismiss();
         }
-        hasPermission=false;
+        hasPermission = false;
         isLoginOneSucceed = false;
     }
 
@@ -242,9 +244,10 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void    onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
+        initFingerprintCore();
         ScreenUtils.setFullScreen(this);
         ImmersionBar.with(this).reset().statusBarDarkFont(true).init();
         setContentView(R.layout.activity_login);
@@ -275,12 +278,47 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
 
 
 //        mLoginFormView = findViewById(R.id.login_form);
+    }
+
+    FingerprintCore mFingerprintCore;
+    KeyguardLockScreenManager mKeyguardLockScreenManager;
+    private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
+        @Override
+        public void onAuthenticateSuccess() {
+            toastShort("指纹识别成功");
+        }
+
+        @Override
+        public void onAuthenticateFailed(int helpId) {
+            toastShort("指纹识别失败,请重试" + helpId);
+        }
+
+        @Override
+        public void onAuthenticateError(int errMsgId) {
+            toastShort("指纹识别错误" + errMsgId);
+        }
+
+        @Override
+        public void onStartAuthenticateResult(boolean isSuccess) {
+            toastShort("指纹识别结果" + isSuccess);
+        }
+    };
+
+    /**
+     * 初始化指纹识别传感器
+     */
+    private void initFingerprintCore() {
+        mFingerprintCore = new FingerprintCore(this);
+        mFingerprintCore.setFingerprintManager(mResultListener);
+        mKeyguardLockScreenManager = new KeyguardLockScreenManager(this);
+        startFingerprintRecognition();
     }
 
     private void populateAutoComplete() {
@@ -504,7 +542,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
             if (success) {
                 finish();
             } else {
@@ -518,6 +555,46 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    /**
+     * 开始指纹识别
+     */
+    private void startFingerprintRecognition() {
+        if (mFingerprintCore.isSupport()) {
+            if (!mFingerprintCore.isHasEnrolledFingerprints()) {
+                toastShort("请先到系统录入指纹");
+                Intent intent = new Intent("android.settings.SETTINGS");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                }
+                return;
+            }
+            if (mFingerprintCore.isAuthenticating()) {
+                toastShort("指纹识别已开启");
+            } else {
+                mFingerprintCore.startAuthenticate();
+                toastShort("已启动指纹识别");
+            }
+        } else {
+            toastShort("设备不支持指纹识别");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mFingerprintCore != null) {
+            mFingerprintCore.onDestroy();
+            mFingerprintCore = null;
+        }
+        if (mKeyguardLockScreenManager != null) {
+            mKeyguardLockScreenManager.onDestroy();
+            mKeyguardLockScreenManager = null;
+        }
+        mResultListener = null;
+        super.onDestroy();
     }
 }
 
