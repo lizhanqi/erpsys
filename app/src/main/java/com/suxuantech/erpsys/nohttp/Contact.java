@@ -311,7 +311,7 @@ public class Contact {
      */
     public static String TODAY_PICTRUE_SCHEME="/SXWebErpAppStaff/SX_SPPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
     /**
-     * 今日选片排程
+     * 本月选片可排程排程
      */
     public static String  PICTRUE_SCHEME_BY_MONTH="/SXWebErpAppStaff/SX_SPPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
     /**

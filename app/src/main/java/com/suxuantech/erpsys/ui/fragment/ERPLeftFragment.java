@@ -41,7 +41,6 @@ import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity;
-import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
@@ -460,10 +459,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
                 break;
             case R.id.tv_order_search:
-                Intent intent = new Intent(getActivity(), ScheduleActivity.class);
-                intent.putExtra("title","选片");
-                startActivity(intent);
-           //     startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+          startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 break;
             case R.id.tv_schedule:
               //  request("http://192.168.0.12/api.php?m=login&a=getDepartments");
@@ -473,13 +469,10 @@ public class ERPLeftFragment extends BaseLazyFragment {
 //                startActivity(intent);
 //                CustomBottomDialog customBottomDialog = new CustomBottomDialog(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null), getActivity(), R.style.style_dialog);
 //                customBottomDialog.show();
-//                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
-//                intent.putExtra("title","排程");
-//                startActivity(intent);
-                Intent intent1 = new Intent(getActivity(), ScheduleActivity.class);
-                intent1.putExtra("title","拍照");
+              Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+              intent.putExtra("title","排程");
+              startActivity(intent);
 
-                startActivity(intent1);
                 break;
             case R.id.schedule_wave:
                 break;

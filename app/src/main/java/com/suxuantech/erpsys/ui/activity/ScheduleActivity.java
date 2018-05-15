@@ -1,13 +1,18 @@
 package com.suxuantech.erpsys.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.jeek.calendar.widget.calendar.OnCalendarClickListener;
 import com.jeek.calendar.widget.calendar.month.MonthCalendarView;
 import com.jeek.calendar.widget.calendar.month.MonthView;
@@ -17,15 +22,19 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BaseScheme;
 import com.suxuantech.erpsys.entity.PhotoSchemeMonthEntity;
+import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.entity.SimpleEntity;
 import com.suxuantech.erpsys.entity.TodayOptionPhotoSchemeEntity;
 import com.suxuantech.erpsys.entity.TodayPhotoScheduleEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
+import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
 import com.suxuantech.erpsys.ui.TypeFlag;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.GroupAdaputer;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -75,7 +84,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  * @Description: 排程页面
  */
 
-public class ScheduleActivity extends TitleNavigationActivity {
+public class ScheduleActivity extends TitleNavigationActivity implements ISearchOrderPresenter {
     private MonthCalendarView monthCalendarView;
     private ScheduleLayout schedule_layout;
     private PtrClassicFrameLayout mPtrFrame;
@@ -87,20 +96,18 @@ public class ScheduleActivity extends TitleNavigationActivity {
     SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
         @Override
         public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int viewType) {
-            // if(viewType== com.donkingliang.groupedadapter.R.integer.type_child){
             if (viewType == 111) {
+                Drawable drawable = getResources().getDrawable(R.drawable.icon_delete_bucket);
+                DrawableCompat.setTint(drawable, getResources().getColor(R.color.white));
                 SwipeMenuItem closeItem = new SwipeMenuItem(ScheduleActivity.this)
                         .setBackground(R.color.themeColor)
                         .setText("删除")
+                        .setImage(drawable)
                         .setTextColor(Color.WHITE)
                         .setWidth(100)
                         .setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-//                    SwipeMenuItem deleteItem = new SwipeMenuItem(ScheduleActivity.this) ; // 各种文字和图标属性设置。
-//                    deleteItem.setWeight( ViewGroup.LayoutParams.MATCH_PARENT);
-//                    deleteItem.setText("删除"+viewType);
                 rightMenu.addMenuItem(closeItem); // 在Item右侧添加一个菜单。
             }
-            // }
         }
     };
     /**
@@ -118,7 +125,6 @@ public class ScheduleActivity extends TitleNavigationActivity {
             int direction = menuBridge.getDirection(); // 左侧还是右侧菜单。
             int adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
             int menuPosition = menuBridge.getPosition(); // 菜单在RecyclerView的Item中的Position。
-
             //获取多个分组
             int groupCount = groupAdaputer.getGroupCount();
             boolean isLoop = true;
@@ -143,12 +149,12 @@ public class ScheduleActivity extends TitleNavigationActivity {
                     break;
                 }
             }
-
             toastShort("第" + groupPosition + "组的第" + childrenPosition);
             deleteScheme(groupPosition, childrenPosition);
         }
     };
     private List<TodayOptionPhotoSchemeEntity.DataBean> dayOptionScheme;
+    private SearchOrderPresenter mSearchOrderPresenter;
 
     /**
      * 删除排程
@@ -159,16 +165,15 @@ public class ScheduleActivity extends TitleNavigationActivity {
         BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childrenPosition);
         String url = "";
         String lastValue = "";
-        if (getIntent().getStringExtra("title").equals("拍照")) {
+        if (getIntent().getStringExtra("title").equals("拍照排程")) {
             for (int i = 0; i < dayPhotoSchedule.size(); i++) {
                 if (dayPhotoSchedule.get(i).getPcid() == baseScheme.getPcid()) {
                     lastValue = dayPhotoSchedule.get(i).getPhotoid();
                     break;
                 }
-
             }
             url = Contact.getFullUrl(Contact.DELETE_PHOTOGRAPH_SCHEME, Contact.TOKEN, baseScheme.getPcid(), lastValue);
-        } else {
+        } else if (getIntent().getStringExtra("title").equals("选片排程")) {
             for (int i = 0; i < dayOptionScheme.size(); i++) {
                 if (dayOptionScheme.get(i).getPcid() == baseScheme.getPcid()) {
                     lastValue = dayOptionScheme.get(i).getSpid();
@@ -176,6 +181,8 @@ public class ScheduleActivity extends TitleNavigationActivity {
                 }
             }
             url = Contact.getFullUrl(Contact.DELETE_OPTION_PANEL_SCHEME, Contact.TOKEN, baseScheme.getPcid(), lastValue);
+        } else {
+            return;
         }
         //请求实体
         JavaBeanRequest<SimpleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SimpleEntity>(url, SimpleEntity.class);
@@ -216,10 +223,10 @@ public class ScheduleActivity extends TitleNavigationActivity {
             mPtrFrame.autoRefresh();
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSearchOrderPresenter = new SearchOrderPresenter(this);
         setContentView(R.layout.activity_schedule);
         useEventBus();
         supportToolbar();
@@ -239,6 +246,15 @@ public class ScheduleActivity extends TitleNavigationActivity {
             }
         });
         groupAdaputer = new GroupAdaputer(this);
+        groupAdaputer.setOnChildClickListener((GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int groupPosition, int childPosition) -> {
+            Map<String, List<BaseScheme>> getdata = groupAdaputer.getdata();
+            ArrayList<String> strings = new ArrayList<>(getdata.keySet());
+            BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childPosition);
+            String orderId = baseScheme.getOrderId();
+            mSearchOrderPresenter.sosoNetOrder(orderId,
+                    App.getContext().getResources().getString(R.string.start_time),
+                    App.getContext().getResources().getString(R.string.end_time), true, false);
+        });
         // 设置监听器。
         mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
         // 菜单点击监听。
@@ -254,11 +270,11 @@ public class ScheduleActivity extends TitleNavigationActivity {
                 mPtrFrame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        getMonth();
+                        getMonth();
                         if (getIntent().hasExtra("title")) {
-                            if (getIntent().getStringExtra("title").equals("拍照")) {
+                            if (getIntent().getStringExtra("title").equals("拍照排程")) {
                                 getPhotographSchemeByDay();
-                            } else {
+                            } else if (getIntent().getStringExtra("title").equals("选片排程")) {
                                 todayOptionPhotoScheme();
                             }
                         }
@@ -305,19 +321,11 @@ public class ScheduleActivity extends TitleNavigationActivity {
             }
         });
         SparseArray<MonthView> monthViews = monthCalendarView.getMonthViews();
-//        monthCalendarView.getCurrentMonthView().bingUserText(bt);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
-        int childCount = decorView.getChildCount();
-        iLog(childCount + "");
     }
 
     /**
      * 获取一个某一个月的
+     * 拍照排程
      */
     public void getMonth() {
         String fullUrl = Contact.getFullUrl(Contact.PHOTO_SCHEME_BY_MONTH, Contact.TOKEN, "2018-05-01", App.getApplication().getUserInfor().getShop_code());
@@ -356,7 +364,7 @@ public class ScheduleActivity extends TitleNavigationActivity {
                     for (TodayPhotoScheduleEntity.DataBean d : dayPhotoSchedule) {
                         BaseScheme baseScheme = new BaseScheme();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("allData",d);
+                        bundle.putParcelable("allData", d);
                         bundle.setClassLoader(getClass().getClassLoader());
                         baseScheme.setBundle(bundle);
                         baseScheme.setArea(d.getArea());
@@ -397,7 +405,7 @@ public class ScheduleActivity extends TitleNavigationActivity {
                     for (TodayOptionPhotoSchemeEntity.DataBean d : dayOptionScheme) {
                         BaseScheme baseScheme = new BaseScheme();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("allData",d);
+                        bundle.putParcelable("allData", d);
                         bundle.setClassLoader(getClass().getClassLoader());
                         baseScheme.setBundle(bundle);
                         baseScheme.setArea(d.getArea());
@@ -411,7 +419,7 @@ public class ScheduleActivity extends TitleNavigationActivity {
                         baseScheme.setXingming(d.getXingming());
                         schemes.add(baseScheme);
                     }
-                    sedDayAdaputer(schemes,TypeFlag.OPTION_PANEL);
+                    sedDayAdaputer(schemes, TypeFlag.OPTION_PANEL);
                 }
             }
 
@@ -427,13 +435,11 @@ public class ScheduleActivity extends TitleNavigationActivity {
      *
      * @param data
      */
-    private void sedDayAdaputer(List<BaseScheme> data,TypeFlag flage) {
+    private void sedDayAdaputer(List<BaseScheme> data, TypeFlag flage) {
         Map<String, List<BaseScheme>> stringListMap = groupData(data);
         groupAdaputer.setSchemeType(flage);
         groupAdaputer.fresh(stringListMap);
     }
-
-
     /**
      * 对list进行分组
      *
@@ -454,7 +460,26 @@ public class ScheduleActivity extends TitleNavigationActivity {
         }
         return resultMap;
     }
+    @Override
+    public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
+        if (data == null || data.size() == 0) {
+            ToastUtils.snackbarShort("未找到客户资料");
+        } else if (data.size() > 1) {
+            ToastUtils.snackbarShort("找到多条资料,无法进行跳转");
+        } else {
+            Intent intent = new Intent(this, OrderDetailActivity.class);
+            SearchOrderEntity.DataBean dataBean = data.get(0);
+            intent.putExtra("orderId", dataBean.getOrderId());
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("data", dataBean);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
 
+    @Override
+    public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
 
+    }
 }
 

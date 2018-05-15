@@ -33,6 +33,13 @@ import com.yanzhenjie.nohttp.rest.Response
 import kotlinx.android.synthetic.main.activity_register_into_shop.*
 /**
  * 进店登记
+    Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+intent.putExtra("title","选片");
+startActivity(intent);
+
+Intent intent1 = new Intent(getActivity(), ScheduleActivity.class);
+intent1.putExtra("title","拍照");
+startActivity(intent1);
  */
 class RegisterIntoShopActivity : ImmersionActivity() {
     var llNewCustomer: LinearLayout? = null
@@ -129,10 +136,10 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         } else {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程", "今日可排", 5))
             list.add(FormEntity(R.drawable.icon_camera_schedule, "选片排程", "今日可排", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "看板排程", "今日可排", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "取件排程", "进店可排", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "礼服排程", "今日可排", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "流失客资", "今日可排", 5))
+//            list.add(FormEntity(R.drawable.icon_camera_schedule, "看板排程", "今日可排", 5))
+//            list.add(FormEntity(R.drawable.icon_camera_schedule, "取件排程", "进店可排", 5))
+//            list.add(FormEntity(R.drawable.icon_camera_schedule, "礼服排程", "今日可排", 5))
+//            list.add(FormEntity(R.drawable.icon_camera_schedule, "流失客资", "今日可排", 5))
         }
         // recyclerView?.addItemDecoration(DefaultItemDecoration2(resources.getColor(R.color.mainNavline_e7),10))
         recyclerView?.layoutManager = LinearLayoutManager(this);

@@ -87,7 +87,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         supportToolbar();
         getNavTitleView().setOnClickListener(this);
         stringArray = getResources().getStringArray(R.array.order);
-        current = stringArray[  getIntent().getIntExtra("showOnPosition",0)];
+        current = stringArray[getIntent().getIntExtra("showOnPosition", 0)];
         setCenterTitle(current);
         gotoFragment();
     }
@@ -98,7 +98,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     public void widgetClick(View v) {
         switch (v.getId()) {
             case R.id.tv_toolbar_center_title:
-                showpopupwindow();
+                if (getIntent().getBooleanExtra("canChange", true)) {
+                    showpopupwindow();
+                }
                 break;
             case R.id.tv_nav_title:
                 showpopupwindow();
@@ -116,6 +118,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     }
 
     boolean hasPackage = false;
+
     public void gotoFragment() {
         if (menu != null) {
             menu.clear();
@@ -170,7 +173,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 }
                 break;
             case "选片资料":
-                toTabFragement(TabControlFragment.whichInFragement.OPTION_PANEL);;
+                toTabFragement(TabControlFragment.whichInFragement.OPTION_PANEL);
+                ;
                 break;
             case "礼服资料":
                 if (findFragment(ProductDataFragment.class) == null) {
@@ -200,7 +204,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                         .setOnMenuItemClickListener(menuItem -> {
                             if (hasPackage) {
                                 String[] s = {"一销产品", "二销产品"};
-                                AlertView alertView =  new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
+                                AlertView alertView = new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
                                     @Override
                                     public void onItemClick(Object o, int position) {//position -1是取消按钮
                                         recoverImmersionBar();
@@ -217,9 +221,9 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                     }
                                 });
                                 alertView.setMarginBottom(30);
-                                alertView .show();
-                             EventBus.getDefault().post("addProductWindow");
-                                  //immersionBarDark( );
+                                alertView.show();
+                                EventBus.getDefault().post("addProductWindow");
+                                //immersionBarDark( );
                             } else {
                                 OptionHelp optionHelp = new OptionHelp(this);
                                 optionHelp.setTitle("添加包套");
@@ -243,12 +247,13 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 break;
         }
     }
+
     @Subscribe
     @MainThread
     public void onEventMainThread(String add) {
         MenuItem item = menu.findItem(0);
-        if (add .equals("80")  && item == null) {
-              hasPackage = true;
+        if (add.equals("80") && item == null) {
+            hasPackage = true;
             menu.add(Menu.NONE, 1, 0, "10").setIcon(getResources().getDrawable(R.drawable.icon_id))
                     .setOnMenuItemClickListener(menuItem -> {
                         EventBus.getDefault().post("edit");
@@ -259,7 +264,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     }
 
     /**
-     *
      * @param witch
      */
     private void toTabFragement(TabControlFragment.whichInFragement witch) {

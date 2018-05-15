@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -46,12 +47,12 @@ class SchemeCommintActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_scheme_commint)
         supportToolbar()
         useEventBus()
-            searchType = intent.extras.getSerializable("type") as TypeFlag?;
-            if (searchType == TypeFlag.OPTION_PANEL) {
-                setTitle("选片排程")
-            } else if (searchType == TypeFlag.PHOTOGRAPH) {
-                setTitle("拍照排程")
-            }
+        searchType = intent.extras.getSerializable("type") as TypeFlag?;
+        if (searchType == TypeFlag.OPTION_PANEL) {
+            setTitle("选片排程")
+        } else if (searchType == TypeFlag.PHOTOGRAPH) {
+            setTitle("拍照排程")
+        }
         schemeData = intent.extras.getSerializable("schemeData") as BaseScheme?;
         dataBean = intent.extras.getParcelable<SearchOrderEntity.DataBean>("data");
         initView()
@@ -88,9 +89,27 @@ class SchemeCommintActivity : TitleNavigationActivity() {
         tvHistory = findViewById<View>(R.id.tv_history) as TextView
         tvHistoryName = findViewById<View>(R.id.tv_history_name) as TextView
         tvHistoryValue = findViewById<View>(R.id.tv_history_value) as TextView
+        findViewById<View>(R.id.ll_history_info)  .setOnClickListener(View.OnClickListener {
+            val intent = Intent(baseContext, OrderDetailActivity::class.java)
+            intent.putExtra("orderId", dataBean?.getOrderId())
+            if (searchType == TypeFlag.OPTION_PANEL) {
+                intent.putExtra("showOnPosition", 5)
+            }else{
+                intent.putExtra("showOnPosition", 4)
+            }
+
+            intent.putExtra("canChange", false)
+            val bundle = Bundle()
+            bundle.putParcelable("data", dataBean)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        });
+
         if (searchType == TypeFlag.OPTION_PANEL) {
-            tvHistoryName?.setText("历史选片排程")
-            tvHistoryValue?.text = dataBean?.selectday
+            val dataAll = intent.extras.getParcelable<TodayOptionPhotoSchemeEntity.DataBean>("allSchemeData");
+            tvHistory?.setText("历史选片排程")
+            tvHistoryName?.setText("选片类型:" + dataAll.sptype)
+            tvHistoryValue?.setText(StringUtils.safetyString(dataAll.selectday))
             val formEntity = FormEntity("选片类型");
             formEntity.hint = "请选择选片类型"
             formEntity.mustFill = true
@@ -107,8 +126,11 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             formEntity4.edit = true
             listData.add(formEntity4)
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
-            tvHistoryName?.setText("历史拍照排程")
-            tvHistoryValue?.text = dataBean?.photodate
+            val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>("allSchemeData");
+            tvHistory?.setText("历史拍照排程")
+            tvHistory?.setText("历史选片排程")
+            tvHistoryName?.setText("拍照类型:" + dataAll.phototype)
+            tvHistoryValue?.setText(StringUtils.safetyString(dataAll.photodate))
             val formEntity = FormEntity("拍照类型");
             formEntity.hint = "请选择拍照类型"
             formEntity.mustFill = true
@@ -133,6 +155,7 @@ class SchemeCommintActivity : TitleNavigationActivity() {
                 Option();
             }
         });
+
     }
 
     fun Option() {
@@ -153,10 +176,10 @@ class SchemeCommintActivity : TitleNavigationActivity() {
         menu?.add(Menu.NONE, 1, 1, "提交")
                 ?.setEnabled(true)
                 ?.setOnMenuItemClickListener { menuItem ->
-                    if(StringUtils.empty(listData.get(0).value)){
+                    if (StringUtils.empty(listData.get(0).value)) {
                         ToastUtils.snackbarShort("请选择类型")
                         true
-                    }else {
+                    } else {
                         var url = ""
                         if (intent.getBooleanExtra("add", true)) {
                             if (searchType == TypeFlag.OPTION_PANEL) {
@@ -202,10 +225,11 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             }
         }
     }
+
     /**
      * 排程
      */
-    fun scheme(url:String) {
+    fun scheme(url: String) {
         if (searchType == TypeFlag.OPTION_PANEL) {
             //选片
             val viewByPosition = ada.getViewByPosition(listData.size - 1, R.id.tv_form_value) as ScrollEditText;

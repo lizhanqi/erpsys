@@ -125,8 +125,10 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             searchType = (TypeFlag) getIntent().getSerializableExtra("type");
         }
         Bundle extras = getIntent().getExtras();
-        extras.setClassLoader(getClass().getClassLoader());
-        schemeData = (BaseScheme)extras .getParcelable("data");
+        if (extras!=null){
+          //  extras.setClassLoader(getClass().getClassLoader());
+            schemeData = (BaseScheme)extras .getParcelable("data");
+        }
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         initView();
         initSearchEditTextView();
@@ -169,11 +171,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     LinearLayout llScheme = (LinearLayout) helper.getView(R.id.ll_scheme);
                     TextView  tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
                     TextView tvChangeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
-//                    if (scheme==null||schemeData.getOrderId()==null){
-//                        tvChangeScheme.setVisibility(View.GONE);
-//                    }else{
-//                        tvChangeScheme.setVisibility(View.VISIBLE);
-//                    }
                     tvChangeScheme.setOnClickListener(l->{
                         Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
                         intent.putExtra("orderId", item.getOrderId());
@@ -182,7 +179,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("data", item);
                         bundle.putSerializable("schemeData",schemeData);
-                        bundle.putSerializable("allSchemeData",getIntent().getExtras().getParcelable("allData"));
+                        bundle.putParcelable("allSchemeData",getIntent().getExtras().getParcelable("allSchemeData"));
                         bundle.putSerializable("type", searchType);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -194,7 +191,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                         intent.putExtra("add",true);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("data", item);
-                        bundle.putSerializable("allSchemeData",getIntent().getExtras().getParcelable("allData"));
+                        bundle.putParcelable("allSchemeData",getIntent().getExtras().getParcelable("allSchemeData"));
                         bundle.putParcelable("schemeData",schemeData);
                         bundle.putSerializable("type", searchType);
                         intent.putExtras(bundle);
