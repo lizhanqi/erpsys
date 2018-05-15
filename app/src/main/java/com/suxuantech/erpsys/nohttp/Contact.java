@@ -282,6 +282,7 @@ public class Contact {
      * 当天可拍照排程
      */
     public static String PHOTO_SCHEME_BY_DAY = "/SXWebErpAppStaff/SX_PhotoPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
+
     /**
      * 登陆人权限
      */
@@ -313,7 +314,7 @@ public class Contact {
     /**
      * 本月选片可排程排程
      */
-    public static String  PICTRUE_SCHEME_BY_MONTH="/SXWebErpAppStaff/SX_SPPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
+    public static String  PICTRUE_SCHEME_BY_MONTH="/SXWebErpAppStaff/SX_SPPaiChengMonthinfo?Token=%s&vPcday=%s&Code=%s";
     /**
      * 拍照排程锁定
      */
