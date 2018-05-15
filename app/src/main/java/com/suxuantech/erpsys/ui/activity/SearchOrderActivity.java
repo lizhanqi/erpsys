@@ -25,10 +25,12 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.lizhanqi.www.stepview.HorizontalStepView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.BaseScheme;
 import com.suxuantech.erpsys.entity.HistoryEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
+import com.suxuantech.erpsys.ui.TypeFlag;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
@@ -112,21 +114,19 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
     private QuickAdapter quickAdapter;
-
-    public enum SearchType {
-        NOMAL, OPTION_PANEL, PHOTOGRAPH
-    }
-
-    SearchType searchType = SearchType.NOMAL;
-
+    private BaseScheme schemeData;
+    TypeFlag searchType= TypeFlag.NOMAL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
         useButterKnife();
         if (getIntent().hasExtra("type")) {
-            searchType = (SearchType) getIntent().getSerializableExtra("type");
+            searchType = (TypeFlag) getIntent().getSerializableExtra("type");
         }
+        Bundle extras = getIntent().getExtras();
+        extras.setClassLoader(getClass().getClassLoader());
+        schemeData = (BaseScheme)extras .getParcelable("data");
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         initView();
         initSearchEditTextView();
@@ -156,16 +156,54 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
      * 初始化适配器
      */
     private void initDataAdapter() {
-        if (SearchType.OPTION_PANEL == searchType || SearchType.PHOTOGRAPH == searchType) {
+        if (TypeFlag.OPTION_PANEL == searchType || TypeFlag.PHOTOGRAPH == searchType) {
             quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_search_option_panel, null) {
                 @Override
                 protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
                     TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
                     TextView tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
                     TextView tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
+                    LinearLayout scheme = (LinearLayout) helper.getView(R.id.ll_scheme);
+                    TextView addScheme = (TextView) helper.getView(R.id.tv_add_scheme);
+                    TextView changeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
+                    LinearLayout llScheme = (LinearLayout) helper.getView(R.id.ll_scheme);
+                    TextView  tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
+                    TextView tvChangeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
+//                    if (scheme==null||schemeData.getOrderId()==null){
+//                        tvChangeScheme.setVisibility(View.GONE);
+//                    }else{
+//                        tvChangeScheme.setVisibility(View.VISIBLE);
+//                    }
+                    tvChangeScheme.setOnClickListener(l->{
+                        Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
+                        intent.putExtra("orderId", item.getOrderId());
+                        intent.putExtra("customerId", item.getCustomerid());
+                        intent.putExtra("add",false);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("data", item);
+                        bundle.putSerializable("schemeData",schemeData);
+                        bundle.putSerializable("allSchemeData",getIntent().getExtras().getParcelable("allData"));
+                        bundle.putSerializable("type", searchType);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    });
+                    tvAddScheme.setOnClickListener(l->{
+                        Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
+                        intent.putExtra("orderId", item.getOrderId());
+                        intent.putExtra("customerId", item.getCustomerid());
+                        intent.putExtra("add",true);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("data", item);
+                        bundle.putSerializable("allSchemeData",getIntent().getExtras().getParcelable("allData"));
+                        bundle.putParcelable("schemeData",schemeData);
+                        bundle.putSerializable("type", searchType);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    });
+                    scheme.setVisibility(View.VISIBLE);
                     tvCustomerNames.setText("" + item.getXingming());
                     tvOrderId.setText("订单编号" + item.getOrderId());
-                    if (SearchType.OPTION_PANEL == searchType) {
+                    if (TypeFlag.OPTION_PANEL == searchType) {
                         tvCustomerInfos.setText("拍照日期:" + item.getPhotodate());
                         tvCustomerInfos.append("\n选片日期:" + item.getSelectday());
                     } else {
@@ -175,6 +213,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     tvCustomerInfos.append("\n客户分区:" + item.getArea());
                 }
             };
+
         } else {
             quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, null) {
                 @Override
@@ -196,22 +235,22 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 }
             };
         }
-        quickAdapter.setOnItemClickListener( (adapter,   view,   position)->{
-                Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
-                SearchOrderEntity.DataBean dataBean  = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
-            intent.putExtra("orderId",dataBean .getOrderId());
-            intent.putExtra("customerId",dataBean .getCustomerid());
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("data",dataBean);
-                intent.putExtras( bundle);
-                startActivity(intent);
+        quickAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
+            SearchOrderEntity.DataBean dataBean = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
+            intent.putExtra("orderId", dataBean.getOrderId());
+            intent.putExtra("customerId", dataBean.getCustomerid());
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("data", dataBean);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 
     @Override
     public void onBackPressedSupport() {
         //
-        if (!getIntent().getBooleanExtra("hideSearch", false) ){
+        if (!getIntent().getBooleanExtra("hideSearch", false)) {
             if (mSmrHistory != null) {
                 if (mSmrHistory.getAdapter() == null || mSmrHistory.getAdapter() != historyAdapter) {
                     initHistoryAdapter();
@@ -430,6 +469,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         timePickerView.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         timePickerView.build().show();
     }
+
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
         smartRefreshLayout.setEnabled(true);
@@ -446,7 +486,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             quickAdapter.apped(data);
             smartRefreshLayout.finishLoadMore();
         }
-        if (!hasMore){
+        if (!hasMore) {
             //完成加载并标记没有更多数据 1.0.4
             smartRefreshLayout.finishLoadMoreWithNoMoreData();
         }
@@ -456,11 +496,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
         smartRefreshLayout.setEnabled(true);
         smartRefreshLayout.setEnableRefresh(true);
-      //  if (pageIndex!=0){
+        //  if (pageIndex!=0){
         ///结束加载（加载失败）
         smartRefreshLayout.finishLoadMore(false);//结束加载（加载失败）
-      //  }
+        //  }
     }
+
     /**
      * 搜索结果适配器
      * 另一个版本的item
@@ -528,9 +569,9 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         //移除所有的横线
         mSmrHistory.removeItemDecoration(histroyItemDecoration);
         mSmrHistory.removeItemDecoration(searchItemDecoration);
-        if (formData){
+        if (formData) {
             mSmrHistory.addItemDecoration(searchItemDecoration);
-        }else {
+        } else {
             mSmrHistory.addItemDecoration(histroyItemDecoration);
         }
 

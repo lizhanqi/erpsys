@@ -306,7 +306,62 @@ public class Contact {
      * 添加产品
      */
     public static String ADD_PRODUCT="/SXWebErpAppStaff/SX_AddConsumptioncontent?Token=%s&orderid=%s&customerid=%s&cid=%s&issources=%s&isyanzheng=%s&Code=%s&shopname=%s&brandid=%s";
+    /**
+     * 今日选片排程
+     */
+    public static String TODAY_PICTRUE_SCHEME="/SXWebErpAppStaff/SX_SPPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
+    /**
+     * 今日选片排程
+     */
+    public static String  PICTRUE_SCHEME_BY_MONTH="/SXWebErpAppStaff/SX_SPPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
+    /**
+     * 拍照排程锁定
+     */
+    public static String LOCK_PHOTOGRAPH_SCHEME="/SXWebErpAppStaff/SX_PhotoPaiChengLock?Token=%s&pcid=%s&Code=%s";
+    /**
+     * 拍照解锁
+     */
+    public static String UNLOCK_PHOTOGRAPH_SCHEME="/SXWebErpAppStaff/SX_PhotoPaiChengOpenLock?Token=%s&pcid=%s&Code=%s";
+    /**
+     * 选片锁定排程
+     */
+    public static String LOCK_OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_SPPaiChengLock?Token=%s&pcid=%s&Code=%s";
+    /**
+     * 选片解锁排程
+     */
+    public static String UNLOCK_OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_SPPaiChengOpenLock?Token=%s&pcid=%s&Code=%s";
+    /**
+     * 新增拍照排程
+     */
+    public static String ADD_PHOTOGRAPH_SCHEME= "/SXWebErpAppStaff/SX_AddPhotoPaiCheng?Token=%s&pcday=%s&Code=%s";
+    /**
+     * 修改拍照排程
+     */
+    public static String CHANGE_PHOTOGRAPH_SCHEME="/SXWebErpAppStaff/SX_UpdatePhotoPaiCheng?Token=%s&pcday=%s&Code=%s";
+    /**
+     *删除拍照排程
+     */
+    public static String DELETE_PHOTOGRAPH_SCHEME="/SXWebErpAppStaff/SX_DelPhotoPaiCheng?Token=%s&pcid=%s&photoid=%s";
+    /**
+     * 新增选片排程
+     */
+    public static  String  ADD_OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_AddSPPaiCheng?Token=%s&pcday=%s&Code=%s";
+    /**
+     * 修改选片排程
+     */
+    public static  String  CHANGE_OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_UpdateSPPaiCheng?Token=%s&pcday=%s&Code=%s";
+    /**
+     * 删除选片排程
+     */
+    public static  String DELETE_OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_DelSPPaiCheng?Token=%s&pcid=%s&spid=%s";
 
+    /**
+     * 选片类型
+     */
+    public static  String OPTION_PANEL_TYPE_SET="/SXWebErpAppStaff/SX_SelectTypeSet?Token=%s&Code=%s";
 
-
+    /**
+     * 拍照类型
+     */
+    public static  String  PHOTO_TYPE_SET="/SXWebErpAppStaff/SX_PhotoTypeSet?Token=%s&Code=%s";
 }

@@ -40,9 +40,11 @@ public class OptionHelp {
      * 网络接口标志
      */
     public enum UrlTag implements Serializable {
-        CONSUMPTION_TYPE(0,"消费类型"), OUTLETS_RECEPTION(1,"门市人员"), ORDER_RECEIVING_SITE(2,"接单点"), CUSTOMER_ZONE(3,"消费类型"), PACKAGE(4,"选择包套"),
-        PRODUCT(5,"选择产品"), CUSTOMER_SOURCE(6,"客户来源"), CUSTOMER_INTENTION(7,"客户意向"),
-        RECEPTION_MARKET(8,"网销人员"), PHOTO_SHOP(9,"拍摄店面"), NEW_ORDER_TYPE(10,"新单类型"), SHOOT_THEME(11,"摄影主题"), DRESS_THEME(12,"礼服主题");
+        CONSUMPTION_TYPE(0,"消费类型"), OUTLETS_RECEPTION(1,"门市人员"), ORDER_RECEIVING_SITE(2,"接单点"),
+        CUSTOMER_ZONE(3,"消费类型"), PACKAGE(4,"选择包套"), PRODUCT(5,"选择产品"), CUSTOMER_SOURCE(6,"客户来源"),
+        CUSTOMER_INTENTION(7,"客户意向"),  RECEPTION_MARKET(8,"网销人员"), PHOTO_SHOP(9,"拍摄店面"), NEW_ORDER_TYPE(10,"新单类型"),
+        SHOOT_THEME(11,"摄影主题"),     DRESS_THEME(12,"礼服主题"),OPTION_PANEL_TYPE_SET(13,"选片类型")
+        ,PHOTO_TYPE_SET(14,"拍照类型");
         UrlTag(int id,String title){
             this.id=id;
             this.title=title;

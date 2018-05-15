@@ -7,7 +7,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.SearchOrderActivity">
-    <include layout="@layout/navigation_search_haed" android:id="@+id/in_search_nav" />
+    <include layout="@layout/navigation_search_haed" android:id="@+id/in_search_nav"  />
     <include layout="@layout/head_search_history" android:id="@+id/in_head_search"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"

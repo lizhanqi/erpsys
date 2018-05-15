@@ -53,6 +53,9 @@ class FormEntity {
         this.key = key
         this.value = value
     }
+    constructor(key: String ) {
+        this.key = key
+    }
 
     constructor(icon: Int, key: String, value: String) {
         this.icon = icon

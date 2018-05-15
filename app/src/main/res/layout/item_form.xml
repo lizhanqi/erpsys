@@ -9,8 +9,8 @@
             android:id="@+id/tv_form_key"
             style="@style/CustomerInformationKey"
            />
-        <TextView
-            android:text="11"
+        <com.suxuantech.erpsys.ui.widget.ScrollEditText
+            android:enabled="false"
             android:id="@+id/tv_form_value"
             style="@style/CustomerInformationValue"
              />

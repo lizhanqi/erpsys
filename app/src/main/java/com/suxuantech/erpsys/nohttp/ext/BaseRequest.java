@@ -53,7 +53,7 @@ public abstract class BaseRequest<Result> extends Request<Result> {
      */
     public void addSignate(){
         Contact.SignateInfo signature = Contact.getSignate();
-        addHeader("Content-Type", "application/json");
+        addHeader("Content-TypeFlag", "application/json");
         addHeader("timestamp", signature.currentTimeMillis+"");
         addHeader("nonce",signature.random+"");
         addHeader("signature",signature.signature);
@@ -74,7 +74,7 @@ public abstract class BaseRequest<Result> extends Request<Result> {
      */
     public void  param2Json(){
       //  MultiValueMap paramKeyValues = getParamKeyValues();
-        addHeader("Content-Type", "application/json");
+        addHeader("Content-TypeFlag", "application/json");
         String jsonString = FastJsonUtils.toJSONString(jsonParam);
 //        if (App.ISDEBUG){
 //            Logger.d(jsonString);

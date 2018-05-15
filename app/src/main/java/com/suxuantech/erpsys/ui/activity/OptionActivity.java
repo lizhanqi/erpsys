@@ -20,10 +20,12 @@ import com.suxuantech.erpsys.entity.CustomerIntentionEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
 import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
+import com.suxuantech.erpsys.entity.OptionPanelTypeEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
 import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
+import com.suxuantech.erpsys.entity.PhotoTypeEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.entity.SimpleEntity;
 import com.suxuantech.erpsys.entity.ThemeEntity;
@@ -92,6 +94,9 @@ public class OptionActivity extends TitleNavigationActivity {
     private List<PhotoShopEntity.DataBean> photoShopData;
     private List<NewOrderTypeEntity.DataBean> newOrderTyepData;
     private List<ThemeEntity.DataBean> themeData;
+    private List<OptionPanelTypeEntity.DataBean> optionPanelTypeData;
+    private List<PhotoTypeEntity.DataBean> photoTypeData;
+
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     /**
      * 加载更多。
@@ -314,6 +319,7 @@ public class OptionActivity extends TitleNavigationActivity {
         }
         switch (urlTag) {
             default:
+
             case PRODUCT:
                 initBottomSheet();
                 if (menu != null) {
@@ -414,6 +420,20 @@ public class OptionActivity extends TitleNavigationActivity {
                 Url = Contact.getFullUrl(Contact.DRESS_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
                     getThemeData();
+                }
+                break;
+            case OPTION_PANEL_TYPE_SET:
+                //选片类型
+                Url = Contact.getFullUrl(Contact.OPTION_PANEL_TYPE_SET, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
+                    getOptionPanelType();
+                }
+                break;
+            case PHOTO_TYPE_SET:
+                //拍照类型
+                Url = Contact.getFullUrl(Contact.PHOTO_TYPE_SET, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
+                if (getData) {
+                    getPhotoType();
                 }
                 break;
         }
@@ -579,7 +599,28 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
+                } else if (optionPanelTypeData != null) {
+                    //选片类型
+                    ArrayList<OptionPanelTypeEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(optionPanelTypeData.get(position));
+                    BaseMsg<OptionPanelTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<OptionPanelTypeEntity.DataBean>(optionPanelTypeData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                }else if (photoTypeData != null) {
+                    //选片类型
+                    ArrayList<PhotoTypeEntity.DataBean> dataBeans = new ArrayList<>();
+                    dataBeans.add(photoTypeData.get(position));
+                    BaseMsg<PhotoTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<PhotoTypeEntity.DataBean>(photoTypeData, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
                 }
+
             }
             finish();
         }
@@ -1031,6 +1072,82 @@ public class OptionActivity extends TitleNavigationActivity {
 
     }
 
+    /**
+     * 选片类型
+     */
+    public void getOptionPanelType() {
+        //请求实体
+        JavaBeanRequest<OptionPanelTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<OptionPanelTypeEntity>(Url, OptionPanelTypeEntity.class);
+        HttpListener<OptionPanelTypeEntity> searchByCustmor = new HttpListener<OptionPanelTypeEntity>() {
+            @Override
+            public void onSucceed(int what, Response<OptionPanelTypeEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok) {
+                    mAllData.clear();
+                    optionPanelTypeData = response.get().getData();
+                    if (optionPanelTypeData != null) {
+                        for (OptionPanelTypeEntity.DataBean da : optionPanelTypeData) {
+                            mAllData.add(da.getSelectordername());
+                        }
+                        setAdapterCtrl();
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
+                        toastShort(response.get().getMsg());
+                    }
+                } else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<OptionPanelTypeEntity> response) {
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
+    /**
+     *拍照类型
+     */
+    public void getPhotoType() {
+        //请求实体
+        JavaBeanRequest<PhotoTypeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoTypeEntity>(Url, PhotoTypeEntity.class);
+        HttpListener<PhotoTypeEntity> searchByCustmor = new HttpListener<PhotoTypeEntity>() {
+            @Override
+            public void onSucceed(int what, Response<PhotoTypeEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok) {
+                    mAllData.clear();
+                    photoTypeData = response.get().getData();
+                    if (photoTypeData != null) {
+                        for (PhotoTypeEntity.DataBean da : photoTypeData) {
+                            mAllData.add(da.getPhototype());
+                        }
+                        setAdapterCtrl();
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
+                        toastShort(response.get().getMsg());
+                    }
+                } else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<PhotoTypeEntity> response) {
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
     //--------------------------------------适配器专区----------------------------------------
 
     /**
@@ -1357,11 +1474,12 @@ public class OptionActivity extends TitleNavigationActivity {
             HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
                 @Override
                 public void onSucceed(int what, Response<SimpleEntity> response) {
-                    if (response.get().isOK()){
-                    EventBus.getDefault().post("freshProduct");
-                    onBackPressed();
+                    if (response.get().isOK()) {
+                        EventBus.getDefault().post("freshProduct");
+                        onBackPressed();
                     }
                 }
+
                 @Override
                 public void onFailed(int what, Response<SimpleEntity> response) {
                 }
@@ -1369,4 +1487,6 @@ public class OptionActivity extends TitleNavigationActivity {
             request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
         }
     }
+
+
 }

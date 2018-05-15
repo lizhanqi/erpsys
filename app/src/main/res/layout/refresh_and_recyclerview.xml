@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:id="@+id/img_shopping"
         android:layout_marginBottom="@dimen/px120"
@@ -14,6 +15,7 @@
         android:layout_height="30dp" />
 
         <LinearLayout
+            android:visibility="gone"
             android:orientation="horizontal"
             android:id="@+id/ll_sum"
             android:layout_width="match_parent"
