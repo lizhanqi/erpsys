@@ -277,9 +277,9 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                         if (getIntent().hasExtra("title")) {
                             if (getIntent().getStringExtra("title").equals("拍照排程")) {
                                 getMonthPhotoScheme("2018-05-01");
-                               // getPhotographSchemeByDay("2018-05-01");
+                                getPhotographSchemeByDay("2018-05-01");
                             } else if (getIntent().getStringExtra("title").equals("选片排程")) {
-                             //   todayOptionPhotoScheme("2018-05-01");
+                                todayOptionPhotoScheme("2018-05-01");
                                 getMonthOptionPanelScheme("2018-05-01");
                             }
                         }
@@ -306,7 +306,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.scheme_menu, menu);
         menuItem = menu.findItem(R.id.action_settings);
-        this.menu=menu;
+        this.menu = menu;
         setMenu();
         return super.onCreateOptionsMenu(menu);
     }

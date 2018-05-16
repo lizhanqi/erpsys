@@ -1,11 +1,7 @@
 package com.suxuantech.erpsys.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -20,13 +16,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
-
 import me.yokeyword.fragmentation.SupportFragment;
-import solid.ren.skinlibrary.IDynamicNewView;
-import solid.ren.skinlibrary.attr.base.DynamicAttr;
-import solid.ren.skinlibrary.base.SkinBaseActivity;
-import solid.ren.skinlibrary.loader.SkinInflaterFactory;
 
 /**
  * ......................我佛慈悲....................
@@ -56,7 +46,7 @@ import solid.ren.skinlibrary.loader.SkinInflaterFactory;
  * @Description: todo(用一句话描述该文件做什么)
  */
 
-public class BaseSupportFragment extends SupportFragment    implements IDynamicNewView{
+public class BaseSupportFragment extends SupportFragment     {
 
     /**
      * 网络队列,默认每个Activity都应该有一个队列,用这个队列在页面销毁可以全部取消major
@@ -167,66 +157,66 @@ public class BaseSupportFragment extends SupportFragment    implements IDynamicN
     }
 
 /*-----------------------------------换肤---------------------------------------------*/
-        private IDynamicNewView mIDynamicNewView;
-
-        @Override
-        public void onAttach(Context context) {
-            super.onAttach(context);
-            try {
-                mIDynamicNewView = (IDynamicNewView) context;
-            } catch (ClassCastException e) {
-                mIDynamicNewView = null;
-            }
-        }
-
-        @Override
-        public final void dynamicAddView(View view, List< DynamicAttr > pDAttrs) {
-            if (mIDynamicNewView == null) {
-                throw new RuntimeException("IDynamicNewView should be implements !");
-            } else {
-                mIDynamicNewView.dynamicAddView(view, pDAttrs);
-            }
-        }
-
-        @Override
-        public final void dynamicAddView(View view, String attrName, int attrValueResId) {
-            mIDynamicNewView.dynamicAddView(view, attrName, attrValueResId);
-        }
-
-        @Override
-        public final void dynamicAddFontView(TextView textView) {
-            mIDynamicNewView.dynamicAddFontView(textView);
-        }
-
-        public final SkinInflaterFactory getSkinInflaterFactory() {
-            if (getActivity() instanceof SkinBaseActivity) {
-                return ((SkinBaseActivity) getActivity()).getInflaterFactory();
-            }
-            return null;
-        }
-
-        @Override
-        public void onDestroyView() {
-            removeAllView(getView());
-            super.onDestroyView();
-        }
-
-        protected void removeAllView(View v) {
-            if (v instanceof ViewGroup) {
-                ViewGroup viewGroup = (ViewGroup) v;
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                    removeAllView(viewGroup.getChildAt(i));
-                }
-                removeViewInSkinInflaterFactory(v);
-            } else {
-                removeViewInSkinInflaterFactory(v);
-            }
-        }
-
-        private void removeViewInSkinInflaterFactory(View v) {
-            if (getSkinInflaterFactory() != null) {
-                //此方法用于Activity中Fragment销毁的时候，移除Fragment中的View
-                getSkinInflaterFactory().removeSkinView(v);
-            }
-        }
+//        private IDynamicNewView mIDynamicNewView;
+//
+//        @Override
+//        public void onAttach(Context context) {
+//            super.onAttach(context);
+//            try {
+//                mIDynamicNewView = (IDynamicNewView) context;
+//            } catch (ClassCastException e) {
+//                mIDynamicNewView = null;
+//            }
+//        }
+//
+//        @Override
+//        public final void dynamicAddView(View view, List< DynamicAttr > pDAttrs) {
+//            if (mIDynamicNewView == null) {
+//                throw new RuntimeException("IDynamicNewView should be implements !");
+//            } else {
+//                mIDynamicNewView.dynamicAddView(view, pDAttrs);
+//            }
+//        }
+//
+//        @Override
+//        public final void dynamicAddView(View view, String attrName, int attrValueResId) {
+//            mIDynamicNewView.dynamicAddView(view, attrName, attrValueResId);
+//        }
+//
+//        @Override
+//        public final void dynamicAddFontView(TextView textView) {
+//            mIDynamicNewView.dynamicAddFontView(textView);
+//        }
+//
+//        public final SkinInflaterFactory getSkinInflaterFactory() {
+//            if (getActivity() instanceof SkinBaseActivity) {
+//                return ((SkinBaseActivity) getActivity()).getInflaterFactory();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        public void onDestroyView() {
+//            removeAllView(getView());
+//            super.onDestroyView();
+//        }
+//
+//        protected void removeAllView(View v) {
+//            if (v instanceof ViewGroup) {
+//                ViewGroup viewGroup = (ViewGroup) v;
+//                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+//                    removeAllView(viewGroup.getChildAt(i));
+//                }
+//                removeViewInSkinInflaterFactory(v);
+//            } else {
+//                removeViewInSkinInflaterFactory(v);
+//            }
+//        }
+//
+//        private void removeViewInSkinInflaterFactory(View v) {
+//            if (getSkinInflaterFactory() != null) {
+//                //此方法用于Activity中Fragment销毁的时候，移除Fragment中的View
+//                getSkinInflaterFactory().removeSkinView(v);
+//            }
+//        }
 }

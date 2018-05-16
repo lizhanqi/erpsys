@@ -11,12 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.ProductEntity;
@@ -49,14 +46,7 @@ import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
 import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
-import solid.ren.skinlibrary.IDynamicNewView;
-import solid.ren.skinlibrary.ISkinUpdate;
-import solid.ren.skinlibrary.SkinConfig;
-import solid.ren.skinlibrary.attr.base.DynamicAttr;
-import solid.ren.skinlibrary.loader.SkinInflaterFactory;
-import solid.ren.skinlibrary.loader.SkinManager;
-import solid.ren.skinlibrary.utils.SkinL;
-import solid.ren.skinlibrary.utils.SkinResourcesUtils;
+
 
 /**
  * ......................我佛慈悲....................
@@ -112,36 +102,35 @@ import solid.ren.skinlibrary.utils.SkinResourcesUtils;
  *  那么必须在该页面一定要有一个方法用来接收消息，
  *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
-public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity, ISkinUpdate, IDynamicNewView  {
+public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity   {
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
-
     /**
      * 按钮快速点击时间(多少毫秒内点击同一个算快速点击)
      */
-    private int fastClickTime=1000;
+    private int fastClickTime = 1000;
     /**
      * [防止快速点击的记录上次点击时间
      */
-    private  long lastClick = 0;
+    private long lastClick = 0;
     /**
      * 上次点击的View
      */
-   private View lastView;
+    private View lastView;
     /**
-     *请求必须权限的请求码
+     * 请求必须权限的请求码
      */
     private final int MUSTPERMISSIONCODE = 2626;
     /**
      * 去设置页面的请求码
      * 默认值(因为这里可能会有用到)
      */
-    private  int  goToSetting=-66;
+    private int goToSetting = -66;
     /**
      * Tag不解释
      */
     protected final String TAG = this.getClass().getSimpleName();
     /**
-     *     本页面需要的权限(hash的目的是去除重复添加的,没必要多次重复添加)
+     * 本页面需要的权限(hash的目的是去除重复添加的,没必要多次重复添加)
      */
     private HashSet<String> permissionSet = new HashSet<String>();
     /**
@@ -155,14 +144,16 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     private Unbinder unbinder;
     private Rationale mRationale;
     private PermissionSetting mSetting;
-    private SkinInflaterFactory mSkinInflaterFactory;
+
     /**
      * 权限授予结果
+     *
      * @param permissions
      */
-     public void  permissionGrantedResult(List<String> permissions ){
+    public void permissionGrantedResult(List<String> permissions) {
 
-     }
+    }
+
     public void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -178,7 +169,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
                     public void onAction(@NonNull List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
                             mSetting.showSetting(permissions);
-                        }else {
+                        } else {
                             toast(R.string.failure_permission);
                         }
                     }
@@ -202,7 +193,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
                     public void onAction(@NonNull List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
                             mSetting.showSetting(permissions);
-                        }else {
+                        } else {
                             toast(R.string.failure_permission);
                         }
                     }
@@ -217,7 +208,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * @param permissions one or more permissions.
      * @return true, other wise is false.
      */
-    public   boolean hasPermission(  @NonNull String... permissions) {
+    public boolean hasPermission(@NonNull String... permissions) {
         return hasPermission(Arrays.asList(permissions));
     }
 
@@ -227,42 +218,55 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      * @param permissions one or more permissions.
      * @return true, other wise is false.
      */
-    public  boolean hasPermission(  @NonNull List<String> permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {return true;}
+    public boolean hasPermission(@NonNull List<String> permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
         for (String permission : permissions) {
             int result = ContextCompat.checkSelfPermission(this, permission);
-            if (result == PackageManager.PERMISSION_DENIED) {return false;}
+            if (result == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
 
             String op = AppOpsManagerCompat.permissionToOp(permission);
-            if (TextUtils.isEmpty(op)){ continue;}
+            if (TextUtils.isEmpty(op)) {
+                continue;
+            }
             result = AppOpsManagerCompat.noteProxyOp(this, op, this.getPackageName());
-            if (result != AppOpsManagerCompat.MODE_ALLOWED){ return false;}
+            if (result != AppOpsManagerCompat.MODE_ALLOWED) {
+                return false;
+            }
 
         }
         return true;
     }
 
     //----------------------页面管理------------------------------
+
     /**
      * 禁止截屏
      */
     public void forbiddenTakeScreen() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
+
     /**
      * 获取屏幕
+     *
      * @param isContainStatusBar 是否包含状态栏
      * @return
      */
-    public Bitmap getScreen(boolean isContainStatusBar){
-        if (isContainStatusBar){
-            return  ScreenUtils.snapShotWithStatusBar(this);
-        }else {
+    public Bitmap getScreen(boolean isContainStatusBar) {
+        if (isContainStatusBar) {
+            return ScreenUtils.snapShotWithStatusBar(this);
+        } else {
             return ScreenUtils.snapShotWithoutStatusBar(this);
         }
     }
+
     /**
      * 弹出一个吐司(不建议这种方式,因为最好在吧文字抽出来更规范)
+     *
      * @param str
      */
     public void toastShort(String str) {
@@ -271,6 +275,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * 弹出一个吐司
+     *
      * @param str
      */
     public void toast(@StringRes int str) {
@@ -278,13 +283,16 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     }
     //----------------------页面管理end------------------------------
     /*------------------------------- 网络-------------------------------------------*/
+
     /**
      * 获取本页面的队列
+     *
      * @return RequestQueue 队列
      */
-    public RequestQueue getRequestQueue(){
+    public RequestQueue getRequestQueue() {
         return requestQueue;
     }
+
     /**
      * 发起请求。
      *
@@ -297,18 +305,20 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
      */
     public <T> void request(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean isLoading) {
         request.setCancelSign(object);
-        requestQueue.add(what, request, new HttpResponseListener (this, request, callback, canCancel, isLoading));
+        requestQueue.add(what, request, new HttpResponseListener(this, request, callback, canCancel, isLoading));
     }
+
     protected void cancelAll() {
         requestQueue.cancelAll();
     }
+
     /* ----------------------------------------------网络end----------------------------------------------*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mSkinInflaterFactory = new SkinInflaterFactory(this);
-        LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
+       // mSkinInflaterFactory = new SkinInflaterFactory(this);
+       // LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
-        changeStatusColor();
+        //changeStatusColor();
         mDelegate.onCreate(savedInstanceState);
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -318,21 +328,23 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
     }
+
     @Override
     protected void onResume() {
-        SkinManager.getInstance().attach(this);
+      //  SkinManager.getInstance().attach(this);
         super.onResume();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SkinManager.getInstance().detach(this);
-        mSkinInflaterFactory.clean();
+    //    SkinManager.getInstance().detach(this);
+     //   mSkinInflaterFactory.clean();
         //加上判断
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        if (useButterKnife&&unbinder!=null){
+        if (useButterKnife && unbinder != null) {
             unbinder.unbind();
         }
         // 和声明周期绑定，退出时取消这个队列中的所有请求，当然可以在你想取消的时候取消也可以，不一定和声明周期绑定。
@@ -342,28 +354,34 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     }
     //----------------生命周期end-----------------
     //--------------------------------------日志模块------------------
+
     /**
      * 错误日志(Tag是当前Activity名字)
+     *
      * @param str
      */
     public void eLog(String str) {
         L.e(TAG, str);
     }
+
     /**
      * 警告日志(Tag是当前Activity名字)
+     *
      * @param str
      */
     public void wLog(String str) {
         L.w(TAG, str);
     }
+
     /**
      * debug日志(Tag是当前Activity名字)
      *
      * @param str
      */
     public void dLog(String str) {
-            L.d(TAG, str);
+        L.d(TAG, str);
     }
+
     /**
      * infor日志(Tag是当前Activity名字)
      *
@@ -381,42 +399,45 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     protected void appLog(String msg) {
         L.d(msg);
     }
+
     //--------------------------------------日志模块end------------------
     //--------------------------------findView-----------------
-    boolean  useButterKnife ,useEventBus ;
+    boolean useButterKnife, useEventBus;
 
     /**
      * 使用注解
      */
-   public void useButterKnife(){
-       useButterKnife=true;
-       unbinder = ButterKnife.bind(this);
-   }
+    public void useButterKnife() {
+        useButterKnife = true;
+        unbinder = ButterKnife.bind(this);
+    }
 
     /**
      * 使用EventBus
-     *  如果使用EventBus
-     *  那么必须在在该页面有一个方法用来接收消息，
-     *  当然这个方法需要注解：@Subscribe 且方法必须是public
+     * 如果使用EventBus
+     * 那么必须在在该页面有一个方法用来接收消息，
+     * 当然这个方法需要注解：@Subscribe 且方法必须是public
      */
-   public  void  useEventBus(){
-       useEventBus=true;
-       //加上判断
-       if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
-           EventBus.getDefault().register(this);
-       }
-   }
+    public void useEventBus() {
+        useEventBus = true;
+        //加上判断
+        if (useEventBus && !EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         //加上判断
-        if (useEventBus&&!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this);
+        if (useEventBus && !EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
     /**
      * 根据id找view
+     *
      * @param resId id资源
      * @param <T>
      * @return
@@ -427,13 +448,14 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * 找view并设置点击事件
+     *
      * @param resId 资源id
      * @param <T>
      * @return
      */
     public <T extends View> T idSetOnClick(@IdRes int resId) {
         T viewById = super.findViewById(resId);
-         if (useButterKnife){
+        if (useButterKnife) {
             wLog("idSetOnClick提示：\n" +
                     "ButterKnife和idsetConclick同时使用了\n" +
                     "请确保onClick(View v)不被ButterKnife回调重写。\n" +
@@ -449,6 +471,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * 找到VIew并设置点击事件
+     *
      * @param id 资源id
      * @return
      */
@@ -456,8 +479,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         return idSetOnClick(id);
     }
 //  ------------------------------页面跳转---------------
+
     /**
      * [页面跳转]
+     *
      * @param clz
      */
     public void startActivity(Class<?> clz) {
@@ -466,6 +491,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * [携带数据的页面跳转]
+     *
      * @param clz
      * @param bundle
      */
@@ -477,8 +503,10 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         }
         startActivity(intent);
     }
+
     /**
      * [含有Bundle通过Class打开编辑界面]
+     *
      * @param cls
      * @param bundle
      * @param requestCode
@@ -497,9 +525,11 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * view点击事件
+     *
      * @param v 点击的view
      */
-     public  void widgetClick(View v){}
+    public void widgetClick(View v) {
+    }
 
     /**
      * 多少毫秒以内的点击同一个View都是快速点击
@@ -518,7 +548,8 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     /**
      * View的点击事件
-     *如果你使用了ButterKnifename不会走这个的
+     * 如果你使用了ButterKnifename不会走这个的
+     *
      * @param v
      */
     @Override
@@ -527,28 +558,34 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
             widgetClick(v);
         }
     }
+
     //--------------------------------------View点击end------------------
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
     }
+
     @Override
     public SwipeBackLayout getSwipeBackLayout() {
         return mDelegate.getSwipeBackLayout();
     }
+
     /**
      * 是否可滑动
+     *
      * @param enable
      */
     @Override
     public void setSwipeBackEnable(boolean enable) {
         mDelegate.setSwipeBackEnable(enable);
     }
+
     @Override
     public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
         mDelegate.setEdgeLevel(edgeLevel);
     }
+
     @Override
     public void setEdgeLevel(int widthPixel) {
         mDelegate.setEdgeLevel(widthPixel);
@@ -565,7 +602,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     }
 
     /**
-     *临时请求获取数据暂用的一个请求入口
+     * 临时请求获取数据暂用的一个请求入口
      */
     public void request(String url) {
         //请求实体
@@ -581,48 +618,48 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
-
-/*----------------换肤------------------*/
-    @Override
-    public void onThemeUpdate() {
-        SkinL.i(TAG, "onThemeUpdate");
-        mSkinInflaterFactory.applySkin();
-       // changeStatusColor();
-    }
-
-    public SkinInflaterFactory getInflaterFactory() {
-        return mSkinInflaterFactory;
-    }
-
-    public void changeStatusColor() {
-        if (!SkinConfig.isCanChangeStatusColor()) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color = SkinResourcesUtils.getColorPrimaryDark();
-            if (color != -1) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(SkinResourcesUtils.getColorPrimaryDark());
-            }
-        }
-    }
-
-    @Override
-    public void dynamicAddView(View view, List<DynamicAttr> pDAttrs) {
-        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, pDAttrs);
-    }
-
-    @Override
-    public void dynamicAddView(View view, String attrName, int attrValueResId) {
-        if (view==null){
-            return;
-        }
-        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, attrName, attrValueResId);
-    }
-
-    @Override
-    public void dynamicAddFontView(TextView textView) {
-        mSkinInflaterFactory.dynamicAddFontEnableView(this, textView);
-    }
 }
+/*----------------换肤------------------*/
+//    @Override
+//    public void onThemeUpdate() {
+//        SkinL.i(TAG, "onThemeUpdate");
+//        mSkinInflaterFactory.applySkin();
+//       // changeStatusColor();
+//    }
+//
+//    public SkinInflaterFactory getInflaterFactory() {
+//        return mSkinInflaterFactory;
+//    }
+//
+//    public void changeStatusColor() {
+//        if (!SkinConfig.isCanChangeStatusColor()) {
+//            return;
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            int color = SkinResourcesUtils.getColorPrimaryDark();
+//            if (color != -1) {
+//                Window window = getWindow();
+//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                window.setStatusBarColor(SkinResourcesUtils.getColorPrimaryDark());
+//            }
+//        }
+//    }
+//
+////    @Override
+////    public void dynamicAddView(View view, List<DynamicAttr> pDAttrs) {
+////        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, pDAttrs);
+////    }
+////
+////    @Override
+////    public void dynamicAddView(View view, String attrName, int attrValueResId) {
+////        if (view==null){
+////            return;
+////        }
+////        mSkinInflaterFactory.dynamicAddSkinEnableView(this, view, attrName, attrValueResId);
+////    }
+////
+////    @Override
+////    public void dynamicAddFontView(TextView textView) {
+////        mSkinInflaterFactory.dynamicAddFontEnableView(this, textView);
+////    }
+//}

@@ -148,7 +148,7 @@ dependencies {
     //  compile 'io.github.rockerhieu:emojicon:+'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation rootProject.ext.dependencies.jiaozivideoplayer
-    compile rootProject.ext.dependencies.skinlibrary
+    //compile rootProject.ext.dependencies.skinlibrary
     implementation rootProject.ext.dependencies.SmartRefreshLayout
     implementation rootProject.ext.dependencies.SmartRefreshHeader
 }

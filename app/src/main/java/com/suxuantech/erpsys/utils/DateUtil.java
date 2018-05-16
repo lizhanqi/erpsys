@@ -136,13 +136,49 @@ public class DateUtil {
                 return "yyyyMMdd";
             }
         };
-
-
-
-
         public abstract String getValue();
     }
 
+    /**
+     * 时间拼接
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    public String dateJoinDayTogether(int  year ,int month ,int day,String division){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(year);
+        stringBuilder.append(division);
+        if (month<10){
+            stringBuilder.append(0);
+        }
+        stringBuilder.append(month);
+        stringBuilder.append(division);
+        if (day<10){
+            stringBuilder.append(0);
+        }
+        stringBuilder.append(day);
+        return  stringBuilder.toString();
+    };
+
+
+    /**
+     * 时间拼接
+     * @param year
+     * @param month
+     * @return
+     */
+    public String dateJoinMonthTogether(int  year ,int month ,String division){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(year);
+        stringBuilder.append(division);
+        if (month<10){
+            stringBuilder.append(0);
+        }
+        stringBuilder.append(month);
+        return  stringBuilder.toString();
+    };
     /**
      * 获取当前时间
      *

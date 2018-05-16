@@ -1,10 +1,5 @@
 package com.suxuantech.erpsys.ui.widget;
 
-import android.view.View;
-
-import solid.ren.skinlibrary.attr.base.SkinAttr;
-import solid.ren.skinlibrary.utils.SkinResourcesUtils;
-
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -32,16 +27,5 @@ import solid.ren.skinlibrary.utils.SkinResourcesUtils;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class ViewAttr extends SkinAttr {
-
-    @Override
-    protected void applySkin(View view) {
-        if (view instanceof View) {
-            View tl = (View) view;
-            if (RES_TYPE_NAME_COLOR.equals(attrValueTypeName)) {
-                int color = SkinResourcesUtils.getColor(attrValueRefId);
-                view.setBackgroundColor(color);
-            }
-        }
-    }
+public class ViewAttr {
 }

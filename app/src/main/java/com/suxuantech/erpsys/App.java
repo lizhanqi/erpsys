@@ -20,7 +20,6 @@ import com.scwang.smartrefresh.layout.footer.FalsifyFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
-import com.suxuantech.erpsys.ui.widget.ViewAttr;
 import com.suxuantech.erpsys.utils.JsonUtil;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -40,8 +39,6 @@ import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
 import me.yokeyword.fragmentation.Fragmentation;
-import solid.ren.skinlibrary.SkinConfig;
-import solid.ren.skinlibrary.loader.SkinManager;
 
 
 /**
@@ -121,7 +118,7 @@ public class App extends Application {
         super.onCreate();
         application = this;
         context = this.getApplicationContext();
-        initSkinPeeler();
+      //  initSkinPeeler();
         //指定刷新默认的方式
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
@@ -165,13 +162,13 @@ public class App extends Application {
      * 换肤初始化
      */
     private void initSkinPeeler() {
-        SkinManager.getInstance().init(this);
-        SkinConfig.setCanChangeStatusColor(true);
-        SkinConfig.setCanChangeFont(true);
-        SkinConfig.setDebug(true);
-        SkinConfig.addSupportAttr("view", new ViewAttr());
-        //SkinConfig.addSupportAttr("button", new RadioButtonAttr());
-        SkinConfig.enableGlobalSkinApply();
+//        SkinManager.getInstance().init(this);
+//        SkinConfig.setCanChangeStatusColor(true);
+//        SkinConfig.setCanChangeFont(true);
+//        SkinConfig.setDebug(true);
+//        SkinConfig.addSupportAttr("view", new ViewAttr());
+//        //SkinConfig.addSupportAttr("button", new RadioButtonAttr());
+//        SkinConfig.enableGlobalSkinApply();
     }
 
     /**

@@ -40,6 +40,7 @@ import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.DefineLoadMoreView;
 import com.suxuantech.erpsys.utils.StringUtils;
+import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -447,6 +448,7 @@ public class OptionActivity extends TitleNavigationActivity {
             return;
         }
         mLlsum.setVisibility(View.VISIBLE);
+        btnShopping.setVisibility(View.VISIBLE);
         dialog = new BottomSheetDialog(this);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -1394,6 +1396,12 @@ public class OptionActivity extends TitleNavigationActivity {
                     if (item.getNumber() > 0) {
                         tvNumber.setVisibility(View.VISIBLE);
                         tvNumber.setText(item.getNumber() + "");
+                        tvNumber.setOnClickListener(l->{
+                            showChangePrice();
+                        });
+                        tvNowPrice.setOnClickListener(l->{
+                            showChangePrice();
+                        });
                         btMinus.setVisibility(View.VISIBLE);
                         btMinus.setOnClickListener(l -> {
                             item.setNumber((item.getNumber() - 1));
@@ -1415,6 +1423,11 @@ public class OptionActivity extends TitleNavigationActivity {
         };
     }
 
+    public void showChangePrice(){
+        AlertDialog.newBuilder(this).setTitle("修改价格")
+                .setPositiveButton("确定",(DialogInterface var1, int var2)->{})
+                .setNegativeButton("取消",(DialogInterface var1, int var2)->{}).show();
+    }
     /**
      * 计算总价并显示到只听
      */

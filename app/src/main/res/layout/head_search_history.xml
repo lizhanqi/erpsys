@@ -6,6 +6,7 @@
     android:paddingRight="@dimen/px55"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:visibility="gone"
         android:paddingTop="@dimen/px10"
         android:paddingBottom="@dimen/px10"
         android:gravity="center_vertical"
@@ -26,6 +27,7 @@
             android:layout_height="match_parent" />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:layout_marginTop="@dimen/px30"
         android:gravity="center_vertical"
         android:orientation="horizontal"

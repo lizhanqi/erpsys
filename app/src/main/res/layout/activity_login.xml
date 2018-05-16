@@ -131,6 +131,7 @@
             </android.support.design.widget.TextInputLayout>
 </LinearLayout>
             <Button
+                android:visibility="gone"
                 android:textSize="@dimen/xs40"
                 android:layout_marginTop="@dimen/px110"
                 android:background="@drawable/login_button_sp"
