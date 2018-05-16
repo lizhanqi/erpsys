@@ -126,16 +126,16 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         tvCustomerAll = idGetView<TextView>(R.id.tv_customer_all);
         recyclerView = idGetView<RecyclerView>(R.id.rv_list);
         if (!intent.hasExtra("title")) {
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "所有客资", "今日所有客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "新进客资", "今日新进客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "未进店", "今日未进店客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "进店未成", "进店未成交客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "已成交", "今日成交客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "流失客资", "今日流失客资", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "未标记进店日期客资", "未标记进店客资", 30))
+            list.add(FormEntity(R.drawable.icon_all_customer, "所有客资", "今日所有客资", 5))
+            list.add(FormEntity(R.drawable.icon_new_customer, "新进客资", "今日新进客资", 5))
+            list.add(FormEntity(R.drawable.icon_not_in_shop , "未进店", "今日未进店客资", 5))
+            list.add(FormEntity(R.drawable.icon_into_shop_unbargain, "进店未成", "进店未成交客资", 5))
+            list.add(FormEntity(R.drawable.icon_already_make_bargain, "已成交", "今日成交客资", 5))
+            list.add(FormEntity(R.drawable.icon_run_away, "流失客资", "今日流失客资", 5))
+            list.add(FormEntity(R.drawable.icon_in_shop_unlabeled, "未标记进店日期客资", "未标记进店客资", 30))
         } else {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程", "今日可排", 5))
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "选片排程", "今日可排", 5))
+            list.add(FormEntity(R.drawable.icon_schedule_select_pictrue, "选片排程", "今日可排", 5))
 //            list.add(FormEntity(R.drawable.icon_camera_schedule, "看板排程", "今日可排", 5))
 //            list.add(FormEntity(R.drawable.icon_camera_schedule, "取件排程", "进店可排", 5))
 //            list.add(FormEntity(R.drawable.icon_camera_schedule, "礼服排程", "今日可排", 5))

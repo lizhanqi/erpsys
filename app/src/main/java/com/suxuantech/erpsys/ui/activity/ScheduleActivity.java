@@ -37,6 +37,7 @@ import com.suxuantech.erpsys.ui.TypeFlag;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.GroupAdaputer;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -255,6 +256,9 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
             ArrayList<String> strings = new ArrayList<>(getdata.keySet());
             BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childPosition);
             String orderId = baseScheme.getOrderId();
+            if (StringUtils.empty(orderId)){
+                return;
+            }
             mSearchOrderPresenter.sosoNetOrder(orderId,
                     App.getContext().getResources().getString(R.string.start_time),
                     App.getContext().getResources().getString(R.string.end_time), true, false);
