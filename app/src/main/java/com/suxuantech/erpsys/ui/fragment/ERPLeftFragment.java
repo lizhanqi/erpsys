@@ -112,6 +112,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     RecyclerView mRvCard;
     private View headView;
     private View headView1;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -201,14 +202,17 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     TextView tvin = headView.findViewById(R.id.tv_today_income);
                     TextView tvon = headView.findViewById(R.id.tv_today_order_number);
                     TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
-                    tvcn.setText(new MyString("今日客资量\u3000" + data.get(0).getRentotal()).setSize(15));
+
+                    tvcn.setText(new MyString("今日客资量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
+                    tvcn.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     //   tvcn.append(new MyString("\n今日客资量").setSize(20));
-                    tvon.setText((new MyString("今日订单量\u3000" + data.get(0).getJktotal()).setSize(15)));
+                    tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
+                    tvon.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     //tvon.append(new MyString(" 今日订单量").setSize(20));
-                    tvin.setText((new MyString("¥"+StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)));
-                    tvin.append(new MyString("\n今日营收").setSize(15));
-                    tvrt.setText((new MyString("¥"+StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20)));
-                    tvrt.append(new MyString("\n今日收款").setSize(15));
+                    tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                    tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
+                    tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    tvrt.append(new MyString("\n今日收款").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                 }
             }
 
@@ -219,33 +223,34 @@ public class ERPLeftFragment extends BaseLazyFragment {
         };
         request(33, homeSumRequset, homeSumListener, false, false);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         headView = inflater.inflate(R.layout.head_home, null, false);
-      headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l->{
+        headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l -> {
             //进店登记的搜索
-          Intent intent = new Intent(getActivity(), RegisterIntoShopSearchActivity.class);
-          intent.putExtra("title","今日客资");
-          intent.putExtra("hideSearch",true);
-          startActivity( intent  );
-      });
-      headView.findViewById(R.id.tv_today_income).setOnClickListener(l->{
-          Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-          intent.putExtra("title","今日订单");
-          intent.putExtra("hideSearch",true);
-          startActivity( intent  );
-      });
-      headView.findViewById(R.id.tv_today_order_number).setOnClickListener(l->{
-          Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-          intent.putExtra("title","今日订单");
-          intent.putExtra("hideSearch",true);
-          startActivity( intent  );
-      });
-      headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l->{
-          Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-          intent.putExtra("title","今日收款");
-          startActivity( intent  );
-      });
+            Intent intent = new Intent(getActivity(), RegisterIntoShopSearchActivity.class);
+            intent.putExtra("title", "今日客资");
+            intent.putExtra("hideSearch", true);
+            startActivity(intent);
+        });
+        headView.findViewById(R.id.tv_today_income).setOnClickListener(l -> {
+            Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+            intent.putExtra("title", "今日订单");
+            intent.putExtra("hideSearch", true);
+            startActivity(intent);
+        });
+        headView.findViewById(R.id.tv_today_order_number).setOnClickListener(l -> {
+            Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+            intent.putExtra("title", "今日订单");
+            intent.putExtra("hideSearch", true);
+            startActivity(intent);
+        });
+        headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l -> {
+            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+            intent.putExtra("title", "今日收款");
+            startActivity(intent);
+        });
         headView1 = inflater.inflate(R.layout.head_home, null, false);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -279,18 +284,26 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
                 tvName.setText(item);
                 if (i == 0) {
+                    imgIcon.setImageResource(R.drawable.icon_make_into_store_home);
                     tvValues.setText(data.get(0).getJkyycount());
                 } else if (i == 1) {
+                    imgIcon.setImageResource(R.drawable.icon_photo_custmoer_home);
                     tvValues.setText(data.get(0).getPzcount());
                 } else if (i == 2) {
+                    imgIcon.setImageResource(R.drawable.icon_dress_customer_home);
                     tvValues.setText(data.get(0).getLfcount());
                 } else if (i == 3) {
+                    imgIcon.setImageResource(R.drawable.icon_make_up_home);
                     tvValues.setText(data.get(0).getHzcount());
                 } else if (i == 4) {
+                    imgIcon.setImageResource(R.drawable.icon_option_panel_custmoer_home);
                     tvValues.setText(data.get(0).getXpcount());
                 } else if (i == 5) {
+                    imgIcon.setImageResource(R.drawable.icon_get_photo_custmoer_home);
                     tvValues.setText(data.get(0).getQjcount());
+
                 } else if (i == 6) {
+                    imgIcon.setImageResource(R.drawable.icon_me_custmer_home);
                     tvName.setText(strings.get(i));
                     //   tvValues.setText(item.get());
                 }
@@ -459,19 +472,19 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
                 break;
             case R.id.tv_order_search:
-          startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
                 break;
             case R.id.tv_schedule:
-              //  request("http://192.168.0.12/api.php?m=login&a=getDepartments");
+                //  request("http://192.168.0.12/api.php?m=login&a=getDepartments");
 
 //                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
 //                intent.putExtra("type",SearchOrderActivity.SearchType.PHOTOGRAPH);
 //                startActivity(intent);
 //                CustomBottomDialog customBottomDialog = new CustomBottomDialog(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null), getActivity(), R.style.style_dialog);
 //                customBottomDialog.show();
-              Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
-              intent.putExtra("title","排程");
-              startActivity(intent);
+                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+                intent.putExtra("title", "排程");
+                startActivity(intent);
 
                 break;
             case R.id.schedule_wave:

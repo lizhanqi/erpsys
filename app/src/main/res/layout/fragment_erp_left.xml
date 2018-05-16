@@ -83,6 +83,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs55" />
                         </LinearLayout>
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/rl_msg"
                             android:layout_width="@dimen/px65"
                             android:layout_height="wrap_content"
@@ -97,8 +98,8 @@ clickable是防止页面穿透的点击事件的
 
                             <TextView
                                 android:id="@+id/tv_msg_number"
-                                android:layout_width="@dimen/px40"
-                                android:layout_height="@dimen/px40"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_alignParentRight="true"
                                 android:background="@drawable/sp_msg_number"
                                 android:gravity="center"
@@ -109,6 +110,7 @@ clickable是防止页面穿透的点击事件的
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/px100"
                         android:layout_alignParentBottom="true"
@@ -205,7 +207,7 @@ clickable是防止页面穿透的点击事件的
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_order_search"
+                            android:drawableTop="@drawable/icon_outlets_order_home"
                             android:gravity="center"
                             android:paddingTop="@dimen/px60"
                             android:text="门市开单" />
@@ -215,7 +217,7 @@ clickable是防止页面穿透的点击事件的
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_order_search"
+                            android:drawableTop="@drawable/icon_order_search_home"
                             android:gravity="center"
                             android:paddingTop="@dimen/px60"
                             android:text="订单查询" />
@@ -225,7 +227,7 @@ clickable是防止页面穿透的点击事件的
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_order_search"
+                            android:drawableTop="@drawable/icon_scheme_home"
                             android:gravity="center"
                             android:paddingTop="@dimen/px60"
                             android:text=" 排  程 " />

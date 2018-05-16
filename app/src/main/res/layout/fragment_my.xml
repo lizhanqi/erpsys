@@ -286,7 +286,7 @@ clickable是防止页面穿透的点击事件的
                                 android:textSize="@dimen/xs44" />
 
                             <TextView
-                                android:id="@+id/tv_staff_id"
+                                android:text="(敬请期待)"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -304,6 +304,7 @@ clickable是防止页面穿透的点击事件的
                                 android:background="@color/mainNavline_e7" />
                         </RelativeLayout>
                         <RelativeLayout
+                            android:visibility="gone"
                             android:layout_marginTop="@dimen/px30"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/px125"
@@ -328,7 +329,7 @@ clickable是防止页面穿透的点击事件的
                                 android:gravity="center_vertical"
                                 android:textColor="@color/myValue_33"
                                 android:textSize="@dimen/px32"
-                                android:text="夜间模式" />
+                                android:text="夜间模式 (敬请期待)" />
 
                             <View
                                 android:layout_width="wrap_content"
