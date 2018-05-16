@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:paddingTop="@dimen/px30"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/gray_f9"
     android:layout_height="wrap_content">
     <TextView
+        android:background="@color/white"
         android:drawablePadding="@dimen/px30"
-        android:drawableLeft="@drawable/icon_camera"
+        android:drawableLeft="@drawable/icon_shop"
         android:padding="@dimen/px30"
         android:id="@+id/tv_store_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <View style="@style/line"/>
     <LinearLayout
+        android:background="@color/white"
         android:padding="@dimen/px30"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -24,12 +28,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
+            android:gravity="right"
             android:id="@+id/tv_make_up_info2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <View style="@style/line"/>
     <TextView
+        android:background="@color/white"
         android:padding="@dimen/px30"
         android:id="@+id/tv_make_up_remarks"
         android:layout_width="match_parent"
