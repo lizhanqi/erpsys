@@ -53,6 +53,7 @@ clickable是防止页面穿透的点击事件的
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
@@ -69,6 +70,7 @@ clickable是防止页面穿透的点击事件的
         <View
             style="@style/line"/>
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
@@ -85,6 +87,7 @@ clickable是防止页面穿透的点击事件的
         <View
             style="@style/line"/>
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
@@ -101,6 +104,7 @@ clickable是防止页面穿透的点击事件的
         <View
             style="@style/line"/>
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
@@ -117,6 +121,7 @@ clickable是防止页面穿透的点击事件的
         <View
             style="@style/line"/>
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
@@ -133,6 +138,7 @@ clickable是防止页面穿透的点击事件的
         <View
             style="@style/line"/>
         <LinearLayout
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px135">
