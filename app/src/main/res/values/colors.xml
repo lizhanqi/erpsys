@@ -19,9 +19,8 @@
     <color name="gradual_change1">#5d8df7</color>
     <color name="gradual_change2">#5EB9F8</color>
     <color name="gradual_change3">#5CC2F8</color>
-    <color name="textColor">#5CC2F8</color>
-    <color name="hintColor">#5CC2F8</color>
-
+    <color name="textColor">@color/black</color>
+    <color name="hintColor">@color/mainNav_66</color>
 
     <color name="white">@android:color/white</color>
     <color name="green">#F00ffFFF</color>

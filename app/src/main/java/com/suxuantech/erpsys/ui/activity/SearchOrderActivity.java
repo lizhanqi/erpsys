@@ -42,6 +42,8 @@ import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
 import com.suxuantech.erpsys.ui.widget.TextViewDrawableClickView;
 import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.KeyBoardUtils;
+import com.suxuantech.erpsys.utils.MyString;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -115,7 +117,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     boolean isShowSimple = true;
     private QuickAdapter quickAdapter;
     private BaseScheme schemeData;
-    TypeFlag searchType= TypeFlag.NOMAL;
+    TypeFlag searchType = TypeFlag.NOMAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,9 +128,9 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             searchType = (TypeFlag) getIntent().getSerializableExtra("type");
         }
         Bundle extras = getIntent().getExtras();
-        if (extras!=null){
-          //  extras.setClassLoader(getClass().getClassLoader());
-            schemeData = (BaseScheme)extras .getParcelable("data");
+        if (extras != null) {
+            //  extras.setClassLoader(getClass().getClassLoader());
+            schemeData = (BaseScheme) extras.getParcelable("data");
         }
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         initView();
@@ -169,45 +172,54 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     TextView addScheme = (TextView) helper.getView(R.id.tv_add_scheme);
                     TextView changeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
                     LinearLayout llScheme = (LinearLayout) helper.getView(R.id.ll_scheme);
-                    TextView  tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
+                    TextView tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
                     TextView tvChangeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
-                    tvChangeScheme.setOnClickListener(l->{
+                    tvChangeScheme.setOnClickListener(l -> {
                         Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
                         intent.putExtra("orderId", item.getOrderId());
                         intent.putExtra("customerId", item.getCustomerid());
-                        intent.putExtra("add",false);
+                        intent.putExtra("add", false);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("data", item);
-                        bundle.putSerializable("schemeData",schemeData);
-                        bundle.putParcelable("allSchemeData",getIntent().getExtras().getParcelable("allSchemeData"));
+                        bundle.putSerializable("schemeData", schemeData);
+                        bundle.putParcelable("allSchemeData", getIntent().getExtras().getParcelable("allSchemeData"));
                         bundle.putSerializable("type", searchType);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     });
-                    tvAddScheme.setOnClickListener(l->{
+                    tvAddScheme.setOnClickListener(l -> {
                         Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
                         intent.putExtra("orderId", item.getOrderId());
                         intent.putExtra("customerId", item.getCustomerid());
-                        intent.putExtra("add",true);
+                        intent.putExtra("add", true);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("data", item);
-                        bundle.putParcelable("allSchemeData",getIntent().getExtras().getParcelable("allSchemeData"));
-                        bundle.putParcelable("schemeData",schemeData);
+                        bundle.putParcelable("allSchemeData", getIntent().getExtras().getParcelable("allSchemeData"));
+                        bundle.putParcelable("schemeData", schemeData);
                         bundle.putSerializable("type", searchType);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     });
                     scheme.setVisibility(View.VISIBLE);
-                    tvCustomerNames.setText("" + item.getXingming());
-                    tvOrderId.setText("订单编号" + item.getOrderId());
+                    tvCustomerNames.setText(StringUtils.safetyString(item.getXingming()));
+                    tvOrderId.setText("订单编号" + StringUtils.safetyString(item.getOrderId()));
                     if (TypeFlag.OPTION_PANEL == searchType) {
-                        tvCustomerInfos.setText("拍照日期:" + item.getPhotodate());
-                        tvCustomerInfos.append("\n选片日期:" + item.getSelectday());
+                        tvCustomerInfos.setText(new MyString("拍照日期:").setColor(getResources().getColor(R.color.hintColor)));
+                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getPhotodate())).setColor(getResources().getColor(R.color.textColor)));
+                        tvCustomerInfos.append(new MyString("\n选片日期:").setColor(getResources().getColor(R.color.hintColor)));
+                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getSelectday())).setColor(getResources().getColor(R.color.textColor)));
                     } else {
-                        tvCustomerInfos.setText("订单日期:" + item.getTargetdate());
-                        tvCustomerInfos.append("\n拍照日期:" + item.getPhotodate());
+                        tvCustomerInfos.setText(new MyString("订单日期:").setColor(getResources().getColor(R.color.hintColor)));
+                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getTargetdate())).setColor(getResources().getColor(R.color.textColor)));
+                        tvCustomerInfos.append(new MyString("\n拍照日期:").setColor(getResources().getColor(R.color.hintColor)));
+                        String string = StringUtils.safetyString(item.getPhotodate());
+                        if (string.length()>10){
+                            string=     string.substring(0,10);
+                        }
+                        tvCustomerInfos.append(new MyString(string).setColor(getResources().getColor(R.color.textColor)));
                     }
-                    tvCustomerInfos.append("\n客户分区:" + item.getArea());
+                    tvCustomerInfos.append(new MyString("\n客户分区:").setColor(getResources().getColor(R.color.hintColor)));
+                    tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getArea())).setColor(getResources().getColor(R.color.textColor)));
                 }
             };
 
@@ -223,12 +235,15 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     TextView tvPackageName = (TextView) helper.getView(R.id.tv_package_name);
                     TextView tvOrderDate = (TextView) helper.getView(R.id.tv_order_date);
                     tvName.setText(item.getXingming());
-                    tvMoney.setText("¥ " + item.getNopayment_money());
+                    tvMoney.setText(new MyString("¥ " + StringUtils.moneyFormat(item.getNopayment_money())).setColor(getResources().getColor(R.color.colorAccent)));
                     tvOrderId.setText(item.getOrderId());
                     tvStatus.setText(item.getNopayment_money() > 0 ? "欠款" : "");
-                    tvConsumptionType.setText("消费类型:" + item.getConsumption_type());
-                    tvOrderDate.setText("订单日期:" + item.getTargetdate());
-                    tvPackageName.setText("包套名称:" + item.getPayment_money());
+                    tvConsumptionType.setText(new MyString("消费类型:").setColor(getResources().getColor(R.color.hintColor)));
+                    tvConsumptionType.append(new MyString(StringUtils.safetyString(item.getConsumption_type())).setColor(getResources().getColor(R.color.textColor)));
+                    tvOrderDate.setText(new MyString("订单日期:").setColor(getResources().getColor(R.color.hintColor)));
+                    tvOrderDate.append(new MyString(StringUtils.safetyString(item.getTargetdate())).setColor(getResources().getColor(R.color.textColor)));
+                    tvPackageName.setText(new MyString("包套名称:").setColor(getResources().getColor(R.color.hintColor)));
+                    tvPackageName.append(new MyString(StringUtils.safetyString(item.getPayment_money() + "")).setColor(getResources().getColor(R.color.textColor)));
                 }
             };
         }
