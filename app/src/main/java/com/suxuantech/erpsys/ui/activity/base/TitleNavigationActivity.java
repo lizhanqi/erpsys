@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,7 +60,15 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
     //当前Activity渲染用户的主要内容
     private View mContextView;
     private View lineView;
-    public TextView tvToolbarCenterTilte;
+    private TextView tvToolbarCenterTilte;
+        ImageView imgToolbarCenter;
+    public TextView getTvToolbarCenterTilte() {
+        return tvToolbarCenterTilte;
+    }
+
+    public ImageView getImgToolbarCenter() {
+        return imgToolbarCenter;
+    }
 
     @Override
     public void widgetClick(View v) {
@@ -516,6 +525,8 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
         tvToolbarCenterTilte = rootViews.findViewById(R.id.tv_toolbar_center_title);
         tvToolbarCenterTilte.setOnClickListener(this);
         mContentViewlayout = rootViews.findViewById(R.id.content_view_layout);
+        imgToolbarCenter = rootViews.findViewById(R.id.img_toolbar_center);
+
     }
 
     @Override

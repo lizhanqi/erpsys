@@ -86,6 +86,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         useEventBus();
         supportToolbar();
         getNavTitleView().setOnClickListener(this);
+        Drawable drawable = getResources().getDrawable(R.drawable.arrows_down_gray);
+        getImgToolbarCenter().setImageDrawable(drawable);
         stringArray = getResources().getStringArray(R.array.order);
         current = stringArray[getIntent().getIntExtra("showOnPosition", 0)];
         setCenterTitle(current);
@@ -195,8 +197,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                  *  第三个int类型的order ID参数，代表的是菜单项的显示顺序。默认是0，表示菜单的显示顺序就是按照add的显示顺序来显示。
                  *  第四个String类型的title参数，表示选项中显示的文字。
                  */
-                Drawable drawable = getResources().getDrawable(R.drawable.icon_add_white);
-                DrawableCompat.setTint(drawable, getResources().getColor(R.color.themeColor));
+                Drawable drawable = getResources().getDrawable(R.drawable.icon_add_product);
+                DrawableCompat.setTint(drawable, getResources().getColor(R.color.white));
                 int heit = (int) (drawable.getMinimumHeight() * 0.7);
                 drawable.setBounds(0, 0, heit, heit);
                 menu.add(Menu.NONE, 1, 1, "sss")
@@ -223,7 +225,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                                 alertView.setMarginBottom(30);
                                 alertView.show();
                                 EventBus.getDefault().post("addProductWindow");
-                                //immersionBarDark( );
                             } else {
                                 OptionHelp optionHelp = new OptionHelp(this);
                                 optionHelp.setTitle("添加包套");
@@ -252,14 +253,29 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     @MainThread
     public void onEventMainThread(String add) {
         MenuItem item = menu.findItem(0);
+        Drawable drawable = getResources().getDrawable(R.drawable.icon_edit_product);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.white));
         if (add.equals("80") && item == null) {
             hasPackage = true;
-            menu.add(Menu.NONE, 1, 0, "10").setIcon(getResources().getDrawable(R.drawable.icon_id))
-                    .setOnMenuItemClickListener(menuItem -> {
-                        EventBus.getDefault().post("edit");
-                        return true;
-                    })
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            if (menu.findItem(1) != null && !menu.findItem(1).getTitle().equals("10")) {
+
+                menu.add(Menu.NONE, 1, 0, "10").setIcon(drawable)
+                        .setOnMenuItemClickListener(menuItem -> {
+                            EventBus.getDefault().post("edit");
+                            return true;
+                        })
+                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            }
+        } else if (add.equals("88")){
+            if (menu.findItem(1) != null &&  menu.findItem(1).getTitle().equals("10")) {
+                menu.findItem(1).setIcon(drawable);
+            }
+        }else if (add.equals("89")){
+            Drawable ok = getResources().getDrawable(R.drawable.icon_product_ok);
+            DrawableCompat.setTint(ok, getResources().getColor(R.color.white));
+            if (menu.findItem(1) != null &&  menu.findItem(1).getTitle().equals("10")) {
+                menu.findItem(1).setIcon(ok);
+            }
         }
     }
 
@@ -325,8 +341,14 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setFocusable(true); // 设置PopupWindow可获得焦点
         mPopupWindow.setTouchable(true); // 设置PopupWindow可触摸
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                getImgToolbarCenter().setRotation(360);
+            }
+        });
         showAsDropDown(mPopupWindow, findViewById(R.id.v_line), 0, 0);
-        // showAsDropDown(mPopupWindow, getLineView(), 0, 0);
+        getImgToolbarCenter().setRotation(180);
     }
 
     /**

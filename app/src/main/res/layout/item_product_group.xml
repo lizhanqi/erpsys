@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout       android:layout_width="match_parent"
+<LinearLayout
+    android:layout_width="match_parent"
     android:id="@+id/ll_produc_batch"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -19,8 +20,8 @@
     android:paddingBottom="@dimen/px45"
     android:paddingLeft="@dimen/px55"
     android:textColor="@color/mainNav_66"
-    android:textSize="@dimen/xs36"
-    android:background="@color/myBackground_f7"
+    android:textSize="@dimen/xs55"
+    android:background="@color/mainNavline_e7"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 </LinearLayout>

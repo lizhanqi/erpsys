@@ -47,8 +47,8 @@ import butterknife.Unbinder;
  * 产品资料
  */
 public class ProductDataFragment extends BaseSupportFragment {
-    @BindView(R.id.cb_all)
-    CheckBox mCbAll;
+    @BindView(R.id.cb_all_prouduct)
+    CheckBox mCbAllProuduct;
     @BindView(R.id.tv_delete)
     TextView mTvDelete;
     @BindView(R.id.rl_delete)
@@ -64,7 +64,6 @@ public class ProductDataFragment extends BaseSupportFragment {
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer;
 
-
     public ProductDataFragment() {
     }
 
@@ -74,10 +73,14 @@ public class ProductDataFragment extends BaseSupportFragment {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
         useEventBus();
-        onCheckedChange( );
+        onCheckedChange();
         smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            if (isShowCheckBox){
+                editProduct();
+            }
             getProduct();
+
         });
         return view;
     }
@@ -100,12 +103,13 @@ public class ProductDataFragment extends BaseSupportFragment {
                 break;
         }
     }
+
     /**
      * @param msg
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String msg) {
-        if (msg.equals("pop")){
+        if (msg.equals("pop")) {
             addPackageOrProductWindow();
         } else if (msg.equals("freshProduct")) {
             smartRefreshLayout.autoRefresh();
@@ -147,7 +151,7 @@ public class ProductDataFragment extends BaseSupportFragment {
                                                  @Override
                                                  public boolean canScrollVertically() {
                                                      // 直接禁止垂直滑动
-                                                    // return false;
+                                                     // return false;
                                                      return true;
                                                  }
                                              }
@@ -161,6 +165,7 @@ public class ProductDataFragment extends BaseSupportFragment {
     }
 
     boolean isShowCheckBox;
+
     /**
      * 编辑产品
      */
@@ -169,38 +174,45 @@ public class ProductDataFragment extends BaseSupportFragment {
         if (isShowCheckBox) {
             mRlDelete.setVisibility(View.VISIBLE);
             mCbOneAll.setVisibility(View.VISIBLE);
+            EventBus.getDefault().post("89");
         } else {
             mRlDelete.setVisibility(View.GONE);
             mCbOneAll.setVisibility(View.GONE);
+            EventBus.getDefault().post("88");
         }
         productGroupAdaputer.setShowCheckBox(isShowCheckBox);
     }
 
-    private void onCheckedChange( ) {
-        mCbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void onCheckedChange() {
+        mCbAllProuduct.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCbOneAll.setChecked(isChecked);
+                productGroupAdaputer.setCheckAll(isChecked,!mCbOneAll.isChecked());
             }
         });
-       mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               productGroupAdaputer.setCheckAll(isChecked);
-           }
-       });
+        //包套
+        mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mCbAllProuduct.isChecked()){
+                    productGroupAdaputer.setCheckAll(isChecked,!mCbOneAll.isChecked());
+                }else {
+                    mCbAllProuduct.setChecked(isChecked);
+                }
+                mCbAllProuduct.setEnabled(!isChecked);
+            }
+        });
     }
-
     BottomSheetDialog dialog;
     public void addPackageOrProductWindow() {
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
-      if (dialog==null){
-        dialog =new BottomSheetDialog(getActivity())  ;
-          dialog.setContentView(views);
-      }
-      if (!dialog.isShowing()){
-          dialog.show();
-      }
+        if (dialog == null) {
+            dialog = new BottomSheetDialog(getActivity());
+            dialog.setContentView(views);
+        }
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
 //        AlertView alertView = new AlertView(null, null, null, null, null, getContext(), AlertView.Style.ACTIONSHEET, null);
 //        Button bn = views.findViewById(R.id.btn_add_package);
 //        bn.setClickable(true);
@@ -209,6 +221,7 @@ public class ProductDataFragment extends BaseSupportFragment {
 //        alertView.setContentContainerMargins(0, 0, 0, 0);
 //        alertView.show();
     }
+
     public void getProduct() {
         String orderId = getArguments().getString("orderId");
         String url = Contact.getFullUrl(Contact.CUSTOMER_PRODUCT, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
@@ -227,11 +240,10 @@ public class ProductDataFragment extends BaseSupportFragment {
                         mStvOnePackage.setRightString("¥:" + yxp.get(0).getPrice());
                         mStvOnePackage.setRightTextColor(getResources().getColor(R.color.litte_red));
                         setData(dataBean);
-                    }else {
+                    } else {
                         mStvOnePackage.setVisibility(View.GONE);
                     }
-                }else
-                {
+                } else {
                     mStvOnePackage.setVisibility(View.GONE);
 
                 }
@@ -244,39 +256,39 @@ public class ProductDataFragment extends BaseSupportFragment {
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+
     @Subscribe
     @MainThread
     public void onEventMainThread(String add) {
         if (add.equals("edit")) {
             editProduct();
-        }else  if (add.equals("checkAll")){
-            mCbOneAll.setOnCheckedChangeListener(null);
-            mCbAll.setOnCheckedChangeListener(null);
-            mCbOneAll.setChecked(true);
-            mCbAll.setChecked(true);
+        } else if (add.equals("checkAll")) {
+            mCbAllProuduct.setOnCheckedChangeListener(null);
+            mCbAllProuduct.setChecked(true);
             onCheckedChange();
-        }else  if (add.equals("checkNone")){
-            mCbOneAll.setOnCheckedChangeListener(null);
-            mCbAll.setOnCheckedChangeListener(null);
-            mCbOneAll.setChecked(false);
-            mCbAll.setChecked(false);
+        } else if (add.equals("checkNone")) {
+            mCbAllProuduct.setOnCheckedChangeListener(null);
+            mCbAllProuduct.setChecked(false);
             onCheckedChange();
         }
     }
 
-    @OnClick({ R.id.tv_delete,R.id.cb_all, R.id.cb_one_all})
+    @OnClick({R.id.tv_delete})
     public void onClick(View v) {
         switch (v.getId()) {
             default:
                 break;
-            case R.id.cb_all:
-                mCbAll.setChecked( mCbAll.isChecked());
-                break;
-            case R.id.cb_one_all:
-                mCbAll.setChecked( mCbAll.isChecked());
-                break;
             case R.id.tv_delete:
+                deletProduc();
                 break;
         }
+    }
+    public void deletProduc(){
+        if (   mCbOneAll.isChecked()) {
+            ToastUtils.showShort("包套");
+        }else {
+            ToastUtils.showShort("产品");
+        }
+
     }
 }
