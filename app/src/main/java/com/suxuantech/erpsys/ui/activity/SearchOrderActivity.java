@@ -45,7 +45,9 @@ import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.permission.Permission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,8 +215,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                         tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getTargetdate())).setColor(getResources().getColor(R.color.textColor)));
                         tvCustomerInfos.append(new MyString("\n拍照日期:").setColor(getResources().getColor(R.color.hintColor)));
                         String string = StringUtils.safetyString(item.getPhotodate());
-                        if (string.length()>10){
-                            string=     string.substring(0,10);
+                        if (string.length() > 10) {
+                            string = string.substring(0, 10);
                         }
                         tvCustomerInfos.append(new MyString(string).setColor(getResources().getColor(R.color.textColor)));
                     }
@@ -291,7 +293,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
         defineLoadMoreView = new DefineLoadMoreView(this);
         Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
+        drawable.setBounds(0, 0, (int) drawable.getMinimumWidth(), drawable.getMinimumWidth());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
         drawable = getResources().getDrawable(R.drawable.icon_qrcode_scan);
         //2:先调用DrawableCompat的wrap方法
@@ -362,11 +364,30 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_ORDER_ID && resultCode == RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            String result = bundle.getString("result");
+            mTietNavSearch.setText(StringUtils.safetyString(result));
+            mTietNavSearch.setSelection(mTietNavSearch.getText().toString().length());
+            search(true);
+        }
+    }
+
+    final int GET_ORDER_ID = 153;
+
     @OnClick({R.id.tv_nav_search_left, R.id.tv_nav_search_right, R.id.tiet_nav_search, R.id.tv_soso_storefront, R.id.btn_start_date, R.id.btn_end_date, R.id.tv_nearly_search})
     public void onClicks(View v) {
         switch (v.getId()) {
             case R.id.tv_nav_search_right:
-                startActivity(QRCodeScanActivity.class);
+                if (!hasPermission(Permission.Group.CAMERA)) {
+                    requestPermission(Permission.Group.CAMERA);
+                } else {
+                    Intent intent = new Intent(this, CaptureActivity.class);
+                    startActivityForResult(intent, GET_ORDER_ID);
+                }
                 break;
             case R.id.tv_nav_search_left:
                 finish();

@@ -36,7 +36,6 @@ import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.ui.activity.HistoryNoticeActivity;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
@@ -63,11 +62,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class ERPLeftFragment extends BaseLazyFragment {
-
-
     @BindView(R.id.tv_company_name)
     TextView mTvCompanyName;
     @BindView(R.id.tv_today_time)
@@ -84,14 +80,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     TextView mTvNoticeDetails;
     @BindView(R.id.left_top)
     RelativeLayout mLeftTop;
-    @BindView(R.id.tv_register_into_shop)
-    TextView mTvRegisterIntoShop;
-    @BindView(R.id.tv_outlets_order)
-    TextView mTvOutletsOrder;
-    @BindView(R.id.tv_order_search)
-    TextView mTvOrderSearch;
-    @BindView(R.id.tv_schedule)
-    TextView mTvSchedule;
     @BindView(R.id.schedule_wave)
     WaveView mScheduleWave;
     @BindView(R.id.task_wave)
@@ -111,7 +99,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     @BindView(R.id.rv_card)
     RecyclerView mRvCard;
     private View headView;
-    private View headView1;
+    private View module;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -251,7 +239,22 @@ public class ERPLeftFragment extends BaseLazyFragment {
             intent.putExtra("title", "今日收款");
             startActivity(intent);
         });
-        headView1 = inflater.inflate(R.layout.head_home, null, false);
+        module = inflater.inflate(R.layout.in_home_module, null, false);
+        module.findViewById(R.id.tv_register_into_shop).setOnClickListener(o -> {
+            startActivity(new Intent(getActivity(), RegisterIntoShopActivity.class));
+        });
+        module.findViewById(R.id.tv_outlets_order).setOnClickListener(o -> {
+            startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+        });
+        module.findViewById(R.id.tv_order_search).setOnClickListener(o -> {
+            startActivity(new Intent(getActivity(), SearchOrderActivity.class));
+        });
+        module.findViewById(R.id.tv_schedule).setOnClickListener(o -> {
+            Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+            intent.putExtra("title", "排程");
+            startActivity(intent);
+        });
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -260,7 +263,14 @@ public class ERPLeftFragment extends BaseLazyFragment {
         String[] titles = getResources().getStringArray(R.array.home_title);
         List<String> strings = Arrays.asList(titles);
         //网格布局管理器
-        mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2) {
+            @Override
+            public boolean canScrollVertically() {
+                // 直接禁止垂直滑动
+               // return false;
+                return true;
+            }
+        });
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -315,6 +325,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             startActivity(intent);
         });
 
+        quickAdapter.addHeaderView(module);
         quickAdapter.addHeaderView(headView);
         mRvCard.addItemDecoration(defaultItemDecoration);
         mRvCard.setAdapter(quickAdapter);
@@ -440,69 +451,5 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
 
-    }
-
-    @OnClick({R.id.tv_msg_number, R.id.rl_msg, R.id.tv_notice_details, R.id.tv_company_name, R.id.tv_today_time, R.id.tv_notice, R.id.tv_info, R.id.left_top, R.id.tv_register_into_shop, R.id.tv_outlets_order, R.id.tv_order_search, R.id.tv_schedule, R.id.schedule_wave, R.id.task_wave, R.id.tablayout_home, R.id.view_tl, R.id.vp_home, R.id.relativeLayout2, R.id.refreshLayout, R.id.root_layout_content_immersed})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
-            case R.id.tv_msg_number:
-                break;
-            case R.id.rl_msg:
-                startActivity(new Intent(getActivity(), HistoryNoticeActivity.class));
-                break;
-            case R.id.tv_notice_details:
-                startActivity(new Intent(getActivity(), NoticeDetailActivity.class));
-                break;
-            case R.id.tv_company_name:
-                break;
-            case R.id.tv_today_time:
-                break;
-            case R.id.tv_notice:
-                break;
-            case R.id.tv_info:
-                break;
-            case R.id.left_top:
-                break;
-            case R.id.tv_register_into_shop:
-                startActivity(new Intent(getActivity(), RegisterIntoShopActivity.class));
-                break;
-            case R.id.tv_outlets_order:
-                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
-                break;
-            case R.id.tv_order_search:
-                startActivity(new Intent(getActivity(), SearchOrderActivity.class));
-                break;
-            case R.id.tv_schedule:
-                //  request("http://192.168.0.12/api.php?m=login&a=getDepartments");
-
-//                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-//                intent.putExtra("type",SearchOrderActivity.SearchType.PHOTOGRAPH);
-//                startActivity(intent);
-//                CustomBottomDialog customBottomDialog = new CustomBottomDialog(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null), getActivity(), R.style.style_dialog);
-//                customBottomDialog.show();
-                Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
-                intent.putExtra("title", "排程");
-                startActivity(intent);
-
-                break;
-            case R.id.schedule_wave:
-                break;
-            case R.id.task_wave:
-                break;
-            case R.id.tablayout_home:
-                break;
-            case R.id.view_tl:
-                break;
-            case R.id.vp_home:
-                break;
-            case R.id.relativeLayout2:
-                break;
-            case R.id.refreshLayout:
-                break;
-            case R.id.root_layout_content_immersed:
-                break;
-        }
     }
 }

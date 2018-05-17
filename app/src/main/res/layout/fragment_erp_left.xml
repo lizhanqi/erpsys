@@ -177,61 +177,13 @@ clickable是防止页面穿透的点击事件的
                 <!--android:layout_height="match_parent"-->
                 <!--android:fillViewport="true">-->
                 <!--功能区与数据-->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/left_top"
                     android:background="@color/gray_f9"
                     android:orientation="vertical">
-                    <!--功能区-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/px333"
-                        android:background="@color/white"
-                        app:layout_behavior="com.suxuantech.erpsys.ui.widget.DefineBehavior">
-
-                        <TextView
-                            android:id="@+id/tv_register_into_shop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_outlets_order"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/px60"
-                            android:text="进店登记" />
-
-                        <TextView
-                            android:id="@+id/tv_outlets_order"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_outlets_order_home"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/px60"
-                            android:text="门市开单" />
-                        <TextView
-                            android:id="@+id/tv_order_search"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_order_search_home"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/px60"
-                            android:text="订单查询" />
-                        <TextView
-                            android:id="@+id/tv_schedule"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/px25"
-                            android:drawableTop="@drawable/icon_scheme_home"
-                            android:gravity="center"
-                            android:paddingTop="@dimen/px60"
-                            android:text=" 排  程 " />
-                    </LinearLayout>
                     <!--表-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -350,6 +302,7 @@ clickable是防止页面穿透的点击事件的
                     </LinearLayout>
                     <!--数据区-->
                     <LinearLayout
+
                         android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -387,6 +340,7 @@ clickable是防止页面穿透的点击事件的
                         tools:tr_head_height="100dp"
                         tools:tr_wave_height="100dp">
                     <android.support.v7.widget.RecyclerView
+                        android:overScrollMode="never"
                         android:padding="@dimen/px30"
                         android:background="@color/gray_f9"
                         android:id="@+id/rv_card"
