@@ -94,9 +94,7 @@ public class ToastUtils {
             mToast = null;
         }
     }
-
     static Snackbar make;
-
     public static void snackbarShort(String text) {
         snackbarShort(text, null, null);
     }
@@ -106,7 +104,12 @@ public class ToastUtils {
     }
 
     public static void snackbarShort(String text, String action) {
-        snackbarShort(text, action, null);
+        snackbarShort(text, action, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     public static void snackbarShort(int text, String action) {

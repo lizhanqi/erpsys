@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.FalsifyFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.suxuantech.erpsys.entity.LoginEntity;
+import com.suxuantech.erpsys.entity.UserEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
 import com.suxuantech.erpsys.utils.JsonUtil;
 import com.suxuantech.erpsys.utils.L;
@@ -74,10 +75,9 @@ public class App extends Application {
     private static App application;
     public static boolean ISDEBUG = true;
     public static String APP_LOG_NAME = "debug";
-    public final static String LOGINFILENAME = "login_inf";
+    public final static String LOGIN_FILE_NAME = "login_inf";
     private LoginEntity userInfo;
     private List<String> userPermission;
-
     public void setUserPermission(List<String> userPermission) {
         this.userPermission = userPermission;
     }
@@ -99,17 +99,19 @@ public class App extends Application {
             return false;
         }
     }
-
     public LoginEntity getLoginData() {
         //return    CacheUtils.getInstance().getJSONObject(LOGINFILENAME);
         if (userInfo == null) {
-            String string = CacheUtils.getInstance().getString(LOGINFILENAME);
+            String string = CacheUtils.getInstance().getString(LOGIN_FILE_NAME);
             userInfo = JsonUtil.parseJson(string, LoginEntity.class);
         }
         return userInfo;
     }
-
-    public LoginEntity.DataBean getUserInfor() {
+    public App releaseLoginData() {
+        userInfo=null;
+        return this;
+    }
+    public UserEntity getUserInfor() {
         return App.getApplication().getLoginData().getData().get(0);
     }
 

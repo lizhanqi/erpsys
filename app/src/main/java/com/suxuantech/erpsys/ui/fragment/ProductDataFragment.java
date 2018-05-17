@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -30,6 +31,7 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -74,6 +76,7 @@ public class ProductDataFragment extends BaseSupportFragment {
      */
     private List<DeleteCheckEntity.DataBean> productPermission;
     private CustomerProductEntity.DataBean dataBean;
+
     /**
      * 一销或者二销任意一项没锁定
      *
@@ -168,6 +171,14 @@ public class ProductDataFragment extends BaseSupportFragment {
                 if (response.get().isOK()) {
                     ToastUtils.snackbarShort("添加套系成功");
                     smartRefreshLayout.autoRefresh();
+                } else {
+                    String msg = StringUtils.safetyString(response.get().getCode()) + StringUtils.safetyString(response.get().getMsg());
+                    AlertDialog.newBuilder(getActivity())
+                            .setMessage(msg)
+                            .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
+                                    }
+                            ).show();
+
                 }
             }
 
@@ -385,10 +396,10 @@ public class ProductDataFragment extends BaseSupportFragment {
                     }
                 }
             }
-            if (sb.length()>1){
-                  sb = sb.deleteCharAt(sb.lastIndexOf(";"));
+            if (sb.length() > 1) {
+                sb = sb.deleteCharAt(sb.lastIndexOf(";"));
             }
-            if (StringUtils.empty(sb.toString())||sb.toString().startsWith(";")) {
+            if (StringUtils.empty(sb.toString()) || sb.toString().startsWith(";")) {
                 return;
             }
             String cid = sb.toString();

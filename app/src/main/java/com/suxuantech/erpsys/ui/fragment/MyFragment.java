@@ -46,12 +46,19 @@ public class MyFragment extends BaseSupportFragment {
     RelativeLayout mAboutUs;
     @BindView(R.id.tv_verstion)
     TextView mTvVerstion;
+    @BindView(R.id.tv_name_and_post)
+    TextView mTvNameAndPost;
+
     @BindView(R.id.btn_login_out)
     Button mBtnLoginOut;
     @BindView(R.id.content_view_linearlayout)
     LinearLayout mContentViewLinearlayout;
+    @BindView(R.id.rv_other_info)
+    RelativeLayout otherInfo;
+
     @BindView(R.id.root_layout_status_immersed)
     RelativeLayout mRootLayoutStatusImmersed;
+
     @BindView(R.id.dampView)
     BounceScrollView mDampView;
     private View view;
@@ -104,11 +111,17 @@ public class MyFragment extends BaseSupportFragment {
         mTvDepartment.setText(App.getApplication().getUserInfor().getDepartment_name());
         mTvStore.setText(App.getApplication().getUserInfor().getShop_name());
         mTvStaffSerialNumber.setText(App.getApplication().getUserInfor().getStaffnumber());
-        mTvStaffPhone.setText("id:"+App.getApplication().getUserInfor().getStaff_id());
-         mTvStaffId.setText(App.getApplication().getUserInfor().getStaffname());
+        if (App.ISDEBUG) {
+            mTvStaffPhone.setText("员工id:" + App.getApplication().getUserInfor().getStaff_id()+"店面code:" + App.getApplication().getUserInfor().getShop_code());
+            otherInfo.setVisibility(View.VISIBLE);
+        } else {
+            otherInfo.setVisibility(View.GONE);
+        }
+        mTvStaffId.setText(App.getApplication().getUserInfor().getStaffname());
+        mTvNameAndPost.setText(App.getApplication().getUserInfor().getStaffname() + "\n" + App.getApplication().getUserInfor().getMain_position_name());
     }
 
-    @OnClick({R.id.switch_theme,R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out, R.id.content_view_linearlayout, R.id.root_layout_status_immersed, R.id.dampView})
+    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out, R.id.content_view_linearlayout, R.id.root_layout_status_immersed, R.id.dampView})
     public void onClick(View v) {
         switch (v.getId()) {
 

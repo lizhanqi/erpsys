@@ -29,13 +29,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.EncodeUtils;
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.entity.LoginEntity;
+import com.suxuantech.erpsys.entity.PHPLoginEntity;
 import com.suxuantech.erpsys.entity.PermissionEntity;
+import com.suxuantech.erpsys.entity.UserEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
@@ -113,12 +117,12 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView copyRight;
+    private EditText mCompanyID;
 
 
     //    private View mLoginFormView;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //横向
@@ -136,19 +140,19 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         }
 
     }
-
-    boolean isLoginOneSucceed, hasPermission;
-
     /**
      * 获取登录人权限
      */
     public void getPermisstion() {
+        App.getApplication().releaseLoginData();
         if (App.getApplication().getUserInfor().getMain_work_type().isEmpty()) {
             ToastUtils.snackbarShort("未设置工作类型!无法获取权限");
+            loginFailed();
             return;
         }
         if (App.getApplication().getUserInfor().getMain_position_code().isEmpty()) {
             ToastUtils.snackbarShort("未设置主岗位,无法获取权限");
+            loginFailed();
             return;
         }
         String string = Contact.getFullUrl(Contact.LOGIN_PERMISSION, Contact.TOKEN, App.getApplication().getUserInfor().getMain_work_type() + "," + App.getApplication().getUserInfor().getWork_type(),
@@ -158,15 +162,17 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             @Override
             public void onSucceed(int what, Response<PermissionEntity> response) {
                 if (response.get().isOK() || response.get().getData() != null) {
-                    hasPermission = true;
-                    LoginSucceed();
                     List<String> data = response.get().getData();
                     App.getApplication().setUserPermission(data);
+                    loginJG(App.getApplication().getUserInfor().getStaffname(),App.getApplication().getUserInfor().getStaffnumber());
+                }else {
+                    loginFailed();
                 }
             }
 
             @Override
             public void onFailed(int what, Response<PermissionEntity> response) {
+                loginFailed();
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
@@ -174,26 +180,17 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     }
 
     public void LoginSucceed() {
-        if (isLoginOneSucceed) {
-            loadingDialog.dismiss();
+             loadingDialog.dismiss();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(System.currentTimeMillis() * 1000));
-            dLog(System.currentTimeMillis() + "");
+//            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(System.currentTimeMillis() * 1000));
+//            dLog(System.currentTimeMillis() + "");
             finish();
-        }
+
     }
-
     Dialog loadingDialog;
-
-    //登录极光
     void login(String name, String password) {
-        //登录极光
-        loginJG(name, password);
         loadingDialog.setCancelable(false);
-        isLoginOneSucceed = false;
-        name = "小飞";
-        password = "0";
         loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
         HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
@@ -201,10 +198,8 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             public void onSucceed(int what, Response<LoginEntity> response) {
                 if (response.get().isOK()) {
                     //保存登录信息
-                    CacheUtils.getInstance().put(App.LOGINFILENAME, FastJsonUtils.toJSONString(response.get()));
+                    CacheUtils.getInstance().put(App.LOGIN_FILE_NAME, FastJsonUtils.toJSONString(response.get()));
                     getPermisstion();
-                    LoginSucceed();
-                    isLoginOneSucceed = true;
                 } else {
                     loginFailed();
                     toastShort(response.get().getMsg());
@@ -219,22 +214,26 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         request(0, stringRequest, httpListener, false, false);
     }
 
+    /*
+      登录失败
+     */
     public void loginFailed() {
         loadingDialog.dismiss();
-        if (isLoginOneSucceed) {
-            loadingDialog.dismiss();
-        }
-        hasPermission = false;
-        isLoginOneSucceed = false;
+        JMessageClient.logout();
     }
-
-    public void loginJG(String name, String password) {
-        JMessageClient.login(name, password, new BasicCallback() {
+    public void loginJG(String jgName, String jgPassWord) {
+        if (jgName.equals("小飞")){
+            jgName="10086";
+            jgPassWord="10086";
+        }else {
+            jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
+            jgName = EncodeUtils.base64Encode2String(jgName.getBytes());
+        }
+        JMessageClient.login(jgName, jgPassWord, new BasicCallback() {
             @Override
             public void gotResult(int i, String s) {
                 if (i == 0) {
                     LoginSucceed();
-                    isLoginOneSucceed = true;
                 } else {
                     loginFailed();
                     ToastUtils.showShort(s);
@@ -244,7 +243,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     }
 
     @Override
-    protected void    onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
         initFingerprintCore();
@@ -257,6 +256,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
         mPasswordView = findViewById(R.id.password);
+        mCompanyID = findViewById(R.id.company_id);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -267,39 +267,50 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 return false;
             }
         });
-
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mEmailView.getText().toString().trim(), mEmailView.getText().toString().trim());
+                if (mCompanyID.getText().toString().equals("1")) {
+                    php(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+                } else {
+                    login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+                }
             }
         });
-        findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                php(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-                //login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-            }
-        });
-
-
-//        mLoginFormView = findViewById(R.id.login_form);
     }
 
-    private void php(String name ,String key) {
+    private void php(String name, String key) {
+        loadingDialog.show();
         String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.PHP_PREFIX);
-        //请求实体
-        JavaBeanRequest<LoginEntity> login = new JavaBeanRequest<LoginEntity>(fullUrl, RequestMethod.POST, LoginEntity.class);
-        //zx002
-       // districtBeanJavaBeanRequest.add("shop_code","zx002");
-        HttpListener<LoginEntity> searchByCustmor = new HttpListener<LoginEntity>() {
+        JavaBeanRequest<PHPLoginEntity> login = new JavaBeanRequest<PHPLoginEntity>(fullUrl, PHPLoginEntity.class);
+        login.add("staffname", name);
+        login.add("password", key);
+//        login.setMultipartFormEnable(true);
+        HttpListener<PHPLoginEntity> searchByCustmor = new HttpListener<PHPLoginEntity>() {
             @Override
-            public void onSucceed(int what, Response<LoginEntity> response) {
-
+            public void onSucceed(int what, Response<PHPLoginEntity> response) {
+                if (response.get().isOK()) {
+                    if (response.get().isOK()) {
+                        LoginEntity loginEntity = new LoginEntity();
+                        ArrayList<UserEntity> userData = new ArrayList<>();
+                        userData.add(response.get().getData());
+                        loginEntity.setData(userData);
+                        loginEntity.setMsg(response.get().getMsg());
+                        loginEntity.setCode(response.get().getCode());
+                        //保存登录信息
+                        CacheUtils.getInstance().put(App.LOGIN_FILE_NAME, FastJsonUtils.toJSONString(loginEntity));
+                        getPermisstion();
+                    } else {
+                        loginFailed();
+                        toastShort(response.get().getMsg());
+                    }
+                }
             }
+
             @Override
-            public void onFailed(int what, Response<LoginEntity> response) {
+            public void onFailed(int what, Response<PHPLoginEntity> response) {
+                loginFailed();
             }
         };
         request(0, login, searchByCustmor, false, false);
@@ -309,17 +320,22 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
         @Override
         public void onAuthenticateSuccess() {
+            mCompanyID.setText("111");
+            mEmailView.setText("小飞");
+            login("小飞","0");
             toastShort("指纹识别成功");
         }
 
         @Override
         public void onAuthenticateFailed(int helpId) {
             toastShort("指纹识别失败,请重试" + helpId);
+            startFingerprintRecognition();
         }
 
         @Override
         public void onAuthenticateError(int errMsgId) {
             toastShort("指纹识别错误" + errMsgId);
+            startFingerprintRecognition();
         }
 
         @Override

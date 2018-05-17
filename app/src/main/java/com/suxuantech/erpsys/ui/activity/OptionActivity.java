@@ -99,7 +99,6 @@ public class OptionActivity extends TitleNavigationActivity {
     private List<ThemeEntity.DataBean> themeData;
     private List<OptionPanelTypeEntity.DataBean> optionPanelTypeData;
     private List<PhotoTypeEntity.DataBean> photoTypeData;
-
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     /**
      * 加载更多。
@@ -285,19 +284,19 @@ public class OptionActivity extends TitleNavigationActivity {
 
     public void shoPop(int index) {
         PackageEntity.DataBean dataBean = packageData.get(index);
-        View inflate = getLayoutInflater().inflate(R.layout.pop_price,null);
+        View inflate = getLayoutInflater().inflate(R.layout.pop_price, null);
         EditText editText = inflate.findViewById(R.id.et_price);
-        editText.setText(dataBean.getPackage_price()+"");
+        editText.setText(dataBean.getPackage_price() + "");
         editText.setSelection(editText.getText().toString().length());
         AlertDialog.newBuilder(this).setTitle("包套确认:")
                 .setView(inflate)
                 .setMessage(dataBean.getPackage_name())
                 .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
-                    if (editText.getText().toString()!=null){
+                    if (editText.getText().toString() != null && editText.getText().toString().length() > 0) {
                         int pr = Integer.parseInt(editText.getText().toString());
                         packageData.get(index).setPackage_price(pr);
                         singleResult(index);
-                    }else {
+                    } else {
                         return;
                     }
                 })
@@ -510,6 +509,11 @@ public class OptionActivity extends TitleNavigationActivity {
             shoppingCartAdapter.refresh(productDataAdded);
             getSum();
         });
+        tvPopProductSumInfo.setOnClickListener(i -> {
+            if (productDataAdded.size() > 0) {
+                addProduct();
+            }
+        });
         addedRecy = inflate.findViewById(R.id.rv_product);
         productShoppingCart();
         addedRecy.addItemDecoration(new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7)));
@@ -643,7 +647,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
                 } else if (photoTypeData != null) {
-                    //选片类型
+                    //拍照类型
                     ArrayList<PhotoTypeEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(photoTypeData.get(position));
                     BaseMsg<PhotoTypeEntity.DataBean> dataBeanBaseMsg = new BaseMsg<PhotoTypeEntity.DataBean>(photoTypeData, dataBeans, mMultiple);
@@ -1416,7 +1420,12 @@ public class OptionActivity extends TitleNavigationActivity {
                     tvNowPrice.setOnClickListener(l -> {
                     });
                     tvProductInfo.setText(item.getItem_name());
-                    tvProductInfo.append(new MyString("\n¥:" + item.getItem_price()).setDeletLine());
+                    tvProductInfo.append(new MyString("\n原价¥:"));
+                    if (item.getItem_price()==item.getNow_price()){
+                        tvProductInfo.append(new MyString( item.getItem_price()+""));
+                    }else {
+                        tvProductInfo.append(new MyString( item.getItem_price()+"").setDeletLine());
+                    }
                     btPlus.setOnClickListener(l -> {
                                 item.setNumber((item.getNumber() + 1));
                                 productDataAdded.get(position).setNumber(item.getNumber());
@@ -1452,21 +1461,21 @@ public class OptionActivity extends TitleNavigationActivity {
     }
 
     public void showChangePrice(int postion) {
-        View inflate = getLayoutInflater().inflate(R.layout.pop_price,null);
+        View inflate = getLayoutInflater().inflate(R.layout.pop_price, null);
         EditText editText = inflate.findViewById(R.id.et_price);
-        editText.setText(productDataAdded.get(postion).getNow_price()+"");
+        editText.setText(productDataAdded.get(postion).getNow_price() + "");
         editText.setSelection(editText.getText().toString().length());
         AlertDialog.newBuilder(this).setTitle("产品价格修改:")
                 .setView(inflate)
                 .setMessage(productDataAdded.get(postion).getItem_name())
                 .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
-                    if (editText.getText().toString()!=null){
+                    if (editText.getText().toString() != null) {
                         String string = editText.getText().toString();
                         int i = Integer.parseInt(string);
                         productDataAdded.get(postion).setNow_price(i);
                         shoppingCartAdapter.notifyDataSetChanged();
                         getSum();
-                    }else {
+                    } else {
                         return;
                     }
                 })
@@ -1544,7 +1553,7 @@ public class OptionActivity extends TitleNavigationActivity {
                 public void onFailed(int what, Response<SimpleEntity> response) {
                 }
             };
-            request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+            request(0, districtBeanJavaBeanRequest, searchByCustmor, false, true);
         }
     }
 
