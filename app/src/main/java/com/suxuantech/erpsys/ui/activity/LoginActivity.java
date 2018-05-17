@@ -278,7 +278,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         findViewById(R.id.email_sign_in_button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                php(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
                 //login(mPasswordView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
@@ -287,6 +287,23 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
 //        mLoginFormView = findViewById(R.id.login_form);
     }
 
+    private void php(String name ,String key) {
+        String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.PHP_PREFIX);
+        //请求实体
+        JavaBeanRequest<LoginEntity> login = new JavaBeanRequest<LoginEntity>(fullUrl, RequestMethod.POST, LoginEntity.class);
+        //zx002
+       // districtBeanJavaBeanRequest.add("shop_code","zx002");
+        HttpListener<LoginEntity> searchByCustmor = new HttpListener<LoginEntity>() {
+            @Override
+            public void onSucceed(int what, Response<LoginEntity> response) {
+
+            }
+            @Override
+            public void onFailed(int what, Response<LoginEntity> response) {
+            }
+        };
+        request(0, login, searchByCustmor, false, false);
+    }
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {

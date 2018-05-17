@@ -59,6 +59,10 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
     CustomerProductEntity.DataBean dataBean;
     ArrayList<Drawable> drawables = new ArrayList<>();
 
+    public CustomerProductEntity.DataBean getDataBean() {
+        return dataBean;
+    }
+
     public ProductGroupAdaputer(Context context, boolean isOnePackageProduct, CustomerProductEntity.DataBean dataBean) {
         super(context);
         this.isOnePackageProduct = isOnePackageProduct;
@@ -72,15 +76,16 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
         drawables.add(mContext.getResources().getDrawable(R.drawable.product_3));
         drawables.add(mContext.getResources().getDrawable(R.drawable.product_4));
     }
-    public void setShowCheckBox(boolean showCheckBox) {
-        setCheckAll(false, true);
+
+    public void setShowCheckBox(boolean showCheckBox, boolean oneEdit, boolean twoEdit) {
+        setCheckAll(false, true, oneEdit, twoEdit);
         isShowCheckBox = showCheckBox;
         notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return 2;
+        return dataBean == null ? 0 : 2;
     }
 
     @Override
@@ -115,16 +120,26 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
     }
 
     @Override
+    public int getHeaderViewType(int groupPosition) {
+        return super.getHeaderViewType(groupPosition);
+    }
+
+    @Override
     public int getChildLayout(int viewType) {
         return R.layout.item_new_product;
     }
 
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
+
         holder.get(R.id.ll_produc_batch).setVisibility(View.VISIBLE);
         TextView view = holder.get(R.id.tv_package_group_name);
         if (groupPosition == 0) {
-            view.setText("一销产品");
+            if (dataBean.getYx() == null || dataBean.getYx().getYxf() == null || dataBean.getYx().getYxf().size() <= 0) {
+                holder.get(R.id.ll_produc_batch).setVisibility(View.GONE);
+            } else {
+                view.setText("一销产品");
+            }
         } else if (groupPosition == 1) {
             if (dataBean.getEx() == null || dataBean.getEx().getExf() == null || dataBean.getEx().getExf().size() <= 0) {
                 holder.get(R.id.ll_produc_batch).setVisibility(View.GONE);
@@ -138,18 +153,18 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
     public void onBindFooterViewHolder(BaseViewHolder holder, int groupPosition) {
     }
 
-    public Drawable randomDrawable(){
-        int x=(int)(Math.random()*50);
+    public Drawable randomDrawable() {
+        int x = (int) (Math.random() * 50);
         int i = x % drawables.size();
-     return   drawables.get(i);
+        return drawables.get(i);
     }
+
     @Override
     public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
         TextView view1 = holder.get(R.id.tv_product_info);
         TextView view2 = holder.get(R.id.tv_product_number);
         CheckBox view = holder.get(R.id.cb_product);
         ImageView product = holder.get(R.id.img_product);
-//        product.setImageDrawable(randomDrawable());
         RequestOptions options2 = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)//预加载图片
@@ -184,7 +199,7 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
             view2.setText(new MyString("¥" + StringUtils.safetyString(yxfBean.getPrice())).setColor(mContext.getResources().getColor(R.color.colorAccent)));
             view2.append(new MyString("/件\n\nx:").setColor(mContext.getResources().getColor(R.color.textColor)));
             view2.append(new MyString(StringUtils.safetyString(yxfBean.getAmount())).setColor(mContext.getResources().getColor(R.color.colorAccent)));
-            if (isShowCheckBox) {
+            if (isShowCheckBox && oneEdit) {
                 view.setVisibility(View.VISIBLE);
             } else {
                 view.setVisibility(View.GONE);
@@ -198,7 +213,7 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
             view2.setText(new MyString("¥" + StringUtils.safetyString(exfBean.getPrice())).setColor(mContext.getResources().getColor(R.color.colorAccent)));
             view2.append(new MyString("/件\n\nx:").setColor(mContext.getResources().getColor(R.color.textColor)));
             view2.append(new MyString(StringUtils.safetyString(exfBean.getAmount())).setColor(mContext.getResources().getColor(R.color.colorAccent)));
-            if (isShowCheckBox) {
+            if (isShowCheckBox && twoEdit) {
                 view.setVisibility(View.VISIBLE);
             } else {
                 view.setVisibility(View.GONE);
@@ -208,42 +223,63 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
         view.setEnabled(editBox);
     }
 
-    public boolean isCheckAll() {
-        boolean one = true, two = true;
-        if (dataBean.getYx() != null && dataBean.getYx().getYxf() != null) {
-            List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
-            for (CustomerProductEntity.DataBean.YxBean.YxfBean y : yxf) {
-                if (y.isChecked()) {
-                    one = true;
-                } else {
-                    return one = false;
+    public boolean oneIsCheckedAll() {
+        if (oneEdit) {
+            if (dataBean.getYx() != null && dataBean.getYx().getYxf() != null) {
+                List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
+                for (CustomerProductEntity.DataBean.YxBean.YxfBean y : yxf) {
+                    if (!y.isChecked()) {
+                        return false;
+                    }
                 }
             }
+            return true;
+        } else {
+            return true;
         }
-        if (dataBean.getEx() != null && dataBean.getEx().getExf() != null) {
-            List<CustomerProductEntity.DataBean.ExBean.ExfBean> exf = dataBean.getEx().getExf();
-            for (CustomerProductEntity.DataBean.ExBean.ExfBean e : exf) {
-                if (e.isChecked()) {
-                    two = true;
-                } else {
-                    return two = false;
-                }
-            }
-        }
-        return one && two;
     }
 
-    private boolean editBox = true;
-
-    public void setCheckAll(boolean checkAll, boolean editBox) {
-        this.editBox = editBox;
-        if (dataBean.getYx() != null && dataBean.getYx().getYxf() != null) {
-            List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
-            for (CustomerProductEntity.DataBean.YxBean.YxfBean y : yxf) {
-                y.setChecked(checkAll);
+    public boolean twoIsCheckedAll() {
+        if (twoEdit) {
+            if (dataBean.getEx() != null && dataBean.getEx().getExf() != null) {
+                List<CustomerProductEntity.DataBean.ExBean.ExfBean> exf = dataBean.getEx().getExf();
+                for (CustomerProductEntity.DataBean.ExBean.ExfBean e : exf) {
+                    if (!e.isChecked()) {
+                        return false;
+                    }
+                }
             }
-            dataBean.getYx().setCheckedAll(checkAll);
+            return true;
+        } else {
+            return true;
         }
+    }
+
+    public boolean isCheckAll() {
+        return twoIsCheckedAll() && oneIsCheckedAll();
+    }
+
+    //勾选框是否可手动勾选(如果是删除包套则不能编辑了)
+    private boolean editBox = true;
+    //一销是否可以编辑
+    private boolean oneEdit = true;
+    //二销是否可编辑
+    private boolean twoEdit = true;
+
+    public void setCheckAll(boolean checkAll, boolean editBox, boolean oneEdit, boolean twoEdit) {
+        this.editBox = editBox;
+        this.oneEdit = oneEdit;
+        this.twoEdit = twoEdit;
+        if (oneEdit) {
+            oneCheckedAll(checkAll);
+        }
+        if (twoEdit) {
+            twoCheckedAll(checkAll);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void twoCheckedAll(boolean checkAll) {
         if (dataBean.getEx() != null && dataBean.getEx().getExf() != null) {
             List<CustomerProductEntity.DataBean.ExBean.ExfBean> exf = dataBean.getEx().getExf();
             for (CustomerProductEntity.DataBean.ExBean.ExfBean e : exf) {
@@ -251,6 +287,16 @@ public class ProductGroupAdaputer extends GroupedRecyclerViewAdapter {
             }
             dataBean.getEx().setCheckedAll(checkAll);
         }
-        notifyDataSetChanged();
     }
+
+    public void oneCheckedAll(boolean checkAll) {
+        if (dataBean.getYx() != null && dataBean.getYx().getYxf() != null) {
+            List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = dataBean.getYx().getYxf();
+            for (CustomerProductEntity.DataBean.YxBean.YxfBean y : yxf) {
+                y.setChecked(checkAll);
+            }
+            dataBean.getYx().setCheckedAll(checkAll);
+        }
+    }
+
 }

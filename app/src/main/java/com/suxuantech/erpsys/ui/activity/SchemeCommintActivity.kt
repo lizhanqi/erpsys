@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,6 +23,7 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.TypeFlag
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
+import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
 import com.suxuantech.erpsys.ui.widget.ScrollEditText
 import com.suxuantech.erpsys.utils.StringUtils
 import com.suxuantech.erpsys.utils.ToastUtils
@@ -64,6 +66,8 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             var llForm = helper?.getView<View>(R.id.ll_form) as LinearLayout;
             var tvFormKey = helper?.getView<View>(R.id.tv_form_key) as TextView;
             var tvFormValue = helper?.getView<View>(R.id.tv_form_value) as ScrollEditText;
+            var iamge = helper?.getView<ImageView>(R.id.img_icon)  ;
+            iamge.setImageDrawable(resources.getDrawable(item?.icon!!))
             if (item?.mustFill!!) {
                 val drawable = resources.getDrawable(R.drawable.arrows_right_gray)
                 drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumWidth)
@@ -73,9 +77,10 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             if (item?.edit!!) {
                 tvFormValue.minLines = 3;
                 tvFormValue.maxLines = 3;
-                tvFormValue.setEnabled(true)
+
             }
             tvFormKey.setText(item.key)
+            tvFormValue.setClickable(true)
             if (StringUtils.empty(item.value)) {
                 tvFormValue.setHint(StringUtils.safetyString(item.hint))
             } else {
@@ -108,47 +113,56 @@ class SchemeCommintActivity : TitleNavigationActivity() {
         if (searchType == TypeFlag.OPTION_PANEL) {
             val dataAll = intent.extras.getParcelable<TodayOptionPhotoSchemeEntity.DataBean>("allSchemeData");
             tvHistory?.setText("历史选片排程")
-            tvHistoryName?.setText("选片类型:" + dataAll.sptype)
+            tvHistoryName?.setText("选片类型:" + StringUtils.safetyString(dataAll.sptype))
             tvHistoryValue?.setText(StringUtils.safetyString(dataAll.selectday))
             val formEntity = FormEntity("选片类型");
             formEntity.hint = "请选择选片类型"
+            formEntity.icon=R.drawable.icon_photo_type
             formEntity.mustFill = true
             formEntity.option = true;
             listData.add(formEntity)
             val formEntity2 = FormEntity("选片日期");
+            formEntity2.icon=R.drawable.icon_date
             formEntity2.hint = schemeData?.pcday
             listData.add(formEntity2)
             val formEntity3 = FormEntity("选片时间");
             formEntity3.hint = schemeData?.pctime
+            formEntity3.icon=R.drawable.icon_time
             listData.add(formEntity3)
             val formEntity4 = FormEntity("选片备注");
             formEntity4.hint = "请填写选片备注"
             formEntity4.edit = true
+            formEntity4.icon=R.drawable.icon_send_remarks
             listData.add(formEntity4)
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
             val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>("allSchemeData");
             tvHistory?.setText("历史拍照排程")
             tvHistory?.setText("历史选片排程")
-            tvHistoryName?.setText("拍照类型:" + dataAll.phototype)
+            tvHistoryName?.setText("拍照类型:" + StringUtils.safetyString(dataAll.phototype))
             tvHistoryValue?.setText(StringUtils.safetyString(dataAll.photodate))
             val formEntity = FormEntity("拍照类型");
             formEntity.hint = "请选择拍照类型"
+            formEntity.icon=R.drawable.icon_photo_type
             formEntity.mustFill = true
             formEntity.option = true;
             listData.add(formEntity)
             val formEntity2 = FormEntity("拍照日期");
             formEntity2.hint = schemeData?.pcday
+            formEntity2.icon=R.drawable.icon_date
             listData.add(formEntity2)
             val formEntity3 = FormEntity("拍照时间");
+            formEntity3.icon=R.drawable.icon_time
             formEntity3.hint = schemeData?.pctime
             listData.add(formEntity3)
             val formEntity4 = FormEntity("客户备注");
             formEntity4.hint = "请填写备注"
+            formEntity4.icon=R.drawable.icon_send_remarks
             formEntity4.edit = true
             listData.add(formEntity4)
         }
         rvList?.layoutManager = LinearLayoutManager(baseContext);
         rvList?.adapter = ada;
+        rvList?.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7)))
         ada.bindToRecyclerView(rvList)
         ada.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
             if (position == 0) {

@@ -44,7 +44,7 @@
                     android:background="@null"
                     android:hint="请填写姓名" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:inputType="phone"
                     android:maxLength="11" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_outlets_reception"
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择门市接待" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_wechat"
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                     android:background="@null"
                     android:hint="请填写客户微信" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_QQ"
                 android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                     android:layout_marginLeft="@dimen/px30"
                     android:hint="请填写客户QQ" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_sex"
                 android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择性别" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_consumption_type"
                 android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择消费类型" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_zone"
                 android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择客户分区" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_birthday"
                 android:layout_width="match_parent"
@@ -214,7 +214,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择客户生日" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_custmoer_source"
                 android:layout_width="match_parent"
@@ -235,7 +235,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择客户来源" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_customer_intention"
                 android:layout_width="match_parent"
@@ -256,7 +256,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择客户意向" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_order_receiving_point"
                 android:layout_width="match_parent"
@@ -277,7 +277,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择接单点" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_custmoer_address"
                 android:layout_width="match_parent"
@@ -298,8 +298,9 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择客户地址" />
             </LinearLayout>
-
+            <View style="@style/line"/>
         </LinearLayout>
+        <View style="@style/line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -329,7 +330,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择预约进店时间" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_reservation_shoot_date"
                 android:layout_width="match_parent"
@@ -350,7 +351,7 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择预拍日期" />
             </LinearLayout>
-
+            <View style="@style/line"/>
             <LinearLayout
                 android:id="@+id/ll_marry_date"
                 android:layout_width="match_parent"
@@ -371,7 +372,9 @@
                     android:drawableRight="@drawable/arrows_right_gray"
                     android:hint="请选择结婚日期" />
             </LinearLayout>
+            <View style="@style/line"/>
         </LinearLayout>
+        <View style="@style/line"/>
         <LinearLayout
             android:layout_marginTop="@dimen/px30"
             android:layout_width="match_parent"
@@ -397,7 +400,7 @@
                 android:background="@null"
                 android:hint="请填写配偶姓名" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -419,7 +422,7 @@
                 android:background="@null"
                 android:hint="请填写配偶手机" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -440,7 +443,7 @@
                 android:background="@null"
                 android:hint="请填写配偶微信" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -461,7 +464,7 @@
                 android:background="@null"
                 android:hint="请填写配偶QQ" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:id="@+id/ll_mate_sex"
             android:layout_width="match_parent"
@@ -483,7 +486,7 @@
                 android:drawableRight="@drawable/arrows_right_gray"
                 android:hint="请选择配偶性别" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:id="@+id/ll_mate_birthday"
             android:layout_width="match_parent"
@@ -505,7 +508,7 @@
                 android:drawableRight="@drawable/arrows_right_gray"
                 android:hint="请填选择配偶生日" />
         </LinearLayout>
-
+            <View style="@style/line"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -529,6 +532,7 @@
                 android:hint="请填写客户备注" />
         </LinearLayout>
     </LinearLayout>
+        <View style="@style/line"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
     <Button

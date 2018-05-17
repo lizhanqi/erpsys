@@ -174,7 +174,13 @@ public class StringUtils {
         Matcher matcher = pattern.matcher(ipAddress);
         return matcher.matches();
     }
-
+    public static String  subDate(String  str){
+        str =StringUtils.safetyString(str);
+        if (str.length() > 10) {
+            str = str.substring(0, 10);
+        }
+        return str;
+    }
     public static String safetyString(String content) {
         if (empty(content)){
             return "";

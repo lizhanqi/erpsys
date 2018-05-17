@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.text.style.URLSpan;
 
 /**
@@ -58,7 +59,11 @@ public class MyString extends SpannableString {
         setSize(size);
         setUrl(url);
     }
-
+//设置删除线
+public MyString setDeletLine(){
+    setSpan(new StrikethroughSpan(), 0, length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    return this;
+}
     public MyString setColor(@ColorInt  int color) {
         this.color = color;
         setSpan(new ForegroundColorSpan(color), 0, length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

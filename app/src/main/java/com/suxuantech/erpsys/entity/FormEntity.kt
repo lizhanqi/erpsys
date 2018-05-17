@@ -38,6 +38,8 @@ class FormEntity {
     var option: Boolean = false
     var flag: Any? = null
     var hide =false;
+    var valueClickEnable =false;
+
     /**
      * 校验必填项的值是否填入了
      */

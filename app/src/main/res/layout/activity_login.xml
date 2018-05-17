@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <AutoCompleteTextView
-                        android:textSize="@dimen/xs30"
+                        android:textSize="@dimen/xs50"
                         android:textColor="@color/copyrigth"
                         android:textColorHint="@color/copyrigth"
                         android:id="@+id/company_id"
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content">
                 <AutoCompleteTextView
                     android:text="10086"
-                    android:textSize="@dimen/xs30"
+                    android:textSize="@dimen/xs50"
                     android:textColor="@color/copyrigth"
                     android:textColorHint="@color/copyrigth"
                     android:id="@+id/email"
@@ -126,7 +126,7 @@
                     android:singleLine="true"
                     android:textColor="@color/copyrigth"
                     android:textColorHint="@color/copyrigth"
-                    android:textSize="@dimen/xs30"
+                    android:textSize="@dimen/xs50"
                     tools:ignore="InvalidImeActionId" />
             </android.support.design.widget.TextInputLayout>
 </LinearLayout>

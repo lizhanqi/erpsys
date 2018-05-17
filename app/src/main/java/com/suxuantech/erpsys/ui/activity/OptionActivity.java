@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.DefineLoadMoreView;
+import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -269,9 +271,38 @@ public class OptionActivity extends TitleNavigationActivity {
         mRecyclerView.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                singleResult(position);
+                switch (urlTag) {
+                    case PACKAGE:
+                        shoPop(position);
+                        break;
+                    default:
+                        singleResult(position);
+                        break;
+                }
             }
         });
+    }
+
+    public void shoPop(int index) {
+        PackageEntity.DataBean dataBean = packageData.get(index);
+        View inflate = getLayoutInflater().inflate(R.layout.pop_price,null);
+        EditText editText = inflate.findViewById(R.id.et_price);
+        editText.setText(dataBean.getPackage_price()+"");
+        editText.setSelection(editText.getText().toString().length());
+        AlertDialog.newBuilder(this).setTitle("包套确认:")
+                .setView(inflate)
+                .setMessage(dataBean.getPackage_name())
+                .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
+                    if (editText.getText().toString()!=null){
+                        int pr = Integer.parseInt(editText.getText().toString());
+                        packageData.get(index).setPackage_price(pr);
+                        singleResult(index);
+                    }else {
+                        return;
+                    }
+                })
+                .setNegativeButton("取消", (DialogInterface var1, int var2) -> {
+                }).show();
     }
 
     @Override
@@ -611,7 +642,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                }else if (photoTypeData != null) {
+                } else if (photoTypeData != null) {
                     //选片类型
                     ArrayList<PhotoTypeEntity.DataBean> dataBeans = new ArrayList<>();
                     dataBeans.add(photoTypeData.get(position));
@@ -1113,7 +1144,7 @@ public class OptionActivity extends TitleNavigationActivity {
     }
 
     /**
-     *拍照类型
+     * 拍照类型
      */
     public void getPhotoType() {
         //请求实体
@@ -1385,7 +1416,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     tvNowPrice.setOnClickListener(l -> {
                     });
                     tvProductInfo.setText(item.getItem_name());
-                    tvProductInfo.append("\n¥:" + item.getItem_price());
+                    tvProductInfo.append(new MyString("\n¥:" + item.getItem_price()).setDeletLine());
                     btPlus.setOnClickListener(l -> {
                                 item.setNumber((item.getNumber() + 1));
                                 productDataAdded.get(position).setNumber(item.getNumber());
@@ -1396,11 +1427,8 @@ public class OptionActivity extends TitleNavigationActivity {
                     if (item.getNumber() > 0) {
                         tvNumber.setVisibility(View.VISIBLE);
                         tvNumber.setText(item.getNumber() + "");
-                        tvNumber.setOnClickListener(l->{
-                            showChangePrice();
-                        });
-                        tvNowPrice.setOnClickListener(l->{
-                            showChangePrice();
+                        tvNowPrice.setOnClickListener(l -> {
+                            showChangePrice(position);
                         });
                         btMinus.setVisibility(View.VISIBLE);
                         btMinus.setOnClickListener(l -> {
@@ -1423,11 +1451,30 @@ public class OptionActivity extends TitleNavigationActivity {
         };
     }
 
-    public void showChangePrice(){
-        AlertDialog.newBuilder(this).setTitle("修改价格")
-                .setPositiveButton("确定",(DialogInterface var1, int var2)->{})
-                .setNegativeButton("取消",(DialogInterface var1, int var2)->{}).show();
+    public void showChangePrice(int postion) {
+        View inflate = getLayoutInflater().inflate(R.layout.pop_price,null);
+        EditText editText = inflate.findViewById(R.id.et_price);
+        editText.setText(productDataAdded.get(postion).getNow_price()+"");
+        editText.setSelection(editText.getText().toString().length());
+        AlertDialog.newBuilder(this).setTitle("产品价格修改:")
+                .setView(inflate)
+                .setMessage(productDataAdded.get(postion).getItem_name())
+                .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
+                    if (editText.getText().toString()!=null){
+                        String string = editText.getText().toString();
+                        int i = Integer.parseInt(string);
+                        productDataAdded.get(postion).setNow_price(i);
+                        shoppingCartAdapter.notifyDataSetChanged();
+                        getSum();
+                    }else {
+                        return;
+                    }
+                })
+                .setNegativeButton("取消", (DialogInterface var1, int var2) -> {
+                }).show();
+
     }
+
     /**
      * 计算总价并显示到只听
      */

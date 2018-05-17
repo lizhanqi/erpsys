@@ -15,6 +15,7 @@ import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
+import com.suxuantech.erpsys.utils.StringUtils
 import com.yanzhenjie.alertdialog.AlertDialog
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
@@ -284,7 +285,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvRegisterPhone!!.setText("手机号" + parcelable.customer_tel)
         tvRegisterConsumptionType!!.setText("消费类型" + parcelable.consultation_type)
         tvRegisterZone!!.setText("客户分区" + parcelable.customer_area)
-        tvRegisterDate!!.setText("进店日期" + parcelable.yjd_day)
+        tvRegisterDate!!.setText("进店日期" +StringUtils.subDate(parcelable.yjd_day) )
         tvRegisterStaff!!.setText("接待人" + parcelable.sales_staff)
         tvRunReason!!.setText(parcelable.is_loss)
         tvCustomerWechat!!.setText(parcelable.customer_wechat)
@@ -295,9 +296,9 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvCustomerIntention!!.setText(parcelable.customer_intention)
         tvOrderAddress!!.setText(parcelable.customer_orderaddress)
         tvCustomerAddress!!.setText(parcelable.customer_address)
-        tvMakeDate!!.setText(parcelable.yjd_day)
-        tvMakeDate!!.setText(parcelable.yjd_day)
-        tvMarryDate!!.setText(parcelable.wedding_date)
+        tvMakeDate!!.setText(StringUtils.subDate(parcelable.yjd_day))
+        tvMakeDate!!.setText(StringUtils.subDate(parcelable.yjd_day))
+        tvMarryDate!!.setText(StringUtils.subDate(parcelable.wedding_date)  )
         tvMateName!!.setText(parcelable.mate_name)
         tvMatePhone!!.setText(parcelable.mate_tel)
         tvMateWechat!!.setText(parcelable.mate_wechat)

@@ -119,7 +119,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         }
     }
 
-    boolean hasPackage = false;
 
     public void gotoFragment() {
         if (menu != null) {
@@ -190,52 +189,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 }
                 break;
             case "产品资料":
-                /**
-                 *  看一看menu.add方法的参数：
-                 *  第一个int类型的group ID参数，代表的是组概念，你可以将几个菜单项归为一组，以便更好的以组的方式管理你的菜单按钮。
-                 *  第二个int类型的item ID参数，代表的是项目编号。这个参数非常重要，一个item ID对应一个menu中的选项。在后面使用菜单的时候，就靠这个item ID来判断你使用的是哪个选项。
-                 *  第三个int类型的order ID参数，代表的是菜单项的显示顺序。默认是0，表示菜单的显示顺序就是按照add的显示顺序来显示。
-                 *  第四个String类型的title参数，表示选项中显示的文字。
-                 */
-                Drawable drawable = getResources().getDrawable(R.drawable.icon_add_product);
-                DrawableCompat.setTint(drawable, getResources().getColor(R.color.white));
-                int heit = (int) (drawable.getMinimumHeight() * 0.7);
-                drawable.setBounds(0, 0, heit, heit);
-                menu.add(Menu.NONE, 1, 1, "sss")
-                        .setEnabled(true)
-                        .setOnMenuItemClickListener(menuItem -> {
-                            if (hasPackage) {
-                                String[] s = {"一销产品", "二销产品"};
-                                AlertView alertView = new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(Object o, int position) {//position -1是取消按钮
-                                        recoverImmersionBar();
-                                        if (position < 0) {
-                                            return;
-                                        }
-                                        OptionHelp optionHelp = new OptionHelp(OrderDetailActivity.this);
-                                        optionHelp.setTitle(s[position]);
-                                        optionHelp.setUrlTag(OptionHelp.UrlTag.PRODUCT);
-                                        optionHelp.setMultiple(true);
-                                        Intent creat = optionHelp.creat();
-                                        creat.putExtras(getIntent().getExtras());
-                                        startActivity(creat);
-                                    }
-                                });
-                                alertView.setMarginBottom(30);
-                                alertView.show();
-                                EventBus.getDefault().post("addProductWindow");
-                            } else {
-                                OptionHelp optionHelp = new OptionHelp(this);
-                                optionHelp.setTitle("添加包套");
-                                optionHelp.setUrlTag(OptionHelp.UrlTag.PACKAGE);
-                                Intent creat = optionHelp.creat();
-                                startActivity(creat);
-                            }
-                            return true;
-                        })
-                        .setIcon(drawable)
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 if (findFragment(ProductDataFragment.class) == null) {
                     productDataFragment = new ProductDataFragment();
                     mFragments[3] = productDataFragment;
@@ -252,32 +205,80 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     @Subscribe
     @MainThread
     public void onEventMainThread(String add) {
-        MenuItem item = menu.findItem(0);
-        Drawable drawable = getResources().getDrawable(R.drawable.icon_edit_product);
-        DrawableCompat.setTint(drawable, getResources().getColor(R.color.white));
-        if (add.equals("80") && item == null) {
-            hasPackage = true;
-            if (menu.findItem(1) != null && !menu.findItem(1).getTitle().equals("10")) {
-
-                menu.add(Menu.NONE, 1, 0, "10").setIcon(drawable)
+        Drawable editDrawable = getResources().getDrawable(R.drawable.icon_edit_product);
+        DrawableCompat.setTint(editDrawable, getResources().getColor(R.color.white));
+        MenuItem editMenu = menu.findItem(1);
+        MenuItem addMenu = menu.findItem(2);
+        if (add.equals("80")) {
+            //编辑按钮不存在, 并且有包套,一销二销任意一项不锁定才能添加编辑按钮
+            if (editMenu == null && productDataFragment.hasPackage() && (productDataFragment.oneProductCanEdit()
+                    || productDataFragment.twoProductCanEdit())) {
+                menu.add(Menu.NONE, 1, 0, "10").setIcon(editDrawable)
                         .setOnMenuItemClickListener(menuItem -> {
                             EventBus.getDefault().post("edit");
                             return true;
                         })
                         .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-        } else if (add.equals("88")){
-            if (menu.findItem(1) != null &&  menu.findItem(1).getTitle().equals("10")) {
-                menu.findItem(1).setIcon(drawable);
+        } else if (add.equals("88")) {
+            if (editMenu != null && editMenu.getTitle().equals("10")) {
+                editMenu.setIcon(editDrawable);
             }
-        }else if (add.equals("89")){
-            Drawable ok = getResources().getDrawable(R.drawable.icon_product_ok);
-            DrawableCompat.setTint(ok, getResources().getColor(R.color.white));
-            if (menu.findItem(1) != null &&  menu.findItem(1).getTitle().equals("10")) {
-                menu.findItem(1).setIcon(ok);
+        } else if (add.equals("89")) {
+            Drawable doneDrawable = getResources().getDrawable(R.drawable.icon_product_ok);
+            DrawableCompat.setTint(doneDrawable, getResources().getColor(R.color.white));
+            if (editMenu != null && editMenu.getTitle().equals("10")) {
+                editMenu.setIcon(doneDrawable);
             }
+            //添加按钮不存在,并且单子不作废,未完成,以及
+        } else if (add.equals("addButton") && productDataFragment.canAdd() && addMenu == null) {
+            Drawable addDrawle = getResources().getDrawable(R.drawable.icon_add_product);
+            DrawableCompat.setTint(addDrawle, getResources().getColor(R.color.white));
+            int heit = (int) (addDrawle.getMinimumHeight() * 0.5);
+            addDrawle.setBounds(0, 0, heit, heit);
+            menu.add(Menu.NONE, 2, 1, "sss")
+                    .setEnabled(true)
+                    .setOnMenuItemClickListener(menuItem -> {
+                        if (productDataFragment.hasPackage()) {
+                            String[] s = {"一销产品", "二销产品"};
+                            AlertView alertView = new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(Object o, int position) {//position -1是取消按钮
+                                    recoverImmersionBar();
+                                    if (position < 0) {
+                                        return;
+                                    }
+                                    OptionHelp optionHelp = new OptionHelp(OrderDetailActivity.this);
+                                    optionHelp.setTitle(s[position]);
+                                    optionHelp.setUrlTag(OptionHelp.UrlTag.PRODUCT);
+                                    optionHelp.setMultiple(true);
+                                    Intent creat = optionHelp.creat();
+                                    creat.putExtras(getIntent().getExtras());
+                                    startActivity(creat);
+                                }
+                            });
+                            alertView.setMarginBottom(30);
+                            alertView.show();
+                            EventBus.getDefault().post("addProductWindow");
+                        } else {
+                            OptionHelp optionHelp = new OptionHelp(this);
+                            optionHelp.setTitle("添加包套");
+                            optionHelp.setUrlTag(OptionHelp.UrlTag.PACKAGE);
+                            Intent creat = optionHelp.creat();
+                            startActivity(creat);
+                        }
+                        return true;
+                    })
+                    .setIcon(addDrawle)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        } else if (add.equals("removeAllMenu")) {
+            menu.clear();
+        }
+        else if (add.equals("removeEdit")) {
+            menu.removeItem(1);
         }
     }
+
 
     /**
      * @param witch

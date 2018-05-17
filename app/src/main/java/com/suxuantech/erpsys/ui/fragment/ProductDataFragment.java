@@ -19,6 +19,7 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.CustomerProductEntity;
+import com.suxuantech.erpsys.entity.DeleteCheckEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.entity.SimpleEntity;
@@ -27,6 +28,7 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -64,23 +66,64 @@ public class ProductDataFragment extends BaseSupportFragment {
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer;
 
+    /**
+     * order_type" : 6, // 7==已完成
+     * "blankoutannal" : 0,  //1 == 作废
+     * "reservelock" : 0, //一销 1锁定,2没锁
+     * "addlock" : 0  //二销 1锁定,2没锁
+     */
+    private List<DeleteCheckEntity.DataBean> productPermission;
+    private CustomerProductEntity.DataBean dataBean;
+    /**
+     * 一销或者二销任意一项没锁定
+     *
+     * @return
+     */
+    public boolean canAdd() {
+        return twoProductCanEdit() || oneProductCanEdit();
+    }
+
+    public boolean hasPackage() {
+        if (dataBean != null && dataBean.getYx() != null && dataBean.getYx().getYxp() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean oneProductCanEdit() {
+        if (productPermission != null && productPermission.get(0) != null &&
+                productPermission.get(0).getOrder_type() != 7 && productPermission.get(0).getBlankoutannal() != 1 &&
+                productPermission.get(0).getReservelock() != 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean twoProductCanEdit() {
+        if (productPermission != null && productPermission.get(0) != null &&
+                productPermission.get(0).getOrder_type() != 7 && productPermission.get(0).getBlankoutannal() != 1 &&
+                productPermission.get(0).getAddlock() != 1) {
+            return true;
+        }
+        return false;
+    }
+
     public ProductDataFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
         unbinder = ButterKnife.bind(this, view);
         useEventBus();
         onCheckedChange();
         smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            if (isShowCheckBox){
+            if (isShowCheckBox) {
                 editProduct();
             }
+            deleteCheck();
             getProduct();
-
         });
         return view;
     }
@@ -116,14 +159,12 @@ public class ProductDataFragment extends BaseSupportFragment {
         }
     }
 
-
     public void addPackage(String url) {
         //请求实体
         JavaBeanRequest<SimpleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SimpleEntity>(url, RequestMethod.POST, SimpleEntity.class);
         HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
             @Override
             public void onSucceed(int what, Response<SimpleEntity> response) {
-
                 if (response.get().isOK()) {
                     ToastUtils.snackbarShort("添加套系成功");
                     smartRefreshLayout.autoRefresh();
@@ -174,36 +215,41 @@ public class ProductDataFragment extends BaseSupportFragment {
         if (isShowCheckBox) {
             mRlDelete.setVisibility(View.VISIBLE);
             mCbOneAll.setVisibility(View.VISIBLE);
+            if (!twoProductCanEdit() || !oneProductCanEdit()) {
+                mCbOneAll.setEnabled(false);
+            }
             EventBus.getDefault().post("89");
         } else {
             mRlDelete.setVisibility(View.GONE);
             mCbOneAll.setVisibility(View.GONE);
             EventBus.getDefault().post("88");
         }
-        productGroupAdaputer.setShowCheckBox(isShowCheckBox);
+        productGroupAdaputer.setShowCheckBox(isShowCheckBox, oneProductCanEdit(), twoProductCanEdit());
     }
 
     private void onCheckedChange() {
         mCbAllProuduct.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                productGroupAdaputer.setCheckAll(isChecked,!mCbOneAll.isChecked());
+                productGroupAdaputer.setCheckAll(isChecked, !mCbOneAll.isChecked(), oneProductCanEdit(), twoProductCanEdit());
             }
         });
         //包套
         mCbOneAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mCbAllProuduct.isChecked()){
-                    productGroupAdaputer.setCheckAll(isChecked,!mCbOneAll.isChecked());
-                }else {
+                if (mCbAllProuduct.isChecked()) {
+                    productGroupAdaputer.setCheckAll(isChecked, !mCbOneAll.isChecked(), oneProductCanEdit(), twoProductCanEdit());
+                } else {
                     mCbAllProuduct.setChecked(isChecked);
                 }
                 mCbAllProuduct.setEnabled(!isChecked);
             }
         });
     }
+
     BottomSheetDialog dialog;
+
     public void addPackageOrProductWindow() {
         View views = getLayoutInflater().inflate(R.layout.pop_package_product_addbutton, null);
         if (dialog == null) {
@@ -230,23 +276,24 @@ public class ProductDataFragment extends BaseSupportFragment {
             @Override
             public void onSucceed(int what, Response<CustomerProductEntity> response) {
                 smartRefreshLayout.finishRefresh();
+                dataBean = response.get().getData();
                 if (response.get().isOK()) {
-                    CustomerProductEntity.DataBean dataBean = response.get().getData();
                     if (dataBean != null) {
-                        EventBus.getDefault().post("80");
                         List<CustomerProductEntity.DataBean.YxBean.YxpBean> yxp = dataBean.getYx().getYxp();
                         mStvOnePackage.setVisibility(View.VISIBLE);
                         mStvOnePackage.setLeftString(yxp.get(0).getConsumption_name());
                         mStvOnePackage.setRightString("¥:" + yxp.get(0).getPrice());
                         mStvOnePackage.setRightTextColor(getResources().getColor(R.color.litte_red));
-                        setData(dataBean);
                     } else {
                         mStvOnePackage.setVisibility(View.GONE);
+                        EventBus.getDefault().post("removeEdit");
                     }
+                    EventBus.getDefault().post("80");
                 } else {
                     mStvOnePackage.setVisibility(View.GONE);
-
+                    EventBus.getDefault().post("removeEdit");
                 }
+                setData(dataBean);
             }
 
             @Override
@@ -255,6 +302,25 @@ public class ProductDataFragment extends BaseSupportFragment {
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
+    private void deleteCheck() {
+        String orderId = getArguments().getString("orderId");
+        String url = Contact.getFullUrl(Contact.DELETE_CHEKE, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest<DeleteCheckEntity> deleteCheckEntityJavaBeanRequest = new JavaBeanRequest<DeleteCheckEntity>(url, DeleteCheckEntity.class);
+        HttpListener<DeleteCheckEntity> searchByCustmor = new HttpListener<DeleteCheckEntity>() {
+            @Override
+            public void onSucceed(int what, Response<DeleteCheckEntity> response) {
+                productPermission = response.get().getData();
+                EventBus.getDefault().post("addButton");
+            }
+
+            @Override
+            public void onFailed(int what, Response<DeleteCheckEntity> response) {
+
+            }
+        };
+        request(0, deleteCheckEntityJavaBeanRequest, searchByCustmor, false, false);
     }
 
     @Subscribe
@@ -283,12 +349,71 @@ public class ProductDataFragment extends BaseSupportFragment {
                 break;
         }
     }
-    public void deletProduc(){
-        if (   mCbOneAll.isChecked()) {
-            ToastUtils.showShort("包套");
-        }else {
-            ToastUtils.showShort("产品");
-        }
 
+    public void deletProduc() {
+        String orderId = getArguments().getString("orderId");
+        if (mCbOneAll.isChecked()) {
+            if (canAdd()) {
+                String fullUrl = Contact.getFullUrl(Contact.DELETE_PACKAGE, Contact.TOKEN, orderId,
+                        App.getApplication().getUserInfor().getShop_code(), App.getApplication().getUserInfor().getBrandclass_id());
+                delete(fullUrl, true);
+            }
+        } else {
+            StringBuilder sb = new StringBuilder();
+            CustomerProductEntity.DataBean dbs = productGroupAdaputer.getDataBean();
+            if (dataBean != null) {
+                CustomerProductEntity.DataBean.YxBean yx = dbs.getYx();
+                CustomerProductEntity.DataBean.ExBean ex = dbs.getEx();
+                if (yx != null) {
+                    List<CustomerProductEntity.DataBean.YxBean.YxfBean> yxf = yx.getYxf();
+                    if (yxf != null) {
+                        for (CustomerProductEntity.DataBean.YxBean.YxfBean d : yxf) {
+                            if (d.isChecked()) {
+                                sb.append(d.getId());
+                                sb.append(";");
+                            }
+                        }
+                    }
+                }
+                if (ex != null && ex.getExf() != null) {
+                    List<CustomerProductEntity.DataBean.ExBean.ExfBean> exf = ex.getExf();
+                    for (CustomerProductEntity.DataBean.ExBean.ExfBean d : exf) {
+                        if (d.isChecked()) {
+                            sb.append(d.getId());
+                            sb.append(";");
+                        }
+                    }
+                }
+            }
+            if (sb.length()>1){
+                  sb = sb.deleteCharAt(sb.lastIndexOf(";"));
+            }
+            if (StringUtils.empty(sb.toString())||sb.toString().startsWith(";")) {
+                return;
+            }
+            String cid = sb.toString();
+            String fullUrl = Contact.getFullUrl(Contact.DELETE_PRODUCT, Contact.TOKEN, orderId, cid,
+                    App.getApplication().getUserInfor().getShop_code(), App.getApplication().getUserInfor().getBrandclass_id());
+            delete(fullUrl, false);
+        }
+    }
+
+    public void delete(String url, boolean packageDelete) {
+        JavaBeanRequest<SimpleEntity> delete = new JavaBeanRequest<SimpleEntity>(url, SimpleEntity.class);
+        delete.setMultipartFormEnable(true);
+        HttpListener<SimpleEntity> searchByCustmor = new HttpListener<SimpleEntity>() {
+            @Override
+            public void onSucceed(int what, Response<SimpleEntity> response) {
+                smartRefreshLayout.autoRefresh();
+                if (packageDelete) {
+                    EventBus.getDefault().post("removeAllMenu");
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<SimpleEntity> response) {
+            }
+        };
+        request(0, delete, searchByCustmor, false, false);
     }
 }

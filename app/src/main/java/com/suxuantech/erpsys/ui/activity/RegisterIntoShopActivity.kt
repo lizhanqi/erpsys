@@ -158,19 +158,21 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         })
     }
     fun getData() {
+        val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         var name1=App.getApplication().userInfor.staffname;
         var name2=App.getApplication().userInfor.staffname;
         if (App.getApplication().hasPermission("K14")){
-            name1="k14"
+            name1="";
         }
         if (App.getApplication().hasPermission("K15")){
-            name2="k15"
+            name2="";
         }
+
         var url = Contact.getFullUrl(Contact.CUSTOMER_INTO_STORE_COUNT, Contact.TOKEN,
-                "20160808", DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER),
+                nowDate, nowDate,
                 "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
         var url2 = Contact.getFullUrl(Contact.UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT, Contact.TOKEN,
-                DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER), DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER),
+                nowDate, nowDate,
                 "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
         //请求实体
         val requset = JavaBeanRequest(url, RequestMethod.POST, CustomerIntoStoreCountEntity::class.java)
