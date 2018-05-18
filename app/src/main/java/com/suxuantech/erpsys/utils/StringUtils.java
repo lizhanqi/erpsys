@@ -188,6 +188,18 @@ public class StringUtils {
             return content;
         }
     }
+    public static String replace(String sourc,String rex,String replacement ) {
+        if (empty(sourc)){
+            return "";
+        }
+        if (empty(rex)){
+            return safetyString(sourc);
+        }
+        if (empty(replacement)){
+            replacement="" ;
+        }
+      return   sourc.replaceAll(rex,replacement);
+    }
     public static boolean empty(String content) {
         return content==null||content.length()==0;
     }

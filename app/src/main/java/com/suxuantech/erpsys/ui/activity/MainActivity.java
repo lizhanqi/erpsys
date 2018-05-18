@@ -446,7 +446,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         workItem.setActiveColor(getResources().getColor(R.color.themeColor));
         BottomNavigationItem erpItem = new BottomNavigationItem(R.drawable.icon_erp_pressed, getString(R.string.erp));
         erpItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_erp_normal));//非选中的图片
-        BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_pressed, getString(R.string.crm));
+        BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_pressed, "通讯录");
         contactItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_contact_normal));//非选中的图片
         BottomNavigationItem myItem = new BottomNavigationItem(R.drawable.icon_my_pressed, getString(R.string.my));
         myItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_my_normal));//非选中的图片

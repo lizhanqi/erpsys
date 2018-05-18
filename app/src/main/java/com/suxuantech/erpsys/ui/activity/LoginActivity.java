@@ -290,7 +290,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         HttpListener<PHPLoginEntity> searchByCustmor = new HttpListener<PHPLoginEntity>() {
             @Override
             public void onSucceed(int what, Response<PHPLoginEntity> response) {
-                if (response.get().isOK()) {
                     if (response.get().isOK()) {
                         LoginEntity loginEntity = new LoginEntity();
                         ArrayList<UserEntity> userData = new ArrayList<>();
@@ -305,7 +304,6 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                         loginFailed();
                         toastShort(response.get().getMsg());
                     }
-                }
             }
 
             @Override

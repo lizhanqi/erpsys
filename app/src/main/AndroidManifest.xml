@@ -144,6 +144,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -153,10 +154,11 @@
         <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/WelcomeStyle">
-                <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-               <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".ui.activity.SearchOrderActivity" />
         <activity android:name=".ui.activity.ScheduleActivity" />
@@ -221,7 +223,9 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity android:name=".ui.activity.TodayCustomerActivity" />
         <activity android:name=".ui.activity.TakeDataDetailsActivity" />
         <activity android:name=".ui.activity.MakeUpDetailsActivity" />
-        <activity android:name=".ui.activity.SchemeCommintActivity"></activity>
+        <activity android:name=".ui.activity.SchemeCommintActivity" />
+        <activity android:name=".ui.activity.StaffSearchActivity" />
+        <activity android:name=".ui.activity.StaffDetailsActivity"></activity>
     </application>
 
 </manifest>

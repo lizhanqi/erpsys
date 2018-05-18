@@ -85,11 +85,13 @@ class ConversationListFragment : Fragment() {
                 var infor = con.targetInfo as UserInfo
                 var intent = Intent(activity, ConversationActivity::class.java)
                 intent.putExtra("name", infor.userName)
+                intent.putExtra("base64", true)
                 startActivity(intent)
             })
         }
         return view
     }
+
 
 
     override fun onAttach(context: Context) {

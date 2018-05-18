@@ -2,8 +2,10 @@ package com.suxuantech.erpsys.chat;
 
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.blankj.utilcode.util.EncodeUtils;
 import com.suxuantech.erpsys.R;
 
 import cn.jpush.im.android.eventbus.EventBus;
@@ -17,7 +19,22 @@ public class ConversationActivity extends ChatBaseActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);// 使得音量键控制媒体声音
         setContentView(R.layout.ac_convertion);
 //        showUserDefinedNav();
-        setTitle(   getIntent().getStringExtra("name"));
+        boolean name = getIntent().hasExtra("name");
+        if (name){
+            boolean base64 = getIntent().getBooleanExtra("base64",false);
+            if (base64){
+                setTitle( new String(EncodeUtils.base64Decode(getIntent().getStringExtra("name"))));
+            }else {
+                setTitle(  getIntent().getStringExtra("name"));
+            }
+//            Bundle bundle = new Bundle();
+//            bundle.putBoolean("base64",base64);
+//            getFragmentManager().findFragmentById(R.id.fra) .setArguments(bundle);
+        }else {
+            Toast.makeText(this,"空联系人",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         //User=  getIntent().getStringExtra("name");
        // JMessageClient.registerEventReceiver(this);
     }

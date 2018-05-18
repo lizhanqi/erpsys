@@ -41,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.EncodeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sj.emoji.DefEmoticons;
 import com.sj.emoji.EmojiBean;
@@ -109,8 +110,8 @@ import cn.jzvd.JZVideoPlayer;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2018/3/15 0015 14:24 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 聊天界面
  * <p>
  * 1.单聊
@@ -149,6 +150,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             mSwipeRefreshLayout.setRefreshing(false);
         }
     };
+    private boolean base64;
 
     public void requestPermission(String... permissions) {
         AndPermission.with(this)
@@ -228,14 +230,14 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         //订阅接收消息,子类只要重写onEvent就能收到
         JMessageClient.registerEventReceiver(this);
         JMessageClient.registerEventReceiver(this);
+        //    base64 = getArguments().getBoolean("base64", false);
         return mRootView;
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        if (singleConversation!=null){
+        if (singleConversation != null) {
             singleConversation.setUnReadMessageCnt(0);
         }
         mManager.registerListener(this, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),// 距离感应器
@@ -248,12 +250,16 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         AlbumConfig.newBuilder(getActivity())
                 .setAlbumLoader(new GlideAlbumLoader()) // 设置Album加载器。
                 .build();
+
+        base64 = getActivity().getIntent().getBooleanExtra("base64", false);
         UserID = getActivity().getIntent().getStringExtra("name");
+        if (!base64) {
+            UserID = EncodeUtils.base64Encode2String(UserID.getBytes());
+        }
         singleConversation = JMessageClient.getSingleConversation(UserID);
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);
         }
-
         initView();
     }
 
@@ -375,7 +381,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         multipleItemQuickAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-           if (R.id.img_msg_status==view.getId()){
+                if (R.id.img_msg_status == view.getId()) {
                     MessageEntity messageEntity = (MessageEntity) adapter.getData().get(position);
                     Message content = messageEntity.getMsag();
                     showResendDialog(content, position);
@@ -456,7 +462,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String authority = getActivity().getPackageName() + ".FileProvider";
             File file = new File(filePath);
-            Uri videoUri = FileProvider.getUriForFile(getActivity(), authority,file);
+            Uri videoUri = FileProvider.getUriForFile(getActivity(), authority, file);
             intent.setDataAndType(videoUri, "video/*");
         } else {
             Uri uri = Uri.fromFile(new File(filePath));
@@ -464,6 +470,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         }
         getActivity().startActivity(intent);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -475,7 +482,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             sendLoacation(latitude, longitude, address, scale);
         }
     }
-
 
 
     /**
@@ -495,9 +501,9 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             String width = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH); // 视频宽度
             String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION); // 视频旋转方向
             fileContent.setStringExtra("video", "mp4");
-            fileContent.setStringExtra("width",width);
-            fileContent.setStringExtra("height",height);
-            fileContent.setStringExtra("rotation",rotation);
+            fileContent.setStringExtra("width", width);
+            fileContent.setStringExtra("height", height);
+            fileContent.setStringExtra("rotation", rotation);
             Message msg = singleConversation.createSendMessage(fileContent);
             msg.setUnreceiptCnt(1);
             //设置需要已读回执
@@ -669,24 +675,24 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
     void sendImage(String file) {
         try {
-      //      ImageContent content = new ImageContent(new File(file));
+            //      ImageContent content = new ImageContent(new File(file));
             ImageContent.createImageContentAsync(new File(file), new ImageContent.CreateImageContentCallback() {
                 @Override
                 public void gotResult(int responseCode, String s, ImageContent imageContent) {
                     if (responseCode == 0) {
 
 
-                    Message sendMessage = singleConversation.createSendMessage(imageContent);
-                    sendMessage.setUnreceiptCnt(1);
-                    //设置需要已读回执
-                    MessageSendingOptions options = new MessageSendingOptions();
-                    options.setNeedReadReceipt(true);
-                    JMessageClient.sendMessage(sendMessage, options);
-                    //更新页面
-                    MessageEntity messageEntity = new MessageEntity(sendMessage);
-                    multipleItemQuickAdapter.appendData(messageEntity);
-                    msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
-                    }else {
+                        Message sendMessage = singleConversation.createSendMessage(imageContent);
+                        sendMessage.setUnreceiptCnt(1);
+                        //设置需要已读回执
+                        MessageSendingOptions options = new MessageSendingOptions();
+                        options.setNeedReadReceipt(true);
+                        JMessageClient.sendMessage(sendMessage, options);
+                        //更新页面
+                        MessageEntity messageEntity = new MessageEntity(sendMessage);
+                        multipleItemQuickAdapter.appendData(messageEntity);
+                        msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+                    } else {
                         ToastUtils.showShort(s);
                     }
                 }
@@ -741,6 +747,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
     /**
      * 对方读取消息后的状态更新
+     *
      * @param event
      */
     public void onEventMainThread(MessageReceiptStatusChangeEvent event) {
@@ -788,12 +795,14 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             mManager.unregisterListener(this);//注销传感器监听
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         JMessageClient.unRegisterEventReceiver(this);
         multipleItemQuickAdapter.stopVoice(null);
     }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         float[] its = event.values;

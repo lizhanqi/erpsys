@@ -107,6 +107,11 @@ public class ERPLeftFragment extends BaseLazyFragment {
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
         initCard();
+        mTvCompanyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         //   initTabLayout();
         //initBall(view);
     }

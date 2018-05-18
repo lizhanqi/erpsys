@@ -66,18 +66,25 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             var llForm = helper?.getView<View>(R.id.ll_form) as LinearLayout;
             var tvFormKey = helper?.getView<View>(R.id.tv_form_key) as TextView;
             var tvFormValue = helper?.getView<View>(R.id.tv_form_value) as ScrollEditText;
-            var iamge = helper?.getView<ImageView>(R.id.img_icon)  ;
+            var iamge = helper?.getView<ImageView>(R.id.img_icon);
             iamge.setImageDrawable(resources.getDrawable(item?.icon!!))
             if (item?.mustFill!!) {
                 val drawable = resources.getDrawable(R.drawable.arrows_right_gray)
                 drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumWidth)
                 tvFormValue.setCompoundDrawables(null, null, drawable, null);
             }
-            tvFormValue.setEnabled(false)
             if (item?.edit!!) {
                 tvFormValue.minLines = 3;
                 tvFormValue.maxLines = 3;
-
+                tvFormValue.isClickable=true
+                //  如果想编辑EditText时：
+                tvFormValue.setFocusable(true);
+            } else {
+                tvFormValue.isClickable=false
+                tvFormValue.setOnTouchListener(null)
+                // 如果不想编辑EditText时：
+                tvFormValue.setFocusable(false);
+                tvFormValue.setFocusableInTouchMode(false);
             }
             tvFormKey.setText(item.key)
             tvFormValue.setClickable(true)
@@ -94,12 +101,12 @@ class SchemeCommintActivity : TitleNavigationActivity() {
         tvHistory = findViewById<View>(R.id.tv_history) as TextView
         tvHistoryName = findViewById<View>(R.id.tv_history_name) as TextView
         tvHistoryValue = findViewById<View>(R.id.tv_history_value) as TextView
-        findViewById<View>(R.id.ll_history_info)  .setOnClickListener(View.OnClickListener {
+        findViewById<View>(R.id.ll_history_info).setOnClickListener(View.OnClickListener {
             val intent = Intent(baseContext, OrderDetailActivity::class.java)
             intent.putExtra("orderId", dataBean?.getOrderId())
             if (searchType == TypeFlag.OPTION_PANEL) {
                 intent.putExtra("showOnPosition", 5)
-            }else{
+            } else {
                 intent.putExtra("showOnPosition", 4)
             }
 
@@ -117,22 +124,22 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             tvHistoryValue?.setText(StringUtils.safetyString(dataAll.selectday))
             val formEntity = FormEntity("选片类型");
             formEntity.hint = "请选择选片类型"
-            formEntity.icon=R.drawable.icon_photo_type
+            formEntity.icon = R.drawable.icon_photo_type
             formEntity.mustFill = true
             formEntity.option = true;
             listData.add(formEntity)
             val formEntity2 = FormEntity("选片日期");
-            formEntity2.icon=R.drawable.icon_date
+            formEntity2.icon = R.drawable.icon_date
             formEntity2.hint = schemeData?.pcday
             listData.add(formEntity2)
             val formEntity3 = FormEntity("选片时间");
             formEntity3.hint = schemeData?.pctime
-            formEntity3.icon=R.drawable.icon_time
+            formEntity3.icon = R.drawable.icon_time
             listData.add(formEntity3)
             val formEntity4 = FormEntity("选片备注");
             formEntity4.hint = "请填写选片备注"
             formEntity4.edit = true
-            formEntity4.icon=R.drawable.icon_send_remarks
+            formEntity4.icon = R.drawable.icon_send_remarks
             listData.add(formEntity4)
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
             val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>("allSchemeData");
@@ -142,21 +149,21 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             tvHistoryValue?.setText(StringUtils.safetyString(dataAll.photodate))
             val formEntity = FormEntity("拍照类型");
             formEntity.hint = "请选择拍照类型"
-            formEntity.icon=R.drawable.icon_photo_type
+            formEntity.icon = R.drawable.icon_photo_type
             formEntity.mustFill = true
             formEntity.option = true;
             listData.add(formEntity)
             val formEntity2 = FormEntity("拍照日期");
             formEntity2.hint = schemeData?.pcday
-            formEntity2.icon=R.drawable.icon_date
+            formEntity2.icon = R.drawable.icon_date
             listData.add(formEntity2)
             val formEntity3 = FormEntity("拍照时间");
-            formEntity3.icon=R.drawable.icon_time
+            formEntity3.icon = R.drawable.icon_time
             formEntity3.hint = schemeData?.pctime
             listData.add(formEntity3)
             val formEntity4 = FormEntity("客户备注");
             formEntity4.hint = "请填写备注"
-            formEntity4.icon=R.drawable.icon_send_remarks
+            formEntity4.icon = R.drawable.icon_send_remarks
             formEntity4.edit = true
             listData.add(formEntity4)
         }

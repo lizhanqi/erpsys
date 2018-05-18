@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -94,6 +95,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     private FileInputStream mFIS;
     private FileDescriptor mFD;
     private AudioManager audioManager;
+    private boolean base64;
     RequestOptions options = new RequestOptions()
             .centerCrop()
             .placeholder(R.mipmap.ic_launcher)//预加载图片
@@ -106,6 +108,10 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         super(data);
         addItemType(MessageEntity.ONESELF, R.layout.oneself_message);
         addItemType(MessageEntity.OTHER_PEOPLE, R.layout.other_people_message);
+    }
+
+    public void setBase64(boolean base64) {
+        this.base64 = base64;
     }
 
     @Override
@@ -608,7 +614,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         } else {
             msgTime.setVisibility(View.GONE);
         }
-        nameView.setText(userName);
+        nameView.setText( new String(EncodeUtils.base64Decode(userName )));
     }
 
     /**

@@ -8,7 +8,6 @@ clickable是防止页面穿透的点击事件的
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,26 +15,41 @@ clickable是防止页面穿透的点击事件的
         android:clickable="true"
         android:orientation="vertical"
         tools:context=".ui.fragment.ContactsFragment">
-
+        <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+            android:layout_marginHorizontal="@dimen/px50"
+            android:editable="false"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/px30"
+            android:drawablePadding="@dimen/px30"
+            android:layout_marginBottom="@dimen/px15"
+            android:layout_marginTop="@dimen/px15"
+            android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
+            android:drawableLeft="@drawable/icon_soso"
+            android:background="@drawable/sp_search"
+            android:textSize="@dimen/xs40"
+            android:imeOptions="actionSearch"
+            android:id="@+id/one_Search"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px80" />
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rl_organization"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-
+            android:layout_height="wrap_content">
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
         <LinearLayout
             android:id="@+id/ll_recent_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="近期联系人"
                 android:textSize="@dimen/xs44" />
-
             <View style="@style/line" />
-
             <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
                 android:id="@+id/rl_recent_contact"
                 android:layout_width="match_parent"

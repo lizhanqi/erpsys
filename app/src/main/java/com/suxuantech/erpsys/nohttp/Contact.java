@@ -387,5 +387,10 @@ public class Contact {
     public static String PRODUCT_LOCK = "/SXWebErpAppStaff/SX_LockZheng?Token=%s&orderid=%s&isye=%s&Code=%s";
     public static String PHP_PREFIX = "http://oa.erp.suxuantech.cn/api.php?m=login&a=";
     public static String PHP_LOGIN = "%scheck";
-    public static String Person = "%sm=login&a=getDepartments";
+    public static String Person = "%sgetDepartments";
+    /**
+     * 通讯录搜索
+     */
+    public static String SEARCH_PERSON = "%sseacherStaff";
+
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 状态栏沉浸--><!--重要说明:
+android:background="@color/white"
+android:clickable="true"
+必须要有background防止fragment页面穿透的,
+clickable是防止页面穿透的点击事件的
+-->
+<com.suxuantech.erpsys.ui.widget.BounceScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dampView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/white"
+      android:clickable="true"
+      android:orientation="vertical"
+      tools:context=".ui.activity.fragment.MsgFragment">
+   <!--顶部-->
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_contacts" />
+    <!--          android:background="@color/themeColor"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px475"
+        android:orientation="vertical">
+     <android.support.v7.widget.Toolbar
+         app:title="联系人"
+         android:id="@+id/tb"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+     </android.support.v7.widget.Toolbar>
+     <LinearLayout
+         android:gravity="center_vertical"
+         android:layout_alignParentBottom="true"
+         android:orientation="horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+  >
+      <TextView
+          android:layout_marginHorizontal="@dimen/px50"
+          android:id="@+id/tv_name_and_post"
+          android:layout_weight="1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/px17"
+          android:layout_marginRight="@dimen/px55"
+          android:gravity="center_vertical"
+          android:text="欧阳娜娜\n销售总监"
+          android:textColor="@color/white"
+          android:textSize="@dimen/xs45" />
+
+      <ImageView
+          android:src="@drawable/icon_contancts_tel"
+          android:id="@+id/img_tel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      <ImageView
+          android:layout_marginHorizontal="@dimen/px30"
+          android:src="@drawable/icon_contacts_msg"
+          android:id="@+id/img_msg"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+     </LinearLayout>
+    </RelativeLayout>
+   </FrameLayout>
+   <android.support.v7.widget.RecyclerView
+       app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+       android:id="@+id/rv_details"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+   </android.support.v7.widget.RecyclerView>
+  </LinearLayout>
+</com.suxuantech.erpsys.ui.widget.BounceScrollView>

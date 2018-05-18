@@ -13,7 +13,7 @@
             style="@style/CustomerInformationKey"
            />
         <com.suxuantech.erpsys.ui.widget.ScrollEditText
-            android:enabled="false"
+            android:textIsSelectable="true"
             android:id="@+id/tv_form_value"
             style="@style/CustomerInformationValue"
              />

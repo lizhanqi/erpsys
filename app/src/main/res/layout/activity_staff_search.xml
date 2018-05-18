@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/px50"
+    tools:context=".ui.activity.StaffSearchActivity">
+    <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+        android:layout_gravity="center"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/px30"
+        android:drawablePadding="@dimen/px30"
+        android:layout_marginBottom="@dimen/px15"
+        android:layout_marginTop="@dimen/px15"
+        android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
+        android:drawableLeft="@drawable/icon_soso"
+        android:background="@drawable/sp_search"
+        android:textSize="@dimen/xs40"
+        android:imeOptions="actionSearch"
+        android:id="@+id/otc_key"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px80" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        app:srlEnableLoadMore="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_result"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:listitem="@layout/item_contact"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

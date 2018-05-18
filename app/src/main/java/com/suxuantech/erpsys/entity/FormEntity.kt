@@ -1,5 +1,8 @@
 package com.suxuantech.erpsys.entity
 
+import android.content.Intent
+import android.text.util.Linkify
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -39,7 +42,8 @@ class FormEntity {
     var flag: Any? = null
     var hide =false;
     var valueClickEnable =false;
-
+    var valueAutoLink :Int ?= Linkify.ALL //Linkify
+    var valueAutoAction: Intent?=null
     /**
      * 校验必填项的值是否填入了
      */
@@ -115,6 +119,9 @@ class FormEntity {
         this.value = value
         this.marginTop = marginTop
     }
-
-
+    constructor( key: String, value: String, linkify: Int){
+        this.key = key
+        this.value = value
+        this.valueAutoLink = linkify
+    }
 }

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -51,14 +50,8 @@ public class MyFragment extends BaseSupportFragment {
 
     @BindView(R.id.btn_login_out)
     Button mBtnLoginOut;
-    @BindView(R.id.content_view_linearlayout)
-    LinearLayout mContentViewLinearlayout;
     @BindView(R.id.rv_other_info)
     RelativeLayout otherInfo;
-
-    @BindView(R.id.root_layout_status_immersed)
-    RelativeLayout mRootLayoutStatusImmersed;
-
     @BindView(R.id.dampView)
     BounceScrollView mDampView;
     private View view;
@@ -121,7 +114,7 @@ public class MyFragment extends BaseSupportFragment {
         mTvNameAndPost.setText(App.getApplication().getUserInfor().getStaffname() + "\n" + App.getApplication().getUserInfor().getMain_position_name());
     }
 
-    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out, R.id.content_view_linearlayout, R.id.root_layout_status_immersed, R.id.dampView})
+    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,     })
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -178,12 +171,6 @@ public class MyFragment extends BaseSupportFragment {
             case R.id.tv_verstion:
                 break;
             case R.id.btn_login_out:
-                break;
-            case R.id.content_view_linearlayout:
-                break;
-            case R.id.root_layout_status_immersed:
-                break;
-            case R.id.dampView:
                 break;
         }
     }
