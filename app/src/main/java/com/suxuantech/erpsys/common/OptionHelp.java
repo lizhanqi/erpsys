@@ -44,14 +44,19 @@ public class OptionHelp {
         CUSTOMER_ZONE(3,"消费类型"), PACKAGE(4,"选择包套"), PRODUCT(5,"选择产品"), CUSTOMER_SOURCE(6,"客户来源"),
         CUSTOMER_INTENTION(7,"客户意向"),  RECEPTION_MARKET(8,"网销人员"), PHOTO_SHOP(9,"拍摄店面"), NEW_ORDER_TYPE(10,"新单类型"),
         SHOOT_THEME(11,"摄影主题"),     DRESS_THEME(12,"礼服主题"),OPTION_PANEL_TYPE_SET(13,"选片类型")
-        ,PHOTO_TYPE_SET(14,"拍照类型");
+        ,PHOTO_TYPE_SET(14,"拍照类型")        ,OPTION_EXCUTE_SHOP(14,"操作店");;
         UrlTag(int id,String title){
             this.id=id;
             this.title=title;
         }
         int id;
         String title;
+
+        public String getTitle() {
+            return title;
         }
+    }
+
 
     private UrlTag urlTag;
     boolean isMultiple;

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
          <LinearLayout
+             android:visibility="gone"
              android:layout_alignParentBottom="true"
              android:id="@+id/ll_sum"
              android:orientation="vertical"
@@ -59,6 +60,7 @@
             android:background="@color/white" />
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
     <ImageButton
+        android:visibility="gone"
         android:padding="@dimen/px20"
         android:scaleType="fitCenter"
         android:background="@drawable/sp_shopping_bg"

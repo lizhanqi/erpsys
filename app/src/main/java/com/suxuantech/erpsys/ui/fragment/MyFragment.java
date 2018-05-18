@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 import com.suxuantech.erpsys.utils.ToastUtils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,10 +59,12 @@ public class MyFragment extends BaseSupportFragment {
     BounceScrollView mDampView;
     private View view;
     private Unbinder unbinder;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Subscribe()
+    @MainThread
+    public void EventBus(String key){
+        if (key.equals("changeUser")){
+            data2View();
+        }
     }
 
     @Override
@@ -68,6 +73,7 @@ public class MyFragment extends BaseSupportFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         unbinder = ButterKnife.bind(this, view);
+        useEventBus();
         return view;
     }
 
@@ -98,7 +104,10 @@ public class MyFragment extends BaseSupportFragment {
                 getActivity().finish();
             }
         });
+        data2View();
+    }
 
+    private void data2View() {
         String appVersionName = AppUtils.getAppVersionName();
         mTvVerstion.setText(appVersionName);
         mTvDepartment.setText(App.getApplication().getUserInfor().getDepartment_name());

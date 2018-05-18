@@ -20,6 +20,7 @@ import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
 import com.suxuantech.erpsys.entity.CustomerIntentionEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
 import com.suxuantech.erpsys.entity.OptionPanelTypeEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
@@ -30,6 +31,7 @@ import com.suxuantech.erpsys.entity.PhotoTypeEntity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.entity.SimpleEntity;
 import com.suxuantech.erpsys.entity.ThemeEntity;
+import com.suxuantech.erpsys.entity.UserEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.eventmsg.SmpileEventMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
@@ -79,7 +81,9 @@ public class OptionActivity extends TitleNavigationActivity {
      * checkedData当前选中的，单选的话只认下表为0的那个才是
      * mAllData全部选项
      */
-    ArrayList<String> checkedData, mAllData, currentChecked;
+    ArrayList<String> checkedData = new ArrayList<>();
+    ArrayList<String> mAllData = new ArrayList<>();
+    ArrayList<String> currentChecked = new ArrayList<>();
     /**
      * 网络的数据，暂时没有留在
      */
@@ -99,6 +103,7 @@ public class OptionActivity extends TitleNavigationActivity {
     private List<ThemeEntity.DataBean> themeData;
     private List<OptionPanelTypeEntity.DataBean> optionPanelTypeData;
     private List<PhotoTypeEntity.DataBean> photoTypeData;
+    List<UserEntity> excDataBeans;
     BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     /**
      * 加载更多。
@@ -327,10 +332,7 @@ public class OptionActivity extends TitleNavigationActivity {
             mMultiple = intent.getBooleanExtra("Multiple", false);
             tag = intent.getStringExtra("Tag");
             title = intent.getStringExtra("Title");
-            //设置标题
-            setCenterTitle(title);
             checkedData = intent.getStringArrayListExtra("Checked");
-            //已经选中的
             if (checkedData == null) {
                 checkedData = new ArrayList<>();
             }
@@ -338,6 +340,11 @@ public class OptionActivity extends TitleNavigationActivity {
             currentChecked = (ArrayList<String>) checkedData.clone();
             //给个地址
             urlTag = (OptionHelp.UrlTag) intent.getSerializableExtra("UrlTag");
+            if (title == null && urlTag != null) {
+                title = urlTag.getTitle();
+            }
+            //设置标题
+            setCenterTitle(title);
         }
     }
 
@@ -467,6 +474,14 @@ public class OptionActivity extends TitleNavigationActivity {
                     getPhotoType();
                 }
                 break;
+            case OPTION_EXCUTE_SHOP:
+                //可操作店
+                Url = Contact.getFullUrl(Contact.CAN_EXECUTE_SHOP, Contact.TOKEN, App.getApplication().getUserInfor().getStaff_id());
+                if (getData) {
+                    getExcuteStore();
+                }
+                break;
+
         }
     }
 
@@ -656,8 +671,28 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
+                } else if (excDataBeans != null) {
+                    //可操作店面
+                    ArrayList<UserEntity> dataBeans = new ArrayList<>();
+                    UserEntity dataBean = excDataBeans.get(position);
+                    //完全切换(这个没有员工id,只返回了几个参数,可恶)
+//                    ArrayList<UserEntity> userEntities = new ArrayList<>();
+//                    userEntities.add(dataBean);
+                    App.getApplication().getUserInfor().setShop_code(dataBean.shop_code);
+                    App.getApplication().getUserInfor().setShop_name(dataBean.shop_name);
+                    App.getApplication().getUserInfor().setBrandclass(dataBean.brandclass);
+                    App.getApplication().getUserInfor().setBrandclass_id(dataBean.brandclass_id);
+                   // App.getApplication().getUserInfor().setMain_position_code(dataBean.main_position_code);
+                    App.getApplication().getUserInfor().setDepartment_id(dataBean.getDepartment_id());
+                    dataBeans.add(excDataBeans.get(position));
+                    BaseMsg<UserEntity> dataBeanBaseMsg = new BaseMsg<UserEntity>(excDataBeans, dataBeans, mMultiple);
+                    dataBeanBaseMsg.setmTitle(title);
+                    dataBeanBaseMsg.setTag(tag);
+                    dataBeanBaseMsg.setUrl(Url);
+                    dataBeanBaseMsg.setUrlTag(urlTag);
+                    EventBus.getDefault().post(dataBeanBaseMsg);
+                    EventBus.getDefault().post("changeUser");
                 }
-
             }
             finish();
         }
@@ -1185,6 +1220,44 @@ public class OptionActivity extends TitleNavigationActivity {
         request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
+    /**
+     * 拍照类型
+     */
+    public void getExcuteStore() {
+        //请求实体
+        JavaBeanRequest<LoginEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<LoginEntity>(Url, LoginEntity.class);
+        HttpListener<LoginEntity> searchByCustmor = new HttpListener<LoginEntity>() {
+            @Override
+            public void onSucceed(int what, Response<LoginEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok) {
+                    mAllData.clear();
+                    excDataBeans = response.get().getData();
+                    if (excDataBeans != null) {
+                        for (UserEntity da : excDataBeans) {
+                            mAllData.add(da.getShop_name());
+                        }
+                        setAdapterCtrl();
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
+                        toastShort(response.get().getMsg());
+                    }
+                } else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<LoginEntity> response) {
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
     //--------------------------------------适配器专区----------------------------------------
 
     /**
@@ -1421,10 +1494,10 @@ public class OptionActivity extends TitleNavigationActivity {
                     });
                     tvProductInfo.setText(item.getItem_name());
                     tvProductInfo.append(new MyString("\n原价¥:"));
-                    if (item.getItem_price()==item.getNow_price()){
-                        tvProductInfo.append(new MyString( item.getItem_price()+""));
-                    }else {
-                        tvProductInfo.append(new MyString( item.getItem_price()+"").setDeletLine());
+                    if (item.getItem_price() == item.getNow_price()) {
+                        tvProductInfo.append(new MyString(item.getItem_price() + ""));
+                    } else {
+                        tvProductInfo.append(new MyString(item.getItem_price() + "").setDeletLine());
                     }
                     btPlus.setOnClickListener(l -> {
                                 item.setNumber((item.getNumber() + 1));

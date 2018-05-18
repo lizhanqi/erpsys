@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -30,6 +31,7 @@ import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.HomeCustmoerCountEntity;
 import com.suxuantech.erpsys.entity.HomeSumEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
@@ -56,6 +58,8 @@ import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,16 +104,29 @@ public class ERPLeftFragment extends BaseLazyFragment {
     RecyclerView mRvCard;
     private View headView;
     private View module;
-
+    private List<HomeCustmoerCountEntity.DataBean> dataBeans;
+    private QuickAdapter<String> quickAdapter;
+    @Subscribe()
+    @MainThread
+    public void EventBus(String key){
+        //todo 这里不知道是不是需要再次更新权限列表呢?
+        if (key.equals("changeUser")){
+            mRefreshLayout.startRefresh();
+        }
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
-        initCard();
+        useEventBus();
         mTvCompanyName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OptionHelp optionHelp = new OptionHelp(getActivity());
+                 optionHelp.setUrlTag(OptionHelp.UrlTag.OPTION_EXCUTE_SHOP);
+              //  optionHelp.setTitle("");
+                startActivity(optionHelp.creat());
             }
         });
         //   initTabLayout();
@@ -169,17 +186,19 @@ public class ERPLeftFragment extends BaseLazyFragment {
         //请求实体
         JavaBeanRequest<HomeCustmoerCountEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<HomeCustmoerCountEntity>(Url, RequestMethod.POST, HomeCustmoerCountEntity.class);
         HttpListener<HomeCustmoerCountEntity> searchByCustmor = new HttpListener<HomeCustmoerCountEntity>() {
+
             @Override
             public void onSucceed(int what, Response<HomeCustmoerCountEntity> response) {
                 if (response.get().isOK()) {
-                    List<HomeCustmoerCountEntity.DataBean> data = response.get().getData();
-                    setAdapter(data);
+                    dataBeans = response.get().getData();
+                    setData2View(dataBeans);
                 }
+                mRefreshLayout.finishRefreshing();
             }
 
             @Override
             public void onFailed(int what, Response<HomeCustmoerCountEntity> response) {
-
+                mRefreshLayout.finishRefreshing();
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
@@ -189,6 +208,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         HttpListener<HomeSumEntity> homeSumListener = new HttpListener<HomeSumEntity>() {
             @Override
             public void onSucceed(int what, Response<HomeSumEntity> response) {
+                mRefreshLayout.finishRefreshing();
                 if (response.get().isOK()) {
                     List<HomeSumEntity.DataBean> data = response.get().getData();
                     TextView tvcn = headView.findViewById(R.id.tv_today_customer_number);
@@ -211,7 +231,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
             @Override
             public void onFailed(int what, Response<HomeSumEntity> response) {
-
+                mRefreshLayout.finishRefreshing();
             }
         };
         request(33, homeSumRequset, homeSumListener, false, false);
@@ -263,19 +283,48 @@ public class ERPLeftFragment extends BaseLazyFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void setAdapter(List<HomeCustmoerCountEntity.DataBean> data) {
-//        ArrayList<String> strings = new ArrayList<>();
+    private void setData2View(List<HomeCustmoerCountEntity.DataBean> dataBeans) {
+        if (quickAdapter!=null){
+            quickAdapter.notifyDataSetChanged();
+            return;
+        }
+        //todo 这里还需改动,如果模块需要权限展示的话更需要改动
         String[] titles = getResources().getStringArray(R.array.home_title);
         List<String> strings = Arrays.asList(titles);
-        //网格布局管理器
-        mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2) {
+        quickAdapter = new QuickAdapter<String>(R.layout.item_home_card, strings) {
             @Override
-            public boolean canScrollVertically() {
-                // 直接禁止垂直滑动
-               // return false;
-                return true;
+            protected void convert(BaseViewHolder helper, String item) {
+                int i = strings.lastIndexOf(item);
+                ImageView imgIcon = (ImageView) helper.getView(R.id.img_icon);
+                TextView tvName = (TextView) helper.getView(R.id.tv_name);
+                TextView tvValues = (TextView) helper.getView(R.id.tv_values);
+                tvName.setText(item);
+                if (i == 0) {
+                    imgIcon.setImageResource(R.drawable.icon_make_into_store_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getJkyycount());
+                } else if (i == 1) {
+                    imgIcon.setImageResource(R.drawable.icon_photo_custmoer_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getPzcount());
+                } else if (i == 2) {
+                    imgIcon.setImageResource(R.drawable.icon_dress_customer_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getLfcount());
+                } else if (i == 3) {
+                    imgIcon.setImageResource(R.drawable.icon_make_up_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getHzcount());
+                } else if (i == 4) {
+                    imgIcon.setImageResource(R.drawable.icon_option_panel_custmoer_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getXpcount());
+                } else if (i == 5) {
+                    imgIcon.setImageResource(R.drawable.icon_get_photo_custmoer_home);
+                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getQjcount());
+
+                } else if (i == 6) {
+                    imgIcon.setImageResource(R.drawable.icon_me_custmer_home);
+                    tvName.setText(strings.get(i));
+                    //   tvValues.setText(item.get());
+                }
             }
-        });
+        };
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -288,54 +337,19 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 return false;
             }
         });
-        DefaultItemDecoration2 defaultItemDecoration = new DefaultItemDecoration2(getResources().getColor(R.color.gray_f9), 30, 30, QuickAdapter.HEADER_VIEW, QuickAdapter.FOOTER_VIEW);
-        defaultItemDecoration.setHasHead(true);
-        QuickAdapter<String> quickAdapter = new QuickAdapter<String>(R.layout.item_home_card, strings) {
-            @Override
-            protected void convert(BaseViewHolder helper, String item) {
-                int i = strings.lastIndexOf(item);
-                ImageView imgIcon = (ImageView) helper.getView(R.id.img_icon);
-                TextView tvName = (TextView) helper.getView(R.id.tv_name);
-                TextView tvValues = (TextView) helper.getView(R.id.tv_values);
-                tvName.setText(item);
-                if (i == 0) {
-                    imgIcon.setImageResource(R.drawable.icon_make_into_store_home);
-                    tvValues.setText(data.get(0).getJkyycount());
-                } else if (i == 1) {
-                    imgIcon.setImageResource(R.drawable.icon_photo_custmoer_home);
-                    tvValues.setText(data.get(0).getPzcount());
-                } else if (i == 2) {
-                    imgIcon.setImageResource(R.drawable.icon_dress_customer_home);
-                    tvValues.setText(data.get(0).getLfcount());
-                } else if (i == 3) {
-                    imgIcon.setImageResource(R.drawable.icon_make_up_home);
-                    tvValues.setText(data.get(0).getHzcount());
-                } else if (i == 4) {
-                    imgIcon.setImageResource(R.drawable.icon_option_panel_custmoer_home);
-                    tvValues.setText(data.get(0).getXpcount());
-                } else if (i == 5) {
-                    imgIcon.setImageResource(R.drawable.icon_get_photo_custmoer_home);
-                    tvValues.setText(data.get(0).getQjcount());
-
-                } else if (i == 6) {
-                    imgIcon.setImageResource(R.drawable.icon_me_custmer_home);
-                    tvName.setText(strings.get(i));
-                    //   tvValues.setText(item.get());
-                }
-            }
-        };
         quickAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
             intent.putExtra("title", strings.get(position));
             startActivity(intent);
         });
-
         quickAdapter.addHeaderView(module);
         quickAdapter.addHeaderView(headView);
-        mRvCard.addItemDecoration(defaultItemDecoration);
         mRvCard.setAdapter(quickAdapter);
+        DefaultItemDecoration2 defaultItemDecoration = new DefaultItemDecoration2(getResources().getColor(R.color.gray_f9), 30, 30, QuickAdapter.HEADER_VIEW, QuickAdapter.FOOTER_VIEW);
+        defaultItemDecoration.setHasHead(true);
+        mRvCard.addItemDecoration(defaultItemDecoration);
+        mRefreshLayout.setEnableLoadmore(false);
     }
-
 
     /**
      * 动画球,暂时不用
@@ -432,16 +446,23 @@ public class ERPLeftFragment extends BaseLazyFragment {
     }
 
     private void initRefresh() {
+
+        //网格布局管理器
+        // mRvCard.setNestedScrollingEnabled();
+        mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2) {
+            @Override
+            public boolean canScrollVertically() {
+                // 直接禁止垂直滑动
+                // return false;
+                return true;
+            }
+        });
         mRefreshLayout.setEnableLoadmore(false);
         mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.finishRefreshing();
-                    }
-                }, 2000);
+                mTvCompanyName.setText(StringUtils.safetyString(App.getApplication().getUserInfor().getShop_name()));
+                initCard();
             }
 
             @Override
@@ -455,6 +476,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 }
             }
         });
+        mRefreshLayout.startRefresh();
 
     }
 }

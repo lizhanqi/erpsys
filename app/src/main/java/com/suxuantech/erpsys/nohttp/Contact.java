@@ -40,6 +40,7 @@ public class Contact {
 
     //http://192.168.0.15:8033/SXWebErpAppStaff/SX_GetOrderNum?Token=SX&code=00
     public static String TESTIP = "http://192.168.0.15:8033";
+    public static String PHP_PREFIX = "http://oa.erp.suxuantech.cn/api.php?m=login&a=";
     public static String TOKEN = "^******^";
 
     public static String getFullUrl(String template, Object... replace) {
@@ -385,12 +386,24 @@ public class Contact {
      * 一销,二销锁定验证(无用)
      */
     public static String PRODUCT_LOCK = "/SXWebErpAppStaff/SX_LockZheng?Token=%s&orderid=%s&isye=%s&Code=%s";
-    public static String PHP_PREFIX = "http://oa.erp.suxuantech.cn/api.php?m=login&a=";
+
+    /**
+     * php登录
+     */
     public static String PHP_LOGIN = "%scheck";
     public static String Person = "%sgetDepartments";
     /**
      * 通讯录搜索
      */
     public static String SEARCH_PERSON = "%sseacherStaff";
+    /**
+     * 获取部门下的人员
+     */
+   public static String  DEPARTMENT_CONTACTS  ="%sgetDepartmentStaffs";
+    /**
+     * 可切换店面
+     */
+    public static   String CAN_EXECUTE_SHOP="/SXWebErpAppStaff/SX_OpertionShop?Token=%s&Staffid=%s";
+
 
 }

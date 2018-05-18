@@ -34,12 +34,31 @@ clickable是防止页面穿透的点击事件的
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px80" />
+        <LinearLayout
+            android:padding="@dimen/px50"
+            android:id="@+id/ll_fast_entry"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="@dimen/px50"
+                android:id="@+id/tv_group"
+                android:text="集团"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_shop"
+                android:text="店面"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rl_organization"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
         </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/ll_recent_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
