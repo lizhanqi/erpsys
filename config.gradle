@@ -77,9 +77,9 @@ ext {
             //dex分包
             multidex               : 'com.android.support:multidex:1.+',
             // Fragment框架
-            fragmentation          : 'me.yokeyword:fragmentation:1.2.6',
+            fragmentation          : 'me.yokeyword:fragmentation:1.3.4',
             //Fragement侧滑关闭,以及activity侧滑关闭
-            fragmentation_swipeback: 'me.yokeyword:fragmentation-swipeback:1.2.6',
+            fragmentation_swipeback: 'me.yokeyword:fragmentation-swipeback:1.3.4',
             //下拉刷新上拉加载(ERP左边的)
             tkrefreshlayout        : 'com.lcodecorex:tkrefreshlayout:1.0.7',
             //共享元素(暂未使用)
@@ -119,7 +119,10 @@ ext {
            skinlibrary: 'com.solid.skin:skinlibrary:+',
         //炫酷刷新   https://github.com/scwang90/SmartRefreshLayout/tree/master
            SmartRefreshLayout:     'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5',
-           SmartRefreshHeader: 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5'//没有使用特殊Header，可以不加这行
+           SmartRefreshHeader: 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-5',//没有使用特殊Header，可以不加这行
+           numberProgressBar:'com.daimajia.numberprogressbar:library:1.4@aar',
+           buttonProgress: 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3',
+           NiftyNotification: 'com.github.sd6352051:NiftyNotification:1.2'
     ]
     bintray = [
             // library

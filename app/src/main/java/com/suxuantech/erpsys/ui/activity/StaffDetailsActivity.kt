@@ -60,9 +60,9 @@ class StaffDetailsActivity : TitleNavigationActivity() {
         }
         tvNameAndPost?.setText(MyString(StringUtils.safetyString(data.staffname)).setSize(25))
         tvNameAndPost?.append(MyString("\n"+StringUtils.safetyString(data.main_position_name)).setSize(15))
-        data.qq="1938364661"
-        data.weixin="code03280318"
-        data.email="1032992210@qq.com"
+//        data.qq="1938364661"
+//        data.weixin="code03280318"
+//        data.email="1032992210@qq.com"
         val arrayList = ArrayList<FormEntity>();
         arrayList.add(FormEntity("所属部门:", StringUtils.safetyString(data.department_name)))
         arrayList.add(FormEntity("所属店面:", StringUtils.safetyString(data.shop_name)))

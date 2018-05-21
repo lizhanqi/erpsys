@@ -43,6 +43,7 @@ public class MyString extends SpannableString {
     int color;
     int size;
     String url;
+    //ClickableSpan
     ////设置颜色
 //spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#FE6026")), 3, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 ////设置字体大小，true表示前面的字体大小20单位为dip

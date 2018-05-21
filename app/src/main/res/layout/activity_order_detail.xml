@@ -5,17 +5,4 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<LinearLayout-->
-        <!--android:id="@+id/ll_window"-->
-        <!--android:background="@color/translucent_black_90"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView-->
-            <!--android:paddingBottom="@dimen/px144"-->
-            <!--android:background="@color/white"-->
-            <!--android:id="@+id/smrv_select"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-        <!--</com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>-->
-    <!--</LinearLayout>-->
 </FrameLayout>

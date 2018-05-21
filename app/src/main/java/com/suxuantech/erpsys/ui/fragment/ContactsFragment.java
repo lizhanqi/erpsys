@@ -2,152 +2,337 @@ package com.suxuantech.erpsys.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
+import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.chat.ConversationActivity;
+import com.suxuantech.erpsys.entity.BusinssunitEntity;
 import com.suxuantech.erpsys.entity.ContactEntity;
+import com.suxuantech.erpsys.entity.DepartmentEntiy;
+import com.suxuantech.erpsys.entity.StaffSearchEntity;
+import com.suxuantech.erpsys.entity.StoreEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.ui.activity.StaffDetailsActivity;
 import com.suxuantech.erpsys.ui.activity.StaffSearchActivity;
 import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
-import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
-import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
+import com.suxuantech.erpsys.ui.adapter.ContanctsAdaputer;
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
-import com.suxuantech.erpsys.utils.GlideRoundTransform;
-import com.suxuantech.erpsys.utils.Text2Bitmap;
-import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.jpush.im.android.api.JMessageClient;
-import me.yokeyword.fragmentation.SupportFragment;
 
 
-public class ContactsFragment extends SupportFragment {
+public class ContactsFragment extends BaseSupportFragment {
     @BindView(R.id.rl_organization)
     SwipeMenuRecyclerView mRlOrganization;
-    @BindView(R.id.rl_recent_contact)
-    SwipeMenuRecyclerView mRlRecentContact;
-    @BindView(R.id.ll_recent_contact)
-    LinearLayout mLlRecentContact;
+    @BindView(R.id.ll_fast_entry)
+    LinearLayout fastEntry;
+    @BindView(R.id.tv_group)
+    TextView tvGruop;
+    @BindView(R.id.tv_shop)
+    TextView tvShop;
     @BindView(R.id.one_Search)
     OneKeyClearAutoCompleteText oneKeyClearAutoCompleteText;
-
-    private View view;
+    @BindView(R.id.smar_contancts)
+    SmartRefreshLayout smartRefreshLayout;
     private Unbinder unbinder;
+    ContanctsAdaputer contanctsAdaputer;
 
+    private boolean isOption,
+            searchEntrance,//搜索入口是否显示
+            fastEntrance;//快速入口是否显示
+    /**
+     * 1事业部
+     * 2品牌
+     * 3.店面
+     * 4.部门
+     */
+    private int type = 4;//根据类型获取不同的页面数据
+    private String keyCode;//根据类型获取不同的页面数据
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, view);
-        oneKeyClearAutoCompleteText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Intent intent = new Intent(getActivity(),StaffSearchActivity.class);
-                //intent.putExtra("option",true);
-                startActivity(intent);
-                return false;
-            }
-        });
         return view;
-    }
-    @OnClick(R.id.one_Search)
-    public void onClick(View view) {
-        if (view.getId()==R.id.one_Search) {
-
-        }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<ContactEntity> objects = new ArrayList<ContactEntity>();
-        ArrayList<String> strings = new ArrayList<String>();
-        for (int i = 0; i < 30; i++) {
-            if (i < 10) {
-                strings.add("部门" + i);
-            }
-            if (i % 5 != 0) {
-                objects.add(new ContactEntity("u" + i, "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2511196149,1814813928&fm=111&gp=0.jpg", "", i + "德玛"));
-            } else if (i / 8 == 0) {
-                objects.add(new ContactEntity("u" + i, "", "", ""));
-            } else {
-                objects.add(new ContactEntity("u" + i, "", "", i + "孙"));
-            }
+        initView();
+        type = getArguments().getInt("type", 4);
+        fastEntrance = getArguments().getBoolean("fastEntrance",false);
+        if (fastEntrance){
+            fastEntry.setVisibility(View.VISIBLE);
+        }else {
+            fastEntry.setVisibility(View.GONE);
         }
-        mRlOrganization.setSwipeItemClickListener(new SwipeItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                start(new ContactsFragment());
-                startActivityForResult(new Intent(getActivity(), ContactsActivity.class), 15);
-            }
+        isOption = getArguments().getBoolean("isOption",false);
+        isOption = getArguments().getBoolean("searchEntrance",true);
+        keyCode = getArguments().getString("keyCode");
+        getContactTreeContrl(type, keyCode);
+    }
+    private void  statToFragement(Bundle bd){
+        ContactsFragment contactsFragment = new ContactsFragment();
+        contactsFragment.setArguments(bd);
+//        getTargetFragment().getFragmentManager().beginTransaction().add(contactsFragment)
+      //  start();
+    }
+    private void initView() {
+        smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            getContactTreeContrl(type, keyCode);
         });
-
-        mRlRecentContact.setNestedScrollingEnabled(false);
-        mRlOrganization.setNestedScrollingEnabled(false);
-        mRlRecentContact.setSwipeItemClickListener(new SwipeItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                if (position == 0) {
-                    if (!JMessageClient.getMyInfo().getUserName().equals("10086")) {
-                        Intent intent = new Intent(getActivity(), ConversationActivity.class);
-                        intent.putExtra("name", "10086");
-                        startActivity(intent);
+        contanctsAdaputer = new ContanctsAdaputer(getActivity());
+        mRlOrganization.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRlOrganization.setAdapter(contanctsAdaputer);
+        contanctsAdaputer.setOnChildClickListener((GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int groupPosition, int childPosition) -> {
+            ContactEntity contactEntity = contanctsAdaputer.getContactEntity();
+            if (groupPosition == 3) {
+                List<StaffSearchEntity.DataBean> staffData = contactEntity.getStaffData();
+                if (staffData!=null){
+                    Intent intts =new Intent(getActivity(), StaffDetailsActivity.class);
+                    Bundle bd =new Bundle();
+                    bd.putParcelable("data", staffData.get(childPosition));
+                    intts.putExtras(bd);
+                    startActivity(intts);
+                }
+            }else {
+                Bundle bundle = new Bundle();
+                if (groupPosition==0){
+                    List<BusinssunitEntity.DataBean> businssunitData = contactEntity.getBusinssunitData();
+                    if (businssunitData!=null){
+                        BusinssunitEntity.DataBean dataBean = businssunitData.get(childPosition);
+                        bundle.putString("keyCode",dataBean.getId()+"");
                     }
-                } else {
-                    if (!JMessageClient.getMyInfo().getUserName().equals("123456")) {
-                        Intent intent = new Intent(getActivity(), ConversationActivity.class);
-                        intent.putExtra("name", "123456");
-                        startActivity(intent);
+                }else if (groupPosition==1){
+                    List<StoreEntity.DataBean> storeData = contactEntity.getStoreData();
+                    if (storeData!=null){
+                        StoreEntity.DataBean dataBean = storeData.get(childPosition);
+                        bundle.putString("keyCode",dataBean.getShop_code()+"");
+                    }
+                }else if (groupPosition==2){
+                    List<DepartmentEntiy.DataBean> departmentData = contactEntity.getDepartmentData();
+                    if (departmentData!=null){
+                        DepartmentEntiy.DataBean dataBean = departmentData.get(childPosition);
+                        bundle.putString("keyCode",dataBean.getId()+"");
                     }
                 }
+                //这里+2的原因因为查询是1-4直接,但是下表示0,但是同时1是集团查询,所以需要再加一个
+                groupPosition+=2;
+                bundle.putInt("type", groupPosition);
+                bundle.putBoolean("isOption",false);
+                statToFragement(bundle);
+//                Intent intent = new Intent(getActivity(),ContactsActivity.class);
+//                startActivity(intent);
             }
         });
-        new BaseRecyclerAdapter<ContactEntity>(mRlRecentContact, objects, R.layout.item_contact) {
+        oneKeyClearAutoCompleteText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void convert(RecyclerHolder holder, ContactEntity item, int position, boolean isScrolling) {
-                ImageView imagHead = holder.getView(R.id.img_contact_head);
-                TextView contanTextView = holder.getView(R.id.tv_contact_name);
-                contanTextView.setText(item.getName());
-                if (android.text.TextUtils.isEmpty(item.getHead()) && !android.text.TextUtils.isEmpty(item.getName())) {
-                    imagHead.setImageBitmap(Text2Bitmap.getNameBitMap(item.getName(), getResources().getColor(R.color.white)));
-                } else if (android.text.TextUtils.isEmpty(item.getHead()) && android.text.TextUtils.isEmpty(item.getName())) {
-                    imagHead.setImageBitmap(Text2Bitmap.getNewBitMap("未知", getResources().getColor(R.color.white)));
-                } else {
-                    RequestOptions options2 = new RequestOptions()
-                            .centerCrop()
-                            .placeholder(R.mipmap.ic_launcher)//预加载图片
-                            .error(R.mipmap.ic_launcher)//加载失败显示图片
-                            .priority(Priority.HIGH)//优先级
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)//缓存策略
-                            .transform(new GlideRoundTransform(10));//转化为圆形
-                    Glide.with(getActivity()).load(item.getHead()).apply(options2).into(imagHead);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Intent intent = new Intent(getActivity(), StaffSearchActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        tvGruop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(getActivity(),ContactsActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("isOption",false);
+                intent.putExtra("keyCode","");
+                bundle.putInt("type",1);
+                bundle.putBoolean("isOption",false);
+                bundle.putString("keyCode","");
+                statToFragement(bundle);
+                //startActivity(intent);
+            }
+        });
+        tvShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(getActivity(),ContactsActivity.class);
+                intent.putExtra("type", 3);
+                intent.putExtra("isOption",false);
+                intent.putExtra("keyCode", App.getApplication().getUserInfor().shop_code+"");
+                bundle.putInt("type",3);
+                bundle.putBoolean("isOption",false);
+                bundle.putString("keyCode",App.getApplication().getUserInfor().shop_code+"");
+                statToFragement(bundle);
+                //startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * 获取联系人的总控
+     * 1.事业部
+     * 2.品牌
+     * 3.店
+     * 4.部门
+     *
+     * @param wicht
+     */
+    public void getContactTreeContrl(@IntRange(from = 1, to = 4) int wicht, String code) {
+        if (wicht == 1) {
+            getBusinssunit();
+            getContancts(wicht, "");
+            getDepartment(wicht, "");
+        } else if (wicht == 2) {
+            getContancts(wicht, code);
+            getStoreByBusinssUnit(code);
+            getDepartment(wicht, code);
+        } else if (wicht == 3) {
+            getDepartment(wicht, code);
+            getContancts(wicht, code);
+        } else if (wicht == 4) {
+            getContancts(wicht, code);
+        }
+    }
+
+    /**
+     * 获取集团下的事业部
+     */
+    public void getBusinssunit() {
+        String url = Contact.getFullUrl(Contact.BUSINSSUNIT, Contact.PHP_PREFIX);
+        JavaBeanRequest<BusinssunitEntity> businssunit = new JavaBeanRequest<BusinssunitEntity>(url, BusinssunitEntity.class);
+        HttpListener<BusinssunitEntity> searchByCustmor = new HttpListener<BusinssunitEntity>() {
+            @Override
+            public void onSucceed(int what, Response<BusinssunitEntity> response) {
+                smartRefreshLayout.finishRefresh();
+                if (response.get().isOK()) {
+                    contanctsAdaputer.getContactEntity().setBusinssunitData(response.get().getData());
+                    contanctsAdaputer.changeDataSet();
+                }
+
+            }
+
+            @Override
+            public void onFailed(int what, Response<BusinssunitEntity> response) {
+                smartRefreshLayout.finishRefresh();
+            }
+        };
+        request(0, businssunit, searchByCustmor, false, false);
+    }
+
+    /**
+     * 获取通讯录根据
+     * (grade_type:部门所属：1集团，2品牌，3店面，4部门)
+     * (1:’’,2:brandclass_id,3:shop_code，4:department_id)
+     *
+     * @param type 类型
+     * @param Key  类型关键词
+     */
+    public void getContancts(@IntRange(from = 1, to = 4) int type, @NonNull String Key) {
+        String url = Contact.getFullUrl(Contact.CONTACTS, Contact.PHP_PREFIX);
+        JavaBeanRequest<StaffSearchEntity> contancts = new JavaBeanRequest<StaffSearchEntity>(url, StaffSearchEntity.class);
+        contancts.add("grade_type", type);
+        if (type == 2) {
+            contancts.add("brandclass_id", Key);
+        } else if (type == 3) {
+            contancts.add("shop_code", Key);
+        } else if (type == 4) {
+            contancts.add("department_id", Key);
+        }
+        HttpListener<StaffSearchEntity> searchByCustmor = new HttpListener<StaffSearchEntity>() {
+            @Override
+            public void onSucceed(int what, Response<StaffSearchEntity> response) {
+                smartRefreshLayout.finishRefresh();
+                if (response.get().isOK()) {
+                    contanctsAdaputer.getContactEntity().setStaffData(response.get().getData());
+                    contanctsAdaputer.notifyDataSetChanged();
                 }
             }
-        };
-        new BaseRecyclerAdapter<String>(mRlOrganization, strings, R.layout.item_department) {
+
             @Override
-            public void convert(RecyclerHolder holder, String item, int position, boolean isScrolling) {
-                TextView tv = holder.getView(R.id.tv_department);
-                tv.setText(item);
+            public void onFailed(int what, Response<StaffSearchEntity> response) {
+                smartRefreshLayout.finishRefresh();
             }
         };
+        request(0, contancts, searchByCustmor, false, false);
+    }
 
+    /**
+     * 获取部门
+     * (grade_type:部门所属：1集团，2品牌，3店面，4部门)
+     * (1:’’,2:brandclass_id,3:shop_code，4:department_id)
+     *
+     * @param type 类型
+     * @param Key  类型关键词
+     */
+    public void getDepartment(@IntRange(from = 1, to = 4) int type, @NonNull String Key) {
+        String url = Contact.getFullUrl(Contact.DEPARTMENT, Contact.PHP_PREFIX);
+        JavaBeanRequest<DepartmentEntiy> department = new JavaBeanRequest<DepartmentEntiy>(url, DepartmentEntiy.class);
+        department.add("grade_type", type);
+        if (type == 2) {
+            department.add("brandclass_id", Key);
+        } else if (type == 3) {
+            department.add("shop_code", Key);
+        } else if (type == 4) {
+            department.add("department_id", Key);
+        }
+        HttpListener<DepartmentEntiy> searchByCustmor = new HttpListener<DepartmentEntiy>() {
+            @Override
+            public void onSucceed(int what, Response<DepartmentEntiy> response) {
+                smartRefreshLayout.finishRefresh();
+                if (response.get().isOK()) {
+                    contanctsAdaputer.getContactEntity().setDepartmentData(response.get().getData());
+                    contanctsAdaputer.changeDataSet();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<DepartmentEntiy> response) {
+                smartRefreshLayout.finishRefresh();
+            }
+        };
+        request(0, department, searchByCustmor, false, false);
+    }
+
+    /**
+     * 根据事业部获实体店面以及营销店
+     */
+    public void getStoreByBusinssUnit(@NonNull String brandclass_id) {
+        String url = Contact.getFullUrl(Contact.STORE_BY_BUSINSSUNIT, Contact.PHP_PREFIX);
+        JavaBeanRequest<StoreEntity> store = new JavaBeanRequest<StoreEntity>(url, StoreEntity.class);
+        store.add("brandclass_id", brandclass_id);
+        HttpListener<StoreEntity> searchByCustmor = new HttpListener<StoreEntity>() {
+            @Override
+            public void onSucceed(int what, Response<StoreEntity> response) {
+                smartRefreshLayout.finishRefresh();
+                if (response.get().isOK()) {
+                    contanctsAdaputer.getContactEntity().setStoreData(response.get().getData());
+                    contanctsAdaputer.changeDataSet();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<StoreEntity> response) {
+                smartRefreshLayout.finishRefresh();
+            }
+        };
+        requestNOError(0, store, searchByCustmor, false, false);
     }
 }
 

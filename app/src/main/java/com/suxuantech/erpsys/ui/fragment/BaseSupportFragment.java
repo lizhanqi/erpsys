@@ -148,6 +148,10 @@ public class BaseSupportFragment extends SupportFragment     {
         request.setCancelSign(object);
         requestQueue.add(what, request, new HttpResponseListener (getContext(), request, callback, canCancel, isLoading));
     }
+    public <T> void requestNOError(int what, Request<T> request, HttpListener<T> callback, boolean canCancel, boolean isLoading) {
+        request.setCancelSign(object);
+        requestQueue.add(what, request, new HttpResponseListener (getContext(), request, callback, canCancel, isLoading,false));
+    }
 
     @Override
     public void onDestroy() {

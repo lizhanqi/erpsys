@@ -27,6 +27,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hanks.htextview.fall.FallTextView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.App;
@@ -69,7 +70,7 @@ import butterknife.BindView;
 
 public class ERPLeftFragment extends BaseLazyFragment {
     @BindView(R.id.tv_company_name)
-    TextView mTvCompanyName;
+    FallTextView mTvCompanyName;
     @BindView(R.id.tv_today_time)
     TextView mTvTodayTime;
     @BindView(R.id.tv_msg_number)
@@ -461,7 +462,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
-                mTvCompanyName.setText(StringUtils.safetyString(App.getApplication().getUserInfor().getShop_name()));
+                mTvCompanyName.animateText(StringUtils.safetyString(App.getApplication().getUserInfor().getShop_name()));
                 initCard();
             }
 

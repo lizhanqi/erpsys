@@ -65,7 +65,6 @@ import java.util.List;
  */
 
 public class HomeDataFragement extends BaseSupportFragment implements ISearchOrderPresenter {
-
     RecyclerView recyclerView;
     SmartRefreshLayout smartRefreshLayout;
     int showOnPosition; //跳转到详情的时候显示那个页面

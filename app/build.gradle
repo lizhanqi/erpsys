@@ -129,21 +129,21 @@ dependencies {
     implementation rootProject.ext.dependencies.AdapterHelper
     // compile 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.4'
     //   compile rootProject.ext.dependencies.AndroidEmoji
-    compile rootProject.ext.dependencies.withsource
+    implementation rootProject.ext.dependencies.withsource
     // 此处以JMessage 2.5.0 版本为例。
-    compile rootProject.ext.dependencies.jmessage
+    implementation rootProject.ext.dependencies.jmessage
     // 此处以JCore 1.1.9 版本为例。
-    compile rootProject.ext.dependencies.jcore
+    implementation rootProject.ext.dependencies.jcore
     androidTestCompile 'junit:junit:4.12'
     //    implementation (rootProject.ext.dependencies.SmartShow){
     //        //去除design包的依赖，其一，你不一定用到SmartSnackbar；其二，你项目使用的版本不一定和库中所用相同
     ////        exclude group: 'com.android.support'
     //    }
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':libzxing')
-    compile project(':IMLib')
-    compile project(':IMKit')
-    compile project(':libcalendar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':libzxing')
+    implementation project(':IMLib')
+    implementation project(':IMKit')
+    implementation project(':libcalendar')
     implementation project(':RecordVoice')
     //  compile 'io.github.rockerhieu:emojicon:+'
     implementation files('libs/BaiduLBS_Android.jar')
@@ -151,6 +151,10 @@ dependencies {
     //compile rootProject.ext.dependencies.skinlibrary
     implementation rootProject.ext.dependencies.SmartRefreshLayout
     implementation rootProject.ext.dependencies.SmartRefreshHeader
+    implementation rootProject.ext.dependencies.numberProgressBar
+    implementation rootProject.ext.dependencies.buttonProgress
+    implementation "com.hanks:htextview-base:+"
+    implementation "com.hanks:htextview-fall:+"       // optional
 }
 
 //删除release文件夹

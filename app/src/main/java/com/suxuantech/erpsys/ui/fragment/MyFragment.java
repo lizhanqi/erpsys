@@ -50,7 +50,6 @@ public class MyFragment extends BaseSupportFragment {
     TextView mTvVerstion;
     @BindView(R.id.tv_name_and_post)
     TextView mTvNameAndPost;
-
     @BindView(R.id.btn_login_out)
     Button mBtnLoginOut;
     @BindView(R.id.rv_other_info)

@@ -3,76 +3,69 @@ android:background="@color/white"
 android:clickable="true"
 必须要有background防止fragment页面穿透的,
 clickable是防止页面穿透的点击事件的
--->
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+--><!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.ContactsFragment">
+
+    <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+        android:id="@+id/one_Search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px80"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/px15"
+        android:layout_marginHorizontal="@dimen/px50"
+        android:layout_marginTop="@dimen/px15"
+        android:background="@drawable/sp_search"
+        android:drawableLeft="@drawable/icon_soso"
+        android:drawablePadding="@dimen/px30"
+        android:editable="false"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
+        android:imeOptions="actionSearch"
+        android:paddingHorizontal="@dimen/px30"
+        android:singleLine="true"
+        android:textSize="@dimen/xs40" />
+
+    <LinearLayout
+        android:id="@+id/ll_fast_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/px50">
+
+        <TextView
+            android:id="@+id/tv_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/px50"
+            android:text="集团" />
+
+        <TextView
+            android:id="@+id/tv_shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/px50"
+            android:text="店面" />
+    </LinearLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smar_contancts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clickable="true"
-        android:orientation="vertical"
-        tools:context=".ui.fragment.ContactsFragment">
-        <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
-            android:layout_marginHorizontal="@dimen/px50"
-            android:editable="false"
-            android:layout_gravity="center"
-            android:singleLine="true"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/px30"
-            android:drawablePadding="@dimen/px30"
-            android:layout_marginBottom="@dimen/px15"
-            android:layout_marginTop="@dimen/px15"
-            android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
-            android:drawableLeft="@drawable/icon_soso"
-            android:background="@drawable/sp_search"
-            android:textSize="@dimen/xs40"
-            android:imeOptions="actionSearch"
-            android:id="@+id/one_Search"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/px80" />
-        <LinearLayout
-            android:padding="@dimen/px50"
-            android:id="@+id/ll_fast_entry"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:padding="@dimen/px50"
-                android:id="@+id/tv_group"
-                android:text="集团"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_shop"
-                android:text="店面"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        android:layout_weight="1">
+
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rl_organization"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/ll_recent_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="近期联系人"
-                android:textSize="@dimen/xs44" />
-            <View style="@style/line" />
-            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                android:id="@+id/rl_recent_contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-        </LinearLayout>
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+            android:layout_height="match_parent" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout><!--</android.support.v4.widget.NestedScrollView>-->

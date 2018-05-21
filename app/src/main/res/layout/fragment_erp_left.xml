@@ -61,7 +61,8 @@ clickable是防止页面穿透的点击事件的
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-                            <TextView
+
+                            <com.hanks.htextview.fall.FallTextView
                                 android:id="@+id/tv_company_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

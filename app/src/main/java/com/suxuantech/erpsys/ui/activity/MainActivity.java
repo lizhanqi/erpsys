@@ -373,10 +373,17 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 break;
 
             case 3:
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isOption",false);
+                bundle.putInt("type",4);
+                bundle.putBoolean("fastEntrance",true);
+                bundle.putString("keyCode",App.getApplication().getUserInfor().department_id+"");
                 if (contactsFragment == null) {
                     contactsFragment = new ContactsFragment();
+                    contactsFragment.setArguments(bundle);
                     transaction.add(R.id.main_content, contactsFragment);
                 } else {
+                    contactsFragment.setArguments(bundle);
                     transaction.show(contactsFragment);
                 }
                 setTitle("联系人");

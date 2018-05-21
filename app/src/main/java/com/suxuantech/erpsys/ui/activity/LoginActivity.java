@@ -118,7 +118,11 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     private EditText mPasswordView;
     private TextView copyRight;
     private EditText mCompanyID;
-
+    //    circularProgressButton.setIndeterminateProgressMode(真正的);//打开不确定的进展。
+//    circularProgressButton.setProgress(50);//设置进度> 0 & < 100，以显示不确定的进度。
+//    circularProgressButton.setProgress(100);//将进度设置为100或-1，表示完整或错误状态。
+//    circularProgressButton.setProgress(0);//将进程设置为0，以切换回正常状态。
+    private Button mEmailSignInButton;
 
     //    private View mLoginFormView;
     @Override
@@ -140,6 +144,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         }
 
     }
+
     /**
      * 获取登录人权限
      */
@@ -164,8 +169,8 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 if (response.get().isOK() || response.get().getData() != null) {
                     List<String> data = response.get().getData();
                     App.getApplication().setUserPermission(data);
-                    loginJG(App.getApplication().getUserInfor().getStaffname(),App.getApplication().getUserInfor().getStaffnumber());
-                }else {
+                    loginJG(App.getApplication().getUserInfor().getStaffname(), App.getApplication().getUserInfor().getStaffnumber());
+                } else {
                     loginFailed();
                 }
             }
@@ -176,19 +181,17 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
-
     }
 
     public void LoginSucceed() {
-             loadingDialog.dismiss();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-//            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(System.currentTimeMillis() * 1000));
-//            dLog(System.currentTimeMillis() + "");
-            finish();
-
+        loadingDialog.dismiss();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
+
     Dialog loadingDialog;
+
     void login(String name, String password) {
         loadingDialog.setCancelable(false);
         loadingDialog.show();
@@ -221,11 +224,12 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         loadingDialog.dismiss();
         JMessageClient.logout();
     }
+
     public void loginJG(String jgName, String jgPassWord) {
-        if (jgName.equals("小飞")){
-            jgName="10086";
-            jgPassWord="10086";
-        }else {
+        if (jgName.equals("小飞")) {
+            jgName = "10086";
+            jgPassWord = "10086";
+        } else {
             jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
             jgName = EncodeUtils.base64Encode2String(jgName.getBytes());
         }
@@ -267,12 +271,12 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
                 return false;
             }
         });
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mCompanyID.getText().toString().equals("1")) {
-                    php(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+              phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
                 } else {
                     login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
                 }
@@ -280,7 +284,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         });
     }
 
-    private void php(String name, String key) {
+    private void phpLogin(String name, String key) {
         loadingDialog.show();
         String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.PHP_PREFIX);
         JavaBeanRequest<PHPLoginEntity> login = new JavaBeanRequest<PHPLoginEntity>(fullUrl, PHPLoginEntity.class);
@@ -290,20 +294,20 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         HttpListener<PHPLoginEntity> searchByCustmor = new HttpListener<PHPLoginEntity>() {
             @Override
             public void onSucceed(int what, Response<PHPLoginEntity> response) {
-                    if (response.get().isOK()) {
-                        LoginEntity loginEntity = new LoginEntity();
-                        ArrayList<UserEntity> userData = new ArrayList<>();
-                        userData.add(response.get().getData());
-                        loginEntity.setData(userData);
-                        loginEntity.setMsg(response.get().getMsg());
-                        loginEntity.setCode(response.get().getCode());
-                        //保存登录信息
-                        CacheUtils.getInstance().put(App.LOGIN_FILE_NAME, FastJsonUtils.toJSONString(loginEntity));
-                        getPermisstion();
-                    } else {
-                        loginFailed();
-                        toastShort(response.get().getMsg());
-                    }
+                if (response.get().isOK()) {
+                    LoginEntity loginEntity = new LoginEntity();
+                    ArrayList<UserEntity> userData = new ArrayList<>();
+                    userData.add(response.get().getData());
+                    loginEntity.setData(userData);
+                    loginEntity.setMsg(response.get().getMsg());
+                    loginEntity.setCode(response.get().getCode());
+                    //保存登录信息
+                    CacheUtils.getInstance().put(App.LOGIN_FILE_NAME, FastJsonUtils.toJSONString(loginEntity));
+                    getPermisstion();
+                } else {
+                    loginFailed();
+                    toastShort(response.get().getMsg());
+                }
             }
 
             @Override
@@ -313,6 +317,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         };
         request(0, login, searchByCustmor, false, false);
     }
+
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
@@ -320,7 +325,7 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         public void onAuthenticateSuccess() {
             mCompanyID.setText("111");
             mEmailView.setText("小飞");
-            login("小飞","0");
+            login("小飞", "0");
             toastShort("指纹识别成功");
         }
 

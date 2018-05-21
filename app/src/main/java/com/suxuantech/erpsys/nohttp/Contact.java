@@ -55,9 +55,9 @@ public class Contact {
         }
         //把所有类型转为String,并且编码
         for (int i = 0; i < replace.length; i++) {
-            if (template.startsWith("%s") &&replace[i].toString().startsWith("http")){
-              continue;
-            }else {
+            if (template.startsWith("%s") && replace[i].toString().startsWith("http")) {
+                continue;
+            } else {
                 replace[i] = URLEncoder.encode(replace[i].toString());
             }
         }
@@ -391,19 +391,36 @@ public class Contact {
      * php登录
      */
     public static String PHP_LOGIN = "%scheck";
-    public static String Person = "%sgetDepartments";
+    /**
+     * 可切换店面
+     */
+    public static String CAN_EXECUTE_SHOP = "/SXWebErpAppStaff/SX_OpertionShop?Token=%s&Staffid=%s";
+    /**
+     * 获取集团下的事业部列表
+     */
+    public static String BUSINSSUNIT = "%sgetBrandList";
+    /**
+     * 获取事业部下的店面列表
+     * brandclass_id：事业部id
+     */
+    public static String STORE_BY_BUSINSSUNIT = "%sgetShopList";
+    /**
+     * 获取部门
+     * (grade_type:部门所属：1集团，2品牌，3店面)
+     * (1:’’,2:brandclass_id,3:shop_code)
+     */
+    public static String DEPARTMENT = "%sgetDepartmentList";
+    /**
+     * 获取人员
+     * (grade_type:部门所属：1集团，2品牌，3店面，4部门)
+     * (1:’’,2:brandclass_id,3:shop_code，4:department_id)
+     */
+    public static String  CONTACTS = "%sgetStaffList";
     /**
      * 通讯录搜索
      */
     public static String SEARCH_PERSON = "%sseacherStaff";
-    /**
-     * 获取部门下的人员
-     */
-   public static String  DEPARTMENT_CONTACTS  ="%sgetDepartmentStaffs";
-    /**
-     * 可切换店面
-     */
-    public static   String CAN_EXECUTE_SHOP="/SXWebErpAppStaff/SX_OpertionShop?Token=%s&Staffid=%s";
+
 
 
 }

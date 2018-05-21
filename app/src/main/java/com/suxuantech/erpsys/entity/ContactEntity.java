@@ -1,5 +1,9 @@
 package com.suxuantech.erpsys.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+import java.util.List;
+
 /**
  * ......................我佛慈悲....................
  * ......................_oo0oo_.....................
@@ -23,53 +27,52 @@ package com.suxuantech.erpsys.entity;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2018/3/1 0001 21:15 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
 
-public class ContactEntity {
-            String uid;
-            String head;
-            String  tel;
-            String  name;
+public class ContactEntity implements MultiItemEntity {
+    private List<BusinssunitEntity.DataBean> businssunitData;
+    private List<StoreEntity.DataBean> storeData;
+    private List<DepartmentEntiy.DataBean> departmentData;
+    private List<StaffSearchEntity.DataBean> staffData;
 
-    public ContactEntity(String uid, String head, String tel, String name) {
-        this.uid = uid;
-        this.head = head;
-        this.tel = tel;
-        this.name = name;
+    public List<BusinssunitEntity.DataBean> getBusinssunitData() {
+        return businssunitData;
     }
 
-    public String getUid() {
-        return uid;
+    public void setBusinssunitData(List<BusinssunitEntity.DataBean> businssunitData) {
+        this.businssunitData = businssunitData;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public List<StoreEntity.DataBean> getStoreData() {
+        return storeData;
     }
 
-    public String getHead() {
-        return head;
+    public void setStoreData(List<StoreEntity.DataBean> storeData) {
+        this.storeData = storeData;
     }
 
-    public void setHead(String head) {
-        this.head = head;
+    public List<DepartmentEntiy.DataBean> getDepartmentData() {
+        return departmentData;
     }
 
-    public String getTel() {
-        return tel;
+    public void setDepartmentData(List<DepartmentEntiy.DataBean> departmentData) {
+        this.departmentData = departmentData;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
+    public List<StaffSearchEntity.DataBean> getStaffData() {
+        return staffData;
     }
 
-    public String getName() {
-        return name;
+    public void setStaffData(List<StaffSearchEntity.DataBean> staffData) {
+        this.staffData = staffData;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public int getItemType() {
+
+        return 0;
     }
 }
