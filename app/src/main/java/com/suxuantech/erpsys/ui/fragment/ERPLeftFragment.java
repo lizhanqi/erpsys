@@ -46,6 +46,7 @@ import com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
+import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.dialog.NoticeDialog;
@@ -339,9 +340,18 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
         quickAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-            intent.putExtra("title", strings.get(position));
-            startActivity(intent);
+            if (position==6){
+                Intent intent = new Intent(getActivity(), ContactsActivity.class);
+                intent.putExtra("isOption", false);
+                intent.putExtra("type", 4);
+                intent.putExtra("fastEntrance", true);
+                intent.putExtra("keyCode", App.getApplication().getUserInfor().department_id + "");
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+                intent.putExtra("title", strings.get(position));
+                startActivity(intent);
+            }
         });
         quickAdapter.addHeaderView(module);
         quickAdapter.addHeaderView(headView);

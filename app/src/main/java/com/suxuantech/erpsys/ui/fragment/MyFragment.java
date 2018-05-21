@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class MyFragment extends BaseSupportFragment {
+public class MyFragment extends BaseMainFragment {
     @BindView(R.id.img_top)
     ImageView mImgTop;
     @BindView(R.id.tv_mine)

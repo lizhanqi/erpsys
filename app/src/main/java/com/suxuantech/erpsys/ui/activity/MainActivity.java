@@ -1,18 +1,16 @@
 package com.suxuantech.erpsys.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
@@ -23,40 +21,28 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.chat.DialogCreator;
 import com.suxuantech.erpsys.chat.GroupActivity;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
-import com.suxuantech.erpsys.entity.DistrictEntity;
-import com.suxuantech.erpsys.nohttp.HttpListener;
-import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.nohttp.StringRequest;
+import com.suxuantech.erpsys.rongim.RongConversationListFragment;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.ui.dialog.LoadDialog;
+import com.suxuantech.erpsys.ui.fragment.BaseMainFragment;
 import com.suxuantech.erpsys.ui.fragment.CRMFragment;
 import com.suxuantech.erpsys.ui.fragment.ContactsFragment;
 import com.suxuantech.erpsys.ui.fragment.ERPFragment;
+import com.suxuantech.erpsys.ui.fragment.JGConversationListFragment;
 import com.suxuantech.erpsys.ui.fragment.MsgFragment;
 import com.suxuantech.erpsys.ui.fragment.MyFragment;
 import com.suxuantech.erpsys.ui.fragment.WorkFragment;
-import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ToastUtils;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.api.BasicCallback;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -64,7 +50,8 @@ import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
 
-public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener ,
+  BaseMainFragment.OnBackToFirstListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -81,15 +68,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         @Override
         public void onTabSelected(int position) {
         }
-
         @Override
         public void onTabUnselected(int position) {
-            send();
-            if (position == bottomNavigationBar.getCurrentSelectedPosition()) {
-                return;
-            }
-            selectedFragment(bottomNavigationBar.getCurrentSelectedPosition());
-            //  showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()]);
+            showHideFragment( mFragments[bottomNavigationBar.getCurrentSelectedPosition()],mFragments[position]);
             if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
                 ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
             }
@@ -97,6 +78,21 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
         @Override
         public void onTabReselected(int position) {
+            final SupportFragment currentFragment = mFragments[position];
+            int count = currentFragment.getChildFragmentManager().getBackStackEntryCount();
+            // 如果不在该类别Fragment的主页,则回到主页;
+            if (count > 1) {
+                if (currentFragment instanceof MsgFragment) {
+                    currentFragment.popToChild(MsgFragment.class, false);
+                } else if (currentFragment instanceof ContactsFragment) {
+                    currentFragment.popToChild(ContactsFragment.class, false);
+                } else if (currentFragment instanceof ERPFragment) {
+                    currentFragment.popToChild(ERPFragment.class, false);
+                } else if (currentFragment instanceof MyFragment) {
+                    currentFragment.popToChild(MyFragment.class, false);
+                }
+                return;
+            }
         }
     };
 
@@ -104,65 +100,41 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     private BottomNavigationItem msgItem;
     private ContactsFragment contactsFragment;
 
-    /**
-     * 监听返回键 点击2次退出--
-     */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public void onBackPressedSupport() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            pop();
+        } else {
             closeActivity();
-            return true;
         }
-        return super.onKeyDown(keyCode, event);
-
     }
-
     /**
      * 点击两次返回键退出APP
+     *
      */
     private void closeActivity() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
             ToastUtils.showInCenterShort("再按一次退出程序");
             mExitTime = System.currentTimeMillis();
         } else {
-            finish();
+            ActivityCompat.finishAfterTransition(this);
+            ///finish();
         }
     }
-
-    void login(String name, String password) {
-        Dialog loadingDialog = DialogCreator.createLoadingDialog(this, "登录中ing...");
-        loadingDialog.show();
-        JMessageClient.login(name, password, new BasicCallback() {
-            @Override
-            public void gotResult(int i, String s) {
-                loadingDialog.cancel();
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dLog(System.currentTimeMillis()+"");
+        dLog(System.currentTimeMillis() + "");
         // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
 //       useEventBus();
         setContentView(R.layout.activity_main);
         initPop();
+        initFragement();
+        //   selectedFragment(2);
         initMyBottomNavigation();
-        selectedFragment(2);
         ImmersionBar.with(MainActivity.this).navigationBarColor(R.color.translucent_black_90).init();
-        // initFragement();
         initData();
-        String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
-        dLog(System.currentTimeMillis()+"");
-    }
-
-    @Override
-    protected void onResume() {
-        String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date( System.currentTimeMillis() * 1000));
-        dLog(System.currentTimeMillis()+"");
-        super.onResume();
     }
 
     /**
@@ -187,7 +159,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         mMenuView.findViewById(R.id.ll_saoYiSao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            ToastUtils.showShort("扫一扫");
+                ToastUtils.showShort("扫一扫");
             }
         });
         mMenuPopWindow = new PopupWindow(mMenuView, WindowManager.LayoutParams.WRAP_CONTENT,
@@ -199,19 +171,23 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     public static final int SECOND = 1;
     public static final int THIRD = 2;
     public static final int FOUR = 3;
-    //public static final int FIVE = 4;
+    public static final int FIVE = 4;
     private SupportFragment[] mFragments = new SupportFragment[5];
 
     private void initFragement() {
         SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
-//           initConversationList();
         if (firstFragment == null) {
             mFragments[FIRST] = new MsgFragment();
-            mFragments[SECOND] = new WorkFragment();
+            mFragments[SECOND] = new ContactsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isOption", false);
+            bundle.putInt("type", 4);
+            bundle.putBoolean("fastEntrance", true);
+            bundle.putString("keyCode", App.getApplication().getUserInfor().department_id + "");
+            mFragments[SECOND].setArguments(bundle);
             mFragments[THIRD] = new ERPFragment();
-            // mFragments[FOUR] = new CRMFragment();
             mFragments[FOUR] = new MyFragment();
-            loadMultipleRootFragment(R.id.main_content, FIRST,
+            loadMultipleRootFragment(R.id.main_content, THIRD,
                     mFragments[FIRST],
                     mFragments[SECOND],
                     mFragments[THIRD],
@@ -219,13 +195,19 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         } else {
             // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
             // 这里我们需要拿到mFragments的引用
-            mFragments[FIRST] = firstFragment;
-            mFragments[SECOND] = SupportHelper.findFragment(getSupportFragmentManager(), WorkFragment.class);
+            mFragments[FIRST] = SupportHelper.findFragment(getSupportFragmentManager(), MsgFragment.class);
+            mFragments[SECOND] = SupportHelper.findFragment(getSupportFragmentManager(), ContactsFragment.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isOption", false);
+            bundle.putInt("type", 4);
+            bundle.putBoolean("fastEntrance", true);
+            bundle.putString("keyCode", App.getApplication().getUserInfor().department_id + "");
+            mFragments[SECOND].setArguments(bundle);
             mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
-            //mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(),CRMFragment.class);
             mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(), MyFragment.class);
+            showHideFragment(mFragments[2]);
         }
-        showHideFragment(mFragments[2]);
+
     }
 
     /**
@@ -241,15 +223,12 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mMenuPopWindow.showAsDropDown(getNavRightView(), -10, -5);
         }
     }
-
-
     /**
      * 会话列表的fragment
      */
     private Fragment mConversationListFragment = null;
     private Conversation.ConversationType[] mConversationsTypes = null;
     boolean isRongIM = false;
-
     private Fragment initConversationList() {
         if (isRongIM) {
             return initRongIMConversationListFragement();
@@ -260,9 +239,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     private Fragment initJGIMConversationListFragement() {
         if (mConversationListFragment == null) {
-            com.suxuantech.erpsys.chat.ConversationListFragment listFragment = new com.suxuantech.erpsys.chat.ConversationListFragment();
-            mConversationListFragment = listFragment;
-            return listFragment;
+            JGConversationListFragment listFrment = new JGConversationListFragment();
+            mConversationListFragment = listFrment;
+            return listFrment;
         } else {
             return mConversationListFragment;
         }
@@ -270,7 +249,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     private Fragment initRongIMConversationListFragement() {
         if (mConversationListFragment == null) {
-            ConversationListFragment listFragment = new ConversationListFragment();
+            RongConversationListFragment listFragment = new RongConversationListFragment();
             listFragment.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
             Uri uri;
             if (App.ISDEBUG) {
@@ -324,11 +303,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     }
 
     //-----------方式一------
-    @SuppressLint("ResourceAsColor")
     private void selectedFragment(int position) {
-//        if (position!=0){
-//            hideToolbar();
-//        }
         if (position != 0) {
             getNavRightView().setVisibility(View.GONE);
         }
@@ -357,10 +332,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                         showPopWindow();
                     }
                 });
-
-//                supportToolbar();
-//                getToolbar().setTitle("我的会话");
-//                getToolbar().setBackground(null);
+                supportToolbar();
+                getToolbar().setTitle("我的会话");
+                getToolbar().setBackground(null);
                 break;
             case 1:
                 if (workFragment == null) {
@@ -374,10 +348,10 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
             case 3:
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("isOption",false);
-                bundle.putInt("type",4);
-                bundle.putBoolean("fastEntrance",true);
-                bundle.putString("keyCode",App.getApplication().getUserInfor().department_id+"");
+                bundle.putBoolean("isOption", false);
+                bundle.putInt("type", 4);
+                bundle.putBoolean("fastEntrance", true);
+                bundle.putString("keyCode", App.getApplication().getUserInfor().department_id + "");
                 if (contactsFragment == null) {
                     contactsFragment = new ContactsFragment();
                     contactsFragment.setArguments(bundle);
@@ -419,21 +393,21 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     }
 
     private void hideFragment(FragmentTransaction transaction) {
-        if (mConversationListFragment != null) {
-            transaction.hide(mConversationListFragment);
-        }
-        if (workFragment != null) {
-            transaction.hide(workFragment);
-        }
-        if (erpFragment != null) {
-            transaction.hide(erpFragment);
-        }
-        if (contactsFragment != null) {
-            transaction.hide(contactsFragment);
-        }
-        if (myFragment != null) {
-            transaction.hide(myFragment);
-        }
+//        if (mConversationListFragment != null) {
+//            transaction.hide(mConversationListFragment);
+//        }
+//        if (workFragment != null) {
+//            transaction.hide(workFragment);
+//        }
+//        if (erpFragment != null) {
+//            transaction.hide(erpFragment);
+//        }
+//        if (contactsFragment != null) {
+//            transaction.hide(contactsFragment);
+//        }
+//        if (myFragment != null) {
+//            transaction.hide(myFragment);
+//        }
     }
     //-----------方式一end------
 
@@ -463,88 +437,14 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         bottomNavigationBar.addItem(msgItem)
-                .addItem(workItem)
-                .addItem(erpItem)
                 .addItem(contactItem)
+                .addItem(erpItem)
                 .addItem(myItem)
                 .setFirstSelectedPosition(2)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
         badgeItem.hide();
         //startFragment(ERPFragment.class);
-    }
-
-    public void netsBeanSample() {
-        String url = "http://47.93.81.122:8288/WebAppErpStaff/Cus_LoginCheck?Token=000000⊱左岸摄影⊱ZX0118&userName=wendy&userPwd=0&Cid=0";
-        //请求实体         // STOPSHIP: 2018/2/23 0023
-        JavaBeanRequest<DistrictEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DistrictEntity>(url,DistrictEntity.class);
-//        HttpResponseListener<DistrictEntity> districtBeanHttpResponseListener = new HttpResponseListener<DistrictEntity>(null);
-        HttpListener<DistrictEntity> searchByCustmor = new HttpListener<DistrictEntity>() {
-            @Override
-            public void onSucceed(int what, Response<DistrictEntity> response) {
-                L.i("what = [" + what + "], response = [" + response + "]");
-            }
-
-            @Override
-            public void onFailed(int what, Response<DistrictEntity> response) {
-                L.i("失败" + what + "\n" + response.get());
-                System.out.println("失败what = [" + what + "], response = [" + response + "]");
-            }
-        };
-        //CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
-    }
-    public void netsStringSample() {
-        String url = "http://192.168.0.187:8734/api/fnTest/asd/ads/gh";
-        //请求实体
-        StringRequest districtBeanJavaBeanRequest = new StringRequest(url, RequestMethod.POST);
-        HttpListener<String> searchByCustmor = new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                L.i("what = [" + what + "], response = [" + response + "]");
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                L.i("失败" + what + "\n" + response.get());
-                System.out.println("失败what = [" + what + "], response = [" + response + "]");
-            }
-        };
-//        new  CallServer().setQueue();
-        //   CallServer.getInstance().add(this, districtBeanJavaBeanRequest, searchByCustmor, 0, true, true);
-    }
-
-    public void send() {
-        Request<String> stringRequest = NoHttp.createStringRequest("http://192.168.0.175:8734/api/SX_CustomerInfo", RequestMethod.POST);
-        //  stringRequest.addHeader("Content-Type", "application/json");
-        // stringRequest.setDefineRequestBodyForJson("{\"Token\":sio,\"Message\":2}");
-
-        stringRequest.add("Token", "sio");
-        stringRequest.add("orderid", "0");
-        stringRequest.add("ckey", "小飞");
-        stringRequest.add("bTime", "");
-        stringRequest.add("eTime", "");
-        stringRequest.add("pageIndex", 0);
-        stringRequest.add("pageSize", "41414acbcsdfd");
-        // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("104.237.130.219", 80));
-        // stringRequest.setProxy(proxy);
-        RequestQueue requestQueueInstance = NoHttp.getRequestQueueInstance();
-        requestQueueInstance.add(0, stringRequest, new SimpleResponseListener<String>() {
-                    @Override
-                    public void onStart(int what) {
-                        super.onStart(what);
-                    }
-
-                    @Override
-                    public void onSucceed(int what, Response<String> response) {
-                        L.d("NoHttpSample", response.get());
-                    }
-
-                    @Override
-                    public void onFailed(int what, Response<String> response) {
-                        super.onFailed(what, response);
-                    }
-                }
-        );
     }
 
     protected void initData() {
@@ -637,7 +537,10 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     @Override
     public void onListFragmentInteraction(@NotNull DummyContent.DummyItem item) {
-
+    }
+    @Override
+    public void onBackToFirstFragment() {
+        bottomNavigationBar.selectTab(2);
     }
 }
 

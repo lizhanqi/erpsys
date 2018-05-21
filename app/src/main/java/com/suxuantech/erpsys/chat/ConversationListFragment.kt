@@ -24,7 +24,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
-
+import io.rong.imkit.fragment.ConversationListFragment
 
 
 /**
@@ -38,7 +38,7 @@ import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class ConversationListFragment : Fragment() {
+open class   ConversationListFragment : Fragment() {
     // TODO: Customize parameters
     private var mColumnCount = 1
     private var mListener: OnListFragmentInteractionListener? = null

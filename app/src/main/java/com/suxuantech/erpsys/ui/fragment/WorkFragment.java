@@ -26,10 +26,9 @@ import java.util.Set;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
-import me.yokeyword.fragmentation.SupportFragment;
 
 
-public class WorkFragment extends SupportFragment {
+public class WorkFragment extends BaseMainFragment {
 
 
     private View view;

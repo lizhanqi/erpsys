@@ -17,10 +17,8 @@ import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 
 import java.util.ArrayList;
 
-import me.yokeyword.fragmentation.SupportFragment;
 
-
-public class ERPFragment extends SupportFragment {
+public class ERPFragment extends BaseMainFragment {
 
     private BannerView bannersView;
     private RadioGroup mRadioGroup;
