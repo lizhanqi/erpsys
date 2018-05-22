@@ -82,6 +82,9 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
 
     @Override
     public boolean hasHeader(int groupPosition) {
+//        if (groupPosition==3&&contactEntity.getStaffData()!=null&&contactEntity.getStaffData().size()>0){
+//            return true;
+//        }
         return false;
     }
 
@@ -92,7 +95,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
 
     @Override
     public int getHeaderLayout(int viewType) {
-        return 0;
+        return R.layout.item_textview;
     }
 
     @Override
@@ -165,7 +168,9 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
 
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
-
+//        TextView view = holder.get(R.id.tv_item);
+//        List<StaffSearchEntity.DataBean> staffData = contactEntity.getStaffData();
+//        view.setText( staffData.get(0).getDepartment_name());
     }
 
     @Override

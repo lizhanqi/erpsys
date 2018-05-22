@@ -37,6 +37,15 @@ public class ContactEntity implements MultiItemEntity {
     private List<StoreEntity.DataBean> storeData;
     private List<DepartmentEntiy.DataBean> departmentData;
     private List<StaffSearchEntity.DataBean> staffData;
+    private String departmentName;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public List<BusinssunitEntity.DataBean> getBusinssunitData() {
         return businssunitData;

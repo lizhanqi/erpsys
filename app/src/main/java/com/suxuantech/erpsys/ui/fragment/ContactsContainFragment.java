@@ -11,7 +11,7 @@ import com.suxuantech.erpsys.R;
 import me.yokeyword.fragmentation.SupportFragment;
 
 
-public class ContactsContainFragment extends BaseSupportFragment {
+public class ContactsContainFragment extends BaseMainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contancts_root, container, false);
@@ -23,7 +23,7 @@ public class ContactsContainFragment extends BaseSupportFragment {
         super.onViewCreated(view, savedInstanceState);
         SupportFragment contentFragment = findChildFragment(ContactDataFragment.class);
         if (contentFragment == null) {
-            ContactDataFragment contactDataFragment = new ContactDataFragment();
+            ContactDataFragment contactDataFragment = new ContactDataFragment( );
             Bundle arguments = getArguments();
             contactDataFragment.setArguments(arguments);
             loadRootFragment(R.id.rl_fragment_contanct_root,contactDataFragment , true, false);

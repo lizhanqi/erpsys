@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +36,7 @@ import com.suxuantech.erpsys.ui.fragment.JGConversationListFragment;
 import com.suxuantech.erpsys.ui.fragment.MsgFragment;
 import com.suxuantech.erpsys.ui.fragment.MyFragment;
 import com.suxuantech.erpsys.ui.fragment.WorkFragment;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +56,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
   BaseMainFragment.OnBackToFirstListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
+    private TextBadgeItem badgeItem;
+    private BottomNavigationItem msgItem;
+    private ContactsFragment contactsFragment;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     // private MsgFragment msgFragment;
     private MyFragment myFragment;
@@ -61,6 +66,18 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     private WorkFragment workFragment;
     private CRMFragment crmFragment;
     private PopupWindow mMenuPopWindow;
+    public static final int FIRST = 0;
+    public static final int SECOND = 1;
+    public static final int THIRD = 2;
+    public static final int FOUR = 3;
+    public static final int FIVE = 4;
+    private SupportFragment[] mFragments = new SupportFragment[5];
+    /**
+     * 会话列表的fragment
+     */
+    private Fragment mConversationListFragment = null;
+    boolean isRongIM = false;
+
     /**
      * 导航栏点击切换的事件
      */
@@ -70,10 +87,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         }
         @Override
         public void onTabUnselected(int position) {
-            showHideFragment( mFragments[bottomNavigationBar.getCurrentSelectedPosition()],mFragments[position]);
-            if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
-                ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
-            }
+            selectFragment(position);
         }
 
         @Override
@@ -96,31 +110,13 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         }
     };
 
-    private TextBadgeItem badgeItem;
-    private BottomNavigationItem msgItem;
-    private ContactsFragment contactsFragment;
+    private void selectFragment(int lastSelct) {
+        showHideFragment( mFragments[bottomNavigationBar.getCurrentSelectedPosition()], mFragments[lastSelct]);
+        if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
+            ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
+        }
+    }
 
-    @Override
-    public void onBackPressedSupport() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            pop();
-        } else {
-            closeActivity();
-        }
-    }
-    /**
-     * 点击两次返回键退出APP
-     *
-     */
-    private void closeActivity() {
-        if ((System.currentTimeMillis() - mExitTime) > 2000) {
-            ToastUtils.showInCenterShort("再按一次退出程序");
-            mExitTime = System.currentTimeMillis();
-        } else {
-            ActivityCompat.finishAfterTransition(this);
-            ///finish();
-        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dLog(System.currentTimeMillis() + "");
@@ -166,24 +162,12 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 WindowManager.LayoutParams.WRAP_CONTENT, true);
 
     }
-
-    public static final int FIRST = 0;
-    public static final int SECOND = 1;
-    public static final int THIRD = 2;
-    public static final int FOUR = 3;
-    public static final int FIVE = 4;
-    private SupportFragment[] mFragments = new SupportFragment[5];
-
     private void initFragement() {
         SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = new MsgFragment();
             mFragments[SECOND] = new ContactsFragment();
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isOption", false);
-            bundle.putInt("type", 4);
-            bundle.putBoolean("fastEntrance", true);
-            bundle.putString("keyCode", App.getApplication().getUserInfor().department_id + "");
+            Bundle bundle = getBundle();
             mFragments[SECOND].setArguments(bundle);
             mFragments[THIRD] = new ERPFragment();
             mFragments[FOUR] = new MyFragment();
@@ -197,17 +181,47 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             // 这里我们需要拿到mFragments的引用
             mFragments[FIRST] = SupportHelper.findFragment(getSupportFragmentManager(), MsgFragment.class);
             mFragments[SECOND] = SupportHelper.findFragment(getSupportFragmentManager(), ContactsFragment.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isOption", false);
-            bundle.putInt("type", 4);
-            bundle.putBoolean("fastEntrance", true);
-            bundle.putString("keyCode", App.getApplication().getUserInfor().department_id + "");
+            Bundle bundle = getBundle();
             mFragments[SECOND].setArguments(bundle);
             mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
             mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(), MyFragment.class);
             showHideFragment(mFragments[2]);
         }
 
+    }
+
+    @NonNull
+    private Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isOption", false);
+        bundle.putBoolean("fastEntrance", true);
+        bundle.putBoolean("showDepartmentName", true);
+        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())){
+            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())){
+                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())){
+                    //仅仅获取集团联系人
+                    bundle.putInt("type", 7);
+                    bundle.putString("homeDepartmentName",  "集团联系人");
+                    bundle.putString("keyCode","");
+                }else {
+                    //仅仅获取事业部联系人
+                    bundle.putInt("type", 6);
+                    bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getBrandclass() );
+                    bundle.putString("keyCode", App.getApplication().getUserInfor().getBrandclass_id() + "");
+                }
+            }else {
+                //仅仅获取点面联系人
+                bundle.putInt("type", 5);
+                bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getShop_name() );
+                bundle.putString("keyCode", App.getApplication().getUserInfor().getShop_code() + "");
+            }
+        }else {
+            //仅仅获取部门联系人
+            bundle.putInt("type", 4);
+            bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getDepartment_name() );
+            bundle.putString("keyCode", App.getApplication().getUserInfor().getDepartment_id() + "");
+        }
+        return bundle;
     }
 
     /**
@@ -223,12 +237,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mMenuPopWindow.showAsDropDown(getNavRightView(), -10, -5);
         }
     }
-    /**
-     * 会话列表的fragment
-     */
-    private Fragment mConversationListFragment = null;
-    private Conversation.ConversationType[] mConversationsTypes = null;
-    boolean isRongIM = false;
+
     private Fragment initConversationList() {
         if (isRongIM) {
             return initRongIMConversationListFragement();
@@ -236,7 +245,6 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             return initJGIMConversationListFragement();
         }
     }
-
     private Fragment initJGIMConversationListFragement() {
         if (mConversationListFragment == null) {
             JGConversationListFragment listFrment = new JGConversationListFragment();
@@ -252,6 +260,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             RongConversationListFragment listFragment = new RongConversationListFragment();
             listFragment.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
             Uri uri;
+            Conversation.ConversationType[] mConversationsTypes = null;
             if (App.ISDEBUG) {
                 uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversationlist")
@@ -541,6 +550,27 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     @Override
     public void onBackToFirstFragment() {
         bottomNavigationBar.selectTab(2);
+    }
+    @Override
+    public void onBackPressedSupport() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            pop();
+        } else {
+            closeActivity();
+        }
+    }
+    /**
+     * 点击两次返回键退出APP
+     *
+     */
+    private void closeActivity() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            ToastUtils.showInCenterShort("再按一次退出程序");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            ActivityCompat.finishAfterTransition(this);
+            ///finish();
+        }
     }
 }
 

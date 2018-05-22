@@ -10,10 +10,11 @@ clickable是防止页面穿透的点击事件的
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/gray_f9"
     android:clickable="true"
     android:orientation="vertical"
     tools:context=".ui.fragment.ContactsFragment">
+
     <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
         android:id="@+id/one_Search"
         android:layout_width="match_parent"
@@ -34,36 +35,74 @@ clickable是防止页面穿透的点击事件的
         android:singleLine="true"
         android:textSize="@dimen/xs40" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/px50" />
+
+    <View style="@style/line" />
+
     <LinearLayout
         android:id="@+id/ll_fast_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/px50">
+        android:background="@color/gray_f9"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/icon_organization"
+            android:drawablePadding="@dimen/px50"
+            android:gravity="center_vertical"
             android:padding="@dimen/px50"
             android:text="集团" />
+
+        <View style="@style/line" />
 
         <TextView
             android:id="@+id/tv_shop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/icon_contancts_department"
+            android:drawablePadding="@dimen/px115"
+            android:gravity="center_vertical"
             android:padding="@dimen/px50"
             android:text="店面" />
     </LinearLayout>
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smar_contancts"
+
+    <LinearLayout
+        android:id="@+id/ll_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-            android:id="@+id/rl_organization"
+        android:layout_marginTop="@dimen/xs50"
+        android:orientation="vertical">
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_department"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawablePadding="@dimen/px115"
+            android:gravity="center_vertical"
+            android:padding="@dimen/px50"
+            android:text="部门" />
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smar_contancts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white">
+
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:id="@+id/rl_organization"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
 </LinearLayout>
