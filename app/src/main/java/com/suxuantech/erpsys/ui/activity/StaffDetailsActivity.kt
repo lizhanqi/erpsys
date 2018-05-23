@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.util.Linkify
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.blankj.utilcode.util.AppUtils
@@ -34,6 +35,7 @@ class StaffDetailsActivity : TitleNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_staff_details)
+        lineView.visibility= View.GONE
         var data = intent.extras.getParcelable<StaffSearchEntity.DataBean>("data");
         var uri = Uri.parse("tel:"+data.telephone);
         var telIntent = Intent(Intent.ACTION_DIAL, uri);

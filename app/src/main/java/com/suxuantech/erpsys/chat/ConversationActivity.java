@@ -18,7 +18,7 @@ public class ConversationActivity extends ChatBaseActivity {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);// 使得音量键控制媒体声音
         setContentView(R.layout.ac_convertion);
-//        showUserDefinedNav();
+        supportToolbar();
         boolean name = getIntent().hasExtra("name");
         if (name){
             boolean base64 = getIntent().getBooleanExtra("base64",false);
@@ -27,9 +27,6 @@ public class ConversationActivity extends ChatBaseActivity {
             }else {
                 setTitle(  getIntent().getStringExtra("name"));
             }
-//            Bundle bundle = new Bundle();
-//            bundle.putBoolean("base64",base64);
-//            getFragmentManager().findFragmentById(R.id.fra) .setArguments(bundle);
         }else {
             Toast.makeText(this,"空联系人",Toast.LENGTH_SHORT).show();
             finish();
@@ -76,7 +73,7 @@ public class ConversationActivity extends ChatBaseActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressedSupport() {
         if (JZVideoPlayer.backPress()) {
             return;
         }

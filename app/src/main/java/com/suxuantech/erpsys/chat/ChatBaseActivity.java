@@ -33,11 +33,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 
 import java.io.File;
 
@@ -45,7 +46,7 @@ import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.LoginStateChangeEvent;
 import cn.jpush.im.android.api.model.UserInfo;
 
-public class ChatBaseActivity extends FragmentActivity {
+public class ChatBaseActivity extends TitleNavigationActivity {
     private static final String TAG = "BaseActivity";
 
     protected float mDensity;
