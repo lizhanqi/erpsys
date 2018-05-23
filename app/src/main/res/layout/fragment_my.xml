@@ -421,6 +421,7 @@ clickable是防止页面穿透的点击事件的
             </RelativeLayout>
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_login_out2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px152"
@@ -432,6 +433,7 @@ clickable是防止页面穿透的点击事件的
                 android:textColor="@color/white" />
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_login_out1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px152"

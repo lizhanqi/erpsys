@@ -28,12 +28,14 @@ import com.suxuantech.erpsys.ui.activity.base.ImmersionActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.MyString
+import com.suxuantech.erpsys.utils.ToastUtils
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
 import kotlinx.android.synthetic.main.activity_register_into_shop.*
+
 /**
  * 进店登记
-    Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+Intent intent = new Intent(getActivity(), ScheduleActivity.class);
 intent.putExtra("title","选片");
 startActivity(intent);
 
@@ -71,13 +73,14 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             name.setText(item.key)
             value.setText(item.value)
             icon.setImageDrawable(resources.getDrawable(item.icon))
-            var temp=0;
-            if( item.flag!=null ){
-                temp= item.flag as Int
+            var temp = 0;
+            if (item.flag != null) {
+                temp = item.flag as Int
             }
             value?.append(MyString(temp.toString()).setColor(resources.getColor(R.color.litte_red)))
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop)
@@ -128,7 +131,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         if (!intent.hasExtra("title")) {
             list.add(FormEntity(R.drawable.icon_all_customer, "所有客资", "今日所有客资", 5))
             list.add(FormEntity(R.drawable.icon_new_customer, "新进客资", "今日新进客资", 5))
-            list.add(FormEntity(R.drawable.icon_not_in_shop , "未进店", "今日未进店客资", 5))
+            list.add(FormEntity(R.drawable.icon_not_in_shop, "未进店", "今日未进店客资", 5))
             list.add(FormEntity(R.drawable.icon_into_shop_unbargain, "进店未成", "进店未成交客资", 5))
             list.add(FormEntity(R.drawable.icon_already_make_bargain, "已成交", "今日成交客资", 5))
             list.add(FormEntity(R.drawable.icon_run_away, "流失客资", "今日流失客资", 5))
@@ -136,19 +139,18 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         } else {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程", "今日可排", 5))
             list.add(FormEntity(R.drawable.icon_schedule_select_pictrue, "选片排程", "今日可排", 5))
-//            list.add(FormEntity(R.drawable.icon_camera_schedule, "看板排程", "今日可排", 5))
-//            list.add(FormEntity(R.drawable.icon_camera_schedule, "取件排程", "进店可排", 5))
-//            list.add(FormEntity(R.drawable.icon_camera_schedule, "礼服排程", "今日可排", 5))
-//            list.add(FormEntity(R.drawable.icon_camera_schedule, "流失客资", "今日可排", 5))
         }
-        // recyclerView?.addItemDecoration(DefaultItemDecoration2(resources.getColor(R.color.mainNavline_e7),10))
         recyclerView?.layoutManager = LinearLayoutManager(this);
         adapter.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle();
-            bundle.putString("title",list.get(position).key);
-            if ( intent.hasExtra("title")) {
-                startActivity(ScheduleActivity::class.java, bundle)
-            }else{
+            bundle.putString("title", list.get(position).key);
+            if (intent.hasExtra("title")) {
+                if (!App.getApplication().hasPermission("M2")) {
+                    ToastUtils.showShort("无排程查询无法进入")
+                } else {
+                    startActivity(ScheduleActivity::class.java, bundle)
+                }
+            } else {
                 startActivity(RegisterIntoShopSearchActivity::class.java, bundle)
             }
         }
@@ -157,42 +159,43 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             getData();
         })
     }
+
     fun getData() {
         val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
-        var name1=App.getApplication().userInfor.staffname;
-        var name2=App.getApplication().userInfor.staffname;
-        if (App.getApplication().hasPermission("K14")){
-            name1="";
+        var name1 = App.getApplication().userInfor.staffname;
+        var name2 = App.getApplication().userInfor.staffname;
+        if (App.getApplication().hasPermission("K14")) {
+            name1 = "";
         }
-        if (App.getApplication().hasPermission("K15")){
-            name2="";
+        if (App.getApplication().hasPermission("K15")) {
+            name2 = "";
         }
 
         var url = Contact.getFullUrl(Contact.CUSTOMER_INTO_STORE_COUNT, Contact.TOKEN,
                 nowDate, nowDate,
-                "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
+                "", 0, 0, App.getApplication().userInfor.shop_code, name1, name2)
         var url2 = Contact.getFullUrl(Contact.UNREMARK_CUSTOMER_INTO_STORE_DATE_COUNT, Contact.TOKEN,
                 nowDate, nowDate,
-                "", 0, 0, App.getApplication().userInfor.shop_code,name1,name2)
+                "", 0, 0, App.getApplication().userInfor.shop_code, name1, name2)
         //请求实体
         val requset = JavaBeanRequest(url, RequestMethod.POST, CustomerIntoStoreCountEntity::class.java)
         val customerIntoStoreCountEntity = object : HttpListener<CustomerIntoStoreCountEntity> {
             override fun onSucceed(what: Int, response: Response<CustomerIntoStoreCountEntity>) {
                 if (response.get().isOK) {
                     list.forEach {
-                       if (it.key.equals("今日新进客资")){
-                           it.flag= response.get().data?.get(0)?.newcount;
-                       }else  if (it.key.equals("今日进店未成交")){
-                           it.flag= response.get().data?.get(0)?.jdwccount;
-                       }else  if (it.key.equals("未进店客客资")){
-                           it.flag= response.get().data?.get(0)?.wjdcount;
-                        }else  if (it.key.equals("今日成交客资")){
-                        it.flag= response.get().data?.get(0)?.ycjcount;
-                       }else  if (it.key.equals("今日流失客资")){
-                           it.flag= response.get().data?.get(0)?.lscount;
-                       }else  if (it.key.equals("今日所有客资")){
-                           it.flag= response.get().data?.get(0)?.allcount;
-                       }
+                        if (it.key.equals("今日新进客资")) {
+                            it.flag = response.get().data?.get(0)?.newcount;
+                        } else if (it.key.equals("今日进店未成交")) {
+                            it.flag = response.get().data?.get(0)?.jdwccount;
+                        } else if (it.key.equals("未进店客客资")) {
+                            it.flag = response.get().data?.get(0)?.wjdcount;
+                        } else if (it.key.equals("今日成交客资")) {
+                            it.flag = response.get().data?.get(0)?.ycjcount;
+                        } else if (it.key.equals("今日流失客资")) {
+                            it.flag = response.get().data?.get(0)?.lscount;
+                        } else if (it.key.equals("今日所有客资")) {
+                            it.flag = response.get().data?.get(0)?.allcount;
+                        }
                         adapter.notifyDataSetChanged()
                     }
                     refreshLayout.finishRefresh();
@@ -202,6 +205,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
                     refreshLayout.setNoMoreData(true);
                 }
             }
+
             override fun onFailed(what: Int, response: Response<CustomerIntoStoreCountEntity>) {
                 refreshLayout.finishRefresh();
                 refreshLayout.setNoMoreData(true);
@@ -218,7 +222,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
                             it.flag = response.get().data?.get(0)?.wycount;
                         }
                     }
-                    adapter.notifyItemChanged(list.size-1)
+                    adapter.notifyItemChanged(list.size - 1)
                     refreshLayout.finishRefresh();
                     refreshLayout.setNoMoreData(false);
                 } else {

@@ -112,9 +112,36 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     };
 
     private void selectFragment(int lastSelct) {
+        int position = bottomNavigationBar.getCurrentSelectedPosition();
+        switch (position) {
+            case 0:
+                supportToolbar(false);
+                getToolbar().setBackgroundColor(getResources().getColor(R.color.white));
+                setTitle("");
+                setCenterTitle("我的会话");
+                getLineView().setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                supportToolbar(false);
+                setTitle("");
+                getToolbar().setBackgroundColor(getResources().getColor(R.color.white));
+                setCenterTitle("联系人");
+                getLineView().setVisibility(View.GONE);
+                break;
+            default:
+            case 2:
+                getLineView().setVisibility(View.GONE);
+                getToolbar().setVisibility(View.GONE);
+                break;
+            case 3:
+                getLineView().setVisibility(View.GONE);
+                getToolbar().setVisibility(View.GONE);
+                break;
+        }
         showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()], mFragments[lastSelct]);
         if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
-            ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
+            ImmersionBar.with(MainActivity.this).reset().init();
+            ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.white).statusBarDarkFont(true, 0.15f).navigationBarColor(R.color.translucent_black_90).init();
         }
     }
 
@@ -130,6 +157,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         initFragement();
         //   selectedFragment(2);
         initMyBottomNavigation();
+        getLineView().setVisibility(View.GONE);
         ImmersionBar.with(MainActivity.this).navigationBarColor(R.color.translucent_black_90).init();
         initData();
     }

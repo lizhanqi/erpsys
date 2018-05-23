@@ -30,20 +30,7 @@ public class ContactsFragment extends BaseSupportFragment {
             loadRootFragment(R.id.rl_fragment_contanct_root,contactDataFragment , true, false);
         }
     }
-    /**
-     * 处理回退事件
-     *
-     * @return
-     */
-    @Override
-    public boolean onBackPressedSupport() {
-        if (getChildFragmentManager().getBackStackEntryCount() > 1) {
-            popChild();
-        } else {
-            return false;
-        }
-        return true;
-    }
+
 }
 
 

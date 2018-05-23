@@ -64,7 +64,7 @@ public class ContactDataFragment extends BaseSupportFragment {
     @BindView(R.id.rl_organization)
     SwipeMenuRecyclerView mRlOrganization;
     @BindView(R.id.rv_navigation)
-    SwipeMenuRecyclerView navigationRecyclerView;
+    RecyclerView navigationRecyclerView;
     @BindView(R.id.wmrv_quickentry)
     SwipeMenuRecyclerView quickentryRecycleView;
     @BindView(R.id.ll_fast_entry)
@@ -79,6 +79,8 @@ public class ContactDataFragment extends BaseSupportFragment {
     OneKeyClearAutoCompleteText oneKeyClearAutoCompleteText;
     @BindView(R.id.smar_contancts)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.v_line)
+    View line;
     private Unbinder unbinder;
     ContanctsAdaputer contanctsAdaputer;
     public static final int GROUP_TYPE = 1, BUSINESS_UNIT_TYPE = 2, STORE_TYPE = 3, DEPARTMENT_TYPE = 4;
@@ -272,10 +274,10 @@ public class ContactDataFragment extends BaseSupportFragment {
             contanctsFastEntranceEntity.setName(dataBean.getDepartment_name());
             contanctsFastEntranceEntity.setType(DEPARTMENT_TYPE);
             StringBuilder stringBuilder = new StringBuilder();
-            if (!StringUtils.empty(dataBean.getBrandclass())) {
+            if (!StringUtils.empty(dataBean.getBrandclass()) && !dataBean.getBrandclass().equals("0")) {
                 stringBuilder.append(dataBean.getBrandclass());
             }
-            if (!StringUtils.empty(dataBean.getShop_name())) {
+            if (!StringUtils.empty(dataBean.getShop_name()) && !dataBean.getShop_name().equals("0")) {
                 stringBuilder.append("->");
                 stringBuilder.append(dataBean.getShop_name());
             }
@@ -346,6 +348,9 @@ public class ContactDataFragment extends BaseSupportFragment {
             if (navigation != null) {
                 linearLayoutManager.scrollToPosition(navigation.size() - 1);
             }
+            line.setVisibility(View.VISIBLE);
+        }else {
+            line.setVisibility(View.GONE);
         }
         navigationQuickAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
             if (position < navigation.size() - 1) {
@@ -626,6 +631,22 @@ public class ContactDataFragment extends BaseSupportFragment {
             }
         };
         requestNOError(0, store, searchByCustmor, false, false);
+    }
+
+    /**
+     * 处理回退事件
+     *
+     * @return
+     */
+    @Override
+    public boolean onBackPressedSupport() {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            navigation.remove(navigation.size() - 1);
+            pop();
+        } else {
+            return false;
+        }
+        return true;
     }
 }
 

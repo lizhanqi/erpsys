@@ -14,6 +14,7 @@ clickable是防止页面穿透的点击事件的
     android:clickable="true"
     android:orientation="vertical"
     tools:context=".ui.fragment.ContactsFragment">
+
     <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
         android:id="@+id/one_Search"
         android:layout_width="match_parent"
@@ -33,33 +34,40 @@ clickable是防止页面穿透的点击事件的
         android:paddingHorizontal="@dimen/px30"
         android:singleLine="true"
         android:textSize="@dimen/xs40" />
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/px50" />
 
-    <View style="@style/line" />
+    <View
+        android:id="@+id/v_line"
+        style="@style/line" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smar_contancts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/gray_f9">
+        android:layout_weight="1">
+
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/gray_f9">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/ll_fast_entry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/gray_f9"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_group"
                         android:layout_width="match_parent"
@@ -70,20 +78,24 @@ clickable是防止页面穿透的点击事件的
                         android:gravity="center_vertical"
                         android:padding="@dimen/px50"
                         android:text="集团" />
+
                     <View style="@style/line" />
+
                     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                        android:background="@color/white"
                         android:id="@+id/wmrv_quickentry"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:background="@color/white"
                     android:id="@+id/ll_data"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/xs50"
+                    android:background="@color/white"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_department"
                         android:layout_width="match_parent"
@@ -94,7 +106,9 @@ clickable是防止页面穿透的点击事件的
                         android:padding="@dimen/px50"
                         android:text="部门"
                         android:visibility="gone" />
-                    <View style="@style/line"/>
+
+                    <View style="@style/line" />
+
                     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
                         android:id="@+id/rl_organization"
                         android:layout_width="match_parent"

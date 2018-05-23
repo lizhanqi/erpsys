@@ -17,6 +17,7 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.ui.TypeFlag;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.utils.StringUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -163,6 +164,10 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
                     placeHolder(baseScheme, false);
                 });
                 imgScheme.setOnClickListener(cl -> {
+                    if (!App.getApplication().hasPermission("M3")){
+                        ToastUtils.showShort("无权排程");
+                        return;
+                    }
                     Intent intent = new Intent(mContext, SearchOrderActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("type", schemeType);
@@ -180,6 +185,18 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
      * @param unlock     是否是解锁
      */
     public void placeHolder(BaseScheme baseScheme, boolean unlock) {
+        if (unlock){
+            if (!App.getApplication().hasPermission("M4")){
+                ToastUtils.showShort("无权占位");
+                return;
+            }
+        }else {
+            if (!App.getApplication().hasPermission("M5")){
+                ToastUtils.showShort("无权取消占位");
+                return;
+            }
+        }
+
         String url = "";
         if (schemeType == TypeFlag.PHOTOGRAPH) {
             if (unlock) {

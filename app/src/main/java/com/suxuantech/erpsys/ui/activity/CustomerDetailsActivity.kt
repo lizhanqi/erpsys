@@ -78,6 +78,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
      * flag 进店类型（数字类型1进店进客，2进店非进客）
      */
     public fun change(@IntRange(from = 1, to = 2) flag: Int) {
+
         //请求实体
         val districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.INTO_STORE_STATUS, Contact.TOKEN, parcelable?.id, flag), RequestMethod.POST, ProductEntity::class.java)
         districtBeanJavaBeanRequest.addBodyJson("Customer_tel", parcelable?.customer_tel)

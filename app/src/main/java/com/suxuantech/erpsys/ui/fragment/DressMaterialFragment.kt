@@ -55,7 +55,7 @@ class DressMaterialFragment : BaseSupportFragment() {
         val searchByCustmor = object : HttpListener<DressEntity> {
             override fun onSucceed(what: Int, response: Response<DressEntity>) {
 
-                if (            response.get().isOK){
+                if ( response.get().isOK){
                     val data = response.get().data
                     recy?.layoutManager= LinearLayoutManager(activity);
                     val adapter = ExpandableAdapter(activity,data)

@@ -277,6 +277,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void initImmersionBar() {
+        getLineView().setVisibility(View.GONE);
         setStatusBarFollow(mLlSearchNav);
         super.initImmersionBar();
     }

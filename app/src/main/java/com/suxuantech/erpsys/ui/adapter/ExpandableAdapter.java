@@ -78,7 +78,7 @@ public class ExpandableAdapter extends GroupedRecyclerViewAdapter {
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
         DressEntity.DataBean dataBean = mData.get(groupPosition);
-        holder.setText(R.id.tv_expandable_header, groupPosition + 1 + "\u3000\u3000" + dataBean.getDress_type());
+        holder.setText(R.id.tv_expandable_header,   dataBean.getDress_type());
         ImageView ivState = holder.get(R.id.iv_state);
         if (dataBean.isExpand()) {
             ivState.setRotation(90);

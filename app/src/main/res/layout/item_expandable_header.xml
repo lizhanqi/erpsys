@@ -5,22 +5,34 @@
     android:background="@drawable/holo_red_dark_ripple_bg"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_expandable_header"
+    <LinearLayout
+        android:paddingHorizontal="@dimen/px55"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="2dp"
+            android:layout_height="10dp"
+            android:background="@color/themeColor" />
+        <TextView
+            android:paddingHorizontal="@dimen/px55"
+            android:id="@+id/tv_expandable_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_state"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrows_right_gray"
         android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="10dp"
         android:rotation="90"
-        android:layout_marginRight="10dp"/>
+        android:scaleType="centerInside"
+        android:src="@drawable/arrows_right_gray" />
 
 </FrameLayout>

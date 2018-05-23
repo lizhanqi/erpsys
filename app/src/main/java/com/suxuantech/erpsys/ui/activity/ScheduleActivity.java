@@ -119,6 +119,10 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
     SwipeMenuItemClickListener mMenuItemClickListener = new SwipeMenuItemClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge) {
+            if (!App.getApplication().hasPermission("M4")){
+            toastShort("无权删除排程");
+            return;
+            }
             int counts = -1;
             int groupPosition = 0;//记录第几组
             int childrenPosition = -1;//记录第几组的第几个(这里-1代表就是分组的组名)
@@ -164,6 +168,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      * 删除排程
      */
     public void deleteScheme(int groupPosition, int childrenPosition) {
+
         Map<String, List<BaseScheme>> getdata = groupAdaputer.getdata();
         ArrayList<String> strings = new ArrayList<>(getdata.keySet());
         BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childrenPosition);

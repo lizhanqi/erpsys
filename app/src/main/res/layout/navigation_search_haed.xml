@@ -49,5 +49,6 @@
         android:paddingRight="@dimen/px55" />
     </LinearLayout>
     <View
+        android:visibility="gone"
         style="@style/line"/>
     </LinearLayout>
