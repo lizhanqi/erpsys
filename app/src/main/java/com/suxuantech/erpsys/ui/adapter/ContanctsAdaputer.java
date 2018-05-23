@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,11 +12,16 @@ import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BusinssunitEntity;
 import com.suxuantech.erpsys.entity.ContactEntity;
+import com.suxuantech.erpsys.entity.ContanctsFastEntranceEntity;
 import com.suxuantech.erpsys.entity.DepartmentEntiy;
 import com.suxuantech.erpsys.entity.StaffSearchEntity;
 import com.suxuantech.erpsys.entity.StoreEntity;
+import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
+import com.suxuantech.erpsys.ui.fragment.ContactDataFragment;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -50,6 +56,11 @@ import java.util.List;
 public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
     ContactEntity contactEntity = new ContactEntity();
     boolean isOption;
+    private List<ContanctsFastEntranceEntity> contanctsFastEntranceEntities;
+
+    public void setOption(boolean option) {
+        isOption = option;
+    }
 
     public ContactEntity getContactEntity() {
         return contactEntity;
@@ -57,6 +68,10 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
 
     public ContanctsAdaputer(Context context) {
         super(context);
+    }
+
+    public void setContanctsFastEntranceEntities(List<ContanctsFastEntranceEntity> contanctsFastEntranceEntities) {
+        this.contanctsFastEntranceEntities = contanctsFastEntranceEntities;
     }
 
     @Override
@@ -70,11 +85,9 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             return contactEntity.getBusinssunitData() == null ? 0 : contactEntity.getBusinssunitData().size();
         } else if (groupPosition == 1) {
             return contactEntity.getStoreData() == null ? 0 : contactEntity.getStoreData().size();
-        }
-        if (groupPosition == 2) {
+        } else if (groupPosition == 2) {
             return contactEntity.getDepartmentData() == null ? 0 : contactEntity.getDepartmentData().size();
-        }
-        if (groupPosition == 3) {
+        } else if (groupPosition == 3) {
             return contactEntity.getStaffData() == null ? 0 : contactEntity.getStaffData().size();
         }
         return 0;
@@ -82,6 +95,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
 
     @Override
     public boolean hasHeader(int groupPosition) {
+
 //        if (groupPosition==3&&contactEntity.getStaffData()!=null&&contactEntity.getStaffData().size()>0){
 //            return true;
 //        }
@@ -103,15 +117,66 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
         return 0;
     }
 
+    private boolean isAddedHome(int type, String key) {
+        if (contanctsFastEntranceEntities!=null) {
+            for (ContanctsFastEntranceEntity d : contanctsFastEntranceEntities) {
+                if (d.getType() == type && key.equals(d.getKey())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public int getChildViewType(int groupPosition, int childPosition) {
+        if (groupPosition == 0) {
+            //事业部
+            List<BusinssunitEntity.DataBean> businssunitData = contactEntity.getBusinssunitData();
+            if (businssunitData != null) {
+                BusinssunitEntity.DataBean dataBean = businssunitData.get(childPosition);
+                if (isAddedHome( ContactDataFragment.BUSINESS_UNIT_TYPE, dataBean.getId() + "")) {
+                    return -5;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
+        } else if (groupPosition == 1) {
+            //店面
+            List<StoreEntity.DataBean> storeData = contactEntity.getStoreData();
+            if (storeData != null) {
+                if (isAddedHome( ContactDataFragment.STORE_TYPE, storeData.get(childPosition).getShop_code() + "")) {
+                    return -6;
+                } else {
+                    return 2;
+                }
+            } else {
+                return 2;
+            }
+        } else if (groupPosition == 2) {
+            //部门
+            List<DepartmentEntiy.DataBean> departmentData = contactEntity.getDepartmentData();
+            if (departmentData != null) {
+                if (isAddedHome( ContactDataFragment.DEPARTMENT_TYPE, departmentData.get(childPosition).getId() + "")) {
+                    return -7;
+                } else {
+                    return 3;
+                }
+            } else {
+                return 3;
+            }
+        } else {
+            return 4;
+        }
         //直接返回是哪个组的
-        return groupPosition;
+        // return groupPosition;
     }
 
     @Override
     public int getChildLayout(int viewType) {
-        if (viewType == 3) {
+        if (viewType == 4) {
             //如果是最后一个也就是联系人了
             return R.layout.item_contact;
         } else {
@@ -121,7 +186,8 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
     }
 
     @Override
-    public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
+    public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition,
+                                      int childPosition) {
         if (groupPosition == 3) {
             List<StaffSearchEntity.DataBean> staffData = contactEntity.getStaffData();
             if (staffData == null) {
@@ -132,6 +198,16 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             CheckBox cbPerson = holder.get(R.id.cb_person);
             if (isOption) {
                 cbPerson.setVisibility(View.VISIBLE);
+                // cbPerson.setChecked(ContactsActivity.isChecked(staffData.get(childPosition)));
+                tvContactName.setCompoundDrawables(null, null, null, null);
+                cbPerson.setOnCheckedChangeListener((CompoundButton compoundButton, boolean b) -> {
+//                    if (b) {
+//                        ContactsActivity.addChecke(staffData.get(childPosition));
+//                    } else {
+//                        ContactsActivity.remove(staffData.get(childPosition));
+//                    }
+                    EventBus.getDefault().post(ContactsActivity.KEY);
+                });
             } else {
                 cbPerson.setVisibility(View.GONE);
             }

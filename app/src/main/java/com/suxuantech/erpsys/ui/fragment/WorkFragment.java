@@ -28,7 +28,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
 
-public class WorkFragment extends BaseMainFragment {
+public class WorkFragment extends BaseSupportFragment {
 
 
     private View view;

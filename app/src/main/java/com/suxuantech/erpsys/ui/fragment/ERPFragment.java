@@ -18,7 +18,7 @@ import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
 import java.util.ArrayList;
 
 
-public class ERPFragment extends BaseMainFragment {
+public class ERPFragment extends BaseSupportFragment {
 
     private BannerView bannersView;
     private RadioGroup mRadioGroup;

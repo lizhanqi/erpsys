@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -342,10 +343,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
         quickAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (position==6){
                 Intent intent = new Intent(getActivity(), ContactsActivity.class);
-                intent.putExtra("isOption", false);
-                intent.putExtra("type", 4);
-                intent.putExtra("fastEntrance", true);
-                intent.putExtra("keyCode", App.getApplication().getUserInfor().department_id + "");
+                Bundle bundle = getBundle();
+                intent.putExtras(bundle);
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
@@ -360,6 +359,40 @@ public class ERPLeftFragment extends BaseLazyFragment {
         defaultItemDecoration.setHasHead(true);
         mRvCard.addItemDecoration(defaultItemDecoration);
         mRefreshLayout.setEnableLoadmore(false);
+    }
+
+    @NonNull
+    private Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isOption", true);
+        bundle.putBoolean("fastEntrance", true);
+        bundle.putBoolean("showDepartmentName", true);
+        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())){
+            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())){
+                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())){
+                    //仅仅获取集团联系人
+                    bundle.putInt("type", 7);
+                    bundle.putString("homeDepartmentName",  "集团联系人");
+                    bundle.putString("keyCode","");
+                }else {
+                    //仅仅获取事业部联系人
+                    bundle.putInt("type", 6);
+                    bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getBrandclass() );
+                    bundle.putString("keyCode", App.getApplication().getUserInfor().getBrandclass_id() + "");
+                }
+            }else {
+                //仅仅获取点面联系人
+                bundle.putInt("type", 5);
+                bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getShop_name() );
+                bundle.putString("keyCode", App.getApplication().getUserInfor().getShop_code() + "");
+            }
+        }else {
+            //仅仅获取部门联系人
+            bundle.putInt("type", 4);
+            bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getDepartment_name() );
+            bundle.putString("keyCode", App.getApplication().getUserInfor().getDepartment_id() + "");
+        }
+        return bundle;
     }
 
     /**

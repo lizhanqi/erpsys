@@ -28,7 +28,6 @@ import com.suxuantech.erpsys.rongim.RongConversationListFragment;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.ui.dialog.LoadDialog;
-import com.suxuantech.erpsys.ui.fragment.BaseMainFragment;
 import com.suxuantech.erpsys.ui.fragment.CRMFragment;
 import com.suxuantech.erpsys.ui.fragment.ContactsFragment;
 import com.suxuantech.erpsys.ui.fragment.ERPFragment;
@@ -52,8 +51,7 @@ import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
 
-public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener ,
-  BaseMainFragment.OnBackToFirstListener {
+public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private TextBadgeItem badgeItem;
@@ -85,6 +83,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         @Override
         public void onTabSelected(int position) {
         }
+
         @Override
         public void onTabUnselected(int position) {
             selectFragment(position);
@@ -99,7 +98,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 if (currentFragment instanceof MsgFragment) {
                     currentFragment.popToChild(MsgFragment.class, false);
                 } else if (currentFragment instanceof ContactsFragment) {
-                    currentFragment.popToChild(ContactsFragment.class, false);
+                    for (int i = 0; i < count - 1; i++) {
+                        currentFragment.popChild();
+                    }
                 } else if (currentFragment instanceof ERPFragment) {
                     currentFragment.popToChild(ERPFragment.class, false);
                 } else if (currentFragment instanceof MyFragment) {
@@ -111,7 +112,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     };
 
     private void selectFragment(int lastSelct) {
-        showHideFragment( mFragments[bottomNavigationBar.getCurrentSelectedPosition()], mFragments[lastSelct]);
+        showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()], mFragments[lastSelct]);
         if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
             ImmersionBar.with(MainActivity.this).statusBarDarkFont(true, 0.15f).fitsSystemWindows(true).statusBarColor(R.color.white).navigationBarColor(R.color.translucent_black_90).init();
         }
@@ -162,6 +163,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 WindowManager.LayoutParams.WRAP_CONTENT, true);
 
     }
+
     private void initFragement() {
         SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
         if (firstFragment == null) {
@@ -196,29 +198,29 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         bundle.putBoolean("isOption", false);
         bundle.putBoolean("fastEntrance", true);
         bundle.putBoolean("showDepartmentName", true);
-        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())){
-            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())){
-                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())){
+        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())) {
+            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())) {
+                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())) {
                     //仅仅获取集团联系人
                     bundle.putInt("type", 7);
-                    bundle.putString("homeDepartmentName",  "集团联系人");
-                    bundle.putString("keyCode","");
-                }else {
+                    bundle.putString("homeDepartmentName", "集团联系人");
+                    bundle.putString("keyCode", "");
+                } else {
                     //仅仅获取事业部联系人
                     bundle.putInt("type", 6);
-                    bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getBrandclass() );
+                    bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getBrandclass());
                     bundle.putString("keyCode", App.getApplication().getUserInfor().getBrandclass_id() + "");
                 }
-            }else {
+            } else {
                 //仅仅获取点面联系人
                 bundle.putInt("type", 5);
-                bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getShop_name() );
+                bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getShop_name());
                 bundle.putString("keyCode", App.getApplication().getUserInfor().getShop_code() + "");
             }
-        }else {
+        } else {
             //仅仅获取部门联系人
             bundle.putInt("type", 4);
-            bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getDepartment_name() );
+            bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getDepartment_name());
             bundle.putString("keyCode", App.getApplication().getUserInfor().getDepartment_id() + "");
         }
         return bundle;
@@ -245,6 +247,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             return initJGIMConversationListFragement();
         }
     }
+
     private Fragment initJGIMConversationListFragement() {
         if (mConversationListFragment == null) {
             JGConversationListFragment listFrment = new JGConversationListFragment();
@@ -326,6 +329,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
         switch (position) {
+            default:
+                break;
             case 0:
                 if (mConversationListFragment == null) {
                     mConversationListFragment = initConversationList();
@@ -547,21 +552,24 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     @Override
     public void onListFragmentInteraction(@NotNull DummyContent.DummyItem item) {
     }
-    @Override
-    public void onBackToFirstFragment() {
-        bottomNavigationBar.selectTab(2);
-    }
+
     @Override
     public void onBackPressedSupport() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            pop();
+        int old = bottomNavigationBar.getCurrentSelectedPosition();
+        if (old == 2) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                pop();
+            } else {
+                closeActivity();
+            }
         } else {
-            closeActivity();
+            bottomNavigationBar.selectTab(2);
+            selectFragment(old);
         }
     }
+
     /**
      * 点击两次返回键退出APP
-     *
      */
     private void closeActivity() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {

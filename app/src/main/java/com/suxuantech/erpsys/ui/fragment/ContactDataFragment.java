@@ -1,18 +1,22 @@
 package com.suxuantech.erpsys.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anye.greendao.gen.ContanctsFastEntranceEntityDao;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
@@ -21,6 +25,7 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BusinssunitEntity;
 import com.suxuantech.erpsys.entity.ContactEntity;
+import com.suxuantech.erpsys.entity.ContanctsFastEntranceEntity;
 import com.suxuantech.erpsys.entity.DepartmentEntiy;
 import com.suxuantech.erpsys.entity.StaffSearchEntity;
 import com.suxuantech.erpsys.entity.StoreEntity;
@@ -31,10 +36,21 @@ import com.suxuantech.erpsys.ui.activity.StaffDetailsActivity;
 import com.suxuantech.erpsys.ui.activity.StaffSearchActivity;
 import com.suxuantech.erpsys.ui.adapter.ContanctsAdaputer;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
+import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
+import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +64,15 @@ public class ContactDataFragment extends BaseSupportFragment {
     @BindView(R.id.rl_organization)
     SwipeMenuRecyclerView mRlOrganization;
     @BindView(R.id.rv_navigation)
-    RecyclerView navigationRecyclerView;
+    SwipeMenuRecyclerView navigationRecyclerView;
+    @BindView(R.id.wmrv_quickentry)
+    SwipeMenuRecyclerView quickentryRecycleView;
     @BindView(R.id.ll_fast_entry)
     LinearLayout fastEntry;
     @BindView(R.id.ll_data)
     LinearLayout mLlData;
-
     @BindView(R.id.tv_group)
     TextView tvGruop;
-    @BindView(R.id.tv_shop)
-    TextView tvShop;
     @BindView(R.id.tv_department)
     TextView mTvDepartment;
     @BindView(R.id.one_Search)
@@ -66,6 +81,7 @@ public class ContactDataFragment extends BaseSupportFragment {
     SmartRefreshLayout smartRefreshLayout;
     private Unbinder unbinder;
     ContanctsAdaputer contanctsAdaputer;
+    public static final int GROUP_TYPE = 1, BUSINESS_UNIT_TYPE = 2, STORE_TYPE = 3, DEPARTMENT_TYPE = 4;
     private boolean isOption,
             searchEntrance,//搜索入口是否显示
             fastEntrance,//快速入口是否显示
@@ -77,32 +93,146 @@ public class ContactDataFragment extends BaseSupportFragment {
      * 3.店面
      * 4.部门
      */
-    private int type = 4;//根据类型获取不同的页面数据
+    private int type = DEPARTMENT_TYPE;//根据类型获取不同的页面数据
     private String keyCode;//根据类型获取不同的页面数据
     private String homeDepartmentName;//首页的联系人顶部名称
     private ArrayList navigation;
+    private ContanctsFastEntranceEntityDao contanctsFastEntranceEntityDao;
+    public static String FRESH_FAST_ENTRANCE = "freshFast";
+    QuickAdapter<ContanctsFastEntranceEntity> fastEntranceQuickAdapter = new QuickAdapter<ContanctsFastEntranceEntity>(R.layout.item_textview, null) {
+        @Override
+        public int getItemViewType(int position) {
+            return -5;
+        }
+
+        @Override
+        protected void convert(com.chad.library.adapter.base.BaseViewHolder helper, ContanctsFastEntranceEntity item) {
+            TextView view = helper.getView(R.id.tv_item);
+            view.setBackgroundColor(view.getResources().getColor(R.color.white));
+            view.setGravity(Gravity.VERTICAL_GRAVITY_MASK);
+            view.setCompoundDrawablePadding(50);
+            String addrees = item.getAddrees();
+            String name = item.getName();
+            view.setText(new MyString(name).setSize(17));
+            if (item.getType() == DEPARTMENT_TYPE) {
+                Drawable drawable = view.getResources().getDrawable(R.drawable.icon_contancts_department);
+                drawable.setBounds(0, 0, 120, 120);
+                view.setCompoundDrawables(drawable, null, null, null);
+            } else {
+                Drawable drawable = view.getResources().getDrawable(R.drawable.icon_organization);
+                drawable.setBounds(0, 0, drawable.getMinimumHeight(), drawable.getMinimumHeight());
+                view.setCompoundDrawables(drawable, null, null, null);
+            }
+            if (!StringUtils.empty(addrees)) {
+                view.append(new MyString("\n" + addrees).setSize(14));
+            }
+        }
+    };
+    QuickAdapter<String> navigationQuickAdapter = new QuickAdapter<String>(R.layout.item_navigation_contancts, null) {
+        @Override
+        protected void convert(com.chad.library.adapter.base.BaseViewHolder helper, String item) {
+            TextView view = helper.getView(R.id.tv_nav_contanct);
+            int i = navigation.lastIndexOf(item);
+            if (i != navigation.size() - 1) {
+                view.setTextColor(getResources().getColor(R.color.themeColor));
+                view.setText(item + "->");
+            } else {
+                view.setText(item);
+            }
+        }
+    };
+    /**
+     * 创建菜单：
+     */
+    SwipeMenuCreator mSwipeMenuCreator = new SwipeMenuCreator() {
+        @Override
+        public void onCreateMenu(SwipeMenu leftMenu, SwipeMenu rightMenu, int viewType) {
+            if (viewType > 0 && viewType != DEPARTMENT_TYPE) {
+                SwipeMenuItem closeItem = new SwipeMenuItem(getActivity())
+                        .setBackground(R.color.themeColor)
+                        .setText("添加入口")
+                        .setTextColor(Color.WHITE)
+                        .setWidth(200)
+                        .setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+                rightMenu.addMenuItem(closeItem); // 在Item右侧添加一个菜单。
+            } else if (viewType < 0) {
+                SwipeMenuItem closeItem = new SwipeMenuItem(getActivity())
+                        .setBackground(R.color.colorAccent)
+                        .setText("移除首页")
+                        .setTextColor(Color.WHITE)
+                        .setWidth(200)
+                        .setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+                rightMenu.addMenuItem(closeItem); // 在Item右侧添加一个菜单。
+            }
+        }
+    };
+    /**
+     * 菜单监听
+     */
+    SwipeMenuItemClickListener mMenuItemClickListener = new SwipeMenuItemClickListener() {
+        @Override
+        public void onItemClick(SwipeMenuBridge menuBridge) {
+            menuBridge.closeMenu();
+            int counts = -1;
+            int groupPosition = 0;//记录第几组
+            int childrenPosition = -1;//记录第几组的第几个(这里-1代表就是分组的组名)
+            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+            menuBridge.closeMenu();
+            int adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
+            //获取多个分组
+            int groupCount = contanctsAdaputer.getGroupCount();
+            boolean isLoop = true;
+            //统计分组多少个的时候能
+            for (int i = 0; i < groupCount; i++) {
+                if (isLoop) {
+                    groupPosition = i;
+                    for (int j = 0; j < contanctsAdaputer.getChildrenCount(i); j++) {
+                        counts++;
+                        if (counts == adapterPosition) {
+                            childrenPosition = j;
+                            isLoop = false;
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+            addToHome(groupPosition, childrenPosition);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, view);
+        useEventBus();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        type = getArguments().getInt("type", 4);
+        type = getArguments().getInt("type", DEPARTMENT_TYPE);
         navigation = getArguments().getStringArrayList("navigation");
         showDepartmentName = getArguments().getBoolean("showDepartmentName", false);
-        homeDepartmentName = getArguments().getString("homeDepartmentName","");
+        homeDepartmentName = getArguments().getString("homeDepartmentName", "");
         showNavigation = getArguments().getBoolean("showNavigation", true);
         fastEntrance = getArguments().getBoolean("fastEntrance", false);
         isOption = getArguments().getBoolean("isOption", false);
         searchEntrance = getArguments().getBoolean("searchEntrance", true);
         keyCode = getArguments().getString("keyCode");
+        contanctsFastEntranceEntityDao = App.getApplication().getDaoSession().getContanctsFastEntranceEntityDao();
         initView();
         getContactTreeContrl(type, keyCode);
     }
+
+    /**
+     * 跳转到一个新的页面
+     *
+     * @param bd
+     * @param navigation
+     */
     private void statToFragement(Bundle bd, ArrayList navigation) {
         bd.putBoolean("searchEntrance", searchEntrance);
         bd.putStringArrayList("navigation", navigation);
@@ -110,61 +240,114 @@ public class ContactDataFragment extends BaseSupportFragment {
         contactsFragment.setArguments(bd);
         start(contactsFragment);
     }
+
+    /**
+     * 添加或者删除一个快捷方式
+     *
+     * @param group
+     * @param childen
+     */
+    private void addToHome(int group, int childen) {
+        ContactEntity contactEntity = contanctsAdaputer.getContactEntity();
+        ContanctsFastEntranceEntity contanctsFastEntranceEntity = new ContanctsFastEntranceEntity();
+
+        if (group == 0) {
+            List<BusinssunitEntity.DataBean> businssunitData = contactEntity.getBusinssunitData();
+            BusinssunitEntity.DataBean dataBean = businssunitData.get(childen);
+            contanctsFastEntranceEntity.setKey(dataBean.getId() + "");
+            contanctsFastEntranceEntity.setName(dataBean.getBrandclass());
+            contanctsFastEntranceEntity.setType(BUSINESS_UNIT_TYPE);
+
+        } else if (group == 1) {
+            List<StoreEntity.DataBean> storeData = contactEntity.getStoreData();
+            StoreEntity.DataBean dataBean = storeData.get(childen);
+            contanctsFastEntranceEntity.setKey(dataBean.getShop_code() + "");
+            contanctsFastEntranceEntity.setName(dataBean.getShop_name());
+            contanctsFastEntranceEntity.setType(STORE_TYPE);
+
+        } else if (group == 2) {
+            List<DepartmentEntiy.DataBean> departmentData = contactEntity.getDepartmentData();
+            DepartmentEntiy.DataBean dataBean = departmentData.get(childen);
+            contanctsFastEntranceEntity.setKey(dataBean.getId() + "");
+            contanctsFastEntranceEntity.setName(dataBean.getDepartment_name());
+            contanctsFastEntranceEntity.setType(DEPARTMENT_TYPE);
+            StringBuilder stringBuilder = new StringBuilder();
+            if (!StringUtils.empty(dataBean.getBrandclass())) {
+                stringBuilder.append(dataBean.getBrandclass());
+            }
+            if (!StringUtils.empty(dataBean.getShop_name())) {
+                stringBuilder.append("->");
+                stringBuilder.append(dataBean.getShop_name());
+            }
+            contanctsFastEntranceEntity.setAddrees(stringBuilder.toString());
+        }
+        if (!isAddedHome(contanctsFastEntranceEntity.getType(), contanctsFastEntranceEntity.getKey())) {
+            contanctsFastEntranceEntityDao.insert(contanctsFastEntranceEntity);
+        } else {
+            QueryBuilder<ContanctsFastEntranceEntity> queryBuilder = contanctsFastEntranceEntityDao.queryBuilder();
+            queryBuilder.where(ContanctsFastEntranceEntityDao.Properties.Key.eq(contanctsFastEntranceEntity.getKey()),
+                    ContanctsFastEntranceEntityDao.Properties.Type.eq(contanctsFastEntranceEntity.getType()));
+            queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
+        }
+        EventBus.getDefault().post(FRESH_FAST_ENTRANCE);
+    }
+
+    //通知首页更新
+    @Subscribe
+    public void notifyFastHome(String contanct) {
+        List<ContanctsFastEntranceEntity> contanctsFastEntranceEntities = contanctsFastEntranceEntityDao.loadAll();
+        contanctsAdaputer.setContanctsFastEntranceEntities(contanctsFastEntranceEntities);
+        contanctsAdaputer.notifyDataSetChanged();
+        fastEntranceQuickAdapter.updateAll(contanctsFastEntranceEntities);
+    }
+
+    private boolean isAddedHome(int type, String key) {
+        for (ContanctsFastEntranceEntity d : contanctsFastEntranceEntityDao.loadAll()) {
+            if (d.getType() == type && key.equals(d.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void initView() {
         if (fastEntrance) {
             fastEntry.setVisibility(View.VISIBLE);
         } else {
             fastEntry.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLlData.getLayoutParams();
-            layoutParams.setMargins(0,0,0,0);
+            layoutParams.setMargins(0, 0, 0, 0);
         }
         if (searchEntrance) {
             oneKeyClearAutoCompleteText.setVisibility(View.VISIBLE);
         } else {
             oneKeyClearAutoCompleteText.setVisibility(View.GONE);
         }
-        if (StringUtils.empty(App.getApplication().getUserInfor().shop_code)) {
-            tvShop.setVisibility(View.GONE);
-        } else {
-            tvShop.setVisibility(View.VISIBLE);
-            tvShop.setText(App.getApplication().getUserInfor().shop_name);
-        }
-        if (!showDepartmentName||StringUtils.empty(homeDepartmentName)) {
+        if (!showDepartmentName || StringUtils.empty(homeDepartmentName)) {
             mTvDepartment.setVisibility(View.GONE);
         } else {
             mTvDepartment.setVisibility(View.VISIBLE);
             mTvDepartment.setText(homeDepartmentName);
         }
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            notifyFastHome(FRESH_FAST_ENTRANCE);
             getContactTreeContrl(type, keyCode);
         });
         //很神奇,这里如果不进行复制设置返回按钮出栈的时候,导航有问题
-        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<String> navString = new ArrayList<>();
         if (navigation != null) {
-            strings.addAll(navigation);
+            navString.addAll(navigation);
         }
-        QuickAdapter<String> stringQuickAdapter = new QuickAdapter<String>(R.layout.item_navigation_contancts, strings) {
-            @Override
-            protected void convert(com.chad.library.adapter.base.BaseViewHolder helper, String item) {
-                TextView view = helper.getView(R.id.tv_nav_contanct);
-                int i = navigation.lastIndexOf(item);
-                if (i != navigation.size() - 1) {
-                    view.setTextColor(getResources().getColor(R.color.themeColor));
-                    view.setText(item + "->");
-                } else {
-                    view.setText(item);
-                }
-            }
-        };
         if (showNavigation) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
             navigationRecyclerView.setLayoutManager(linearLayoutManager);
-            navigationRecyclerView.setAdapter(stringQuickAdapter);
+            navigationQuickAdapter.updateAll(navString);
+            navigationRecyclerView.setAdapter(navigationQuickAdapter);
             if (navigation != null) {
                 linearLayoutManager.scrollToPosition(navigation.size() - 1);
             }
         }
-        stringQuickAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
+        navigationQuickAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
             if (position < navigation.size() - 1) {
                 int numberP = (navigation.size() - 1) - position;
                 for (int i = 0; i < numberP; i++) {
@@ -173,7 +356,15 @@ public class ContactDataFragment extends BaseSupportFragment {
                 }
             }
         });
+        if (!isOption) {
+            mRlOrganization.setSwipeMenuCreator(mSwipeMenuCreator);
+        }
+        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7));
+        defaultItemDecoration.setJustLeftOffsetX(50);
+        mRlOrganization.addItemDecoration(defaultItemDecoration);
+        mRlOrganization.setSwipeMenuItemClickListener(mMenuItemClickListener);
         contanctsAdaputer = new ContanctsAdaputer(getActivity());
+        contanctsAdaputer.setOption(isOption);
         mRlOrganization.setLayoutManager(new LinearLayoutManager(getContext()));
         mRlOrganization.setAdapter(contanctsAdaputer);
         contanctsAdaputer.setOnChildClickListener((GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int groupPosition, int childPosition) -> {
@@ -236,7 +427,7 @@ public class ContactDataFragment extends BaseSupportFragment {
                 navigation.add("通讯录");
                 navigation.add("集团");
                 Bundle bundle = new Bundle();
-                bundle.putInt("type", 1);
+                bundle.putInt("type", GROUP_TYPE);
                 bundle.putBoolean("fastEntrance", false);
                 bundle.putBoolean("isOption", isOption);
                 bundle.putString("keyCode", "");
@@ -244,25 +435,39 @@ public class ContactDataFragment extends BaseSupportFragment {
                 statToFragement(bundle, navigation);
             }
         });
-
-        tvShop.setOnClickListener(new View.OnClickListener() {
+        fastEntranceQuickAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
+            ContanctsFastEntranceEntity contanctsFastEntranceEntity = fastEntranceQuickAdapter.getData().get(position);
+            if (navigation == null) {
+                navigation = new ArrayList();
+            }
+            navigation.clear();
+            navigation.add("通讯录");
+            navigation.add(contanctsFastEntranceEntity.getName());
+            Bundle bundle = new Bundle();
+            bundle.putInt("type", contanctsFastEntranceEntity.getType());
+            bundle.putBoolean("fastEntrance", false);
+            bundle.putBoolean("isOption", isOption);
+            bundle.putString("keyCode", contanctsFastEntranceEntity.getKey());
+            bundle.putBoolean("showNavigation", true);
+            statToFragement(bundle, navigation);
+        });
+        quickentryRecycleView.setSwipeMenuCreator(mSwipeMenuCreator);
+        // 菜单点击监听。
+        quickentryRecycleView.setSwipeMenuItemClickListener(new SwipeMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-                if (navigation == null) {
-                    navigation = new ArrayList();
-                }
-                navigation.clear();
-                navigation.add("通讯录");
-                navigation.add(App.getApplication().getUserInfor().shop_name);
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", 3);
-                bundle.putBoolean("isOption", isOption);
-                bundle.putBoolean("showNavigation", true);
-                bundle.putBoolean("fastEntrance", false);
-                bundle.putString("keyCode", App.getApplication().getUserInfor().shop_code + "");
-                statToFragement(bundle, navigation);
+            public void onItemClick(SwipeMenuBridge menuBridge) {
+                int position = menuBridge.getPosition();
+                ContanctsFastEntranceEntity contanctsFastEntranceEntity = fastEntranceQuickAdapter.getData().get(position);
+                QueryBuilder<ContanctsFastEntranceEntity> queryBuilder = contanctsFastEntranceEntityDao.queryBuilder();
+                queryBuilder.where(ContanctsFastEntranceEntityDao.Properties.Key.eq(contanctsFastEntranceEntity.getKey()), ContanctsFastEntranceEntityDao.Properties.Type.eq(contanctsFastEntranceEntity.getType()));
+                queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
+                EventBus.getDefault().post(FRESH_FAST_ENTRANCE);
             }
         });
+        quickentryRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        quickentryRecycleView.setAdapter(fastEntranceQuickAdapter);
+        quickentryRecycleView.addItemDecoration(defaultItemDecoration);
+        notifyFastHome(FRESH_FAST_ENTRANCE);
     }
 
     /**
@@ -278,25 +483,25 @@ public class ContactDataFragment extends BaseSupportFragment {
      * @param wicht
      */
     public void getContactTreeContrl(@IntRange(from = 1, to = 7) int wicht, String code) {
-        if (wicht == 1) {
+        if (wicht == GROUP_TYPE) {
             getBusinssunit();
-            getContancts(1, "");
-            getDepartment(1, "");
-        } else if (wicht == 2) {
-            getContancts(2, code);
+            getContancts(GROUP_TYPE, "");
+            getDepartment(GROUP_TYPE, "");
+        } else if (wicht == BUSINESS_UNIT_TYPE) {
+            getContancts(BUSINESS_UNIT_TYPE, code);
             getStoreByBusinssUnit(code);
-            getDepartment(2, code);
-        } else if (wicht == 3) {
-            getDepartment(3, code);
-            getContancts(3, code);
-        } else if (wicht == 4) {
-            getContancts(4, code);
+            getDepartment(BUSINESS_UNIT_TYPE, code);
+        } else if (wicht == STORE_TYPE) {
+            getDepartment(STORE_TYPE, code);
+            getContancts(STORE_TYPE, code);
+        } else if (wicht == DEPARTMENT_TYPE) {
+            getContancts(DEPARTMENT_TYPE, code);
         } else if (wicht == 5) {
-            getContancts(3, code);
+            getContancts(STORE_TYPE, code);
         } else if (wicht == 6) {
-            getContancts(2, code);
+            getContancts(BUSINESS_UNIT_TYPE, code);
         } else if (wicht == 7) {
-            getContancts(1, "");
+            getContancts(GROUP_TYPE, "");
         }
     }
 
@@ -314,7 +519,6 @@ public class ContactDataFragment extends BaseSupportFragment {
                     contanctsAdaputer.getContactEntity().setBusinssunitData(response.get().getData());
                     contanctsAdaputer.changeDataSet();
                 }
-
             }
 
             @Override
@@ -322,7 +526,7 @@ public class ContactDataFragment extends BaseSupportFragment {
                 smartRefreshLayout.finishRefresh();
             }
         };
-        request(0, businssunit, searchByCustmor, false, false);
+        requestNOError(0, businssunit, searchByCustmor, false, false);
     }
 
     /**
@@ -337,11 +541,11 @@ public class ContactDataFragment extends BaseSupportFragment {
         String url = Contact.getFullUrl(Contact.CONTACTS, Contact.PHP_PREFIX);
         JavaBeanRequest<StaffSearchEntity> contancts = new JavaBeanRequest<StaffSearchEntity>(url, StaffSearchEntity.class);
         contancts.add("grade_type", type);
-        if (type == 2) {
+        if (type == BUSINESS_UNIT_TYPE) {
             contancts.add("brandclass_id", Key);
-        } else if (type == 3) {
+        } else if (type == STORE_TYPE) {
             contancts.add("shop_code", Key);
-        } else if (type == 4) {
+        } else if (type == DEPARTMENT_TYPE) {
             contancts.add("department_id", Key);
         }
         HttpListener<StaffSearchEntity> searchByCustmor = new HttpListener<StaffSearchEntity>() {
@@ -374,11 +578,11 @@ public class ContactDataFragment extends BaseSupportFragment {
         String url = Contact.getFullUrl(Contact.DEPARTMENT, Contact.PHP_PREFIX);
         JavaBeanRequest<DepartmentEntiy> department = new JavaBeanRequest<DepartmentEntiy>(url, DepartmentEntiy.class);
         department.add("grade_type", type);
-        if (type == 2) {
+        if (type == BUSINESS_UNIT_TYPE) {
             department.add("brandclass_id", Key);
-        } else if (type == 3) {
+        } else if (type == STORE_TYPE) {
             department.add("shop_code", Key);
-        } else if (type == 4) {
+        } else if (type == DEPARTMENT_TYPE) {
             department.add("department_id", Key);
         }
         HttpListener<DepartmentEntiy> searchByCustmor = new HttpListener<DepartmentEntiy>() {
@@ -396,7 +600,7 @@ public class ContactDataFragment extends BaseSupportFragment {
                 smartRefreshLayout.finishRefresh();
             }
         };
-        request(0, department, searchByCustmor, false, false);
+        requestNOError(0, department, searchByCustmor, false, false);
     }
 
     /**

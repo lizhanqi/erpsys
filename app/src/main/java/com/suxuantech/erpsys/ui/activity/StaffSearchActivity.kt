@@ -17,6 +17,7 @@ import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
+import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
 import com.suxuantech.erpsys.utils.MyString
 import com.suxuantech.erpsys.utils.StringUtils
@@ -29,7 +30,6 @@ class StaffSearchActivity : TitleNavigationActivity() {
             val imagHead = helper?.getView<ImageView>(R.id.img_contact_head)
             val contanTextView = helper?.getView<TextView>(R.id.tv_contact_name)
             val checkBox = helper?.getView<CheckBox>(R.id.cb_person)
-
             val group_company_name = StringUtils.safetyString(item?.group_company_name);
             val brandclass = StringUtils.safetyString(item?.brandclass);
             val shop_name = StringUtils.safetyString(item?.shop_name);
@@ -91,8 +91,11 @@ class StaffSearchActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_staff_search)
         supportToolbar()
         setCenterTitle("通讯录搜索")
+        val defaultItemDecoration = DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7))
+        defaultItemDecoration.setJustLeftOffsetX(50)
         var otcKey = findViewById<OneKeyClearAutoCompleteText>(R.id.otc_key);
         var rvResult = findViewById<RecyclerView>(R.id.rv_result);
+        rvResult.addItemDecoration(defaultItemDecoration)
         rvResult.adapter = adapter
         otcKey.setLeftDrawableClickListen {
             searchPerson(otcKey.text.toString().trim(), true)
@@ -133,14 +136,12 @@ class StaffSearchActivity : TitleNavigationActivity() {
     fun setData2View(data: List<StaffSearchEntity.DataBean>?) {
         adapter.updateAll(data)
         val option = intent.getBooleanExtra("option", false);
-        if (!option) {
             adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 var intts = Intent(this, StaffDetailsActivity::class.java)
                 var bd = Bundle();
                 bd.putParcelable("data", data?.get(position))
                 intts.putExtras(bd)
                 startActivity(intts)
-            }
         }
     }
 }

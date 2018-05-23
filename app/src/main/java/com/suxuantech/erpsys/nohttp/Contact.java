@@ -289,7 +289,7 @@ public class Contact {
     public static String PHOTO_SCHEME_BY_DAY = "/SXWebErpAppStaff/SX_PhotoPaiChengDayinfo?Token=%s&vPcday=%s&Code=%s";
 
     /**
-     * 登陆人权限
+     * 登录人权限
      */
     public static String LOGIN_PERMISSION = "/SXWebErpAppStaff/SX_HQFunction?Token=%s&worktype=%s&gwcode=%s&Code=%s";
     /**

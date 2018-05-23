@@ -3,6 +3,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
@@ -37,7 +38,7 @@ import android.widget.Scroller;
 public class BounceScrollView extends ScrollView {
     private static final int LEN = 0xc8;
     private static final int DURATION = 500;
-    private static final int MAX_DY = 200;
+    private static final int MAX_DY = 500;
     private Scroller mScroller;
     TouchTool tool;
     int left, top;
@@ -90,6 +91,8 @@ public class BounceScrollView extends ScrollView {
         getLocationOnScreen(li2);
         imageView.getTop();
         switch (action) {
+            default:
+                break;
             case MotionEvent.ACTION_DOWN:
                 if (li[1] != li2[1]) {// 判断开始触摸时，imageview和窗口顶部对齐没
                     startIsTop = false;
@@ -105,37 +108,38 @@ public class BounceScrollView extends ScrollView {
                         imageView.getBottom() + LEN);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!startIsTop && li[1] == li2[1]) {
-                    startY = currentY;
-                    startIsTop = true;
-                }
-                if (imageView.isShown() && imageView.getTop() >= 0) {
-                    if (tool != null) {
-                        int t = tool.getScrollY(currentY - startY);
-                        if (!scrollerType && currentY < lastLy && imageView.getHeight() > imageViewH) {
-                            scrollTo(0, 0);
-                            imageView.getLocationInWindow(li);
-                            getLocationOnScreen(li2);
-                            android.view.ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                            params.height = t;
-                            imageView.setLayoutParams(params);
-                            if (imageView.getHeight() == imageViewH && li[1] == li2[1]) {
-                                scrollerType = true;
-                            }
-                            if (startIsTop && li[1] != li2[1]) {
-                                startIsTop = false;
-                            }
-                        }
-                        if (t >= top && t <= imageView.getBottom() + LEN && li[1] == li2[1] && currentY > lastLy) {
-                            android.view.ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                            params.height = t;
-                            imageView.setLayoutParams(params);
-                        }
+                if (startY<currentY) {
+                    if (!startIsTop && li[1] == li2[1]) {
+                        startY = currentY;
+                        startIsTop = true;
                     }
-                    scrollerType = false;
+                    if (imageView.isShown() && imageView.getTop() >= 0) {
+                        if (tool != null) {
+                            int t = tool.getScrollY(currentY - startY);
+                            if (!scrollerType && currentY < lastLy && imageView.getHeight() > imageViewH) {
+                                scrollTo(0, 0);
+                                imageView.getLocationInWindow(li);
+                                getLocationOnScreen(li2);
+                                android.view.ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                                params.height = t;
+                                imageView.setLayoutParams(params);
+                                if (imageView.getHeight() == imageViewH && li[1] == li2[1]) {
+                                    scrollerType = true;
+                                }
+                                if (startIsTop && li[1] != li2[1]) {
+                                    startIsTop = false;
+                                }
+                            }
+                            if (t >= top && t <= imageView.getBottom() + LEN && li[1] == li2[1] && currentY > lastLy) {
+                                android.view.ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                                params.height = t;
+                                imageView.setLayoutParams(params);
+                            }
+                        }
+                        scrollerType = false;
+                    }
+                    lastLy = currentY;
                 }
-
-                lastLy = currentY;
                 break;
             case MotionEvent.ACTION_UP:
                 if (li[1] == li2[1]) {
@@ -165,6 +169,10 @@ public class BounceScrollView extends ScrollView {
                 imageView.setLayoutParams(params);
             }
         }
+    }
+    View view;
+    public   void setView(View view) {
+        this.view = view;
     }
 
     public class TouchTool {

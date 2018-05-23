@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class MyFragment extends BaseMainFragment {
+public class MyFragment extends BaseSupportFragment {
     @BindView(R.id.img_top)
     ImageView mImgTop;
     @BindView(R.id.tv_mine)
@@ -54,8 +54,8 @@ public class MyFragment extends BaseMainFragment {
     Button mBtnLoginOut;
     @BindView(R.id.rv_other_info)
     RelativeLayout otherInfo;
-    @BindView(R.id.dampView)
-    BounceScrollView mDampView;
+//    @BindView(R.id.dampView)
+//    BounceScrollView mDampView;
     private View view;
     private Unbinder unbinder;
     @Subscribe()
@@ -87,8 +87,10 @@ public class MyFragment extends BaseMainFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        BounceScrollView dampView = view.findViewById(R.id.dampView);
+       BounceScrollView dampView = view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
+        dampView.setView(view.findViewById(R.id.ll_cao));
+
         ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).titleBar(R.id.tv_mine).init();
         view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
             @Override

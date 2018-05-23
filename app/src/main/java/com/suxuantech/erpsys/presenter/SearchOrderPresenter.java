@@ -1,7 +1,5 @@
 package com.suxuantech.erpsys.presenter;
 
-import com.anye.greendao.gen.DaoMaster;
-import com.anye.greendao.gen.DaoSession;
 import com.anye.greendao.gen.HistoryEntityDao;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
@@ -66,14 +64,8 @@ public class SearchOrderPresenter {
     }
 
     private void initDB() {
-        //初始化数据库
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(App.getContext(), "myhistory.db", null);
-        //不清楚
-        DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDb());
-        //表的集合
-        DaoSession daoSession = daoMaster.newSession();
         //历史表
-        historyDao = daoSession.getHistoryEntityDao();
+        historyDao = App.getApplication().getDaoSession().getHistoryEntityDao();
     }
 
     public List<HistoryEntity> clear(){

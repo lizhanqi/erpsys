@@ -5,13 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/px50"
     tools:context=".ui.activity.StaffSearchActivity">
     <com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
+        android:layout_marginHorizontal="@dimen/px50"
         android:layout_gravity="center"
         android:singleLine="true"
         android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/px30"
         android:drawablePadding="@dimen/px30"
         android:layout_marginBottom="@dimen/px15"
         android:layout_marginTop="@dimen/px15"

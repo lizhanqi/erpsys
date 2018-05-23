@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/px30"
-    android:paddingLeft="@dimen/px30"
-    android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginLeft="@dimen/px35"
-            android:id="@+id/tv_department"
-            android:text="222"
-            android:textSize="@dimen/xs60"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    <View style="@style/line" android:layout_marginTop="@dimen/px30"/>
-</LinearLayout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_department"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/px50"
+    android:paddingVertical="@dimen/px50"
+    android:text="222"
+    android:textSize="@dimen/xs60" />

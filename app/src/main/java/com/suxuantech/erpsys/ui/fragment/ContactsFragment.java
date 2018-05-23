@@ -13,7 +13,7 @@ import me.yokeyword.fragmentation.SupportFragment;
 /**
  * 联系人的容器
  */
-public class ContactsFragment extends BaseMainFragment {
+public class ContactsFragment extends BaseSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contancts_root, container, false);
