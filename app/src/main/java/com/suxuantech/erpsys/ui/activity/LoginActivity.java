@@ -31,7 +31,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.EncryptUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
@@ -43,7 +42,7 @@ import com.suxuantech.erpsys.entity.UserEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
-import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 import com.suxuantech.erpsys.utils.FastJsonUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -94,7 +93,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * QuickAdapter login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class LoginActivity extends TitleNavigationActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -250,9 +249,9 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
     protected void onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
-        initFingerprintCore();
-        ScreenUtils.setFullScreen(this);
-        ImmersionBar.with(this).reset().statusBarDarkFont(true).init();
+        setSwipeBackEnable(false);
+      //  initFingerprintCore();
+      // ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_login);
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
@@ -275,11 +274,13 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCompanyID.getText().toString().equals("1")) {
-              phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-                } else {
-                    login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-                }
+            login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+//                if (mCompanyID.getText().toString().equals("1")) {
+//
+//                   phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+//                } else {
+//                    login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+//                }
             }
         });
     }
@@ -318,6 +319,10 @@ public class LoginActivity extends BaseActivity implements LoaderManager.LoaderC
         request(0, login, searchByCustmor, false, false);
     }
 
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(this).navigationBarColor(R.color.gray_f9) .titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
+    }
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
