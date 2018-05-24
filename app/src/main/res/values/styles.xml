@@ -116,11 +116,13 @@
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">top|left</item>
+        <item name="android:textIsSelectable">true</item>
     </style>
     <!--数据-->
     <style name="DetailsValue" parent="DetailsKey">
+
         <item name="android:layout_marginLeft">@dimen/px30</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/textHint_99</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColorHint">@color/textHint_99</item>

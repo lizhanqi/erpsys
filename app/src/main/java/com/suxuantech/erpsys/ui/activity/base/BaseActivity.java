@@ -321,7 +321,8 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         //changeStatusColor();
         //setFragmentAnimator();
         mDelegate.onCreate(savedInstanceState);
-        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
+        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_LEFT);
+        setEdgeLevel( SwipeBackLayout.EdgeLevel.MAX);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionSet.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         // 初始化请求队列，传入的参数是请求并发值。

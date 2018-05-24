@@ -16,6 +16,7 @@ public class ConversationActivity extends ChatBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SDKInitializer.initialize(getApplicationContext());
         super.onCreate(savedInstanceState);
+         setSwipeBackEnable(false);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);// 使得音量键控制媒体声音
         setContentView(R.layout.ac_convertion);
         supportToolbar();
