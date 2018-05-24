@@ -251,7 +251,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
       //  initFingerprintCore();
-      // ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_login);
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
@@ -274,7 +273,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+            //login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
 //                if (mCompanyID.getText().toString().equals("1")) {
 //
 //                   phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
@@ -321,7 +320,8 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     @Override
     public void initImmersionBar() {
-        ImmersionBar.with(this).navigationBarColor(R.color.gray_f9) .titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
+
+        ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7) .titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
     }
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
