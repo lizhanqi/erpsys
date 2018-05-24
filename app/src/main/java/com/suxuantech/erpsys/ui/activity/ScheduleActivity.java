@@ -283,13 +283,14 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                 mPtrFrame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY);
                         if (getIntent().hasExtra("title")) {
                             if (getIntent().getStringExtra("title").equals("拍照排程")) {
-                                getMonthPhotoScheme("2018-05-01");
-                                getPhotographSchemeByDay("2018-05-01");
+                                getMonthPhotoScheme(nowDate);
+                                getPhotographSchemeByDay(nowDate);
                             } else if (getIntent().getStringExtra("title").equals("选片排程")) {
-                                todayOptionPhotoScheme("2018-05-01");
-                                getMonthOptionPanelScheme("2018-05-01");
+                                todayOptionPhotoScheme(nowDate);
+                                getMonthOptionPanelScheme(nowDate);
                             }
                         }
                         mPtrFrame.refreshComplete();
