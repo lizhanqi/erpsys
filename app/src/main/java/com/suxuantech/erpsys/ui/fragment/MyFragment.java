@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,17 +15,16 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.LoginActivity;
+import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
-public class MyFragment extends BaseSupportFragment {
+public class MyFragment extends BaseLazyFragment {
     @BindView(R.id.img_top)
     ImageView mImgTop;
     @BindView(R.id.tv_mine)
@@ -57,7 +54,6 @@ public class MyFragment extends BaseSupportFragment {
 //    @BindView(R.id.dampView)
 //    BounceScrollView mDampView;
     private View view;
-    private Unbinder unbinder;
     @Subscribe()
     @MainThread
     public void EventBus(String key){
@@ -65,28 +61,35 @@ public class MyFragment extends BaseSupportFragment {
             data2View();
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        useEventBus();
-        return view;
-    }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View view = inflater.inflate(R.layout.fragment_my, container, false);
+//
+//        return view;
+//    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
+            initImmersionBar();
+          //  ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
         }
     }
-
+    @Override
+    public void initImmersionBar() {
+        if (getActivity() != null) {
+            super.initImmersionBar();
+            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.translucent_black_90).init();
+        }
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        useEventBus();
        BounceScrollView dampView = view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
         dampView.setView(view.findViewById(R.id.ll_cao));
@@ -106,6 +109,11 @@ public class MyFragment extends BaseSupportFragment {
             }
         });
         data2View();
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_my;
     }
 
     private void data2View() {
@@ -183,11 +191,5 @@ public class MyFragment extends BaseSupportFragment {
             case R.id.btn_login_out:
                 break;
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

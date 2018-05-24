@@ -376,8 +376,8 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         val httpListener = object : HttpListener<GustRegistrationEntity> {
             override fun onSucceed(what: Int, response: Response<GustRegistrationEntity>?) {
                 if (response!!.get().isOK) {
-
-                    ToastUtils.showShort(response.get().data)
+                    search(response.get().data)
+//                    ToastUtils.showShort()
                 } else {
                     ToastUtils.showShort(response.get().getMsg())
                 }

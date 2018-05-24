@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.fragment.BaseSupportFragment;
 
 import butterknife.ButterKnife;
@@ -144,9 +145,10 @@ public abstract class BaseLazyFragment extends BaseSupportFragment {
      */
     public void initImmersionBar() {
         mImmersionBar = ImmersionBar.with(this);
+      //  mImmersionBar.barColor(R.color.transparency);
         mImmersionBar.keyboardEnable(true).init();
     }
-    /**
+    /**`
      * 用户不可见执行
      */
     protected void onInvisible() {

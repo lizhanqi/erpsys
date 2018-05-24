@@ -139,7 +139,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 break;
         }
         showHideFragment(mFragments[bottomNavigationBar.getCurrentSelectedPosition()], mFragments[lastSelct]);
-        if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 4) {
+        //这里如果是沉浸到顶部的就不要走这段了,不然,状态栏白色几百毫秒,体验差
+        if (bottomNavigationBar.getCurrentSelectedPosition() != 2 && bottomNavigationBar.getCurrentSelectedPosition() != 3) {
             ImmersionBar.with(MainActivity.this).reset().init();
             ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).barColor(R.color.white).statusBarDarkFont(true, 0.15f).navigationBarColor(R.color.translucent_black_90).init();
         }

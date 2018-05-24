@@ -1,4 +1,4 @@
-package com.suxuantech.erpsys.entity;
+package com.suxuantech.erpsys.presenter
 
 /**
  * ......................我佛慈悲....................
@@ -21,37 +21,8 @@ package com.suxuantech.erpsys.entity;
  * ....=====`-.____`.___ \_____/___.-`___.-'=====....
  * ......................`=---='.....................
  * ..................佛祖开光 ,永无BUG................
- *
- * @author Created by 李站旗 on 2018/4/27 0027 15:05 .
+ * @author Created by 李站旗 on 2018/5/24 0024 15:12 .
  * QQ:1032992210
- * E-mail:lizhanqihd@163.com
+ *  E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class TempEntity  extends  BaseResult2<TempEntity.DataBean> {
-
-    public static class DataBean {
-        /**
-         * id : 1
-         * dresstheme : 礼服主题1
-         */
-
-        private int id;
-        private String dresstheme;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getDresstheme() {
-            return dresstheme;
-        }
-
-        public void setDresstheme(String dresstheme) {
-            this.dresstheme = dresstheme;
-        }
-    }
-}

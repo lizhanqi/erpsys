@@ -11,6 +11,7 @@ clickable是防止页面穿透的点击事件的
     android:id="@+id/dampView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -70,6 +71,7 @@ clickable是防止页面穿透的点击事件的
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
+
         <LinearLayout
             android:id="@+id/ll_cao"
             android:layout_width="match_parent"
@@ -421,7 +423,6 @@ clickable是防止页面穿透的点击事件的
             </RelativeLayout>
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_login_out2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px152"
@@ -430,10 +431,10 @@ clickable是防止页面穿透的点击事件的
                 android:layout_margin="@dimen/px30"
                 android:background="@drawable/login_button_sp"
                 android:text="@string/action_login_out"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_login_out1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px152"
@@ -442,7 +443,8 @@ clickable是防止页面穿透的点击事件的
                 android:layout_margin="@dimen/px30"
                 android:background="@drawable/login_button_sp"
                 android:text="@string/action_login_out"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </com.suxuantech.erpsys.ui.widget.BounceScrollView>

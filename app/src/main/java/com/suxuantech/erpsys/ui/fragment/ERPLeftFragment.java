@@ -120,7 +120,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
+     ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
         useEventBus();
         mTvCompanyName.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +140,13 @@ public class ERPLeftFragment extends BaseLazyFragment {
     protected int setLayoutId() {
         return R.layout.fragment_erp_left;
     }
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            initImmersionBar();
+        }
+    }
     @Override
     public void initImmersionBar() {
         if (getActivity() != null) {
