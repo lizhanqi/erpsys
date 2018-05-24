@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.ui.activity
 
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -62,6 +63,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
     var scrollView: NestedScrollView? = null
     var recyclerView: RecyclerView? = null
     var list = ArrayList<FormEntity>();
+    var addButton :FloatingActionButton?=null
     var adapter = object : QuickAdapter<FormEntity>(R.layout.item_type, list) {
         public override fun convert(helper: BaseViewHolder, item: FormEntity) {
             var root = helper.getView<LinearLayout>(R.id.ll_type)
@@ -84,6 +86,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop)
+        addButton = idSetOnClick<FloatingActionButton>(R.id.fab_add);
         mToolbar = idGetView<android.support.v7.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
@@ -91,6 +94,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         }
         if (intent.hasExtra("title")) {
             val stringExtra = intent.getStringExtra("title");
+            addButton?.visibility=View.GONE
             toolbar.setTitle(stringExtra)
         }
         scrollView = idGetView<NestedScrollView>(R.id.nsv_view)
@@ -107,6 +111,8 @@ class RegisterIntoShopActivity : ImmersionActivity() {
                     } else {
                         //中间状态
                     }
+                }else{
+                    addButton?.visibility=View.GONE
                 }
             }
         })
@@ -255,7 +261,11 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             this.onBackPressed()
         }
         if (R.id.action_settings == item.itemId) {
-            startActivity(IntoGuestRegistrationActivity::class.java)
+           if(App.getApplication().hasPermission("K3")){
+               startActivity(IntoGuestRegistrationActivity::class.java)
+           }else{
+               toastShort("无权登记")
+           }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -275,5 +285,14 @@ class RegisterIntoShopActivity : ImmersionActivity() {
 
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
+        when(v?.id){
+            R.id.fab_add->{
+                if(App.getApplication().hasPermission("K3")){
+                    startActivity(IntoGuestRegistrationActivity::class.java)
+                }else{
+                    toastShort("无权登记")
+                }
+            }
+        }
     }
 }

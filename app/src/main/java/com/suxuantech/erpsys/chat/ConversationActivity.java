@@ -77,6 +77,6 @@ public class ConversationActivity extends ChatBaseActivity {
         if (JZVideoPlayer.backPress()) {
             return;
         }
-        super.onBackPressed();
+        super.onBackPressedSupport();
     }
 }

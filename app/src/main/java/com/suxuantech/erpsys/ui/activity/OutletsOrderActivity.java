@@ -18,6 +18,7 @@ import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.DressThemeEntity;
 import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
 import com.suxuantech.erpsys.entity.OpenWeddingOrderEntity;
 import com.suxuantech.erpsys.entity.OrderReceivingSiteEntity;
@@ -25,15 +26,19 @@ import com.suxuantech.erpsys.entity.OutletsReceptionEntity;
 import com.suxuantech.erpsys.entity.PackageEntity;
 import com.suxuantech.erpsys.entity.PhotoShopEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
+import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.entity.ThemeEntity;
 import com.suxuantech.erpsys.eventmsg.BaseMsg;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.presenter.OutletsOrderPresenter;
+import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.IOutletsOrderPresenter;
+import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -53,7 +58,7 @@ import static com.suxuantech.erpsys.utils.DateUtil.DatePattern.JUST_DAY_NUMBER;
 /**
  * 门市开单
  */
-public class OutletsOrderActivity extends TitleNavigationActivity implements IOutletsOrderPresenter {
+public class OutletsOrderActivity extends TitleNavigationActivity implements IOutletsOrderPresenter,ISearchOrderPresenter {
     @BindView(R.id.tv_order_id)
     TextView mTvOrderId;
     @BindView(R.id.tv_order_date)
@@ -162,19 +167,16 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
     TextView mTvIntentionPackage;
     @BindView(R.id.ll_intention_package)
     LinearLayout mLlIntentionPackage;
-//    @BindView(R.id.srl_fresh)
-//    SmartRefreshLayout mSmartRefreshLayout;
-
-    // @BindView(R.id.btn_submint_order)
-    //Button mBtnSubmintOrder;
     private OutletsOrderPresenter outletsOrderPresenter;
     private List<ThemeEntity.DataBean> shootTheme;
-    private List<ThemeEntity.DataBean> dressTheme;
+    private List<DressThemeEntity.DataBean> dressTheme;
+    private SearchOrderPresenter searchOrderPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outlets_order_new);
+        searchOrderPresenter = new SearchOrderPresenter(this);
         useEventBus();
         useButterKnife();
         initViewData();
@@ -182,7 +184,7 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-   supportToolbar();
+         supportToolbar();
         //      mSmartRefreshLayout.autoRefresh();
         outletsOrderPresenter = new OutletsOrderPresenter(this, getRequestQueue());
         //  mSmartRefreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -421,10 +423,10 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
             toastShort("至少填写一个手机");
             return;
         }
-        if (mTvPhotoShopOne.getText().toString().isEmpty() && mTvPhotoShopTwo.getText().toString().isEmpty()) {
-            toastShort("至少选择一个拍照店");
-            return;
-        }
+//        if (mTvPhotoShopOne.getText().toString().isEmpty() && mTvPhotoShopTwo.getText().toString().isEmpty()) {
+//            toastShort("至少选择一个拍照店");
+//            return;
+//        }
         if (mTvConsumptionType.getText().toString().isEmpty()) {
             toastShort("请选择消费类型");
             return;
@@ -519,8 +521,8 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         }
         StringBuffer dressThemeString = new StringBuffer();
         if (dressTheme != null) {
-            for (ThemeEntity.DataBean th : dressTheme) {
-                dressThemeString.append(th.getTopic());
+            for (DressThemeEntity.DataBean th : dressTheme) {
+                dressThemeString.append(th.getDresstheme());
                 if (!((dressTheme.size() - 1) == dressTheme.lastIndexOf(th))) {
                     dressThemeString.append("|");
                 }
@@ -532,7 +534,10 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
             @Override
             public void onSucceed(int what, Response<OpenWeddingOrderEntity> response) {
                 if (response.get().isOK()) {
-                    toastShort("开单成功");
+                    String data = response.get().getData();
+                    searchOrderPresenter.sosoNetOrder(data,
+                            App.getContext().getResources().getString(R.string.start_time),
+                            App.getContext().getResources().getString(R.string.end_time), true, false);
                 } else if (response.get().getCode().equals("700")) {
                     AlertDialog.Builder builder = AlertDialog.newBuilder(OutletsOrderActivity.this);
                     builder.setMessage(response.get().getMsg());
@@ -580,10 +585,10 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
             case DRESS_THEME:
                 dressTheme = msg.getMultiSelected();
                 mLlDreesTheme.removeAllViews();
-                for (ThemeEntity.DataBean f : dressTheme) {
+                for (DressThemeEntity.DataBean f : dressTheme) {
                     TextView textView = new TextView(getBaseContext());
                     // textView.setGravity(Gravity.RIGHT);
-                    textView.setText(f.getTopic());
+                    textView.setText(f.getDresstheme());
                     mLlDreesTheme.addView(textView);
                 }
                 break;
@@ -645,4 +650,26 @@ public class OutletsOrderActivity extends TitleNavigationActivity implements IOu
         }
     }
 
+    @Override
+    public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
+        if (data == null || data.size() == 0) {
+            ToastUtils.snackbarShort("未找到客户资料");
+        } else if (data.size() > 1) {
+            ToastUtils.snackbarShort("找到多条资料,无法进行跳转");
+        } else {
+            Intent intent = new Intent(this, OrderDetailActivity.class);
+            SearchOrderEntity.DataBean dataBean = data.get(0);
+            intent.putExtra("orderId", dataBean.getOrderId());
+            intent.putExtra("showOnPosition", 0);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("data", dataBean);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
+
+    }
 }

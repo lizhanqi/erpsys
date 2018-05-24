@@ -342,6 +342,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
      */
     private void initHistoryAdapter() {
         smartRefreshLayout.setEnabled(false);
+        smartRefreshLayout.setEnableLoadMore(false);
         mLlSearch.setVisibility(View.VISIBLE);
         resetRecycleView(false);
         if (mSearchOrderPresenter.getSearchHosiery().size() <= 0) {

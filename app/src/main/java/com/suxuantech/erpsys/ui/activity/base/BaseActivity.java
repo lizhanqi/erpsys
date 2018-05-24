@@ -319,6 +319,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
        // LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
         //changeStatusColor();
+        //setFragmentAnimator();
         mDelegate.onCreate(savedInstanceState);
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);

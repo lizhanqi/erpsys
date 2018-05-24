@@ -175,7 +175,6 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                 break;
             case "选片资料":
                 toTabFragement(TabControlFragment.whichInFragement.OPTION_PANEL);
-                ;
                 break;
             case "礼服资料":
                 if (findFragment(ProductDataFragment.class) == null) {
@@ -186,6 +185,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                     bundle.putString("orderId", orderId);
                     dressMaterialFragment.setArguments(bundle);
                     loadRootFragment(R.id.container, mFragments[4], false, true);
+                } else {
+                    start(mFragments[4], ISupportFragment.SINGLETASK);
                 }
                 break;
             case "产品资料":
@@ -287,17 +288,17 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         Bundle bd = new Bundle();
         bd.putSerializable("witch", witch);
         bd.putString("orderId", getIntent().getStringExtra("orderId"));
-        if (findFragment(TabControlFragment.class) == null) {
-            TabControlFragment tabControlFragment = new TabControlFragment();
-            mFragments[2] = tabControlFragment;
-            tabControlFragment.setArguments(bd);
-            loadRootFragment(R.id.container, mFragments[2], false, true);
-
-        } else {
-            // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
-            start(mFragments[2], ISupportFragment.SINGLETASK);
-            mFragments[2].onNewBundle(bd);
-        }
+         TabControlFragment tabControlFragment = new TabControlFragment();
+        mFragments[2] = tabControlFragment;
+        tabControlFragment.setArguments(bd);
+        loadRootFragment(R.id.container, mFragments[2], false, true);
+//        if (findFragment(TabControlFragment.class) == null) {
+//
+//        } else {
+//            // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
+//            start(mFragments[2], ISupportFragment.SINGLETASK);
+//            mFragments[2].onNewBundle(bd);
+//        }
     }
 
     /**

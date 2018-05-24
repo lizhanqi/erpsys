@@ -30,7 +30,7 @@ import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
 import com.suxuantech.erpsys.ui.dialog.LoadDialog;
 import com.suxuantech.erpsys.ui.fragment.CRMFragment;
 import com.suxuantech.erpsys.ui.fragment.ContactsFragment;
-import com.suxuantech.erpsys.ui.fragment.ERPFragment;
+import com.suxuantech.erpsys.ui.fragment.ERPLeftFragment;
 import com.suxuantech.erpsys.ui.fragment.JGConversationListFragment;
 import com.suxuantech.erpsys.ui.fragment.MsgFragment;
 import com.suxuantech.erpsys.ui.fragment.MyFragment;
@@ -60,7 +60,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     private ArrayList<Fragment> fragments = new ArrayList<>();
     // private MsgFragment msgFragment;
     private MyFragment myFragment;
-    private ERPFragment erpFragment;
+    private ERPLeftFragment erpFragment;
     private WorkFragment workFragment;
     private CRMFragment crmFragment;
     private PopupWindow mMenuPopWindow;
@@ -101,8 +101,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                     for (int i = 0; i < count - 1; i++) {
                         currentFragment.popChild();
                     }
-                } else if (currentFragment instanceof ERPFragment) {
-                    currentFragment.popToChild(ERPFragment.class, false);
+                } else if (currentFragment instanceof ERPLeftFragment) {
+                    currentFragment.popToChild(ERPLeftFragment.class, false);
                 } else if (currentFragment instanceof MyFragment) {
                     currentFragment.popToChild(MyFragment.class, false);
                 }
@@ -193,13 +193,13 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     }
 
     private void initFragement() {
-        SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
+        SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPLeftFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = new MsgFragment();
             mFragments[SECOND] = new ContactsFragment();
             Bundle bundle = getBundle();
             mFragments[SECOND].setArguments(bundle);
-            mFragments[THIRD] = new ERPFragment();
+            mFragments[THIRD] = new ERPLeftFragment();
             mFragments[FOUR] = new MyFragment();
             loadMultipleRootFragment(R.id.main_content, THIRD,
                     mFragments[FIRST],
@@ -213,7 +213,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mFragments[SECOND] = SupportHelper.findFragment(getSupportFragmentManager(), ContactsFragment.class);
             Bundle bundle = getBundle();
             mFragments[SECOND].setArguments(bundle);
-            mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(), ERPFragment.class);
+            mFragments[THIRD] = SupportHelper.findFragment(getSupportFragmentManager(), ERPLeftFragment.class);
             mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(), MyFragment.class);
             showHideFragment(mFragments[2]);
         }
@@ -407,7 +407,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
             case 2:
                 if (erpFragment == null) {
-                    erpFragment = new ERPFragment();
+                    erpFragment = new ERPLeftFragment();
                     transaction.add(R.id.main_content, erpFragment);
                 } else {
                     transaction.show(erpFragment);

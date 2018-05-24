@@ -2,6 +2,7 @@ package com.suxuantech.erpsys.ui.activity
 
 import android.os.Bundle
 import android.support.annotation.IntRange
+import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -51,6 +52,9 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
     var tvMateSex: TextView? = null
     var tvMateBirthday: TextView? = null
     var tvCustomerRemarks: TextView? = null
+    val RUN_REASON = "流失原因"
+    val UNSETTLED = "未成交"
+    val NOT_INTO_SHOP = "未进店原因"
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
         if (v!!.getId() == R.id.tv_nav_right) {
@@ -78,7 +82,10 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
      * flag 进店类型（数字类型1进店进客，2进店非进客）
      */
     public fun change(@IntRange(from = 1, to = 2) flag: Int) {
-
+        if (!App.getApplication().hasPermission("K8")) {
+            toastShort("您无权修改进店")
+            return
+        }
         //请求实体
         val districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.INTO_STORE_STATUS, Contact.TOKEN, parcelable?.id, flag), RequestMethod.POST, ProductEntity::class.java)
         districtBeanJavaBeanRequest.addBodyJson("Customer_tel", parcelable?.customer_tel)
@@ -139,6 +146,18 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
     }
 
     fun showR(title: String) {
+        if (title.equals(RUN_REASON)) {
+            if (!App.getApplication().hasPermission("K11")) {
+                toastShort("抱歉,无权流失")
+                return
+            }
+        }
+        if (title.equals(NOT_INTO_SHOP)) {
+            if (!App.getApplication().hasPermission("K9")) {
+                toastShort("抱歉,修改未进店")
+                return
+            }
+        }
         val builder = AlertDialog.newBuilder(this@CustomerDetailsActivity)
         builder.setTitle(title)
         builder.setCancelable(true)
@@ -163,7 +182,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
      */
 
     fun aw(reason: String, title: String) {
-        if (title.equals("未成交")) {
+        if (title.equals(UNSETTLED)) {
             var districtBeanJavaBeanRequest = JavaBeanRequest(Contact.getFullUrl(Contact.RUN_AWAY, Contact.TOKEN, parcelable?.id, reason), RequestMethod.POST, ProductEntity::class.java)
             districtBeanJavaBeanRequest.addBodyJson("customer_tel", parcelable?.customer_tel)
             districtBeanJavaBeanRequest.addBodyJson("customer_name", parcelable?.customer_name)
@@ -225,16 +244,21 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
             mMenuPopWindow?.dismiss()
         })
         mMenuView.findViewById<TextView>(R.id.tv_not_in_shop).setOnClickListener(View.OnClickListener {
-            showR("未成交")
+            showR(UNSETTLED)
 
         })
         mMenuView.findViewById<TextView>(R.id.tv_make_bargain).setOnClickListener(View.OnClickListener {
             recoverImmersionBar()
             mMenuPopWindow?.dismiss()
-            startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
+            if (App.getApplication().hasPermission("K10")){
+                startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
+            }else{
+                toastShort("无权转单")
+            }
+
         })
         mMenuView.findViewById<TextView>(R.id.tv_run_away).setOnClickListener(View.OnClickListener {
-            showR("流失原因")
+            showR(RUN_REASON)
         })
         mMenuPopWindow = PopupWindow(mMenuView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true)
         //进出场动画
@@ -254,17 +278,36 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
                 startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
             }
             R.id.action_not_into_shop -> {
-                showR("未进店原因")
+                showR(NOT_INTO_SHOP)
             }
             R.id.action_srun_away -> {
-                showR("流失原因")
+                showR(RUN_REASON)
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
+    //折叠的选项中的 菜单图标可以用反射显示
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+//        //menu创建之前，反射设置显示图标
+//        if (menu != null) {
+//            if (menu.javaClass.simpleName.equals("MenuBuilder", ignoreCase = true)) {
+//                try {
+//                    val method = menu.javaClass.getDeclaredMethod("setOptionalIconsVisible", java.lang.Boolean.TYPE)
+//                    method.isAccessible = true
+//                    method.invoke(menu, true)
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//            }
+//        }
+        return super.onPrepareOptionsMenu(menu)
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_flag, menu);
+        //修改折叠的三个点
+        val drawable = ContextCompat.getDrawable(this, R.drawable.icon_ding)
+        toolbar.overflowIcon = drawable
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -286,7 +329,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvRegisterPhone!!.setText("手机号" + parcelable.customer_tel)
         tvRegisterConsumptionType!!.setText("消费类型" + parcelable.consultation_type)
         tvRegisterZone!!.setText("客户分区" + parcelable.customer_area)
-        tvRegisterDate!!.setText("进店日期" +StringUtils.subDate(parcelable.yjd_day) )
+        tvRegisterDate!!.setText("进店日期" + StringUtils.subDate(parcelable.yjd_day))
         tvRegisterStaff!!.setText("接待人" + parcelable.sales_staff)
         tvRunReason!!.setText(parcelable.is_loss)
         tvCustomerWechat!!.setText(parcelable.customer_wechat)
@@ -299,7 +342,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvCustomerAddress!!.setText(parcelable.customer_address)
         tvMakeDate!!.setText(StringUtils.subDate(parcelable.yjd_day))
         tvMakeDate!!.setText(StringUtils.subDate(parcelable.yjd_day))
-        tvMarryDate!!.setText(StringUtils.subDate(parcelable.wedding_date)  )
+        tvMarryDate!!.setText(StringUtils.subDate(parcelable.wedding_date))
         tvMateName!!.setText(parcelable.mate_name)
         tvMatePhone!!.setText(parcelable.mate_tel)
         tvMateWechat!!.setText(parcelable.mate_wechat)

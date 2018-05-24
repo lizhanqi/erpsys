@@ -51,7 +51,7 @@
             style="@style/FormValue" />
     </LinearLayout>
 
-    <View style="@style/line" android:visibility="gone"/>
+    <View style="@style/line"  />
     <!--女士生日-->
     <LinearLayout
         android:id="@+id/ll_customer_birthday_w"

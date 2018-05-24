@@ -108,6 +108,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             public void onSucceed(int what, Response<TodayMoneyEntity> response) {
                 if (response.get().isOK()) {
                     if (response.get().getData() != null && response.get().getData().size() == pageSize) {
+                        smartRefreshLayout.finishRefresh();
                         pageIndex++;
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
@@ -115,7 +116,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     List<TodayMoneyEntity.DataBean> data = response.get().getData();
                     setTodayCollectionMoneyAdapter(data);
                 } else {
-                    if (pageSize == 0) {
+                    if (pageIndex == 0) {
                         smartRefreshLayout.finishRefresh(false);
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
@@ -125,7 +126,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
 
             @Override
             public void onFailed(int what, Response<TodayMoneyEntity> response) {
-                if (pageSize == 0) {
+                if (pageIndex == 0) {
                     smartRefreshLayout.finishRefresh(false);
                 } else {
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
@@ -250,14 +251,18 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             @Override
             public void onSucceed(int what, Response<TodayCustomerEntity> response) {
                 if (response.get().isOK()) {
+                    smartRefreshLayout.finishRefresh( );
                     List<TodayCustomerEntity.DataBean> data = response.get().getData();
                     setTodayCustomerPhotoAdaputer2(data);
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                }else {
+                    smartRefreshLayout.finishRefresh(false);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<TodayCustomerEntity> response) {
+                smartRefreshLayout.finishRefresh(false);
                 smartRefreshLayout.finishLoadMore();
             }
         };
@@ -297,10 +302,10 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     TextView info = helper.getView(R.id.tv3);
                     TextView info2 = helper.getView(R.id.tv4);
                     date.setText(TextUtils.isEmpty(item.getPhotodate()) ? "" : item.getPhotodate());
-                    name.setText("姓名:" + item.getXingming());
-                    date.setText("订单编号:" + item.getOrderId1());
-                    info.setText("套系名称:" + item.getPackage_name());
-                    info2.setText("订单日期:" + item.getTargetdate());
+                    name.setText("姓名:" +StringUtils.safetyString(item.getXingming()) );
+                    date.setText("订单编号:" +StringUtils.safetyString( item.getOrderId1()));
+                    info.setText("套系名称:" + StringUtils.safetyString(item.getPackage_name()));
+                    info2.setText("订单日期:" + StringUtils.safetyString(item.getTargetdate()));
                 }
             };
 

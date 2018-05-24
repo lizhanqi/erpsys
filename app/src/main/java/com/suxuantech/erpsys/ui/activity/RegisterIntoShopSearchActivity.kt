@@ -58,10 +58,18 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
         smartRefreshLayout?.setOnLoadMoreListener {
             search(pageIndex)
         }
-        smartRefreshLayout?.autoRefresh()
+       // smartRefreshLayout?.autoRefresh()
         smartRefreshLayout?.isEnableLoadMore = true
         rvRegister!!.layoutManager = LinearLayoutManager(baseContext)
-
+        adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapters, view, position ->
+            val data = adapter.data.get(position);
+            var it = Intent(baseContext, CustomerDetailsActivity::class.java);
+            var vb = Bundle();
+            vb.putString("orderId", data.customer_number)
+            vb.putParcelable("data", data)
+            it.putExtra("bundle", vb)
+            startActivity(it)
+        }
 
     }
 
@@ -79,7 +87,11 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
                 search(pageIndex)
             }
             R.id.tv_add -> {
-                startActivity(IntoGuestRegistrationActivity::class.java)
+                if(App.getApplication().hasPermission("K3")){
+                    startActivity(IntoGuestRegistrationActivity::class.java)
+                }else{
+                    toastShort("无权登记")
+                }
             }
         }
     }
@@ -88,6 +100,10 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     var pageSize = 10;
     var lastKey = "";
     private fun search(index: Int) {
+        if(!App.getApplication().hasPermission("K2")){
+            toastShort("无权限查询")
+            return
+        }
         var name1 = App.getApplication().userInfor.staffname;
         var name2 = App.getApplication().userInfor.staffname;
         if (App.getApplication().hasPermission("K14")) {
@@ -136,7 +152,6 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
         }
         request(3, districtBeanJavaBeanRequest, searchByCustmor, true, pageIndex == 0)
     }
-
     val adapter: QuickAdapter<RegisterEntity.DataBean> = object : QuickAdapter<RegisterEntity.DataBean>(R.layout.item_register_info, null) {
         override fun convert(helper: BaseViewHolder, item: RegisterEntity.DataBean) {
             var name = helper.getView<TextView>(R.id.tv_register_name)
@@ -163,24 +178,12 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
             llLossing!!.visibility = View.GONE
         }
     }
-
     private fun setAdaputer(dataX: List<RegisterEntity.DataBean>) {
-        adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            val data = dataX.get(position);
-            var it = Intent(baseContext, CustomerDetailsActivity::class.java);
-            var vb = Bundle();
-            vb.putString("orderId", data.customer_number)
-            vb.putParcelable("data", data)
-            it.putExtra("bundle", vb)
-            startActivity(it)
-        }
         if (pageIndex == 0 || pageIndex == 1) {
             adapter.updateAll(dataX)
             rvRegister!!.adapter = adapter
-
         } else {
             adapter.apped(dataX)
         }
-
     }
 }

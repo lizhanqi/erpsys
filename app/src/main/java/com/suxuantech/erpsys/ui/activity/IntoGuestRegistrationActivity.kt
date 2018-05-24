@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.activity
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -145,23 +146,24 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
     /**
      * 消费类型id
      */
-    var consultationTypeId="";
+    var consultationTypeId = "";
     /**
      * 客户分区id
      */
-    var customerZoneId="";
+    var customerZoneId = "";
     /**
      * 客户来源id
      */
-    var customerSourceId="";
+    var customerSourceId = "";
     /**
      * 客户意向id
      */
-    var customerIntentionId="";
+    var customerIntentionId = "";
     /**
      * 门市接待(销售人员)id
      */
-    var salesStaffNumber="";
+    var salesStaffNumber = "";
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_into_guest_registration)
@@ -172,17 +174,18 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true);
         useEventBus()
     }
+
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
         when (v?.id) {
-            R.id.ll_order_receiving_point-> {
+            R.id.ll_order_receiving_point -> {
                 val optionHelp2 = OptionHelp(this)
                 optionHelp2.setTitle(getString(R.string.order_receiving_site))
                 optionHelp2.setCheckedData(mTvOrderReceivingPoint?.getText().toString())
                 optionHelp2.setUrlTag(OptionHelp.UrlTag.ORDER_RECEIVING_SITE)
                 startActivity(optionHelp2.creat())
             }
-            R.id.ll_custmoer_source->{
+            R.id.ll_custmoer_source -> {
                 val optionHelp1 = OptionHelp(this)
                 optionHelp1.setTitle("客户来源")
                 optionHelp1.setCheckedData(mTvCustmoerSource?.getText().toString())
@@ -210,7 +213,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
                 optionHelp3.setUrlTag(OptionHelp.UrlTag.CUSTOMER_ZONE)
                 startActivity(optionHelp3.creat())
             }
-            R.id.ll_customer_intention-> {
+            R.id.ll_customer_intention -> {
                 val optionHelp3 = OptionHelp(this)
                 optionHelp3.setTitle("客户意向")
                 optionHelp3.setCheckedData(mTvCustomerIntention?.getText().toString())
@@ -231,24 +234,37 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
                     }
                 }).show()
             }
-            R.id.ll_customer_birthday-> {
+            R.id.ll_mate_sex -> {
+                AlertView(getString(R.string.please_select_sex), null, getString(R.string.cancel), null,
+                        resources.getStringArray(R.array.sex),
+                        this, AlertView.Style.ACTIONSHEET, OnItemClickListener { o, position ->
+                    //position -1是取消按钮
+                    if (position == 1) {
+                        mTvMateSex?.setText("女")
+                    } else if (position == 0) {
+                        mTvMateSex?.setText("男")
+                    }
+                }).show()
+            }
+
+            R.id.ll_customer_birthday -> {
                 showDateSelect(mTvCustomerBirthday)
             }
-            R.id.ll_mate_birthday-> {
+            R.id.ll_mate_birthday -> {
                 showDateSelect(mTvMateBirthday)
             }
-            R.id.ll_reservation_shoot_date-> {
+            R.id.ll_reservation_shoot_date -> {
                 showDateSelect(mTvReservationShootDate)
             }
 
-            R.id.ll_reservation_date-> {
+            R.id.ll_reservation_date -> {
                 showDateSelect(mTvReservationDate)
             }
 
-            R.id.ll_marry_date-> {
+            R.id.ll_marry_date -> {
                 showDateSelect(mTvMarryDate)
             }
-            R.id.btn_submint-> {
+            R.id.btn_submint -> {
                 commint();
             }
         }
@@ -263,28 +279,28 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         when (urlTag) {
             OptionHelp.UrlTag.CUSTOMER_ZONE -> {
                 val checked4 = msg.singleChecked as CustomerZoneEntity.DataBean
-                customerZoneId=checked4.id
+                customerZoneId = checked4.id
                 mTvCustomerZone?.setText(checked4.getArea_name())
             }
             OptionHelp.UrlTag.OUTLETS_RECEPTION -> {
                 val checked2 = msg.singleChecked as OutletsReceptionEntity.DataBean
                 mTvOutletsReception?.setText(checked2.staffName)
-                salesStaffNumber=checked2.staffID
+                salesStaffNumber = checked2.staffID
             }
             OptionHelp.UrlTag.CONSUMPTION_TYPE -> {
                 val checked1 = msg.singleChecked as ConsumptionTypeEntity.DataBean
                 mTvConsumptionType?.setText(checked1.consumption_name)
-                consultationTypeId=checked1.id
+                consultationTypeId = checked1.id
             }
             OptionHelp.UrlTag.CUSTOMER_SOURCE -> {
                 val checked1 = msg.singleChecked as CustomerSourceEntity.DataBean
                 mTvCustmoerSource?.setText(checked1.cus_name)
-                customerSourceId=checked1.id
+                customerSourceId = checked1.id
             }
             OptionHelp.UrlTag.CUSTOMER_INTENTION -> {
                 val checked1 = msg.singleChecked as CustomerIntentionEntity.DataBean
                 mTvCustomerIntention?.setText(checked1.intention_name)
-                customerIntentionId=checked1.id
+                customerIntentionId = checked1.id
             }
             OptionHelp.UrlTag.ORDER_RECEIVING_SITE -> {
                 val checked3 = msg.singleChecked as OrderReceivingSiteEntity.DataBean
@@ -292,63 +308,86 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
             }
         }
     }
+
     private fun commint() {
         //请求实体
-        var url= Contact.getFullUrl( Contact.GUEST_REGISTRATION,Contact.TOKEN)
+        var url = Contact.getFullUrl(Contact.GUEST_REGISTRATION, Contact.TOKEN)
         val stringRequest = JavaBeanRequest(url, RequestMethod.POST, GustRegistrationEntity::class.java)
-     //  var m  = HashMap<String ,String>() ;
-       stringRequest.addBodyJson("Customer_name",mEtCustomerName?.text.toString())
-       stringRequest.addBodyJson("Customer_tel",mEtCustomerPhone?.text.toString())
-       stringRequest.addBodyJson("Customer_wechat",mEtCustomerWechat?.text.toString())
-       stringRequest.addBodyJson("Customer_qq",mETCustomerQQ?.text.toString())
-       stringRequest.addBodyJson("Customer_sex",mTvCustomerSex?.text.toString())
-       stringRequest.addBodyJson("Consultation_type",mTvConsumptionType?.text.toString())
-       stringRequest.addBodyJson("Customer_area",mTvCustomerZone?.text.toString())
-       stringRequest.addBodyJson("Customer_birthday",if(TextUtils.isEmpty(mTvCustomerBirthday?.text.toString())){ ""}else{ DateUtil.String2String(mTvCustomerBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-       stringRequest.addBodyJson("Customer_cource",mTvCustmoerSource?.text.toString())
-       stringRequest.addBodyJson("Customer_intention",mTvCustomerIntention?.text.toString())
-       stringRequest.addBodyJson("Customer_orderaddress",mTvOrderReceivingPoint?.text.toString())
-       stringRequest.addBodyJson("Customer_address",mTvCustmoerAddress?.text.toString())
-       stringRequest.addBodyJson("Yjd_day", if(TextUtils.isEmpty(mTvReservationDate?.text.toString())){ ""}else{ DateUtil.String2String(mTvReservationDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-       stringRequest.addBodyJson("Wedding_date",if(TextUtils.isEmpty(mTvMarryDate?.text.toString())){ ""}else{DateUtil.String2String(mTvMarryDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-       stringRequest.addBodyJson("Yp_day",if(TextUtils.isEmpty(mTvReservationShootDate?.text.toString())){ ""}else{DateUtil.String2String(mTvReservationShootDate?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-       stringRequest.addBodyJson("Mate_name",mEtMateName?.text.toString())
-       stringRequest.addBodyJson("Mate_sex",mTvMateSex?.text.toString())
-       stringRequest.addBodyJson("Mate_tel",mEtMatePhone?.text.toString())
-       stringRequest.addBodyJson("Mate_wechat",mEtMateWechat?.text.toString())
-       stringRequest.addBodyJson("Mate_qq",mEtMateQQ?.text.toString())
-       stringRequest.addBodyJson("Mate_birthday",if(TextUtils.isEmpty(mTvMateBirthday?.text.toString())){ ""}else{DateUtil.String2String(mTvMateBirthday?.text.toString(),DateUtil.DatePattern.ONLY_DAY,DateUtil.DatePattern.JUST_DAY_NUMBER)})
-       stringRequest.addBodyJson("Dj_staff", App.getApplication().userInfor.staffname)
-       stringRequest.addBodyJson("Sales_staff",mTvOutletsReception?.text.toString())
-       stringRequest.addBodyJson("Customer_remark",mEtCustmoerMark?.text.toString())
-       stringRequest.addBodyJson("Shop_name",App.getApplication().userInfor.shop_name)
-       stringRequest.addBodyJson("Shop_code",App.getApplication().userInfor.shop_code)
-       stringRequest.addBodyJson("Brandid",App.getApplication().userInfor.brandclass_id)
-       stringRequest.addBodyJson("Customer_from","APP")
-       stringRequest.addBodyJson("From_index","")
-       stringRequest.addBodyJson("Sales_staff_number",salesStaffNumber)
-       stringRequest.addBodyJson("Consultation_type_id",consultationTypeId)
-       stringRequest.addBodyJson("Customer_area_id",customerZoneId)
-       stringRequest.addBodyJson("Customer_cource_id",customerSourceId)
-       stringRequest.addBodyJson("Customer_intention_id",customerIntentionId)
-       stringRequest.addBodyJson("Staffid",App.getApplication().userInfor.staff_id)
+        //  var m  = HashMap<String ,String>() ;
+        stringRequest.addBodyJson("Customer_name", mEtCustomerName?.text.toString())
+        stringRequest.addBodyJson("Customer_tel", mEtCustomerPhone?.text.toString())
+        stringRequest.addBodyJson("Customer_wechat", mEtCustomerWechat?.text.toString())
+        stringRequest.addBodyJson("Customer_qq", mETCustomerQQ?.text.toString())
+        stringRequest.addBodyJson("Customer_sex", mTvCustomerSex?.text.toString())
+        stringRequest.addBodyJson("Consultation_type", mTvConsumptionType?.text.toString())
+        stringRequest.addBodyJson("Customer_area", mTvCustomerZone?.text.toString())
+        stringRequest.addBodyJson("Customer_birthday", if (TextUtils.isEmpty(mTvCustomerBirthday?.text.toString())) {
+            ""
+        } else {
+            DateUtil.String2String(mTvCustomerBirthday?.text.toString(), DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_DAY_NUMBER)
+        })
+        stringRequest.addBodyJson("Customer_cource", mTvCustmoerSource?.text.toString())
+        stringRequest.addBodyJson("Customer_intention", mTvCustomerIntention?.text.toString())
+        stringRequest.addBodyJson("Customer_orderaddress", mTvOrderReceivingPoint?.text.toString())
+        stringRequest.addBodyJson("Customer_address", mTvCustmoerAddress?.text.toString())
+        stringRequest.addBodyJson("Yjd_day", if (TextUtils.isEmpty(mTvReservationDate?.text.toString())) {
+            ""
+        } else {
+            DateUtil.String2String(mTvReservationDate?.text.toString(), DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_DAY_NUMBER)
+        })
+        stringRequest.addBodyJson("Wedding_date", if (TextUtils.isEmpty(mTvMarryDate?.text.toString())) {
+            ""
+        } else {
+            DateUtil.String2String(mTvMarryDate?.text.toString(), DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_DAY_NUMBER)
+        })
+        stringRequest.addBodyJson("Yp_day", if (TextUtils.isEmpty(mTvReservationShootDate?.text.toString())) {
+            ""
+        } else {
+            DateUtil.String2String(mTvReservationShootDate?.text.toString(), DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_DAY_NUMBER)
+        })
+        stringRequest.addBodyJson("Mate_name", mEtMateName?.text.toString())
+        stringRequest.addBodyJson("Mate_sex", mTvMateSex?.text.toString())
+        stringRequest.addBodyJson("Mate_tel", mEtMatePhone?.text.toString())
+        stringRequest.addBodyJson("Mate_wechat", mEtMateWechat?.text.toString())
+        stringRequest.addBodyJson("Mate_qq", mEtMateQQ?.text.toString())
+        stringRequest.addBodyJson("Mate_birthday", if (TextUtils.isEmpty(mTvMateBirthday?.text.toString())) {
+            ""
+        } else {
+            DateUtil.String2String(mTvMateBirthday?.text.toString(), DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_DAY_NUMBER)
+        })
+        stringRequest.addBodyJson("Dj_staff", App.getApplication().userInfor.staffname)
+        stringRequest.addBodyJson("Sales_staff", mTvOutletsReception?.text.toString())
+        stringRequest.addBodyJson("Customer_remark", mEtCustmoerMark?.text.toString())
+        stringRequest.addBodyJson("Shop_name", App.getApplication().userInfor.shop_name)
+        stringRequest.addBodyJson("Shop_code", App.getApplication().userInfor.shop_code)
+        stringRequest.addBodyJson("Brandid", App.getApplication().userInfor.brandclass_id)
+        stringRequest.addBodyJson("Customer_from", "APP")
+        stringRequest.addBodyJson("From_index", "")
+        stringRequest.addBodyJson("Sales_staff_number", salesStaffNumber)
+        stringRequest.addBodyJson("Consultation_type_id", consultationTypeId)
+        stringRequest.addBodyJson("Customer_area_id", customerZoneId)
+        stringRequest.addBodyJson("Customer_cource_id", customerSourceId)
+        stringRequest.addBodyJson("Customer_intention_id", customerIntentionId)
+        stringRequest.addBodyJson("Staffid", App.getApplication().userInfor.staff_id)
         stringRequest.param2Json()
-      // val toJSONString = FastJsonUtils.toJSONString(m);
-       // stringRequest.addHeader("Content-Type", "application/json");
+        // val toJSONString = FastJsonUtils.toJSONString(m);
+        // stringRequest.addHeader("Content-Type", "application/json");
         //stringRequest.setDefineRequestBodyForJson(toJSONString)
         val httpListener = object : HttpListener<GustRegistrationEntity> {
             override fun onSucceed(what: Int, response: Response<GustRegistrationEntity>?) {
-                if(response!!.get().isOK){
+                if (response!!.get().isOK) {
+
                     ToastUtils.showShort(response.get().data)
-                }else{
+                } else {
                     ToastUtils.showShort(response.get().getMsg())
                 }
             }
+
             override fun onFailed(what: Int, response: Response<GustRegistrationEntity>?) {
             }
 
         }
-        request(0, stringRequest, httpListener,false,true)
+        request(0, stringRequest, httpListener, false, true)
     }
 
 
@@ -424,6 +463,49 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         mLlMateBirthday = findViewById<LinearLayout>(R.id.ll_mate_birthday) as LinearLayout
         mLlMateBirthday?.setOnClickListener(this)
         mEtCustmoerMark = findViewById<ScrollEditText>(R.id.et_custmoer_mark) as ScrollEditText
+    }
+
+    private fun search(jkID: String) {
+        if (!App.getApplication().hasPermission("K2")) {
+            toastShort("无权限查询")
+            return
+        }
+        var name1 = App.getApplication().userInfor.staffname;
+        var name2 = App.getApplication().userInfor.staffname;
+        if (App.getApplication().hasPermission("K14")) {
+            name1 = ""
+        }
+        if (App.getApplication().hasPermission("K15")) {
+            name2 = ""
+        }
+        val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+        var url = Contact.getFullUrl(Contact.INQUIRE_GUEST_INFO, Contact.TOKEN
+                , 20170101, nowDate, "",
+                0, 20,
+                App.getApplication().userInfor.shop_code, jkID, name1, name2
+        )
+        val districtBeanJavaBeanRequest = JavaBeanRequest(url, RequestMethod.POST, RegisterEntity::class.java)
+        val searchByCustmor = object : HttpListener<RegisterEntity> {
+            override fun onSucceed(what: Int, response: Response<RegisterEntity>) {
+                if (response.get().isOK) {
+                    if (response.get().data != null && response.get().data.size == 1) {
+                        val data = response.get().data.get(0);
+                        var it = Intent(baseContext, CustomerDetailsActivity::class.java);
+                        var vb = Bundle();
+                        vb.putString("orderId", data.customer_number)
+                        vb.putParcelable("data", data)
+                        it.putExtra("bundle", vb)
+                        startActivity(it)
+                    } else {
+                        toastShort("多条记录无法转到进客详情")
+                    }
+                }
+            }
+
+            override fun onFailed(what: Int, response: Response<RegisterEntity>) {
+            }
+        }
+        request(3, districtBeanJavaBeanRequest, searchByCustmor, true, false)
     }
 
 }

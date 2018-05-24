@@ -4,27 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".ui.activity.OutletsOrderActivity"
     android:fitsSystemWindows="true">
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activity.OutletsOrderActivity">
-        <!--            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"  这个会影响返回按钮颜色-->
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-         >
-            <android.support.v7.widget.Toolbar
-                android:background="@color/status"
-                android:id="@+id/toolBar"
+    <!--<android.support.design.widget.CoordinatorLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:context=".ui.activity.OutletsOrderActivity">-->
+        <!--&lt;!&ndash;            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"  这个会影响返回按钮颜色&ndash;&gt;-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+            <android.support.design.widget.AppBarLayout
+                android:layout_alignParentTop="true"
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:title="门市开单"
-  />
-        </android.support.design.widget.AppBarLayout>
+                android:layout_height="wrap_content"
+                >
+                <android.support.v7.widget.Toolbar
+                    android:background="@color/status"
+                    android:id="@+id/toolBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:title="门市开单"
+                    />
+            </android.support.design.widget.AppBarLayout>
+            <Button
+                android:layout_alignParentBottom="true"
+                android:id="@+id/btn_submint_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/px30"
+                android:layout_marginLeft="@dimen/px55"
+                android:layout_marginRight="@dimen/px55"
+                android:background="@drawable/login_button_sp"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/xs42"
+                />
         <android.support.v4.widget.NestedScrollView
+            android:layout_below="@id/appBarLayout"
+            android:layout_above="@id/btn_submint_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -216,16 +238,15 @@
                     android:layout_marginTop="@dimen/px30">
 
                     <TextView
-                        style="@style/FormKeyMust"
+                        style="@style/DetailsKey"
                         android:text="拍照店一" />
 
                     <TextView
-                        android:hint="请选择(与拍照店二选填一个)"
                         android:id="@+id/tv_photo_shop_one"
                         style="@style/FormOptionValue" />
                 </LinearLayout>
 
-                <View style="@style/line" />
+                <View style="@style/line" android:visibility="gone"/>
                 <!--意向店-->
                 <LinearLayout
                     android:visibility="gone"
@@ -249,11 +270,10 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/FormKeyMust"
+                        style="@style/DetailsKey"
                         android:text="拍照店二" />
 
                     <TextView
-                        android:hint="请选择(与拍照店一选填一个)"
                         android:id="@+id/tv_photo_shop_two"
                         style="@style/FormOptionValue" />
 
@@ -297,12 +317,12 @@
                     style="@style/LinearLayoutStandard">
 
                     <TextView
-                        style="@style/FormKeyMust"
+                        style="@style/DetailsKey"
                         android:text="意向套系" />
 
                     <TextView
                         android:id="@+id/tv_intention_package"
-                        style="@style/FormOptionValueMust" />
+                        style="@style/FormOptionValue" />
 
                 </LinearLayout>
 
@@ -446,19 +466,9 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-        <Button
-            android:id="@+id/btn_submint_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/px30"
-            android:layout_marginLeft="@dimen/px55"
-            android:layout_marginRight="@dimen/px55"
-            android:background="@drawable/login_button_sp"
-            android:text="@string/submit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/xs42"
-            app:layout_behavior="com.suxuantech.erpsys.ui.widget.HideViewBehavior" />
-        <!--</LinearLayout>-->
-    </android.support.design.widget.CoordinatorLayout>
+        <!--&lt;!&ndash;  app:layout_behavior="com.suxuantech.erpsys.ui.widget.HideViewBehavior"&ndash;&gt;-->
+
+        <!--</RelativeLayout>-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+    <!--</android.support.design.widget.CoordinatorLayout>-->
 </com.suxuantech.erpsys.ui.widget.StrongWindowSoftInputModeLayout>

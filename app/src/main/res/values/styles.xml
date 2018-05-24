@@ -60,17 +60,19 @@
         <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownWidth">wrap_content</item>
-        <item name="android:paddingRight">0dp</item>
+        <item name="android:animationDuration">600</item>
         <!-- 弹出层背景颜色 -->
-        <item name="android:popupBackground">@drawable/bg_login</item>
-        <!--<item name="android:background">@drawable/ic_menu_bg</item>-->
+        <item name="android:popupBackground">@android:color/darker_gray</item>
         <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
-        <item name="android:dropDownVerticalOffset">-10dp</item>
+        <!--为什么在7.0上这个设置无效-->
+        <item name="android:dropDownVerticalOffset">50dp</item>
+        <item name="android:dropDownAnchor">@id/toolbar</item>
         <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
-        <item name="android:dropDownHorizontalOffset">-20dp</item>
+        <item name="android:dropDownHorizontalOffset">-10dp</item>
+        <item name="android:scrollbars">none</item>
         <!-- 设置弹出菜单文字颜色 -->
-        <item name="android:textColor">@color/themeColor</item>
-        <!--<item name="android:dropDownListViewStyle">@style/AppDropDownListViewStyle</item>-->
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:shadowColor">@android:color/darker_gray</item>
     </style>
 
     <!--ffffffffffffffffffffffffffffffffffffffffff控件属性fffffffffffffffffffffffffffffffffffffffff-->
@@ -105,6 +107,7 @@
 
     <!--key-->
     <style name="DetailsKey" >
+        <item name="android:layout_gravity">top</item>
         <item name="android:padding">@dimen/px10</item>
         <item name="android:drawablePadding">@dimen/px30</item>
         <item name="android:textSize">@dimen/xs44</item>
@@ -113,13 +116,11 @@
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">top|left</item>
-        <item name="android:textIsSelectable">true</item>
     </style>
     <!--数据-->
     <style name="DetailsValue" parent="DetailsKey">
-
         <item name="android:layout_marginLeft">@dimen/px30</item>
-        <item name="android:textColor">@color/textHint_99</item>
+        <item name="android:textColor">@color/textColor</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColorHint">@color/textHint_99</item>

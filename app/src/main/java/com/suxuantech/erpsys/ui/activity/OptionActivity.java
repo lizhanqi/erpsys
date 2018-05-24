@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import com.suxuantech.erpsys.entity.ConsumptionTypeEntity;
 import com.suxuantech.erpsys.entity.CustomerIntentionEntity;
 import com.suxuantech.erpsys.entity.CustomerSourceEntity;
 import com.suxuantech.erpsys.entity.CustomerZoneEntity;
+import com.suxuantech.erpsys.entity.DressThemeEntity;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.entity.NewOrderTypeEntity;
 import com.suxuantech.erpsys.entity.OptionPanelTypeEntity;
@@ -101,6 +103,7 @@ public class OptionActivity extends TitleNavigationActivity {
     private List<PhotoShopEntity.DataBean> photoShopData;
     private List<NewOrderTypeEntity.DataBean> newOrderTyepData;
     private List<ThemeEntity.DataBean> themeData;
+    private List<DressThemeEntity.DataBean> dressData;
     private List<OptionPanelTypeEntity.DataBean> optionPanelTypeData;
     private List<PhotoTypeEntity.DataBean> photoTypeData;
     List<UserEntity> excDataBeans;
@@ -137,6 +140,7 @@ public class OptionActivity extends TitleNavigationActivity {
 
     @Override
     public void widgetClick(View v) {
+
         switch (v.getId()) {
             default:
             case R.id.img_shopping:
@@ -164,6 +168,22 @@ public class OptionActivity extends TitleNavigationActivity {
                 }
             }
             BaseMsg<ThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg(themeData, dataBeans, mMultiple);
+            dataBeanBaseMsg.setmTitle(title);
+            dataBeanBaseMsg.setTag(tag);
+            dataBeanBaseMsg.setUrl(Url);
+            dataBeanBaseMsg.setUrlTag(urlTag);
+            EventBus.getDefault().post(dataBeanBaseMsg);
+        }  else if (dressData != null) {
+            ArrayList<DressThemeEntity.DataBean> dataBeans = new ArrayList<>();
+            for (String s : currentChecked) {
+                for (DressThemeEntity.DataBean dataBean : dressData) {
+                    if (dataBean.getDresstheme().equals(s)) {
+                        dataBeans.add(dataBean);
+                        break;
+                    }
+                }
+            }
+            BaseMsg<DressThemeEntity.DataBean> dataBeanBaseMsg = new BaseMsg(dressData, dataBeans, mMultiple);
             dataBeanBaseMsg.setmTitle(title);
             dataBeanBaseMsg.setTag(tag);
             dataBeanBaseMsg.setUrl(Url);
@@ -312,10 +332,11 @@ public class OptionActivity extends TitleNavigationActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (mMultiple) {
-            menu.add(Menu.NONE, 0, 0, getString(R.string.complete)).setOnMenuItemClickListener(menuItem -> {
-                setMultipleResult();
-                return true;
-            });
+            menu.add(Menu.NONE, 0, 0, getString(R.string.complete))
+                    .setOnMenuItemClickListener(menuItem -> {
+                        setMultipleResult();
+                        return true;
+                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -457,7 +478,7 @@ public class OptionActivity extends TitleNavigationActivity {
                 //礼服主题
                 Url = Contact.getFullUrl(Contact.DRESS_THEME, Contact.TOKEN, App.getApplication().getUserInfor().getShop_code());
                 if (getData) {
-                    getThemeData();
+                    getDressTheme();
                 }
                 break;
             case OPTION_PANEL_TYPE_SET:
@@ -682,7 +703,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     App.getApplication().getUserInfor().setShop_name(dataBean.shop_name);
                     App.getApplication().getUserInfor().setBrandclass(dataBean.brandclass);
                     App.getApplication().getUserInfor().setBrandclass_id(dataBean.brandclass_id);
-                   // App.getApplication().getUserInfor().setMain_position_code(dataBean.main_position_code);
+                    // App.getApplication().getUserInfor().setMain_position_code(dataBean.main_position_code);
                     App.getApplication().getUserInfor().setDepartment_id(dataBean.getDepartment_id());
                     dataBeans.add(excDataBeans.get(position));
                     BaseMsg<UserEntity> dataBeanBaseMsg = new BaseMsg<UserEntity>(excDataBeans, dataBeans, mMultiple);
@@ -1136,6 +1157,45 @@ public class OptionActivity extends TitleNavigationActivity {
 
             @Override
             public void onFailed(int what, Response<ThemeEntity> response) {
+                mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                mRotateHeaderGridViewFrame.refreshComplete();
+            }
+        };
+        request(8, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+
+    }
+
+    /**
+     * 获取礼服主题
+     */
+    public void getDressTheme() {
+        //请求实体
+        JavaBeanRequest<DressThemeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<DressThemeEntity>(Url, DressThemeEntity.class);
+        HttpListener<DressThemeEntity> searchByCustmor = new HttpListener<DressThemeEntity>() {
+            @Override
+            public void onSucceed(int what, Response<DressThemeEntity> response) {
+                mRotateHeaderGridViewFrame.refreshComplete();
+                boolean ok = response.get().isOK();
+                if (ok) {
+                    mAllData.clear();
+                    dressData = response.get().getData();
+                    if (dressData != null) {
+                        for (DressThemeEntity.DataBean da : dressData) {
+                            mAllData.add(da.getDresstheme());
+                        }
+                        setAdapterCtrl();
+                    } else {
+                        mRecyclerView.loadMoreFinish(true, false);
+                        toastShort(response.get().getMsg());
+                    }
+                } else {
+                    toastShort(response.get().getMsg());
+                    mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<DressThemeEntity> response) {
                 mRecyclerView.loadMoreError(0, getString(R.string.data_load_error));
                 mRotateHeaderGridViewFrame.refreshComplete();
             }
