@@ -246,8 +246,6 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
         initView();
         SwipeMenuRecyclerView mRecyclerView = findViewById(R.id.rvScheduleList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.useDefaultLoadMore();
-        mRecyclerView.loadMoreFinish(false, true);
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
