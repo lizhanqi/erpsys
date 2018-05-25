@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
-import com.gyf.barlibrary.ImmersionBar
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.suxuantech.erpsys.App
@@ -25,7 +24,7 @@ import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.AppBarStateChangeListener
-import com.suxuantech.erpsys.ui.activity.base.ImmersionActivity
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.MyString
@@ -44,7 +43,7 @@ Intent intent1 = new Intent(getActivity(), ScheduleActivity.class);
 intent1.putExtra("title","拍照");
 startActivity(intent1);
  */
-class RegisterIntoShopActivity : ImmersionActivity() {
+class RegisterIntoShopActivity : TitleNavigationActivity() {
     var llNewCustomer: LinearLayout? = null
     var llNotIntoShop: LinearLayout? = null
     var llNotInShop: LinearLayout? = null
@@ -63,7 +62,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
     var scrollView: NestedScrollView? = null
     var recyclerView: RecyclerView? = null
     var list = ArrayList<FormEntity>();
-    var addButton :FloatingActionButton?=null
+    var addButton: FloatingActionButton? = null
     var adapter = object : QuickAdapter<FormEntity>(R.layout.item_type, list) {
         public override fun convert(helper: BaseViewHolder, item: FormEntity) {
             var root = helper.getView<LinearLayout>(R.id.ll_type)
@@ -94,7 +93,7 @@ class RegisterIntoShopActivity : ImmersionActivity() {
         }
         if (intent.hasExtra("title")) {
             val stringExtra = intent.getStringExtra("title");
-            addButton?.visibility=View.GONE
+            addButton?.visibility = View.GONE
             toolbar.setTitle(stringExtra)
         }
         scrollView = idGetView<NestedScrollView>(R.id.nsv_view)
@@ -111,8 +110,8 @@ class RegisterIntoShopActivity : ImmersionActivity() {
                     } else {
                         //中间状态
                     }
-                }else{
-                    addButton?.visibility=View.GONE
+                } else {
+                    addButton?.visibility = View.GONE
                 }
             }
         })
@@ -261,35 +260,28 @@ class RegisterIntoShopActivity : ImmersionActivity() {
             this.onBackPressed()
         }
         if (R.id.action_settings == item.itemId) {
-           if(App.getApplication().hasPermission("K3")){
-               startActivity(IntoGuestRegistrationActivity::class.java)
-           }else{
-               toastShort("无权登记")
-           }
+            if (App.getApplication().hasPermission("K3")) {
+                startActivity(IntoGuestRegistrationActivity::class.java)
+            } else {
+                toastShort("无权登记")
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun initImmersionBar() {
+        lineView.visibility = View.GONE
+        statusBarFollow = appbar
         super.initImmersionBar()
-        mImmersionBar = ImmersionBar.with(this)
-        //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
-        mImmersionBar?.fitsSystemWindows(true)
-        mImmersionBar?.statusBarDarkFont(true, 0.15f)
-        mImmersionBar?.titleBar(mToolbar)
-        mImmersionBar?.statusBarColor(R.color.themeColor)
-        mImmersionBar?.keyboardEnable(false)
-        mImmersionBar?.navigationBarColor(R.color.themeColor)
-        mImmersionBar?.init()
     }
 
     override fun widgetClick(v: View?) {
         super.widgetClick(v)
-        when(v?.id){
-            R.id.fab_add->{
-                if(App.getApplication().hasPermission("K3")){
+        when (v?.id) {
+            R.id.fab_add -> {
+                if (App.getApplication().hasPermission("K3")) {
                     startActivity(IntoGuestRegistrationActivity::class.java)
-                }else{
+                } else {
                     toastShort("无权登记")
                 }
             }

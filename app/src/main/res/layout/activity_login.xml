@@ -158,13 +158,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/copyright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/copyright"
-        android:textColor="@color/copyrigth"
-        android:textSize="@dimen/xs32" />
 </RelativeLayout>

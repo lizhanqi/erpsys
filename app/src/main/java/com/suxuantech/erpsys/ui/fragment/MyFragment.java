@@ -51,13 +51,14 @@ public class MyFragment extends BaseLazyFragment {
     Button mBtnLoginOut;
     @BindView(R.id.rv_other_info)
     RelativeLayout otherInfo;
-//    @BindView(R.id.dampView)
+    //    @BindView(R.id.dampView)
 //    BounceScrollView mDampView;
     private View view;
+
     @Subscribe()
     @MainThread
-    public void EventBus(String key){
-        if (key.equals("changeUser")){
+    public void EventBus(String key) {
+        if (key.equals("changeUser")) {
             data2View();
         }
     }
@@ -76,21 +77,23 @@ public class MyFragment extends BaseLazyFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             initImmersionBar();
-          //  ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
+            //  ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
         }
     }
+
     @Override
     public void initImmersionBar() {
         if (getActivity() != null) {
             super.initImmersionBar();
-            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.translucent_black_90).init();
+            mImmersionBar.statusBarDarkFont(false).init();
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         useEventBus();
-       BounceScrollView dampView = view.findViewById(R.id.dampView);
+        BounceScrollView dampView = view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
         dampView.setView(view.findViewById(R.id.ll_cao));
 
@@ -123,7 +126,7 @@ public class MyFragment extends BaseLazyFragment {
         mTvStore.setText(App.getApplication().getUserInfor().getShop_name());
         mTvStaffSerialNumber.setText(App.getApplication().getUserInfor().getStaffnumber());
         if (App.ISDEBUG) {
-            mTvStaffPhone.setText("员工id:" + App.getApplication().getUserInfor().getStaff_id()+"店面code:" + App.getApplication().getUserInfor().getShop_code());
+            mTvStaffPhone.setText("员工id:" + App.getApplication().getUserInfor().getStaff_id() + "店面code:" + App.getApplication().getUserInfor().getShop_code());
             otherInfo.setVisibility(View.VISIBLE);
         } else {
             otherInfo.setVisibility(View.GONE);
@@ -132,7 +135,7 @@ public class MyFragment extends BaseLazyFragment {
         mTvNameAndPost.setText(App.getApplication().getUserInfor().getStaffname() + "\n" + App.getApplication().getUserInfor().getMain_position_name());
     }
 
-    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,     })
+    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,})
     public void onClick(View v) {
         switch (v.getId()) {
 

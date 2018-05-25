@@ -151,7 +151,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     public void initImmersionBar() {
         if (getActivity() != null) {
             super.initImmersionBar();
-            mImmersionBar.statusBarDarkFont(false).navigationBarColor(R.color.translucent_black_90).init();
+            mImmersionBar.statusBarDarkFont(false).init();
         }
     }
 
@@ -248,6 +248,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initImmersionBar();
         headView = inflater.inflate(R.layout.head_home, null, false);
         headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l -> {
             //进店登记的搜索
