@@ -216,7 +216,7 @@ public class MonthView extends View {
             String dayString = String.valueOf(mDaysText[0][day]);
             int startX = (int) (mColumnSize * day + (mColumnSize - mPaint.measureText(dayString)) / 2);
             int startY = (int) (mRowSize / 2 - (mPaint.ascent() + mPaint.descent()) / 2);
-            canvas.drawText(dayString, startX, startY, mPaint);
+            canvas.drawText(dayString, startX, startY-15, mPaint);
             mHolidayOrLunarText[0][day] = CalendarUtils.getHolidayFromSolar(lastYear, lastMonth, mDaysText[0][day]);
         }
     }
@@ -261,7 +261,7 @@ public class MonthView extends View {
             } else {
                 mPaint.setColor(mNormalDayColor);
             }
-            canvas.drawText(dayString, startX, startY, mPaint);
+            canvas.drawText(dayString, startX, startY-15, mPaint);
             mHolidayOrLunarText[row][col] = CalendarUtils.getHolidayFromSolar(mSelYear, mSelMonth, mDaysText[row][col]);
         }
         return selectedPoint;
@@ -291,7 +291,7 @@ public class MonthView extends View {
             String dayString = String.valueOf(mDaysText[row][column]);
             int startX = (int) (mColumnSize * column + (mColumnSize - mPaint.measureText(dayString)) / 2);
             int startY = (int) (mRowSize * row + mRowSize / 2 - (mPaint.ascent() + mPaint.descent()) / 2);
-            canvas.drawText(dayString, startX, startY, mPaint);
+            canvas.drawText(dayString, startX, startY-15, mPaint);
         }
     }
 

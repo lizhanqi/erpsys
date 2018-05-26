@@ -294,7 +294,7 @@ public class WeekView extends View {
             } else {
                 mPaint.setColor(mNormalDayColor);
             }
-            canvas.drawText(dayString, startX, startY, mPaint);
+            canvas.drawText(dayString, startX, startY-15, mPaint);
             mHolidayOrLunarText[i] = CalendarUtils.getHolidayFromSolar(date.getYear(), date.getMonthOfYear() - 1, day);
         }
         return selected;
