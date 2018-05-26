@@ -22,18 +22,17 @@ clickable是防止页面穿透的点击事件的
         <!--顶部-->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="@dimen/px490">
             <ImageView
                 android:id="@+id/img_top"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/px475"
+                android:layout_height="@dimen/px490"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_my" />
             <!--          android:background="@color/themeColor"-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/px475"
+                android:layout_height="@dimen/px490"
                 android:orientation="vertical">
 
                 <TextView
@@ -96,14 +95,12 @@ clickable是防止页面穿透的点击事件的
                     android:textSize="@dimen/xs44" />
 
                 <TextView
-
                     android:id="@+id/tv_department"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="@string/salesroom"
                     android:textColor="@color/myValue_33"
@@ -138,7 +135,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="@string/belongs_tos_tore"
                     android:textColor="@color/myValue_33"
@@ -173,7 +169,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="@string/belongs_tos_tore"
                     android:textColor="@color/myValue_33"
@@ -208,7 +203,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="@string/salesroom"
                     android:textColor="@color/myValue_33"
@@ -243,7 +237,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="(敬请期待)"
                     android:textColor="@color/myValue_33"
@@ -318,7 +311,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="@string/salesroom"
                     android:textColor="@color/myValue_33"
@@ -388,7 +380,6 @@ clickable是防止页面穿透的点击事件的
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="@dimen/px55"
                     android:drawablePadding="@dimen/px35"
-                    android:drawableRight="@drawable/arrows_right_gray"
                     android:gravity="center_vertical"
                     android:text="未知版本"
                     android:textColor="@color/myValue_33"

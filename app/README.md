@@ -83,4 +83,46 @@ TextView实现首行缩进的方法：
   *  第四个String类型的title参数，表示选项中显示的文字。
    */
 
+    /**
+     * 华为start
+     */
+//判断是否是华为刘海屏
+    public static boolean hasNotchInScreen(Context context) {
+        boolean ret = false;
+        try {
+            ClassLoader cl = context.getClassLoader();
+            Class HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
+            Method get = HwNotchSizeUtil.getMethod("hasNotchInScreen");
+            ret = (boolean) get.invoke(HwNotchSizeUtil);
+
+        } catch (ClassNotFoundException e) {
+            Log.e("test", "hasNotchInScreen ClassNotFoundException");
+        } catch (NoSuchMethodException e) {
+            Log.e("test", "hasNotchInScreen NoSuchMethodException");
+        } catch (Exception e) {
+            Log.e("test", "hasNotchInScreen Exception");
+        } finally {
+            return ret;
+        }
+    }
+
+    //获取华为刘海的高宽
+    public static int[] getNotchSize(Context context) {
+        int[] ret = new int[]{0, 0};
+        try {
+            ClassLoader cl = context.getClassLoader();
+            Class HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
+            Method get = HwNotchSizeUtil.getMethod("getNotchSize");
+            ret = (int[]) get.invoke(HwNotchSizeUtil);
+        } catch (ClassNotFoundException e) {
+            Log.e("haha", "getNotchSize ClassNotFoundException");
+        } catch (NoSuchMethodException e) {
+            Log.e("haha", "getNotchSize NoSuchMethodException");
+        } catch (Exception e) {
+            Log.e("haha", "getNotchSize Exception");
+        } finally {
+            return ret;
+        }
+    }
+
 //常用隐式意图:

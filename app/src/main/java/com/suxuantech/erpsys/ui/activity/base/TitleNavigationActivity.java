@@ -539,6 +539,7 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
         super.initImmersionBar();
     }
 
+
     public Menu menu = null;
 
     @Override

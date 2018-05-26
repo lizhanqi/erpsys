@@ -20,11 +20,14 @@ import com.suxuantech.erpsys.eventmsg.BaseMsg
 import com.suxuantech.erpsys.nohttp.Contact
 import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
+import com.suxuantech.erpsys.presenter.SearchOrderPresenter
+import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter
 import com.suxuantech.erpsys.ui.TypeFlag
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
 import com.suxuantech.erpsys.ui.widget.ScrollEditText
+import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.StringUtils
 import com.suxuantech.erpsys.utils.ToastUtils
 import com.yanzhenjie.nohttp.RequestMethod
@@ -36,14 +39,74 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * (排程确认)提交排程
  */
-class SchemeCommintActivity : TitleNavigationActivity() {
+class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
+    override fun searchFailed(response: Response<SearchOrderEntity>?, pageIndex: Int) {
+
+    }
+
+    override fun searchSucceed(data: MutableList<SearchOrderEntity.DataBean>?, isRefesh: Boolean, hasMore: Boolean) {
+        if (data == null || data.size == 0) {
+            ToastUtils.snackbarShort("未找到客户资料")
+        } else if (data.size > 1) {
+            ToastUtils.snackbarShort("找到多条资料,无法进行跳转")
+        } else {
+            val intent = Intent(this, OrderDetailActivity::class.java)
+            val dataBean = data.get(0)
+            intent.putExtra("orderId", dataBean.getOrderId())
+            if (searchType == TypeFlag.OPTION_PANEL) {
+                intent.putExtra("showOnPosition", OrderDetailActivity.SHOW_OPTION_PANEL_MATERIAL)
+            } else {
+                intent.putExtra("showOnPosition", OrderDetailActivity.SHOW_PHOTO_MATERIAL)
+            }
+            intent.putExtra("canChange", false)
+            val bundle = Bundle()
+            bundle.putParcelable("data", dataBean)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
+    }
+
+    /**
+     * 是否是添加排程
+     */
+    var isAdd = true;
+    /**
+     *  排程类型
+     */
     var searchType: TypeFlag? = null;
+    /**
+     * 排程显示在列表的简单排程数据信息
+     */
     var schemeData: BaseScheme? = null;
-    var dataBean: SearchOrderEntity.DataBean? = null;
+    /**
+     * 某一单的拍照排程数据
+     */
+    var photoSchemeHisory: ArrayList<PhotoSchemeSearchEntity.DataBean>? = null;
+    /**
+     * 数据显示
+     */
     private var rvList: RecyclerView? = null
+    /**
+     * 历史
+     */
     private var tvHistory: TextView? = null
-    private var tvHistoryName: TextView? = null
-    private var tvHistoryValue: TextView? = null
+    /**
+     * 排程历史
+     */
+    var rvScheduledHistory: RecyclerView? = null
+    /**
+     * 某一单的历史选片排程
+     */
+    var optionPanelSchemeHisory: ArrayList<SearchOptionPanelEntity.DataBean>? = null;
+    /**
+     * 显示数据
+     */
+    var listData = ArrayList<FormEntity>();
+    /**
+     * 修改那一条排程
+     */
+    var changeIndex = -1;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheme_commint)
@@ -56,11 +119,13 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             setTitle("拍照排程")
         }
         schemeData = intent.extras.getSerializable("schemeData") as BaseScheme?;
-        dataBean = intent.extras.getParcelable<SearchOrderEntity.DataBean>("data");
+        isAdd = intent.extras.getBoolean("isAdd", true);
+        changeIndex = intent.extras.getInt("changeIndex");
+        photoSchemeHisory = intent.extras.getParcelableArrayList<PhotoSchemeSearchEntity.DataBean>("photoSchemeHisory");
+        optionPanelSchemeHisory = intent.extras.getParcelableArrayList<SearchOptionPanelEntity.DataBean>("optionPanelSchemeHisory");
         initView()
     }
 
-    var listData = ArrayList<FormEntity>();
     var ada = object : QuickAdapter<FormEntity>(R.layout.item_form, listData) {
         override fun convert(helper: BaseViewHolder?, item: FormEntity?) {
             var llForm = helper?.getView<View>(R.id.ll_form) as LinearLayout;
@@ -76,11 +141,11 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             if (item?.edit!!) {
                 tvFormValue.minLines = 3;
                 tvFormValue.maxLines = 3;
-                tvFormValue.isClickable=true
+                tvFormValue.isClickable = true
                 //  如果想编辑EditText时：
                 tvFormValue.setFocusable(true);
             } else {
-                tvFormValue.isClickable=false
+                tvFormValue.isClickable = false
                 tvFormValue.setOnTouchListener(null)
                 // 如果不想编辑EditText时：
                 tvFormValue.setFocusable(false);
@@ -95,33 +160,65 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             }
         }
     }
+    var optionPanelHistoryAdapter = object : QuickAdapter<SearchOptionPanelEntity.DataBean>(R.layout.item_scheme_history, null) {
+        override fun convert(helper: BaseViewHolder?, item: SearchOptionPanelEntity.DataBean?) {
+            var llHistoryInfo = helper?.getView<LinearLayout>(R.id.ll_history_info);
+            var tvHistoryName = helper?.getView<TextView>(R.id.tv_history_name);
+            var tvHistoryValue = helper?.getView<TextView>(R.id.tv_history_value);
+            tvHistoryName?.setText(item?.consumption_type);
+            tvHistoryValue?.setText(item?.selectday)
+        }
+    }
+    var photoHistoryAdapter = object : QuickAdapter<PhotoSchemeSearchEntity.DataBean>(R.layout.item_scheme_history, null) {
+        override fun convert(helper: BaseViewHolder?, item: PhotoSchemeSearchEntity.DataBean?) {
+            var llHistoryInfo = helper?.getView<LinearLayout>(R.id.ll_history_info);
+            var tvHistoryName = helper?.getView<TextView>(R.id.tv_history_name);
+            var tvHistoryValue = helper?.getView<TextView>(R.id.tv_history_value);
+            tvHistoryName?.setText(item?.consumption_type);
+            tvHistoryValue?.setText(item?.photodate)
+        }
+    }
 
-    private fun initView() {
+    fun initView() {
         rvList = findViewById<View>(R.id.rv_list) as RecyclerView
         tvHistory = findViewById<View>(R.id.tv_history) as TextView
-        tvHistoryName = findViewById<View>(R.id.tv_history_name) as TextView
-        tvHistoryValue = findViewById<View>(R.id.tv_history_value) as TextView
-        findViewById<View>(R.id.ll_history_info).setOnClickListener(View.OnClickListener {
-            val intent = Intent(baseContext, OrderDetailActivity::class.java)
-            intent.putExtra("orderId", dataBean?.getOrderId())
-            if (searchType == TypeFlag.OPTION_PANEL) {
-                intent.putExtra("showOnPosition", 5)
-            } else {
-                intent.putExtra("showOnPosition", 4)
-            }
+        rvScheduledHistory = findViewById<View>(R.id.rv_scheduled_history) as RecyclerView
+        initData()
+        photoHistoryAdapter.setOnItemClickListener { adapter, view, position ->
+            var soso = SearchOrderPresenter();
+            soso.setiSearchOrderPresenter(this);
+            soso.sosoNetOrder(photoHistoryAdapter.data.get(position).orderid,
+                    App.getContext().resources.getString(R.string.start_time),
+                    App.getContext().resources.getString(R.string.end_time), true, false)
+        }
+        optionPanelHistoryAdapter.setOnItemClickListener { adapter, view, position ->
+            var soso = SearchOrderPresenter();
+            soso.setiSearchOrderPresenter(this);
+            soso.sosoNetOrder(optionPanelHistoryAdapter.data.get(position).orderid,
+                    App.getContext().resources.getString(R.string.start_time),
+                    App.getContext().resources.getString(R.string.end_time), true, false)
 
-            intent.putExtra("canChange", false)
-            val bundle = Bundle()
-            bundle.putParcelable("data", dataBean)
-            intent.putExtras(bundle)
-            startActivity(intent)
+        }
+        rvScheduledHistory?.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7)))
+        rvScheduledHistory?.layoutManager = LinearLayoutManager(baseContext);
+        rvList?.layoutManager = LinearLayoutManager(baseContext);
+        rvList?.adapter = ada;
+        rvList?.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7)))
+        ada.bindToRecyclerView(rvList)
+        ada.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            if (position == 0) {
+                Option();
+            }
         });
 
+    }
+
+    fun initData() {
         if (searchType == TypeFlag.OPTION_PANEL) {
-            val dataAll = intent.extras.getParcelable<TodayOptionPhotoSchemeEntity.DataBean>("allSchemeData");
-            tvHistory?.setText("历史选片排程")
-            tvHistoryName?.setText("选片类型:" + StringUtils.safetyString(dataAll.sptype))
-            tvHistoryValue?.setText(StringUtils.safetyString(dataAll.selectday))
+            rvScheduledHistory?.adapter = photoHistoryAdapter;
+            optionPanelHistoryAdapter.updateAll(optionPanelSchemeHisory)
+            //显示在排程ScheduleActivity的网络真实所有数据
+            val dataAll = intent.extras.getParcelable<TodayOptionPhotoSchemeEntity.DataBean>(ScheduleActivity.ONE_SCHEME_ALL_INFO);
             val formEntity = FormEntity("选片类型");
             formEntity.hint = "请选择选片类型"
             formEntity.icon = R.drawable.icon_photo_type
@@ -142,11 +239,11 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             formEntity4.icon = R.drawable.icon_send_remarks
             listData.add(formEntity4)
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
-            val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>("allSchemeData");
+            rvScheduledHistory?.adapter = photoHistoryAdapter;
+            photoHistoryAdapter.updateAll(photoSchemeHisory)
+            val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>(ScheduleActivity.ONE_SCHEME_ALL_INFO);
             tvHistory?.setText("历史拍照排程")
             tvHistory?.setText("历史选片排程")
-            tvHistoryName?.setText("拍照类型:" + StringUtils.safetyString(dataAll.phototype))
-            tvHistoryValue?.setText(StringUtils.safetyString(dataAll.photodate))
             val formEntity = FormEntity("拍照类型");
             formEntity.hint = "请选择拍照类型"
             formEntity.icon = R.drawable.icon_photo_type
@@ -167,16 +264,6 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             formEntity4.edit = true
             listData.add(formEntity4)
         }
-        rvList?.layoutManager = LinearLayoutManager(baseContext);
-        rvList?.adapter = ada;
-        rvList?.addItemDecoration(DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7)))
-        ada.bindToRecyclerView(rvList)
-        ada.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            if (position == 0) {
-                Option();
-            }
-        });
-
     }
 
     fun Option() {
@@ -202,20 +289,22 @@ class SchemeCommintActivity : TitleNavigationActivity() {
                         true
                     } else {
                         var url = ""
-                        if (intent.getBooleanExtra("add", true)) {
+                        var pcday = schemeData?.getPcday();
+                        pcday = DateUtil.String2String(pcday, DateUtil.DatePattern.JUST_DAY_NUMBER, DateUtil.DatePattern.ONLY_DAY);
+                        if (isAdd) {
                             if (searchType == TypeFlag.OPTION_PANEL) {
-                                url = Contact.getFullUrl(Contact.ADD_OPTION_PANEL_SCHEME, Contact.TOKEN, schemeData?.getPcday(), App.getApplication().userInfor.shop_code)
+                                url = Contact.getFullUrl(Contact.ADD_OPTION_PANEL_SCHEME, Contact.TOKEN, pcday, App.getApplication().userInfor.shop_code)
                             } else if (searchType == TypeFlag.PHOTOGRAPH) {
-                                url = Contact.getFullUrl(Contact.ADD_PHOTOGRAPH_SCHEME, Contact.TOKEN, schemeData?.getPcday(), App.getApplication().userInfor.shop_code)
+                                url = Contact.getFullUrl(Contact.ADD_PHOTOGRAPH_SCHEME, Contact.TOKEN, pcday, App.getApplication().userInfor.shop_code)
                             }
                             scheme(url)
                         } else {
                             if (searchType == TypeFlag.OPTION_PANEL) {
                                 //选片
-                                url = Contact.getFullUrl(Contact.CHANGE_OPTION_PANEL_SCHEME, Contact.TOKEN, schemeData?.getPcday(), App.getApplication().userInfor.shop_code)
+                                url = Contact.getFullUrl(Contact.CHANGE_OPTION_PANEL_SCHEME, Contact.TOKEN, pcday, App.getApplication().userInfor.shop_code, optionPanelSchemeHisory?.get(changeIndex)?.id)
                             } else if (searchType == TypeFlag.PHOTOGRAPH) {
                                 //拍照的
-                                url = Contact.getFullUrl(Contact.CHANGE_PHOTOGRAPH_SCHEME, Contact.TOKEN, schemeData?.getPcday(), App.getApplication().userInfor.shop_code)
+                                url = Contact.getFullUrl(Contact.CHANGE_PHOTOGRAPH_SCHEME, Contact.TOKEN, pcday, App.getApplication().userInfor.shop_code, photoSchemeHisory?.get(changeIndex)?.id)
                             }
                         }
                         scheme(url)
@@ -248,21 +337,26 @@ class SchemeCommintActivity : TitleNavigationActivity() {
     }
 
     /**
-     * 排程
+     * 排程(修改和新增通吃)
      */
     fun scheme(url: String) {
         if (searchType == TypeFlag.OPTION_PANEL) {
             //选片
             val viewByPosition = ada.getViewByPosition(listData.size - 1, R.id.tv_form_value) as ScrollEditText;
-            //请求实体
             var request = JavaBeanRequest(url, RequestMethod.POST, SimpleEntity::class.java)
-            val dataAll = intent.extras.getParcelable<TodayOptionPhotoSchemeEntity.DataBean>("allSchemeData");
+            var pcday = schemeData?.pcday;
+         //   pcday = DateUtil.String2String(pcday, DateUtil.DatePattern.JUST_DAY_NUMBER, DateUtil.DatePattern.ONLY_DAY);
             request.add("Pcid", schemeData?.pcid!!);
-            request.add("Orderid", dataBean?.orderId);
-            request.add("Customerid", dataBean?.customerid);
-            request.add("Spid", dataAll?.spid);
+            request.add("Orderid", optionPanelSchemeHisory?.get(0)?.orderid);
+            request.add("Customerid",  optionPanelSchemeHisory?.get(0)?.customerid);
+            if (!isAdd) {
+                var Spid = "" + optionPanelSchemeHisory?.get(changeIndex)?.id;
+                request.add("Spid", Spid);
+            }else{
+                request.add("Spid", "");
+            }
             request.add("Select_order_name", listData.get(0).value);
-            request.add("Selectday", schemeData?.pcday);
+            request.add("Selectday", pcday);
             request.add("SelectTime", schemeData?.pctime);
             request.add("Shop_code", App.getApplication().userInfor.shop_code);
             request.add("Shop_name", App.getApplication().userInfor.shop_name);
@@ -280,20 +374,26 @@ class SchemeCommintActivity : TitleNavigationActivity() {
             }
             request<SimpleEntity>(123, request, searchByCustmor, true, true)
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
+
             //拍照的
             val viewByPosition = ada.getViewByPosition(listData.size - 1, R.id.tv_form_value) as ScrollEditText;
             //请求实体
             var request = JavaBeanRequest(url, RequestMethod.POST, SimpleEntity::class.java)
-            request.add("Orderid", dataBean?.orderId);
-            request.add("Customerid", dataBean?.customerid);
+            var pcday = schemeData?.pcday;
+            request.add("Orderid", photoSchemeHisory?.get(0)?.orderid);
+            request.add("Customerid",  photoSchemeHisory?.get(0)?.customerid);
             request.add("Phototype", listData.get(0).value);
-            request.add("Photodate", schemeData?.pcday);
+            request.add("Photodate", pcday);
             request.add("Phototime", schemeData?.pctime);
             request.add("Shop_code", App.getApplication().userInfor.shop_code);
             request.add("Shop_name", App.getApplication().userInfor.shop_name);
             request.add("Ordernote", viewByPosition.text.toString())
-            val dataAll = intent.extras.getParcelable<TodayPhotoScheduleEntity.DataBean>("allSchemeData");
-            request.add("Photoid", dataAll?.getPhotoid());
+            if (!isAdd) {
+                var photoid = "" + photoSchemeHisory?.get(changeIndex)?.id;
+                request.add("Photoid", photoid);
+            }else {
+                request.add("Photoid", "");
+            }
             request.add("Pcid", schemeData?.pcid!!);
             val searchByCustmor = object : HttpListener<SimpleEntity> {
                 override fun onSucceed(what: Int, response: Response<SimpleEntity>) {

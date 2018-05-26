@@ -87,7 +87,7 @@ abstract class ImmersionActivity : BaseActivity() {
         }
         mImmersionBar!!.statusBarDarkFont(true, 0.15f)
         mImmersionBar!!.keyboardEnable(false)
-        mImmersionBar!!.navigationBarColor(R.color.navigation)
+        mImmersionBar!!.navigationBarColor(R.color.mainNavline_e7)
         mImmersionBar?.addTag("default")  //给上面参数打标记，以后可以通过标记恢复
         mImmersionBar!!.init()
     }

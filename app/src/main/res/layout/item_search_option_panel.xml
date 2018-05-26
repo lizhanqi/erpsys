@@ -8,7 +8,7 @@
     <LinearLayout
         android:gravity="center_vertical"
         android:padding="@dimen/px30"
-        android:paddingHorizontal="@dimen/px55"
+        android:paddingHorizontal="@dimen/px50"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,12 +31,13 @@
     </LinearLayout>
     <View style="@style/line"/>
     <LinearLayout
+
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
             android:layout_weight="1"
-            android:paddingHorizontal="@dimen/px55"
+            android:paddingHorizontal="@dimen/px60"
             android:padding="@dimen/px30"
             android:id="@+id/tv_customer_infos"
             android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:id="@+id/ll_scheme"
-            android:visibility="gone"
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <TextView
@@ -59,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/xs10"
                 android:background="@drawable/sp_scheme_change"
                 android:text="改期"
@@ -77,5 +79,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
-
+    <View style="@style/line" android:layout_marginLeft="50px"/>
+     <android.support.v7.widget.RecyclerView
+         android:id="@+id/rv_all_schemed"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+     </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -343,7 +343,7 @@ public class Contact {
     /**
      * 修改拍照排程
      */
-    public static String CHANGE_PHOTOGRAPH_SCHEME = "/SXWebErpAppStaff/SX_UpdatePhotoPaiCheng?Token=%s&pcday=%s&Code=%s";
+    public static String CHANGE_PHOTOGRAPH_SCHEME = "/SXWebErpAppStaff/SX_UpdatePhotoPaiCheng?Token=%s&pcday=%s&Code=%s&oldpcid=%s";
     /**
      * 删除拍照排程
      */
@@ -355,7 +355,7 @@ public class Contact {
     /**
      * 修改选片排程
      */
-    public static String CHANGE_OPTION_PANEL_SCHEME = "/SXWebErpAppStaff/SX_UpdateSPPaiCheng?Token=%s&pcday=%s&Code=%s";
+    public static String CHANGE_OPTION_PANEL_SCHEME = "/SXWebErpAppStaff/SX_UpdateSPPaiCheng?Token=%s&pcday=%s&Code=%s&oldpcid=%s";
     /**
      * 删除选片排程
      */
@@ -420,7 +420,13 @@ public class Contact {
      * 通讯录搜索
      */
     public static String SEARCH_PERSON = "%sseacherStaff";
+    /**
+     * 选片排程搜索
+     */
+    public static String  OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_CXXPPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
 
-
-
+    /**
+     * 拍照排程搜索
+     */
+    public static String  Photo_SCHEME_SEARCH="/SXWebErpAppStaff/SX_CXPhotoPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
 }

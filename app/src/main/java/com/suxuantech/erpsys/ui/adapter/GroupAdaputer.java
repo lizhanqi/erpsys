@@ -15,6 +15,7 @@ import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BaseScheme;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.ui.TypeFlag;
+import com.suxuantech.erpsys.ui.activity.ScheduleActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -56,16 +57,25 @@ import java.util.Set;
 
 public class GroupAdaputer extends GroupedRecyclerViewAdapter {
     Map<String, List<BaseScheme>> data;
+
     public Map<String, List<BaseScheme>> getdata() {
         return data;
     }
+
     TypeFlag schemeType = TypeFlag.PHOTOGRAPH;
+
+    public TypeFlag getSchemeType() {
+        return schemeType;
+    }
+
     public void setSchemeType(TypeFlag schemeType) {
         this.schemeType = schemeType;
     }
+
     public GroupAdaputer(Context context) {
         super(context);
     }
+
     @Override
     public int getGroupCount() {
         return data == null ? 0 : data.size();
@@ -120,7 +130,7 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
         Set<String> strings = data.keySet();
         List<String> list = new ArrayList<String>(strings);//B是set型的
-        holder.setText(R.id.tv_count, data.get(list.get(groupPosition)).size() + "");
+        //holder.setText(R.id.tv_count, data.get(list.get(groupPosition)).size() + "");
         StringBuffer pctime = new StringBuffer(data.get(list.get(groupPosition)).get(0).getPctime());
         pctime.insert(2, ":");
         holder.setText(R.id.tv_time, pctime.toString());
@@ -134,12 +144,18 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
     public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
         TextView tvCustmoer = (TextView) holder.get(R.id.tv_custmoer);
         LinearLayout llScheme = (LinearLayout) holder.get(R.id.ll_scheme);
+        View line = (View) holder.get(R.id.line);
         ImageView imgScheme = (ImageView) holder.get(R.id.img_scheme);
         ImageView imgPlaceholder = (ImageView) holder.get(R.id.img_placeholder);
+        TextView tvZone = (TextView) holder.get(R.id.tv_zone);
         Set<String> strings = data.keySet();
         List<String> list = new ArrayList<String>(strings);//B是set型的
-        TextView tvZone = (TextView) holder.get(R.id.tv_zone);
         BaseScheme baseScheme = data.get(list.get(groupPosition)).get(childPosition);
+        if( data.get(list.get(groupPosition)).size()-1==childPosition){
+            line.setVisibility(View.GONE);
+        }else {
+            line.setVisibility(View.VISIBLE);
+        }
         tvZone.setText(baseScheme.getArea());
         String xingming = baseScheme.getXingming();
         String orderId = baseScheme.getOrderId();
@@ -164,7 +180,7 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
                     placeHolder(baseScheme, false);
                 });
                 imgScheme.setOnClickListener(cl -> {
-                    if (!App.getApplication().hasPermission("M3")){
+                    if (!App.getApplication().hasPermission("M3")) {
                         ToastUtils.showShort("无权排程");
                         return;
                     }
@@ -172,7 +188,7 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("type", schemeType);
                     bundle.putParcelable("data", baseScheme);
-                    bundle.putParcelable("allSchemeData", baseScheme.getBundle().getParcelable("allData"));
+                    bundle.putParcelable(ScheduleActivity.ONE_SCHEME_ALL_INFO, baseScheme.getBundle().getParcelable(ScheduleActivity.ONE_SCHEME_ALL_INFO));
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 });
@@ -185,13 +201,13 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
      * @param unlock     是否是解锁
      */
     public void placeHolder(BaseScheme baseScheme, boolean unlock) {
-        if (unlock){
-            if (!App.getApplication().hasPermission("M4")){
+        if (unlock) {
+            if (!App.getApplication().hasPermission("M4")) {
                 ToastUtils.showShort("无权占位");
                 return;
             }
-        }else {
-            if (!App.getApplication().hasPermission("M5")){
+        } else {
+            if (!App.getApplication().hasPermission("M5")) {
                 ToastUtils.showShort("无权取消占位");
                 return;
             }

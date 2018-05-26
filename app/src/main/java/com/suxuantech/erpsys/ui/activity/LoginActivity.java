@@ -112,18 +112,11 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      */
     private UserLoginTask mAuthTask = null;
 
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView copyRight;
     private EditText mCompanyID;
-    //    circularProgressButton.setIndeterminateProgressMode(真正的);//打开不确定的进展。
-//    circularProgressButton.setProgress(50);//设置进度> 0 & < 100，以显示不确定的进度。
-//    circularProgressButton.setProgress(100);//将进度设置为100或-1，表示完整或错误状态。
-//    circularProgressButton.setProgress(0);//将进程设置为0，以切换回正常状态。
     private Button mEmailSignInButton;
-
-    //    private View mLoginFormView;
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -250,7 +243,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-      //  initFingerprintCore();
+        initFingerprintCore();
         setContentView(R.layout.activity_login);
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
@@ -273,7 +266,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+            login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
 //                if (mCompanyID.getText().toString().equals("1")) {
 //
 //                   phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
@@ -290,7 +283,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         JavaBeanRequest<PHPLoginEntity> login = new JavaBeanRequest<PHPLoginEntity>(fullUrl, PHPLoginEntity.class);
         login.add("staffname", name);
         login.add("password", key);
-//        login.setMultipartFormEnable(true);
         HttpListener<PHPLoginEntity> searchByCustmor = new HttpListener<PHPLoginEntity>() {
             @Override
             public void onSucceed(int what, Response<PHPLoginEntity> response) {

@@ -29,16 +29,16 @@ import java.util.Locale;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/7 19:30 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 时间工具
  */
 
 public class DateUtil {
 
     private DateUtil() {
-             /* cannot be instantiated */
-            throw new UnsupportedOperationException("cannot be instantiated");
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
     }
 
     /**
@@ -135,50 +135,88 @@ public class DateUtil {
             public String getValue() {
                 return "yyyyMMdd";
             }
+        },
+        /**
+         * 格式："HH:mm"
+         */
+        JUST_YEAR_MONTH_NUMBER {
+            @Override
+            public String getValue() {
+                return "yyyyMM";
+            }
+        },
+        /**
+         * 格式："HH:mm"
+         */
+        YEAR_MONTH_TEXT {
+            @Override
+            public String getValue() {
+                return "yyyy年MM月";
+            }
+        },
+        YEAR_MONTHE_DAY_TEXT {
+            @Override
+            public String getValue() {
+                return "yyyy年MM月dd日";
+            }
+        },
+        DATE_MINUTE_TEXT {
+            @Override
+            public String getValue() {
+                return "yyyy年MM月dd日HH时mm分";
+            }
         };
+
         public abstract String getValue();
     }
 
     /**
      * 时间拼接
+     *
      * @param year
      * @param month
      * @param day
      * @return
      */
-    public String dateJoinDayTogether(int  year ,int month ,int day,String division){
+    public String dateJoinDayTogether(int year, int month, int day, String division) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(year);
         stringBuilder.append(division);
-        if (month<10){
+        if (month < 10) {
             stringBuilder.append(0);
         }
         stringBuilder.append(month);
         stringBuilder.append(division);
-        if (day<10){
+        if (day < 10) {
             stringBuilder.append(0);
         }
         stringBuilder.append(day);
-        return  stringBuilder.toString();
-    };
+        return stringBuilder.toString();
+    }
+
+    ;
 
 
     /**
      * 时间拼接
+     *
      * @param year
      * @param month
      * @return
      */
-    public String dateJoinMonthTogether(int  year ,int month ,String division){
+    public String dateJoinMonthTogether(int year, int month, String division) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(year);
         stringBuilder.append(division);
-        if (month<10){
+        if (month < 10) {
             stringBuilder.append(0);
         }
         stringBuilder.append(month);
-        return  stringBuilder.toString();
-    };
+        return stringBuilder.toString();
+    }
+
+    ;
+
     /**
      * 获取当前时间
      *
@@ -193,6 +231,19 @@ public class DateUtil {
         return dateString;
     }
 
+    public static String DateMerger(int year, int month, int day, DatePattern datePattern) {
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.get(Calendar.YEAR);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        Date newDate = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat(datePattern.getValue(), Locale.CHINA);
+        String s = sdf.format(newDate);
+        return s;
+    }
     /**
      * 将一个日期字符串转换成Data对象
      *
@@ -213,17 +264,19 @@ public class DateUtil {
 
     /**
      * 时间String 转换格式
-     * @param dateString  时间串
-     * @param source  原格式
-     * @param target  目标格式
-     * @return  目标格式串
+     *
+     * @param dateString 时间串
+     * @param source     原格式
+     * @param target     目标格式
+     * @return 目标格式串
      */
-    public static  String String2String(String dateString, DatePattern source,DatePattern target){
-        if (android.text.TextUtils.isEmpty(dateString)){
-        return "";
+    public static String String2String(String dateString, DatePattern source, DatePattern target) {
+        if (android.text.TextUtils.isEmpty(dateString)) {
+            return "";
         }
-      return   dateToString(stringToDate(dateString,source),target);
+        return dateToString(stringToDate(dateString, source), target);
     }
+
     /**
      * 将date转换成字符串
      *

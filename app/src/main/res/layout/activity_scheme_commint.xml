@@ -25,33 +25,14 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/px30"
             android:text="历史%s资料" />
-
-        <LinearLayout
-            android:id="@+id/ll_history_info"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_scheduled_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/px30">
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
 
-            <View
-                android:layout_width="2dp"
-                android:layout_height="10dp"
-                android:background="@color/themeColor" />
 
-            <TextView
-                android:id="@+id/tv_history_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/px30"
-                android:text="555" />
 
-            <TextView
-                android:id="@+id/tv_history_value"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

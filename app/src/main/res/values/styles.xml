@@ -22,7 +22,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LoginTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorAccent">@color/themeColor</item>
         <item name="android:textColorHint">@color/copyrigth</item>
         <item name="colorControlNormal">@color/themeColor</item>
@@ -92,6 +92,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/px2</item>
     </style>
+
+    <style name="VerticalDecorate">
+        <item name="android:background">@color/themeColor</item>
+        <item name="android:layout_width">3dp</item>
+        <item name="android:layout_height">15dp</item>
+    </style>
+
+
     <!--这个是标准的包裹内容,不要定义死了高度,否则文字大小不会影响高度-->
     <style name="LinearLayoutStandard2">
         <item name="android:background">@color/white</item>
@@ -120,7 +128,7 @@
     </style>
     <!--数据-->
     <style name="DetailsValue" parent="DetailsKey">
-
+        <item name="android:textIsSelectable">false</item>
         <item name="android:layout_marginLeft">@dimen/px30</item>
         <item name="android:textColor">@color/textHint_99</item>
         <item name="android:layout_weight">1</item>
@@ -129,12 +137,14 @@
     </style>
     <!--表单值-->
     <style name="FormValue" parent="DetailsValue">
+        <item name="android:textIsSelectable">false</item>
         <item name="android:hint">请输入</item>
     </style>
     <!--文本域-->
     <style name="TextAreaKey" parent="DetailsKey">
     </style>
     <style name="TextAreaValue" parent="FormValue">
+        <item name="android:textIsSelectable">false</item>
         <item name="android:minLines">3</item>
     </style>
     <!--表单类型选择类的-->

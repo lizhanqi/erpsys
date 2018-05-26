@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -51,9 +52,11 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -119,9 +122,9 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
     SwipeMenuItemClickListener mMenuItemClickListener = new SwipeMenuItemClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge) {
-            if (!App.getApplication().hasPermission("M4")){
-            toastShort("无权删除排程");
-            return;
+            if (!App.getApplication().hasPermission("M4")) {
+                toastShort("无权删除排程");
+                return;
             }
             int counts = -1;
             int groupPosition = 0;//记录第几组
@@ -168,7 +171,6 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      * 删除排程
      */
     public void deleteScheme(int groupPosition, int childrenPosition) {
-
         Map<String, List<BaseScheme>> getdata = groupAdaputer.getdata();
         ArrayList<String> strings = new ArrayList<>(getdata.keySet());
         BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childrenPosition);
@@ -259,7 +261,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
             ArrayList<String> strings = new ArrayList<>(getdata.keySet());
             BaseScheme baseScheme = getdata.get(strings.get(groupPosition)).get(childPosition);
             String orderId = baseScheme.getOrderId();
-            if (StringUtils.empty(orderId)){
+            if (StringUtils.empty(orderId)) {
                 return;
             }
             mSearchOrderPresenter.sosoNetOrder(orderId,
@@ -281,14 +283,17 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                 mPtrFrame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY);
+                        int currentSelectYear = schedule_layout.getCurrentSelectYear();
+                        int currentSelectMonth = schedule_layout.getCurrentSelectMonth();
+                        int currentSelectDay = schedule_layout.getCurrentSelectDay();
+                        String nowDate = DateUtil.DateMerger(currentSelectYear, currentSelectMonth, currentSelectDay, DateUtil.DatePattern.ONLY_DAY);
                         if (getIntent().hasExtra("title")) {
                             if (getIntent().getStringExtra("title").equals("拍照排程")) {
-                                getMonthPhotoScheme(nowDate);
+                                getMonthPhotoScheme(nowDate, true);
                                 getPhotographSchemeByDay(nowDate);
                             } else if (getIntent().getStringExtra("title").equals("选片排程")) {
                                 todayOptionPhotoScheme(nowDate);
-                                getMonthOptionPanelScheme(nowDate);
+                                getMonthOptionPanelScheme(nowDate, true);
                             }
                         }
                         mPtrFrame.refreshComplete();
@@ -323,22 +328,13 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      * 更新选中的日期
      */
     private void setMenu() {
-        StringBuffer stringBuffer = new StringBuffer();
         int currentSelectYear = schedule_layout.getCurrentSelectYear();
         int currentSelectMonth = schedule_layout.getCurrentSelectMonth();
         int currentSelectDay = schedule_layout.getCurrentSelectDay();
-        currentSelectMonth++;
-        stringBuffer.append(currentSelectYear);
-        if (currentSelectMonth < 10) {
-            stringBuffer.append("0");
-        }
-        stringBuffer.append(currentSelectMonth);
-        if (currentSelectDay < 10) {
-            stringBuffer.append("0");
-        }
-        stringBuffer.append(currentSelectDay);
-        menuItem.setTitle(stringBuffer.toString());
-        if (!DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER).equals(stringBuffer.toString())) {
+        String string = DateUtil.DateMerger(currentSelectYear, currentSelectMonth, currentSelectDay, DateUtil.DatePattern.YEAR_MONTH_TEXT);
+        String numberDay = DateUtil.DateMerger(currentSelectYear, currentSelectMonth, currentSelectDay, DateUtil.DatePattern.JUST_DAY_NUMBER);
+        menuItem.setTitle(string);
+        if (!DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER).equals(numberDay)) {
             menu.findItem(R.id.action_today).setOnMenuItemClickListener((MenuItem var1) -> {
                 schedule_layout.getMonthCalendar().setTodayToView();
                 schedule_layout.getMonthCalendar().setTodayToView();
@@ -356,26 +352,13 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
         schedule_layout.setOnCalendarClickListener(new OnCalendarClickListener() {
             @Override
             public void onClickDate(int year, int month, int day) {
-                month++;
-                StringBuffer stringBuffer = new StringBuffer();
-                stringBuffer.append(year);
-                stringBuffer.append("-");
-                if (month < 10) {
-                    stringBuffer.append("0");
-                }
-                stringBuffer.append(month);
-                stringBuffer.append("-");
-                if (day < 10) {
-                    stringBuffer.append("0");
-                }
-                stringBuffer.append(day);
-
+                String currentDate = DateUtil.DateMerger(year, month, day, DateUtil.DatePattern.ONLY_DAY);
                 if (getIntent().getStringExtra("title").equals("拍照排程")) {
-                    getMonthPhotoScheme(stringBuffer.toString());
-                    getPhotographSchemeByDay(stringBuffer.toString());
+                    getMonthPhotoScheme(currentDate, false);
+                    getPhotographSchemeByDay(currentDate);
                 } else if (getIntent().getStringExtra("title").equals("选片排程")) {
-                    todayOptionPhotoScheme(stringBuffer.toString());
-                    getMonthOptionPanelScheme(stringBuffer.toString());
+                    todayOptionPhotoScheme(currentDate);
+                    getMonthOptionPanelScheme(currentDate, false);
                 }
                 setMenu();
             }
@@ -386,38 +369,28 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
         });
     }
 
+    //正在请求中的月份(主要防止日历的每天都进行匹配时候获取)
     ArrayList<String> queue = new ArrayList<>();
     BingText bingText = new BingText() {
         @Override
         public String bingText(int year, int month, int day) {
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append(year);
-            if (month < 10) {
-                stringBuffer.append(0);
-            }
-            stringBuffer.append(month);
-            List<PhotoSchemeMonthEntity.DataBean> dataBeans = allMonthData.get(stringBuffer.toString());
+            //  月份减一下这里返回的是1-12,在格式化为中国的日期默认会+1
+            month--;
+            String yearmonth = DateUtil.DateMerger(year, month, day, DateUtil.DatePattern.JUST_YEAR_MONTH_NUMBER);
+            List<PhotoSchemeMonthEntity.DataBean> dataBeans = allMonthData.get(yearmonth);
             if (dataBeans != null) {
-                if (day < 10) {
-                    stringBuffer.append(0);
-                }
-                stringBuffer.append(day);
+                String daynumber = DateUtil.DateMerger(year, month, day, DateUtil.DatePattern.JUST_DAY_NUMBER);
                 for (PhotoSchemeMonthEntity.DataBean dataBean : dataBeans) {
-                    if (stringBuffer.toString().equals(dataBean.getRiqi())) {
+                    if (daynumber.equals(dataBean.getRiqi())) {
                         return dataBean.getPccount();
                     }
                 }
             } else {
-                if (day < 10) {
-                    stringBuffer.append(0);
-                }
-                stringBuffer.append(day);
-                stringBuffer.insert(4, "-");
-                stringBuffer.insert(7, "-");
+                String days = DateUtil.DateMerger(year, month, day, DateUtil.DatePattern.ONLY_DAY);
                 if (getIntent().getStringExtra("title").equals("拍照排程")) {
-                    getMonthPhotoScheme(stringBuffer.toString());
+                    getMonthPhotoScheme(days, false);
                 } else if (getIntent().getStringExtra("title").equals("选片排程")) {
-                    getMonthOptionPanelScheme(stringBuffer.toString());
+                    getMonthOptionPanelScheme(days, false);
                 }
 
             }
@@ -431,23 +404,25 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      *
      * @param anyDay "2018-05-01"
      *               PICTRUE_SCHEME_BY_MONTH
+     * @param force  是否强制获取(无论是否在集合中存在,如果存在则覆盖原有的)
      */
-    public void getMonthPhotoScheme(String anyDay) {
+    public void getMonthPhotoScheme(String anyDay, boolean force) {
         StringBuffer stringBuffer = new StringBuffer(anyDay);
         stringBuffer.deleteCharAt(4);
-
         String substring = stringBuffer.substring(0, 6);
-        if (queue.contains(substring)) {
-            return;
-        }
-        if (allMonthData.keySet().contains(substring)) {
-            MonthCalendarView monthCalendar = schedule_layout.getMonthCalendar();
-            WeekCalendarView weekCalendar = schedule_layout.getWeekCalendar();
-            MonthView currentMonthView = monthCalendar.getCurrentMonthView();
-            weekCalendar.getCurrentWeekView().bingUserText(bingText);
-            currentMonthView.bingUserText(bingText);
-            schedule_layout.postInvalidate();
-            return;
+        if (!force) {
+            if (queue.contains(substring)) {
+                return;
+            }
+            if (allMonthData.keySet().contains(substring)) {
+                MonthCalendarView monthCalendar = schedule_layout.getMonthCalendar();
+                WeekCalendarView weekCalendar = schedule_layout.getWeekCalendar();
+                MonthView currentMonthView = monthCalendar.getCurrentMonthView();
+                weekCalendar.getCurrentWeekView().bingUserText(bingText);
+                currentMonthView.bingUserText(bingText);
+                schedule_layout.postInvalidate();
+                return;
+            }
         }
         queue.add(substring);
         String fullUrl = Contact.getFullUrl(Contact.PHOTO_SCHEME_BY_MONTH, Contact.TOKEN, anyDay, App.getApplication().getUserInfor().getShop_code());
@@ -483,32 +458,33 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      *
      * @param anyDay "2018-05-01"
      */
-    public void getMonthOptionPanelScheme(String anyDay) {
-        StringBuffer stringBuffer = new StringBuffer(anyDay);
-        stringBuffer.deleteCharAt(4);
-        String substring = stringBuffer.substring(0, 6);
-        if (queue.contains(substring)) {
-            return;
+    public void getMonthOptionPanelScheme(String anyDay, boolean force) {
+        String yearMonth = DateUtil.String2String(anyDay, DateUtil.DatePattern.ONLY_DAY, DateUtil.DatePattern.JUST_YEAR_MONTH_NUMBER);
+        if (!force) {
+            if (queue.contains(yearMonth)) {
+                return;
+            }
+            if (allMonthData.keySet().contains(yearMonth)) {
+                MonthCalendarView monthCalendar = schedule_layout.getMonthCalendar();
+                WeekCalendarView weekCalendar = schedule_layout.getWeekCalendar();
+                MonthView currentMonthView = monthCalendar.getCurrentMonthView();
+                weekCalendar.getCurrentWeekView().bingUserText(bingText);
+                currentMonthView.bingUserText(bingText);
+                schedule_layout.postInvalidate();
+                return;
+            }
         }
-        if (allMonthData.keySet().contains(substring)) {
-            MonthCalendarView monthCalendar = schedule_layout.getMonthCalendar();
-            WeekCalendarView weekCalendar = schedule_layout.getWeekCalendar();
-            MonthView currentMonthView = monthCalendar.getCurrentMonthView();
-            weekCalendar.getCurrentWeekView().bingUserText(bingText);
-            currentMonthView.bingUserText(bingText);
-            schedule_layout.postInvalidate();
-            return;
-        }
-        queue.add(substring);
+        Log.d(TAG, "getMonthOptionPanelScheme: " + yearMonth);
+        queue.add(yearMonth);
         String fullUrl = Contact.getFullUrl(Contact.PICTRUE_SCHEME_BY_MONTH, Contact.TOKEN, anyDay, App.getApplication().getUserInfor().getShop_code());
         //请求实体
         JavaBeanRequest<PhotoSchemeMonthEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoSchemeMonthEntity>(fullUrl, RequestMethod.POST, PhotoSchemeMonthEntity.class);
         HttpListener<PhotoSchemeMonthEntity> searchByCustmor = new HttpListener<PhotoSchemeMonthEntity>() {
             @Override
             public void onSucceed(int what, Response<PhotoSchemeMonthEntity> response) {
-                queue.remove(substring);
+                queue.remove(yearMonth);
                 if (response.get().isOK()) {
-                    allMonthData.put(substring, response.get().getData());
+                    allMonthData.put(yearMonth, response.get().getData());
                     MonthCalendarView monthCalendar = schedule_layout.getMonthCalendar();
                     WeekCalendarView weekCalendar = schedule_layout.getWeekCalendar();
                     MonthView currentMonthView = monthCalendar.getCurrentMonthView();
@@ -520,7 +496,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
 
             @Override
             public void onFailed(int what, Response<PhotoSchemeMonthEntity> response) {
-                queue.remove(substring);
+                queue.remove(yearMonth);
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
@@ -528,11 +504,16 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
 
 
     List<TodayPhotoScheduleEntity.DataBean> dayPhotoSchedule;
+    public static String ONE_SCHEME_ALL_INFO = "allData";
 
     /**
      * 获取某一天的拍照排程详情
      */
     public void getPhotographSchemeByDay(String day) {
+        if (groupAdaputer.getdata() != null) {
+            groupAdaputer.getdata().clear();
+            groupAdaputer.notifyDataSetChanged();
+        }
         String fullUrl = Contact.getFullUrl(Contact.PHOTO_SCHEME_BY_DAY, Contact.TOKEN, day, App.getApplication().getUserInfor().getShop_code());
         //请求实体
         JavaBeanRequest<TodayPhotoScheduleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<TodayPhotoScheduleEntity>(fullUrl, RequestMethod.POST, TodayPhotoScheduleEntity.class);
@@ -545,7 +526,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                     for (TodayPhotoScheduleEntity.DataBean d : dayPhotoSchedule) {
                         BaseScheme baseScheme = new BaseScheme();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("allData", d);
+                        bundle.putParcelable(ONE_SCHEME_ALL_INFO, d);
                         bundle.setClassLoader(getClass().getClassLoader());
                         baseScheme.setBundle(bundle);
                         baseScheme.setArea(d.getArea());
@@ -574,6 +555,10 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
      * 获取某一天的选片排程详情
      */
     public void todayOptionPhotoScheme(String day) {
+        if (groupAdaputer.getdata() != null) {
+            groupAdaputer.getdata().clear();
+            groupAdaputer.notifyDataSetChanged();
+        }
         String fullUrl = Contact.getFullUrl(Contact.TODAY_PICTRUE_SCHEME, Contact.TOKEN, day, App.getApplication().getUserInfor().getShop_code());
         //请求实体
         JavaBeanRequest<TodayOptionPhotoSchemeEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<TodayOptionPhotoSchemeEntity>(fullUrl, RequestMethod.POST, TodayOptionPhotoSchemeEntity.class);
@@ -586,7 +571,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                     for (TodayOptionPhotoSchemeEntity.DataBean d : dayOptionScheme) {
                         BaseScheme baseScheme = new BaseScheme();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("allData", d);
+                        bundle.putParcelable(ONE_SCHEME_ALL_INFO, d);
                         bundle.setClassLoader(getClass().getClassLoader());
                         baseScheme.setBundle(bundle);
                         baseScheme.setArea(d.getArea());
@@ -640,7 +625,16 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                 resultMap.put(item.getPctime(), tmpList);
             }
         }
-        return resultMap;
+        Map<String, List<BaseScheme>>  ordermap = new TreeMap<String, List<BaseScheme>>(
+                new Comparator<String>() {
+                    @Override
+                    public int compare(String obj1, String obj2) {
+                        // 降序排序
+                        return obj1 .compareTo(obj2);
+                    }
+                });
+        ordermap.putAll(resultMap);
+        return ordermap;
     }
 
     @Override
@@ -650,9 +644,15 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
         } else if (data.size() > 1) {
             ToastUtils.snackbarShort("找到多条资料,无法进行跳转");
         } else {
+
             Intent intent = new Intent(this, OrderDetailActivity.class);
             SearchOrderEntity.DataBean dataBean = data.get(0);
             intent.putExtra("orderId", dataBean.getOrderId());
+            if (groupAdaputer.getSchemeType() == TypeFlag.PHOTOGRAPH) {
+                intent.putExtra(OrderDetailActivity.SHOWONPOSITION ,OrderDetailActivity.SHOW_PHOTO_MATERIAL );
+            }else    if (groupAdaputer.getSchemeType() == TypeFlag.OPTION_PANEL) {
+                intent.putExtra(OrderDetailActivity.SHOWONPOSITION ,OrderDetailActivity.SHOW_OPTION_PANEL_MATERIAL );
+            }
             Bundle bundle = new Bundle();
             bundle.putParcelable("data", dataBean);
             intent.putExtras(bundle);

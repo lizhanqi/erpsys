@@ -146,7 +146,7 @@ public abstract class BaseLazyFragment extends BaseSupportFragment {
     public void initImmersionBar() {
         mImmersionBar = ImmersionBar.with(this);
       //  mImmersionBar.barColor(R.color.transparency);
-        mImmersionBar.keyboardEnable(true).init();
+        mImmersionBar.navigationBarColor(R.color.mainNavline_e7).keyboardEnable(true).init();
     }
     /**`
      * 用户不可见执行

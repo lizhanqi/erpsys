@@ -23,10 +23,10 @@ package com.suxuantech.erpsys.ui.widget;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/23 0023 10:02 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 通用的Recycleview分割线
- *  可以设置偏移量，也就是相当于padding，目前仅测试ListView形式其他的没测试（有问题后续再改）
+ * 可以设置偏移量，也就是相当于padding，目前仅测试ListView形式其他的没测试（有问题后续再改）
  */
 
 
@@ -54,7 +54,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
     private int mDividerWidth;
     private int mDividerHeight;
     private List<Integer> mViewTypeList = new ArrayList<>();
-    int leftOffsetX=0;
+    int leftOffsetX = 0;
+
     /**
      * @param color decoration line color.
      */
@@ -76,7 +77,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
             mViewTypeList.add(i);
         }
     }
-     int offsetX;
+
+    int offsetX;
 
     /**
      * 设置偏移量（这里设置的偏移量相当于padingleft和padingright，包括内容都会缩进）
@@ -84,14 +86,24 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
      * @param offsetX
      * @return
      */
-        public DefaultItemDecoration offSetX(int offsetX){
-        this.offsetX=offsetX;
+    public DefaultItemDecoration offSetX(int offsetX) {
+        this.offsetX = offsetX;
         return this;
-        }
+    }
+
+    boolean lastRawDontDraw;
+
+    public DefaultItemDecoration lastRawDontDraw(boolean lastRawDontDraw) {
+        this.lastRawDontDraw = lastRawDontDraw;
+        return this;
+    }
+
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
-        if (position < 0) {return;}
+        if (position < 0) {
+            return;
+        }
 
         if (mViewTypeList.contains(parent.getAdapter().getItemViewType(position))) {
             outRect.set(0, 0, 0, 0);
@@ -110,13 +122,15 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
             if (firstRaw) {
                 outRect.set(0, 0, 0, mDividerHeight / 2);
                 //设置偏移
-                outRect.offset(offsetX,0);
+                outRect.offset(offsetX, 0);
             } else if (lastRaw) {
-                outRect.set(0, mDividerHeight / 2, 0, 0);
-                outRect.offset(offsetX,0);
+                if(!lastRawDontDraw){
+                    outRect.set(0, mDividerHeight / 2, 0, 0);
+                    outRect.offset(offsetX, 0);
+                }
             } else {
                 outRect.set(0, mDividerHeight / 2, 0, mDividerHeight / 2);
-                outRect.offset(offsetX,0);
+                outRect.offset(offsetX, 0);
             }
         } else {
             if (firstRaw && firstColumn) { // right, bottom
@@ -158,8 +172,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
     private boolean isLastRaw(int position, int columnCount, int childCount) {
         if (columnCount == 1) {
             return position + 1 == childCount;
-        }
-        else {
+        } else {
             int lastRawItemCount = childCount % columnCount;
             int rawCount = (childCount - lastRawItemCount) / columnCount + (lastRawItemCount > 0 ? 1 : 0);
 
@@ -196,23 +209,30 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
      * 设置X轴左边一栋多少
      * @param leftOffsetX
      */
-    public void setJustLeftOffsetX(int leftOffsetX){
-        this.leftOffsetX=leftOffsetX;
+    public void setJustLeftOffsetX(int leftOffsetX) {
+        this.leftOffsetX = leftOffsetX;
     }
+
     public void drawHorizontal(Canvas c, RecyclerView parent) {
         c.save();
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             int childPosition = parent.getChildAdapterPosition(child);
-            if (childPosition < 0) {continue;}
-            if (mViewTypeList.contains(parent.getAdapter().getItemViewType(childPosition))){continue;}
-            if (child instanceof SwipeMenuRecyclerView.LoadMoreView){continue;}
+            if (childPosition < 0) {
+                continue;
+            }
+            if (mViewTypeList.contains(parent.getAdapter().getItemViewType(childPosition))) {
+                continue;
+            }
+            if (child instanceof SwipeMenuRecyclerView.LoadMoreView) {
+                continue;
+            }
             final int left = child.getLeft();
             final int top = child.getBottom();
             final int right = child.getRight();
             final int bottom = top + mDividerHeight;
-            mDivider.setBounds(left+leftOffsetX, top, right, bottom);
+            mDivider.setBounds(left + leftOffsetX, top, right, bottom);
             mDivider.draw(c);
         }
         c.restore();
@@ -224,9 +244,15 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             int childPosition = parent.getChildAdapterPosition(child);
-            if (childPosition < 0){ continue;}
-            if (mViewTypeList.contains(parent.getAdapter().getItemViewType(childPosition))) {continue;}
-            if (child instanceof SwipeMenuRecyclerView.LoadMoreView){continue;}
+            if (childPosition < 0) {
+                continue;
+            }
+            if (mViewTypeList.contains(parent.getAdapter().getItemViewType(childPosition))) {
+                continue;
+            }
+            if (child instanceof SwipeMenuRecyclerView.LoadMoreView) {
+                continue;
+            }
             final int left = child.getRight();
             final int top = child.getTop();
             final int right = left + mDividerWidth;

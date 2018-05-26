@@ -16,6 +16,7 @@ import com.suxuantech.erpsys.App
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.ConversationActivity
 import com.suxuantech.erpsys.entity.FormEntity
+import com.suxuantech.erpsys.entity.PhotoSchemeSearchEntity
 import com.suxuantech.erpsys.entity.StaffSearchEntity
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
@@ -35,6 +36,7 @@ class StaffDetailsActivity : TitleNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_staff_details)
+
         lineView.visibility= View.GONE
         var data = intent.extras.getParcelable<StaffSearchEntity.DataBean>("data");
         var uri = Uri.parse("tel:"+data.telephone);

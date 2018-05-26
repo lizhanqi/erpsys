@@ -17,12 +17,11 @@
             android:background="@color/themeColor"
             android:fitsSystemWindows="true"
             app:contentScrim="@color/themeColor"
-            app:toolbarId="@+id/toolbar"
+            app:toolbarId="@+id/toolbar2"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
             <android.support.v7.widget.Toolbar
                 android:background="@color/themeColor"
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar2"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"

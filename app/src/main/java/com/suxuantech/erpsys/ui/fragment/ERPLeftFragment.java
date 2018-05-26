@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -109,26 +110,28 @@ public class ERPLeftFragment extends BaseLazyFragment {
     private View module;
     private List<HomeCustmoerCountEntity.DataBean> dataBeans;
     private QuickAdapter<String> quickAdapter;
+
     @Subscribe()
     @MainThread
-    public void EventBus(String key){
+    public void EventBus(String key) {
         //todo 这里不知道是不是需要再次更新权限列表呢?
-        if (key.equals("changeUser")){
+        if (key.equals("changeUser")) {
             mRefreshLayout.startRefresh();
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-     ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
+        ImmersionBar.setStatusBarView(getActivity(), mRootView.findViewById(R.id.tv_company_name));
         initRefresh();
         useEventBus();
         mTvCompanyName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 OptionHelp optionHelp = new OptionHelp(getActivity());
-                 optionHelp.setUrlTag(OptionHelp.UrlTag.OPTION_EXCUTE_SHOP);
-              //  optionHelp.setTitle("");
+                optionHelp.setUrlTag(OptionHelp.UrlTag.OPTION_EXCUTE_SHOP);
+                //  optionHelp.setTitle("");
                 startActivity(optionHelp.creat());
             }
         });
@@ -140,6 +143,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     protected int setLayoutId() {
         return R.layout.fragment_erp_left;
     }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -147,6 +151,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             initImmersionBar();
         }
     }
+
     @Override
     public void initImmersionBar() {
         if (getActivity() != null) {
@@ -289,12 +294,18 @@ public class ERPLeftFragment extends BaseLazyFragment {
             intent.putExtra("title", "排程");
             startActivity(intent);
         });
-
+//        module.findViewById(R.id.tv_schedule).setOnLongClickListener(o -> {
+//            addShortLunch("排程",R.drawable.icon_scheme_home,RegisterIntoShopActivity.class);
+////            Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
+////            intent.putExtra("title", );
+////            startActivity(intent);
+//            return  true;
+//        });
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private void setData2View(List<HomeCustmoerCountEntity.DataBean> dataBeans) {
-        if (quickAdapter!=null){
+        if (quickAdapter != null) {
             quickAdapter.notifyDataSetChanged();
             return;
         }
@@ -348,12 +359,12 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
         quickAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (position==6){
+            if (position == 6) {
                 Intent intent = new Intent(getActivity(), ContactsActivity.class);
                 Bundle bundle = getBundle();
                 intent.putExtras(bundle);
                 startActivity(intent);
-            }else {
+            } else {
                 Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
                 intent.putExtra("title", strings.get(position));
                 startActivity(intent);
@@ -374,29 +385,29 @@ public class ERPLeftFragment extends BaseLazyFragment {
         bundle.putBoolean("isOption", true);
         bundle.putBoolean("fastEntrance", true);
         bundle.putBoolean("showDepartmentName", true);
-        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())){
-            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())){
-                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())){
+        if (StringUtils.empty(App.getApplication().getUserInfor().getDepartment_name())) {
+            if (StringUtils.empty(App.getApplication().getUserInfor().getShop_name())) {
+                if (StringUtils.empty(App.getApplication().getUserInfor().getBrandclass())) {
                     //仅仅获取集团联系人
                     bundle.putInt("type", 7);
-                    bundle.putString("homeDepartmentName",  "集团联系人");
-                    bundle.putString("keyCode","");
-                }else {
+                    bundle.putString("homeDepartmentName", "集团联系人");
+                    bundle.putString("keyCode", "");
+                } else {
                     //仅仅获取事业部联系人
                     bundle.putInt("type", 6);
-                    bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getBrandclass() );
+                    bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getBrandclass());
                     bundle.putString("keyCode", App.getApplication().getUserInfor().getBrandclass_id() + "");
                 }
-            }else {
+            } else {
                 //仅仅获取点面联系人
                 bundle.putInt("type", 5);
-                bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getShop_name() );
+                bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getShop_name());
                 bundle.putString("keyCode", App.getApplication().getUserInfor().getShop_code() + "");
             }
-        }else {
+        } else {
             //仅仅获取部门联系人
             bundle.putInt("type", 4);
-            bundle.putString("homeDepartmentName",  App.getApplication().getUserInfor().getDepartment_name() );
+            bundle.putString("homeDepartmentName", App.getApplication().getUserInfor().getDepartment_name());
             bundle.putString("keyCode", App.getApplication().getUserInfor().getDepartment_id() + "");
         }
         return bundle;
@@ -530,4 +541,27 @@ public class ERPLeftFragment extends BaseLazyFragment {
         mRefreshLayout.startRefresh();
 
     }
+
+    public void addShortLunch(  String title, int lunchIcon,Class<?> cls) {
+        // TODO Auto-generated method stub
+        //创建一个添加快捷方式的Intent
+        Intent addSC = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        addSC.putExtra("duplicate", false);
+        //快捷键的标题
+        //快捷键的图标
+        Parcelable icon = Intent.ShortcutIconResource.fromContext(
+                getActivity(),lunchIcon);
+        //创建单击快捷键启动本程序的Intent
+        Intent launcherIntent = new Intent(getActivity(), cls);
+        //设置快捷键的标题
+        addSC.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+        //设置快捷键的图标
+        addSC.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+        //设置单击此快捷键启动的程序
+        addSC.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
+        //向系统发送添加快捷键的广播
+        getActivity().sendBroadcast(addSC);
+    }
+
+
 }

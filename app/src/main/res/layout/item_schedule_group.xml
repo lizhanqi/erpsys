@@ -21,6 +21,7 @@
         android:id="@+id/tv_count"
         android:gravity="center_vertical|right"
         android:text="222"
+        android:visibility="gone"
         android:layout_weight="1"
         android:textSize="@dimen/xs34"
         android:textColor="@color/textHint_99"

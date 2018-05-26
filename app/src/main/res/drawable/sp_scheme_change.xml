@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- 圆角 -->
     <corners
-        android:radius="@dimen/px20" />
+        android:radius="@dimen/px1000" />
     <stroke    android:color="@color/noticeOrange" android:width="@dimen/px2"/>
     <!-- 填充 -->
     <solid

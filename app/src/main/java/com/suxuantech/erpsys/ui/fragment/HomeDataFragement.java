@@ -71,7 +71,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
     QuickAdapter adapter;
     int pageIndex, pageSize = 20;
     SearchOrderPresenter mSearchOrderPresenter;
-    DefaultItemDecoration searchItemDecoration ;
+    DefaultItemDecoration searchItemDecoration;
 
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
@@ -168,8 +168,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                         App.getContext().getResources().getString(R.string.start_time),
                         App.getContext().getResources().getString(R.string.end_time), true, false);
             });
-            searchItemDecoration  = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
-          //      recyclerView.addItemDecoration(searchItemDecoration);
+            searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
+            //      recyclerView.addItemDecoration(searchItemDecoration);
             recyclerView.setAdapter(adapter);
         } else {
             if (pageIndex <= 1) {
@@ -216,24 +216,23 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         //传过来的标题
         String title = arguments.getString("title");
         if (title.equals(titles[0])) {
-            todayTakePhoto(Contact.TODAY_APPOINTMENT_TIME, 4);
+            getTodayData(Contact.TODAY_APPOINTMENT_TIME, 4);
         } else if (title.equals(titles[1])) {
-            todayTakePhoto(Contact.Today_TakePhoto, 0);
+            getTodayData(Contact.Today_TakePhoto, 0);
             showOnPosition = 4;
         } else if (title.equals(titles[2])) {
-            todayTakePhoto(Contact.TODAY_FULL_DRESS, 2);
+            getTodayData(Contact.TODAY_FULL_DRESS, 2);
             showOnPosition = 2;
         } else if (title.equals(titles[3])) {
             showOnPosition = 3;
-            todayTakePhoto(Contact.TODAY_MAKE_UP, 3);
+            getTodayData(Contact.TODAY_MAKE_UP, 3);
         } else if (title.equals(titles[4])) {
-            todayTakePhoto(Contact.TODAY_OPTION_PANEL, 5);
+            getTodayData(Contact.TODAY_OPTION_PANEL, 5);
             showOnPosition = 5;
         } else if (title.equals(titles[5])) {
-            todayTakePhoto(Contact.TODAY_PICK_UP_PHOTO, 1);
+            getTodayData(Contact.TODAY_PICK_UP_PHOTO, 1);
             showOnPosition = 6;
         } else if (title.equals(titles[6])) {
-            // TODO: 2018/4/13 0013  我的客户接口暂时没有
         } else if (title.equals("今日收款")) {
             pageIndex = 0;
             showOnPosition = 7;
@@ -242,20 +241,21 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
     }
 
     /**
-     * 今日拍照
+     *
      */
-    public void todayTakePhoto(String url, int what) {
-        String fullUrl = Contact.getFullUrl(url, Contact.TOKEN, "20180401", "20180413", App.getApplication().getUserInfor().getShop_code());
+    public void getTodayData(String url, int what) {
+        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+        String fullUrl = Contact.getFullUrl(url, Contact.TOKEN, nowDate, nowDate, App.getApplication().getUserInfor().getShop_code());
         JavaBeanRequest requst = new JavaBeanRequest(fullUrl, RequestMethod.POST, TodayCustomerEntity.class);
         HttpListener<TodayCustomerEntity> httpListener = new HttpListener<TodayCustomerEntity>() {
             @Override
             public void onSucceed(int what, Response<TodayCustomerEntity> response) {
                 if (response.get().isOK()) {
-                    smartRefreshLayout.finishRefresh( );
+                    smartRefreshLayout.finishRefresh();
                     List<TodayCustomerEntity.DataBean> data = response.get().getData();
-                    setTodayCustomerPhotoAdaputer2(data);
+                    setTodayCustomerAdaputer(data);
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                }else {
+                } else {
                     smartRefreshLayout.finishRefresh(false);
                 }
             }
@@ -270,29 +270,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         addRequestQueue(what, requst, httpResponseListener);
     }
 
-    void setTodayCustomerPhotoAdaputer(List<TodayCustomerEntity.DataBean> data) {
-        if (adapter == null) {
-            adapter = new QuickAdapter<TodayCustomerEntity.DataBean>(R.layout.item_home_data, data) {
-                @Override
-                public void convert(BaseViewHolder helper, TodayCustomerEntity.DataBean item) {
-                    TextView name = helper.getView(R.id.tv_home_name);
-                    TextView date = helper.getView(R.id.tv_home_date);
-                    TextView info = helper.getView(R.id.tv_home_info);
-                    date.setText(TextUtils.isEmpty(item.getPhotodate()) ? "" : item.getPhotodate());
-                    name.setText(android.text.TextUtils.isEmpty(item.getOrderId()) ? item.getOrderId1() : item.getOrderId() + item.getXingming());
-                    if (getArguments().getString("title").equals(getResources().getStringArray(R.array.home_title)[4])) {
-                        info.setText(item.getConsumption_type());
-                    } else {
-                        info.setText(item.getPackage_name());
-                    }
-                }
-            };
 
-        }
-        recyclerView.setAdapter(adapter);
-    }
-
-    void setTodayCustomerPhotoAdaputer2(List<TodayCustomerEntity.DataBean> data) {
+    void setTodayCustomerAdaputer(List<TodayCustomerEntity.DataBean> data) {
         if (adapter == null) {
             adapter = new QuickAdapter<TodayCustomerEntity.DataBean>(R.layout.item_today_customer, data) {
                 @Override
@@ -302,15 +281,13 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     TextView info = helper.getView(R.id.tv3);
                     TextView info2 = helper.getView(R.id.tv4);
                     date.setText(TextUtils.isEmpty(item.getPhotodate()) ? "" : item.getPhotodate());
-                    name.setText("姓名:" +StringUtils.safetyString(item.getXingming()) );
-                    date.setText("订单编号:" +StringUtils.safetyString( item.getOrderId1()));
+                    name.setText("姓名:" + StringUtils.safetyString(item.getXingming()));
+                    date.setText("订单编号:" + StringUtils.safetyString(item.getOrderId1()));
                     info.setText("套系名称:" + StringUtils.safetyString(item.getPackage_name()));
                     info2.setText("订单日期:" + StringUtils.safetyString(item.getTargetdate()));
                 }
             };
-
         }
-
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

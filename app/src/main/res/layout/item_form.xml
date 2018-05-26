@@ -4,6 +4,7 @@
     android:id="@+id/ll_form"
     style="@style/CustomerInformationContain">
         <ImageView
+            android:layout_gravity="top"
             android:id="@+id/img_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -13,7 +14,6 @@
             style="@style/CustomerInformationKey"
            />
         <com.suxuantech.erpsys.ui.widget.ScrollEditText
-            android:textIsSelectable="true"
             android:id="@+id/tv_form_value"
             style="@style/CustomerInformationValue"
              />

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.KeyEvent;
@@ -27,9 +28,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BaseScheme;
 import com.suxuantech.erpsys.entity.HistoryEntity;
+import com.suxuantech.erpsys.entity.PhotoSchemeSearchEntity;
+import com.suxuantech.erpsys.entity.SearchOptionPanelEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
+import com.suxuantech.erpsys.presenter.connector.ISearchOptionPanelScheme;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
+import com.suxuantech.erpsys.presenter.connector.ISearchPhotoScheme;
 import com.suxuantech.erpsys.ui.TypeFlag;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.BaseRecyclerAdapter;
@@ -37,10 +42,10 @@ import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
-import com.suxuantech.erpsys.ui.widget.DefineLoadMoreView;
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
 import com.suxuantech.erpsys.ui.widget.TextViewDrawableClickView;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.GroupByKt;
 import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
@@ -87,7 +92,7 @@ import butterknife.OnClick;
  * E-mail:lizhanqihd@163.com
  * @Description: 订单搜索页面
  */
-public class SearchOrderActivity extends TitleNavigationActivity implements ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
+public class SearchOrderActivity extends TitleNavigationActivity implements ISearchOptionPanelScheme, ISearchPhotoScheme, ISearchOrderPresenter, OneKeyClearAutoCompleteText.LeftDrawableClickListen {
     @BindView(R.id.tv_nav_search_left)
     AdjustDrawableTextView mTvNavLeft;
     @BindView(R.id.tiet_nav_search)
@@ -115,11 +120,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private BaseRecyclerAdapter<SearchOrderEntity.DataBean> searchResultAdaputer;
     private DefaultItemDecoration histroyItemDecoration;
     private DefaultItemDecoration searchItemDecoration;
-    private DefineLoadMoreView defineLoadMoreView;
     boolean isShowSimple = true;
     private QuickAdapter quickAdapter;
     private BaseScheme schemeData;
     TypeFlag searchType = TypeFlag.NOMAL;
+    private QuickAdapter<ArrayList<SearchOptionPanelEntity.DataBean>> optionPanelAdaputer;
+    private QuickAdapter<ArrayList<PhotoSchemeSearchEntity.DataBean>> photoSchemeAdaputer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +137,11 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         }
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            //  extras.setClassLoader(getClass().getClassLoader());
             schemeData = (BaseScheme) extras.getParcelable("data");
         }
         mSearchOrderPresenter = new SearchOrderPresenter(this);
+        mSearchOrderPresenter.setiSearchOptionPanelScheme(this);
+        mSearchOrderPresenter.setiSearchPhotoScheme(this);
         initView();
         initSearchEditTextView();
         initDataAdapter();
@@ -151,7 +158,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             search(true);
         }
         smartRefreshLayout.setOnLoadMoreListener(load -> {
-            mSearchOrderPresenter.sosoNetLoadmore();
+            mSearchOrderPresenter.sosoNetLoadmore(searchType);
         });
         smartRefreshLayout.setOnRefreshListener(load -> {
             search(false);
@@ -163,65 +170,106 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
      * 初始化适配器
      */
     private void initDataAdapter() {
-        if (TypeFlag.OPTION_PANEL == searchType || TypeFlag.PHOTOGRAPH == searchType) {
-            quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_search_option_panel, null) {
+        if (TypeFlag.OPTION_PANEL == searchType) {
+            optionPanelAdaputer = new QuickAdapter<ArrayList<SearchOptionPanelEntity.DataBean>>(R.layout.item_search_option_panel, null) {
+
                 @Override
-                protected void convert(BaseViewHolder helper, SearchOrderEntity.DataBean item) {
+                protected void convert(BaseViewHolder helper, ArrayList<SearchOptionPanelEntity.DataBean> item) {
+                        int parentPosition = optionPanelAdaputer.getData().lastIndexOf(item);
                     TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
                     TextView tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
                     TextView tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
-                    LinearLayout scheme = (LinearLayout) helper.getView(R.id.ll_scheme);
-                    TextView addScheme = (TextView) helper.getView(R.id.tv_add_scheme);
-                    TextView changeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
                     LinearLayout llScheme = (LinearLayout) helper.getView(R.id.ll_scheme);
                     TextView tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
                     TextView tvChangeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
-                    tvChangeScheme.setOnClickListener(l -> {
-                        Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
-                        intent.putExtra("orderId", item.getOrderId());
-                        intent.putExtra("customerId", item.getCustomerid());
-                        intent.putExtra("add", false);
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("data", item);
-                        bundle.putSerializable("schemeData", schemeData);
-                        bundle.putParcelable("allSchemeData", getIntent().getExtras().getParcelable("allSchemeData"));
-                        bundle.putSerializable("type", searchType);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                    TextView tvCustomerInfos2 = (TextView) helper.getView(R.id.tv_customer_infos2);
+                    RecyclerView rvAllSchemed = (RecyclerView) helper.getView(R.id.rv_all_schemed);
+                    tvAddScheme.setOnClickListener((View view) -> {
+                        optionPanelScheme(item, true,-1);
                     });
-                    tvAddScheme.setOnClickListener(l -> {
-                        Intent intent = new Intent(SearchOrderActivity.this, SchemeCommintActivity.class);
-                        intent.putExtra("orderId", item.getOrderId());
-                        intent.putExtra("customerId", item.getCustomerid());
-                        intent.putExtra("add", true);
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("data", item);
-                        bundle.putParcelable("allSchemeData", getIntent().getExtras().getParcelable("allSchemeData"));
-                        bundle.putParcelable("schemeData", schemeData);
-                        bundle.putSerializable("type", searchType);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    });
-                    scheme.setVisibility(View.VISIBLE);
-                    tvCustomerNames.setText(StringUtils.safetyString(item.getXingming()));
-                    tvOrderId.setText("订单编号" + StringUtils.safetyString(item.getOrderId()));
-                    if (TypeFlag.OPTION_PANEL == searchType) {
-                        tvCustomerInfos.setText(new MyString("拍照日期:").setColor(getResources().getColor(R.color.hintColor)));
-                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getPhotodate())).setColor(getResources().getColor(R.color.textColor)));
-                        tvCustomerInfos.append(new MyString("\n选片日期:").setColor(getResources().getColor(R.color.hintColor)));
-                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getSelectday())).setColor(getResources().getColor(R.color.textColor)));
-                    } else {
-                        tvCustomerInfos.setText(new MyString("订单日期:").setColor(getResources().getColor(R.color.hintColor)));
-                        tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getTargetdate())).setColor(getResources().getColor(R.color.textColor)));
-                        tvCustomerInfos.append(new MyString("\n拍照日期:").setColor(getResources().getColor(R.color.hintColor)));
-                        String string = StringUtils.safetyString(item.getPhotodate());
-                        if (string.length() > 10) {
-                            string = string.substring(0, 10);
+                    SearchOptionPanelEntity.DataBean dataBean = item.get(0);
+                    String orderid = StringUtils.safetyString(dataBean.getOrderid());
+                    String names = StringUtils.safetyString(dataBean.getXingming());
+                    String date = StringUtils.safetyString(dataBean.getTargetdate());
+                    String Area = StringUtils.safetyString(dataBean.getArea());
+                    tvCustomerInfos.setText("订单日期:" + date);
+                    tvCustomerInfos.append("\n客户分区:" + Area);
+                    tvOrderId.setText(orderid);
+                    tvCustomerNames.setText(names);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
+                    linearLayoutManager.setSmoothScrollbarEnabled(false);
+                    DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7));
+                    defaultItemDecoration.setJustLeftOffsetX(50);
+                    rvAllSchemed.addItemDecoration(defaultItemDecoration);
+                    rvAllSchemed.setLayoutManager(linearLayoutManager);
+                    QuickAdapter childenAdaputer = new QuickAdapter<SearchOptionPanelEntity.DataBean>(R.layout.item_search_childen_scheme, item) {
+                        @Override
+                        protected void convert(BaseViewHolder helper, SearchOptionPanelEntity.DataBean item) {
+                            ArrayList<SearchOptionPanelEntity.DataBean> dataBeans = optionPanelAdaputer.getData().get(parentPosition);
+                            int childenPosstion = dataBeans.lastIndexOf(item);
+                            TextView tvType = (TextView) helper.getView(R.id.tv_type);
+                            TextView tvDate = (TextView) helper.getView(R.id.tv_date);
+                            TextView tvChange = (TextView) helper.getView(R.id.tv_change);
+                            tvType.setText("拍照类型:" + StringUtils.safetyString(item.getConsumption_type()));
+                            tvDate.setText(StringUtils.subDate(StringUtils.safetyString(item.getPhotodate())));
+                            tvChange.setOnClickListener((View view) -> {
+                                optionPanelScheme(dataBeans, false,childenPosstion);
+                                ToastUtils.snackbarShort(parentPosition + "------" + childenPosstion);
+                            });
                         }
-                        tvCustomerInfos.append(new MyString(string).setColor(getResources().getColor(R.color.textColor)));
-                    }
-                    tvCustomerInfos.append(new MyString("\n客户分区:").setColor(getResources().getColor(R.color.hintColor)));
-                    tvCustomerInfos.append(new MyString(StringUtils.safetyString(item.getArea())).setColor(getResources().getColor(R.color.textColor)));
+                    };
+                    rvAllSchemed.setAdapter(childenAdaputer);
+                }
+            };
+        } else if (TypeFlag.PHOTOGRAPH == searchType) {
+            ArrayList<ArrayList<PhotoSchemeSearchEntity.DataBean>> lists = new ArrayList<>();
+            photoSchemeAdaputer = new QuickAdapter<ArrayList<PhotoSchemeSearchEntity.DataBean>>(R.layout.item_search_option_panel, lists) {
+                @Override
+                protected void convert(BaseViewHolder helper, ArrayList<PhotoSchemeSearchEntity.DataBean> item) {
+                    int parentPosition = photoSchemeAdaputer.getData().lastIndexOf(item);
+                    TextView tvOrderId = (TextView) helper.getView(R.id.tv_order_id);
+                    TextView tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
+                    TextView tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
+                    LinearLayout llScheme = (LinearLayout) helper.getView(R.id.ll_scheme);
+                    TextView tvAddScheme = (TextView) helper.getView(R.id.tv_add_scheme);
+                    TextView tvChangeScheme = (TextView) helper.getView(R.id.tv_change_scheme);
+                    TextView tvCustomerInfos2 = (TextView) helper.getView(R.id.tv_customer_infos2);
+                    RecyclerView rvAllSchemed = (RecyclerView) helper.getView(R.id.rv_all_schemed);
+                    tvAddScheme.setOnClickListener((View view) -> {
+                        photoScheme(item, true,-1);
+                    });
+                    PhotoSchemeSearchEntity.DataBean dataBean = item.get(0);
+                    String orderid = StringUtils.safetyString(dataBean.getOrderid());
+                    String names = StringUtils.safetyString(dataBean.getXingming());
+                    String date = StringUtils.safetyString(dataBean.getTargetdate());
+                    String Area = StringUtils.safetyString(dataBean.getArea());
+                    tvCustomerInfos.setText("订单日期:" + date);
+                    tvCustomerInfos.append("\n客户分区:" + Area);
+                    tvOrderId.setText(orderid);
+                    tvCustomerNames.setText(names);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
+                    linearLayoutManager.setSmoothScrollbarEnabled(false);
+                    DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7));
+                    defaultItemDecoration.setJustLeftOffsetX(50);
+                    rvAllSchemed.addItemDecoration(defaultItemDecoration);
+                    rvAllSchemed.setLayoutManager(linearLayoutManager);
+                    QuickAdapter childenAdaputer = new QuickAdapter<PhotoSchemeSearchEntity.DataBean>(R.layout.item_search_childen_scheme, item) {
+                        @Override
+                        protected void convert(BaseViewHolder helper, PhotoSchemeSearchEntity.DataBean item) {
+                            ArrayList<PhotoSchemeSearchEntity.DataBean> dataBeans = photoSchemeAdaputer.getData().get(parentPosition);
+                            int childenPosstion = dataBeans.lastIndexOf(item);
+                            TextView tvType = (TextView) helper.getView(R.id.tv_type);
+                            TextView tvDate = (TextView) helper.getView(R.id.tv_date);
+                            TextView tvChange = (TextView) helper.getView(R.id.tv_change);
+                            tvType.setText("拍照类型:" + StringUtils.safetyString(item.getConsumption_type()));
+                            tvDate.setText(StringUtils.subDate(StringUtils.safetyString(item.getPhotodate())));
+                            tvChange.setOnClickListener((View view) -> {
+                                photoScheme(dataBeans, false,childenPosstion);
+                             //   ToastUtils.snackbarShort(parentPosition + "------" + childenPosstion);
+                            });
+                        }
+                    };
+                    rvAllSchemed.setAdapter(childenAdaputer);
                 }
             };
 
@@ -248,22 +296,72 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     tvPackageName.append(new MyString(StringUtils.safetyString(item.getPayment_money() + "")).setColor(getResources().getColor(R.color.textColor)));
                 }
             };
+            quickAdapter.setOnItemClickListener((adapter, view, position) -> {
+                Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
+                SearchOrderEntity.DataBean dataBean = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
+                intent.putExtra("orderId", dataBean.getOrderId());
+                intent.putExtra("customerId", dataBean.getCustomerid());
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("data", dataBean);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            });
         }
-        quickAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Intent intent = new Intent(SearchOrderActivity.this, OrderDetailActivity.class);
-            SearchOrderEntity.DataBean dataBean = (SearchOrderEntity.DataBean) quickAdapter.getData().get(position);
-            intent.putExtra("orderId", dataBean.getOrderId());
-            intent.putExtra("customerId", dataBean.getCustomerid());
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("data", dataBean);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
+    }
+
+    private void photoScheme(ArrayList<PhotoSchemeSearchEntity.DataBean> item, boolean isAdd,int changeIndex) {
+        if( schemeData.getArea().equals("全部")|| item.get(0).getArea().equals( schemeData.getArea())){
+        if (isAdd) {
+            for (PhotoSchemeSearchEntity.DataBean dataBean : item) {
+                if (StringUtils.empty(dataBean.getPhotodate())) {
+                    ToastUtils.snackbarShort("您有未安排拍摄日期的排程,请先修改该排程", "确定");
+                    return;
+                }
+            }
+        }
+        Intent parentActivityIntent = new Intent(this, SchemeCommintActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("type", searchType);
+        bundle.putSerializable("schemeData", schemeData);
+        bundle.putParcelableArrayList("photoSchemeHisory", item);
+        bundle.putInt("changeIndex", changeIndex);
+        bundle.putBoolean("isAdd", isAdd);
+        bundle.putParcelable(ScheduleActivity.ONE_SCHEME_ALL_INFO, getIntent().getExtras().getParcelable(ScheduleActivity.ONE_SCHEME_ALL_INFO));
+        bundle.putParcelable("schemeData", schemeData);
+        parentActivityIntent.putExtras(bundle);
+        startActivity(parentActivityIntent);
+        }else {
+            ToastUtils.snackbarShort("客户分区排程分区不一致!","确定");
+        }
+    }
+
+    private void optionPanelScheme(ArrayList<SearchOptionPanelEntity.DataBean> item, boolean isAdd,int changeIndex) {
+        if( schemeData.getArea().equals("全部")|| item.get(0).getArea().equals( schemeData.getArea())){
+        if (isAdd) {
+            for (SearchOptionPanelEntity.DataBean dataBean : item) {
+                if (StringUtils.empty(dataBean.getSelectday())) {
+                    ToastUtils.snackbarShort("您有未安排选片日期的排程,请先修改该排程", "确定");
+                    return;
+                }
+            }
+        }
+        Intent parentActivityIntent = new Intent(this, SchemeCommintActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("type", searchType);
+        bundle.putSerializable("schemeData", schemeData);
+        bundle.putParcelableArrayList("optionPanelSchemeHisory", item);
+        bundle.putInt("changeIndex", changeIndex);
+        bundle.putParcelable(ScheduleActivity.ONE_SCHEME_ALL_INFO, getIntent().getExtras().getParcelable("allSchemeData"));
+        bundle.putBoolean("isAdd", isAdd);
+        parentActivityIntent.putExtras(bundle);
+        startActivity(parentActivityIntent);
+        }else {
+            ToastUtils.snackbarShort("客户分区排程分区不一致!","确定");
+        }
     }
 
     @Override
     public void onBackPressedSupport() {
-        //
         if (!getIntent().getBooleanExtra("hideSearch", false)) {
             if (mSmrHistory != null) {
                 if (mSmrHistory.getAdapter() == null || mSmrHistory.getAdapter() != historyAdapter) {
@@ -292,7 +390,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         histroyItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7), 0, 2);
         histroyItemDecoration.offSetX(55);
         searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
-        defineLoadMoreView = new DefineLoadMoreView(this);
         Drawable drawable = getResources().getDrawable(R.drawable.icon_simple_data);
         drawable.setBounds(0, 0, (int) drawable.getMinimumWidth(), drawable.getMinimumWidth());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
@@ -412,7 +509,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     /**
      * 订单的详情拼接
-     *
      * @param text
      * @param color
      * @return
@@ -476,7 +572,13 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             quickAdapter.setEnableLoadMore(false);
         }
         //网络搜搜
-        mSearchOrderPresenter.sosoNetOrder(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
+        if (searchType == TypeFlag.NOMAL) {
+            mSearchOrderPresenter.sosoNetOrder(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
+        } else if (searchType == TypeFlag.OPTION_PANEL) {
+            mSearchOrderPresenter.sosoOptionPanelScheme(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
+        } else if (searchType == TypeFlag.PHOTOGRAPH) {
+            mSearchOrderPresenter.sosoPhotoScheme(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
+        }
         hiddenHistory();
     }
 
@@ -621,6 +723,80 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         mSmrHistory.setAdapter(null);
         mSmrHistory.removeItemDecoration(histroyItemDecoration);
         mSmrHistory.removeItemDecoration(searchItemDecoration);
+    }
+
+    /**
+     * 搜索选片排程回调
+     * @param data 数据
+     * @param isRefesh 是否是刷新
+     * @param hasMore 是否还有更多
+     */
+    @Override
+    public void searchOptionPaneSucceed(List<SearchOptionPanelEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
+        ArrayList<ArrayList<SearchOptionPanelEntity.DataBean>> lists = GroupByKt.groupOptionPanelSchedule(data);
+        smartRefreshLayout.setEnabled(true);
+        smartRefreshLayout.setEnableRefresh(true);
+        smartRefreshLayout.setEnableLoadMore(true);
+        smartRefreshLayout.setEnableAutoLoadMore(true);
+        if (isRefesh) {
+            smartRefreshLayout.finishRefresh();
+            resetRecycleView(true);
+            mSmrHistory.setAdapter(optionPanelAdaputer);
+            optionPanelAdaputer.updateAll(lists);
+        } else {
+            optionPanelAdaputer.apped(lists);
+            smartRefreshLayout.finishLoadMore();
+        }
+        if (!hasMore) {
+            //完成加载并标记没有更多数据 1.0.4
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    }
+
+    @Override
+    public void searchOptionPaneFailed(Response<SearchOptionPanelEntity> response, int pageIndex) {
+        if(smartRefreshLayout!=null){
+            smartRefreshLayout.setEnabled(true);
+            smartRefreshLayout.setEnableRefresh(true);
+            smartRefreshLayout.finishLoadMore(false);
+        }
+    }
+
+    /**
+     * 拍照排程回调
+     * @param data 数据
+     * @param isRefesh 是否是刷新
+     * @param hasMore 是否还有更多
+     */
+    @Override
+    public void searchPhotoSchemeSucceed(List<PhotoSchemeSearchEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
+        ArrayList<ArrayList<PhotoSchemeSearchEntity.DataBean>> lists = GroupByKt.groupPhotoSchedule((ArrayList<PhotoSchemeSearchEntity.DataBean>) data);
+        smartRefreshLayout.setEnabled(true);
+        smartRefreshLayout.setEnableRefresh(true);
+        smartRefreshLayout.setEnableLoadMore(true);
+        smartRefreshLayout.setEnableAutoLoadMore(true);
+        if (isRefesh) {
+            smartRefreshLayout.finishRefresh();
+            resetRecycleView(true);
+            mSmrHistory.setAdapter(photoSchemeAdaputer);
+            photoSchemeAdaputer.updateAll(lists);
+        } else {
+            photoSchemeAdaputer.apped(lists);
+            smartRefreshLayout.finishLoadMore();
+        }
+        if (!hasMore) {
+            //完成加载并标记没有更多数据 1.0.4
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    }
+
+    @Override
+    public void searchPhotoSchemeFailed(Response<PhotoSchemeSearchEntity> response, int pageIndex) {
+        smartRefreshLayout.setEnabled(true);
+        smartRefreshLayout.setEnableRefresh(true);
+        //  if (pageIndex!=0){
+        ///结束加载（加载失败）
+        smartRefreshLayout.finishLoadMore(false);//结束加载（加载失败）
     }
 
 }

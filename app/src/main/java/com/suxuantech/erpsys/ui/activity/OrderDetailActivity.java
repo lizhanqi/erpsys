@@ -78,6 +78,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
     String current;
+    public static int SHOW_PHOTO_MATERIAL=4,SHOW_OPTION_PANEL_MATERIAL=5;
+    public static String SHOWONPOSITION ="showOnPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         Drawable drawable = getResources().getDrawable(R.drawable.arrows_down_gray);
         getImgToolbarCenter().setImageDrawable(drawable);
         stringArray = getResources().getStringArray(R.array.order);
-        current = stringArray[getIntent().getIntExtra("showOnPosition", 0)];
+        current = stringArray[getIntent().getIntExtra(SHOWONPOSITION, 0)];
         setCenterTitle(current);
         gotoFragment();
     }

@@ -78,7 +78,10 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             if (item.flag != null) {
                 temp = item.flag as Int
             }
-            value?.append(MyString(temp.toString()).setColor(resources.getColor(R.color.litte_red)))
+            if (!intent.hasExtra("title")) {
+                value?.append(MyString(temp.toString()).setColor(resources.getColor(R.color.litte_red)))
+
+            }
         }
     }
 
@@ -86,7 +89,7 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_into_shop)
         addButton = idSetOnClick<FloatingActionButton>(R.id.fab_add);
-        mToolbar = idGetView<android.support.v7.widget.Toolbar>(R.id.toolbar)
+        mToolbar = idGetView<android.support.v7.widget.Toolbar>(R.id.toolbar2)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
@@ -94,10 +97,9 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         if (intent.hasExtra("title")) {
             val stringExtra = intent.getStringExtra("title");
             addButton?.visibility = View.GONE
-            toolbar.setTitle(stringExtra)
+            mToolbar?.setTitle(stringExtra)
         }
         scrollView = idGetView<NestedScrollView>(R.id.nsv_view)
-
         idGetView<AppBarLayout>(R.id.appbar).addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
                 if (!intent.hasExtra("title")) {
@@ -161,7 +163,11 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         }
         recyclerView?.adapter = adapter;
         smartRefreshLayout.setOnRefreshListener(OnRefreshListener {
-            getData();
+            if (!intent.hasExtra("title")) {
+                getData();
+            } else {
+                refreshLayout.finishRefresh();
+            }
         })
     }
 
