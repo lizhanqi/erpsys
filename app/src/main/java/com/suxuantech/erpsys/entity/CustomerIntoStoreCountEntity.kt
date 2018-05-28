@@ -46,11 +46,11 @@ class CustomerIntoStoreCountEntity : BaseResult() {
          * lscount : 3
          */
 
-        var allcount: String? = null
-        var newcount: String? = null
-        var wjdcount: String? = null
-        var jdwccount: String? = null
-        var ycjcount: String? = null
-        var lscount: String? = null
+        var allcount: String? = ""
+        var newcount: String? = ""
+        var wjdcount: String? = ""
+        var jdwccount: String? = ""
+        var ycjcount: String? = ""
+        var lscount: String? = ""
     }
 }

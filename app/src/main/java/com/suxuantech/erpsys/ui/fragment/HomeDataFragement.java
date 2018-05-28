@@ -148,6 +148,9 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     TextView tvCustomerNames = (TextView) helper.getView(R.id.tv_customer_names);
                     TextView tvCustomerInfos = (TextView) helper.getView(R.id.tv_customer_infos);
                     TextView tvCustomerInfos2 = (TextView) helper.getView(R.id.tv_customer_infos2);
+                    helper.getView(R.id.tv_add_scheme).setVisibility(View.GONE);
+
+
                     tvCustomerInfos2.setVisibility(View.VISIBLE);
                     tvCustomerNames.setText("" + item.getXingming());
                     tvOrderId.setText("订单编号" + item.getOrderId());
@@ -232,7 +235,6 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         } else if (title.equals(titles[5])) {
             getTodayData(Contact.TODAY_PICK_UP_PHOTO, 1);
             showOnPosition = 6;
-        } else if (title.equals(titles[6])) {
         } else if (title.equals("今日收款")) {
             pageIndex = 0;
             showOnPosition = 7;
@@ -291,9 +293,20 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mSearchOrderPresenter.sosoNetOrder(data.get(position).getOrderId(),
-                        App.getContext().getResources().getString(R.string.start_time),
-                        App.getContext().getResources().getString(R.string.end_time), true, false);
+                String[] titles = getResources().getStringArray(R.array.home_title);
+                Bundle arguments = getArguments();
+                if (arguments == null) {
+                    return;
+                }
+                //传过来的标题
+                String title = arguments.getString("title");
+                if (title.equals(titles[0])) {
+                    //   startActivity(CustomerDetailsActivity.);
+                } else {
+                    mSearchOrderPresenter.sosoNetOrder(data.get(position).getOrderId(),
+                            App.getContext().getResources().getString(R.string.start_time),
+                            App.getContext().getResources().getString(R.string.end_time), true, false);
+                }
             }
         });
         recyclerView.setAdapter(adapter);

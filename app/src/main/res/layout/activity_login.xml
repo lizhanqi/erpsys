@@ -100,7 +100,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="如来"
+                        android:text="小飞"
                         android:textColor="@color/copyrigth"
                         android:textColorHint="@color/copyrigth"
                         android:textSize="@dimen/xs45" />

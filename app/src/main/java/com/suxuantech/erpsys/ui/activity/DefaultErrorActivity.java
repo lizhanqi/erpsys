@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -34,13 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 import com.suxuantech.erpsys.utils.MailManager;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 
-public final class DefaultErrorActivity extends AppCompatActivity {
+public final class DefaultErrorActivity extends TitleNavigationActivity {
 
     @SuppressLint("PrivateResource")
     @Override
@@ -92,7 +92,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
         a.recycle();
 
         setContentView(cat.ereza.customactivityoncrash.R.layout.customactivityoncrash_default_error_activity);
-
+        setStatusBarFollow(getmContextView());
         //Close/restart button logic:
         //If a class if set, use restart.
         //Else, use close and just finish the app.
@@ -164,9 +164,7 @@ public final class DefaultErrorActivity extends AppCompatActivity {
 
     private void copyErrorToClipboard() {
         String errorInformation = CustomActivityOnCrash.getAllErrorDetailsFromIntent(DefaultErrorActivity.this, getIntent());
-
         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-
         //Are there any devices without clipboard...?
         if (clipboard != null) {
             ClipData clip = ClipData.newPlainText(getString(cat.ereza.customactivityoncrash.R.string.customactivityoncrash_error_activity_error_details_clipboard_label), errorInformation);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +63,8 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
     private View lineView;
     private TextView tvToolbarCenterTilte;
         ImageView imgToolbarCenter;
+    private LinearLayout toolbarCenterRootView;
+
     public TextView getTvToolbarCenterTilte() {
         return tvToolbarCenterTilte;
     }
@@ -492,6 +495,10 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
         setContentView(mContextView);
     }
 
+    public View getmContextView() {
+        return mContextView;
+    }
+
     /**
      * 将View添加到自己的 最外层的包裹中
      *
@@ -526,7 +533,9 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
         tvToolbarCenterTilte.setOnClickListener(this);
         mContentViewlayout = rootViews.findViewById(R.id.content_view_layout);
         imgToolbarCenter = rootViews.findViewById(R.id.img_toolbar_center);
-
+        imgToolbarCenter.setOnClickListener(this);
+        toolbarCenterRootView = rootViews.findViewById(R.id.ll_toolbar_center_root);
+        toolbarCenterRootView.setOnClickListener(this);
     }
 
     @Override

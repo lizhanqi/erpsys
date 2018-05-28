@@ -124,7 +124,7 @@
         <item name="android:textColor">@color/myValue_33</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">top|left</item>
-        <item name="android:textIsSelectable">true</item>
+        <item name="android:textIsSelectable">false</item>
     </style>
     <!--数据-->
     <style name="DetailsValue" parent="DetailsKey">

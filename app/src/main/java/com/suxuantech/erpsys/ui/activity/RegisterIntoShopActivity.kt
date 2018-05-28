@@ -74,9 +74,9 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             name.setText(item.key)
             value.setText(item.value)
             icon.setImageDrawable(resources.getDrawable(item.icon))
-            var temp = 0;
+            var temp = "";
             if (item.flag != null) {
-                temp = item.flag as Int
+                temp = item.flag as String
             }
             if (!intent.hasExtra("title")) {
                 value?.append(MyString(temp.toString()).setColor(resources.getColor(R.color.litte_red)))
@@ -194,21 +194,21 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             override fun onSucceed(what: Int, response: Response<CustomerIntoStoreCountEntity>) {
                 if (response.get().isOK) {
                     list.forEach {
-                        if (it.key.equals("今日新进客资")) {
+                        if (it.value.equals("今日新进客资")) {
                             it.flag = response.get().data?.get(0)?.newcount;
-                        } else if (it.key.equals("今日进店未成交")) {
+                        } else if (it.value.equals("今日进店未成交")) {
                             it.flag = response.get().data?.get(0)?.jdwccount;
-                        } else if (it.key.equals("未进店客客资")) {
+                        } else if (it.value.equals("未进店客客资")) {
                             it.flag = response.get().data?.get(0)?.wjdcount;
-                        } else if (it.key.equals("今日成交客资")) {
+                        } else if (it.value.equals("今日成交客资")) {
                             it.flag = response.get().data?.get(0)?.ycjcount;
-                        } else if (it.key.equals("今日流失客资")) {
+                        } else if (it.value.equals("今日流失客资")) {
                             it.flag = response.get().data?.get(0)?.lscount;
-                        } else if (it.key.equals("今日所有客资")) {
+                        } else if (it.value.equals("今日所有客资")) {
                             it.flag = response.get().data?.get(0)?.allcount;
                         }
-                        adapter.notifyDataSetChanged()
                     }
+                    adapter.notifyDataSetChanged()
                     refreshLayout.finishRefresh();
                     refreshLayout.setNoMoreData(false);
                 } else {
@@ -229,7 +229,7 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             override fun onSucceed(what: Int, response: Response<UnremarkCustomerCountEntity>) {
                 if (response.get().isOK) {
                     list.forEach {
-                        if (it.key.equals("未标记日期")) {
+                        if (it.key.equals("未标记进店日期客资")) {
                             it.flag = response.get().data?.get(0)?.wycount;
                         }
                     }

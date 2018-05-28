@@ -101,6 +101,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
+            case R.id. ll_toolbar_center_root:
+            case R.id.img_toolbar_center:
             case R.id.tv_toolbar_center_title:
                 if (getIntent().getBooleanExtra("canChange", true)) {
                     showpopupwindow();
@@ -243,8 +245,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                     .setEnabled(true)
                     .setOnMenuItemClickListener(menuItem -> {
                         if (productDataFragment.hasPackage()) {
-                            String[] s = {"一销产品", "二销产品"};
-                            AlertView alertView = new AlertView("产品次数", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
+                            String[] s = {"一销产品" };
+                            AlertView alertView = new AlertView("添加产品", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Object o, int position) {//position -1是取消按钮
                                     recoverImmersionBar();

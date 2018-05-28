@@ -44,6 +44,6 @@ class UnremarkCustomerCountEntity : BaseResult2<UnremarkCustomerCountEntity.Data
          * wycount : 5
          */
 
-        var wycount: Int = 0
+        var wycount: String ?=""
     }
 }

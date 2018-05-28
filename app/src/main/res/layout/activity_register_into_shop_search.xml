@@ -58,13 +58,13 @@
         android:id="@+id/smlayout"
         android:background="@color/mainNavline_e7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
+        android:background="@color/white"
         tools:listitem="@layout/item_register_info"
         android:id="@+id/rv_register"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
