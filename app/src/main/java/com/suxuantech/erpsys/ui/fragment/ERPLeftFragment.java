@@ -231,14 +231,13 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
 
                     tvcn.setText(new MyString("今日客资量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
-                    tvcn.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
-                    //   tvcn.append(new MyString("\n今日客资量").setSize(20));
+                    tvcn.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
-                    tvon.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
-                    //tvon.append(new MyString(" 今日订单量").setSize(20));
-                    tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                    tvon.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+
                     tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
-                    tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     tvrt.append(new MyString("\n今日收款").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                 }
             }
@@ -542,7 +541,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
 
     }
 
-    public void addShortLunch(  String title, int lunchIcon,Class<?> cls) {
+    public void addShortLunch(String title, int lunchIcon, Class<?> cls) {
         // TODO Auto-generated method stub
         //创建一个添加快捷方式的Intent
         Intent addSC = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
@@ -550,7 +549,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
         //快捷键的标题
         //快捷键的图标
         Parcelable icon = Intent.ShortcutIconResource.fromContext(
-                getActivity(),lunchIcon);
+                getActivity(), lunchIcon);
         //创建单击快捷键启动本程序的Intent
         Intent launcherIntent = new Intent(getActivity(), cls);
         //设置快捷键的标题
