@@ -8,6 +8,7 @@ freeline {
     autoDependency false
 }
 android {
+
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {

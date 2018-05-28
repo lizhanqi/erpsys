@@ -235,8 +235,9 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
                     tvon.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
 
+                     tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
                     tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
-                    tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+
                     tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     tvrt.append(new MyString("\n今日收款").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                 }
