@@ -3,6 +3,7 @@ package com.suxuantech.erpsys.ui.activity
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -90,10 +91,8 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         setContentView(R.layout.activity_register_into_shop)
         addButton = idSetOnClick<FloatingActionButton>(R.id.fab_add);
         mToolbar = idGetView<android.support.v7.widget.Toolbar>(R.id.toolbar2)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        setSupportActionBar(mToolbar)
+        supportToolbar()
         if (intent.hasExtra("title")) {
             val stringExtra = intent.getStringExtra("title");
             addButton?.visibility = View.GONE
@@ -105,10 +104,12 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
                 if (!intent.hasExtra("title")) {
                     if (state === State.EXPANDED) {
                         //展开状态
-                        menus?.findItem(R.id.action_settings)?.setIcon(R.drawable.icon_add_white)?.setVisible(false)
+                        menus?.findItem(R.id.action_settings)?.setVisible(false)
+                        menus?.findItem(R.id.action_today)?.setVisible(false)
                     } else if (state === State.COLLAPSED) {
                         //折叠状态
                         menus?.findItem(R.id.action_settings)?.setVisible(true)
+                        menus?.findItem(R.id.action_today)?.setVisible(true)
                     } else {
                         //中间状态
                     }
@@ -116,8 +117,6 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
                     addButton?.visibility = View.GONE
                 }
             }
-        })
-        scrollView?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
         })
         llNewCustomer = idSetOnClick<LinearLayout>(R.id.ll_new_customer)
         llNotIntoShop = idSetOnClick<LinearLayout>(R.id.ll_not_into_shop) as LinearLayout
@@ -136,13 +135,14 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         tvCustomerAll = idGetView<TextView>(R.id.tv_customer_all);
         recyclerView = idGetView<RecyclerView>(R.id.rv_list);
         if (!intent.hasExtra("title")) {
-            list.add(FormEntity(R.drawable.icon_all_customer, "所有客资", "今日所有客资", 5))
-            list.add(FormEntity(R.drawable.icon_new_customer, "新进客资", "今日新进客资", 5))
-            list.add(FormEntity(R.drawable.icon_not_in_shop, "未进店", "今日未进店客资", 5))
-            list.add(FormEntity(R.drawable.icon_into_shop_unbargain, "进店未成", "进店未成交客资", 5))
-            list.add(FormEntity(R.drawable.icon_already_make_bargain, "已成交", "今日成交客资", 5))
-            list.add(FormEntity(R.drawable.icon_run_away, "流失客资", "今日流失客资", 5))
-            list.add(FormEntity(R.drawable.icon_in_shop_unlabeled, "未标记进店日期客资", "未标记进店客资", 30))
+            //（0：所有客资；1：已成交；2：流失客资；3：新进客客资；4：未进店；5：进店未成交；6：登记日期未标记预约进店日；）
+            list.add(FormEntity(R.drawable.icon_all_customer, "所有客资", "今日所有客资", 5, 0))
+            list.add(FormEntity(R.drawable.icon_new_customer, "新进客资", "今日新进客资", 5, 3))
+            list.add(FormEntity(R.drawable.icon_not_in_shop, "未进店", "今日未进店客资", 5, 4))
+            list.add(FormEntity(R.drawable.icon_into_shop_unbargain, "进店未成", "进店未成交客资", 5, 5))
+            list.add(FormEntity(R.drawable.icon_already_make_bargain, "已成交", "今日成交客资", 5, 1))
+            list.add(FormEntity(R.drawable.icon_run_away, "流失客资", "今日流失客资", 5, 2))
+            list.add(FormEntity(R.drawable.icon_in_shop_unlabeled, "未标记进店日期客资", "未标记进店客资", 30, 6))
         } else {
             list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程", "今日可排", 5))
             list.add(FormEntity(R.drawable.icon_schedule_select_pictrue, "选片排程", "今日可排", 5))
@@ -153,11 +153,14 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             bundle.putString("title", list.get(position).key);
             if (intent.hasExtra("title")) {
                 if (!App.getApplication().hasPermission("M2")) {
-                    ToastUtils.showShort("无排程查询无法进入")
+                    ToastUtils.snackbarShort("无排程查询权限,无法进入","确定")
                 } else {
                     startActivity(ScheduleActivity::class.java, bundle)
                 }
             } else {
+                val get = adapter.data.get(position) as FormEntity;
+                bundle.putInt("jktype", get.flag2 as Int)
+                bundle.putBoolean("hideSearch", true)
                 startActivity(RegisterIntoShopSearchActivity::class.java, bundle)
             }
         }
@@ -253,24 +256,36 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
 
     var menus: Menu? = null;
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_right, menu)
+        menuInflater.inflate(R.menu.reg_nmb_menu, menu)
         menus = menu;
         //展开状态
-        menus?.findItem(R.id.action_settings)?.setIcon(R.drawable.icon_add_white)?.setVisible(false)
+        var ad = resources?.getDrawable(R.drawable.icon_add)
+        DrawableCompat.setTint(ad!!, resources.getColor(R.color.white))
+        var sodrawable = resources?.getDrawable(R.drawable.icon_soso)
+        DrawableCompat.setTint(sodrawable!!, resources.getColor(R.color.white))
+        sodrawable.setBounds(0, 0, sodrawable.minimumWidth * 2, sodrawable.minimumWidth * 2)
+        menus?.findItem(R.id.action_settings)?.setIcon(ad)?.setVisible(false)
+        menus?.findItem(R.id.action_today)?.setIcon(sodrawable)?.setVisible(false)
         return true
     }
 
+    /**
+     * toolbar菜单的点击
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (android.R.id.home == item.itemId) {
             this.onBackPressed()
-        }
-        if (R.id.action_settings == item.itemId) {
+        } else if (R.id.action_settings == item.itemId) {
             if (App.getApplication().hasPermission("K3")) {
                 startActivity(IntoGuestRegistrationActivity::class.java)
             } else {
                 toastShort("无权登记")
             }
+        } else if (R.id.action_today == item.itemId) {
+            var bundle = Bundle()
+            bundle.putBoolean("hideSearch", false)
+            bundle.putString("title", "客资搜索")
+            startActivity(RegisterIntoShopSearchActivity::class.java, bundle)
         }
         return super.onOptionsItemSelected(item)
     }

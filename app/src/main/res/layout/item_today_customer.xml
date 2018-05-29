@@ -7,6 +7,7 @@
     android:padding="@dimen/px30">
 
     <ImageView
+        android:id="@+id/img_today_head"
         android:layout_width="@dimen/px300"
         android:layout_height="@dimen/px300"
         android:src="@drawable/icon_head" />

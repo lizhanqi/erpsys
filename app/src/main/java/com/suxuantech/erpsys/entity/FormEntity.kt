@@ -40,6 +40,7 @@ class FormEntity {
     var mustFill: Boolean = false
     var option: Boolean = false
     var flag: Any? = null
+    var flag2: Any? = null
     var hide =false;
     var valueClickEnable =false;
     var valueAutoLink :Int ?= Linkify.ALL //Linkify
@@ -124,4 +125,12 @@ class FormEntity {
         this.value = value
         this.valueAutoLink = linkify
     }
+    constructor(icon: Int, key: String, value: String, marginTop: Int, flag2:  Any){
+        this.icon = icon
+        this.key = key
+        this.value = value
+        this.marginTop = marginTop
+        this.flag2 = flag2
+    }
+
 }

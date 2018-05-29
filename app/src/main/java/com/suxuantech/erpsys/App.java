@@ -148,17 +148,15 @@ public class App extends Application {
         // FreelineCore.init(this);
         Utils.init(this);
         RongIM.init(this);
-
         registerActivityListener();
-
         newinitNohttp();
         Fragmentation.builder()
                 // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
                 .stackViewMode(Fragmentation.BUBBLE)
-                .debug(true)
+                .debug(false)
                 .install();
+        initErrorPage();
         if (!ISDEBUG) {
-            initErrorPage();
             try {
                 RongPushClient.checkManifest(this);
             } catch (RongException e) {

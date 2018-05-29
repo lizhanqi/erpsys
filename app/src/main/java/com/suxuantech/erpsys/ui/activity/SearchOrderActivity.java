@@ -172,7 +172,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     private void initDataAdapter() {
         if (TypeFlag.OPTION_PANEL == searchType) {
             optionPanelAdaputer = new QuickAdapter<ArrayList<SearchOptionPanelEntity.DataBean>>(R.layout.item_search_option_panel, null) {
-
                 @Override
                 protected void convert(BaseViewHolder helper, ArrayList<SearchOptionPanelEntity.DataBean> item) {
                         int parentPosition = optionPanelAdaputer.getData().lastIndexOf(item);
@@ -210,8 +209,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                             TextView tvType = (TextView) helper.getView(R.id.tv_type);
                             TextView tvDate = (TextView) helper.getView(R.id.tv_date);
                             TextView tvChange = (TextView) helper.getView(R.id.tv_change);
-                            tvType.setText("拍照类型:" + StringUtils.safetyString(item.getConsumption_type()));
-                            tvDate.setText(StringUtils.subDate(StringUtils.safetyString(item.getPhotodate())));
+                            tvType.setText("选片类型:" + StringUtils.safetyString(item.getSelect_order_name()));
+                            tvDate.setText(StringUtils.subDate(StringUtils.safetyString(item.getSelectday())));
                             tvChange.setOnClickListener((View view) -> {
                                 optionPanelScheme(dataBeans, false,childenPosstion);
                                 ToastUtils.snackbarShort(parentPosition + "------" + childenPosstion);
@@ -400,6 +399,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         DrawableCompat.setTint(drawable, getResources().getColor(R.color.themeColor));
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//必须设置图片大小，否则不显示
         mTvNavRight.setCompoundDrawables(null, null, drawable, null);
+        mSmrHistory.setLayoutManager(new LinearLayoutManager(getBaseContext()));
     }
 
     /**
@@ -546,7 +546,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         }).setAlertRightColor(getResources().getColor(R.color.themeColor)).show();
         immersionBarDark();
     }
-
     /**
      * 搜索
      */
@@ -609,18 +608,23 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
+        if(smartRefreshLayout==null){
+            return;
+        }
         smartRefreshLayout.setEnabled(true);
         smartRefreshLayout.setEnableRefresh(true);
-        smartRefreshLayout.setEnableLoadMore(true);
-        smartRefreshLayout.setEnableAutoLoadMore(true);
+        smartRefreshLayout.setEnableLoadMore(hasMore);
+        smartRefreshLayout.setEnableAutoLoadMore(hasMore);
         if (isRefesh) {
             smartRefreshLayout.finishRefresh();
             resetRecycleView(true);
             mSmrHistory.setAdapter(quickAdapter);
             quickAdapter.updateAll(data);
+            quickAdapter.notifyDataSetChanged();
         } else {
             smartRefreshLayout.finishLoadMore();
             quickAdapter.apped(data);
+            quickAdapter.notifyDataSetChanged();
             smartRefreshLayout.finishLoadMore();
         }
         if (!hasMore) {
@@ -711,7 +715,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         } else {
             mSmrHistory.addItemDecoration(histroyItemDecoration);
         }
-
     }
 
     /**

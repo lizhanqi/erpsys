@@ -101,7 +101,8 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
                 mMenuPopWindow?.dismiss()
                 recoverImmersionBar()
                 if (response.get().isOK) {
-                    //更新....
+                    parcelable?.is_intostore = "已进店"
+                    tvRegisterType!!.setText(parcelable?.is_intostore)
                 }
             }
 
@@ -164,6 +165,8 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
                 override fun onSucceed(what: Int, response: Response<ProductEntity>) {
                     if (response.get().isOK) {
                         toastShort("修改成功")
+                        parcelable?.is_intostore = " "
+                        tvRegisterType!!.setText(parcelable?.is_intostore)
                     } else {
                         toastShort("修改失败")
                     }
@@ -185,6 +188,9 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
             val searchByCustmor = object : HttpListener<ProductEntity> {
                 override fun onSucceed(what: Int, response: Response<ProductEntity>) {
                     if (response.get().isOK) {
+                        toastShort("修改成功")
+                        parcelable?.is_intostore = " "
+                        tvRegisterType!!.setText(parcelable?.is_intostore)
                         toastShort("修改成功")
                     } else {
                         toastShort("修改失败")
@@ -218,9 +224,9 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         mMenuView.findViewById<TextView>(R.id.tv_make_bargain).setOnClickListener(View.OnClickListener {
             recoverImmersionBar()
             mMenuPopWindow?.dismiss()
-            if (App.getApplication().hasPermission("K10")){
+            if (App.getApplication().hasPermission("K10")) {
                 startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
-            }else{
+            } else {
                 toastShort("无权转单")
             }
 
@@ -254,6 +260,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     //折叠的选项中的 菜单图标可以用反射显示
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
 //        //menu创建之前，反射设置显示图标
@@ -271,6 +278,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
 //        }
         return super.onPrepareOptionsMenu(menu)
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_flag, menu);
         //修改折叠的三个点
@@ -283,14 +291,9 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_details)
         supportToolbar(true)
-        hideUserDefinedNav()
-        // showUserDefinedNav()
-        //setTitle("客资详情")
+        setTitle("客资详情")
         initPop()
         initView()
-//        val drawable = resources.getDrawable(R.drawable.icon_ding)
-//        drawable.setBounds(0, 0, drawable.minimumHeight, drawable.minimumHeight)
-//        setUseDefinedNavRightDrawable(drawable)
         var parcelable = intent.getBundleExtra("bundle").getParcelable<RegisterEntity.DataBean>("data")
         this.parcelable = parcelable;
         tvRegisterName!!.setText(parcelable.customer_name)
@@ -318,6 +321,7 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvMateSex!!.setText(parcelable.mate_sex)
         tvMateBirthday!!.setText(parcelable.mate_birthday)
         tvCustomerRemarks!!.setText(parcelable.customer_remark)
+        tvRegisterType!!.setText(parcelable.is_intostore)
     }
 
     fun initView() {
@@ -348,5 +352,8 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
         tvMateSex = findViewById<TextView>(R.id.tv_mate_sex) as TextView
         tvMateBirthday = findViewById<TextView>(R.id.tv_mate_birthday) as TextView
         tvCustomerRemarks = findViewById<TextView>(R.id.tv_customer_remarks) as TextView
+        var cont = findViewById<LinearLayout>(R.id.ll_content)
+        val layoutParams = cont.getLayoutParams() as LinearLayout.LayoutParams
+        layoutParams.setMargins(0, 0, 0, 0)
     }
 }

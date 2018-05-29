@@ -44,7 +44,6 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.NoticeDetailActivity;
 import com.suxuantech.erpsys.ui.activity.OutletsOrderActivity;
 import com.suxuantech.erpsys.ui.activity.RegisterIntoShopActivity;
-import com.suxuantech.erpsys.ui.activity.RegisterIntoShopSearchActivity;
 import com.suxuantech.erpsys.ui.activity.SearchOrderActivity;
 import com.suxuantech.erpsys.ui.activity.TodayCustomerActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
@@ -256,10 +255,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
         initImmersionBar();
         headView = inflater.inflate(R.layout.head_home, null, false);
         headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l -> {
-            //进店登记的搜索
-            Intent intent = new Intent(getActivity(), RegisterIntoShopSearchActivity.class);
+            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
             intent.putExtra("title", "今日客资");
-            intent.putExtra("hideSearch", true);
             startActivity(intent);
         });
         headView.findViewById(R.id.tv_today_income).setOnClickListener(l -> {
@@ -508,7 +505,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     }
 
     private void initRefresh() {
-
         //网格布局管理器
         // mRvCard.setNestedScrollingEnabled();
         mRvCard.setLayoutManager(new GridLayoutManager(getContext(), 2) {
@@ -543,7 +539,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     }
 
     public void addShortLunch(String title, int lunchIcon, Class<?> cls) {
-        // TODO Auto-generated method stub
         //创建一个添加快捷方式的Intent
         Intent addSC = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
         addSC.putExtra("duplicate", false);

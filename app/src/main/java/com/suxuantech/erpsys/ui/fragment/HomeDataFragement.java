@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,13 +9,21 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.entity.HomeDataTodayCustomerEntity;
+import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.entity.SearchOrderEntity;
 import com.suxuantech.erpsys.entity.TodayCustomerEntity;
 import com.suxuantech.erpsys.entity.TodayMoneyEntity;
@@ -22,18 +31,22 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.presenter.RegsiterPresenter;
 import com.suxuantech.erpsys.presenter.SearchOrderPresenter;
 import com.suxuantech.erpsys.presenter.connector.ISearchOrderPresenter;
+import com.suxuantech.erpsys.ui.activity.CustomerDetailsActivity;
 import com.suxuantech.erpsys.ui.activity.OrderDetailActivity;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.GlideRoundTransform;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,7 +85,34 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
     int pageIndex, pageSize = 20;
     SearchOrderPresenter mSearchOrderPresenter;
     DefaultItemDecoration searchItemDecoration;
+    /**
+     * 今日时间
+     */
+    String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+    /**
+     * 随机图
+     */
 
+    ArrayList<Drawable> drawables = new ArrayList<>();
+
+    /**
+     * 获取随机图
+     *
+     * @return
+     */
+    public Drawable randomDrawable() {
+        int x = (int) (Math.random() * 50);
+        int i = x % drawables.size();
+        return drawables.get(i);
+    }
+
+    /**
+     * 跳转到客户详情
+     *
+     * @param data     数据
+     * @param isRefesh 是否是刷新
+     * @param hasMore  是否还有更多
+     */
     @Override
     public void searchSucceed(List<SearchOrderEntity.DataBean> data, boolean isRefesh, boolean hasMore) {
         if (data == null || data.size() == 0) {
@@ -95,14 +135,54 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
     }
 
+
+    /**
+     * 今日客资量
+     */
+    void todayCustomers(int index) {
+       String Url=  Contact.getFullUrl(Contact.SEARCH_TODAY_CUSTOMER, Contact.TOKEN, nowDate, nowDate, index, pageSize, App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest<HomeDataTodayCustomerEntity> todayMoneyEntityJavaBeanRequest = new JavaBeanRequest<HomeDataTodayCustomerEntity>(Url, HomeDataTodayCustomerEntity.class);
+        HttpListener<HomeDataTodayCustomerEntity> searchByCustmor = new HttpListener<HomeDataTodayCustomerEntity>() {
+            @Override
+            public void onSucceed(int what, Response<HomeDataTodayCustomerEntity> response) {
+                if (response.get().isOK()) {
+                    if (response.get().getData() != null && response.get().getData().size() == pageSize) {
+                        smartRefreshLayout.finishRefresh();
+                        pageIndex++;
+                    } else {
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    }
+                    List<HomeDataTodayCustomerEntity.DataBean> data = response.get().getData();
+                    setTodayAdapter(data);
+                } else {
+                    if (pageIndex == 0) {
+                        smartRefreshLayout.finishRefresh(false);
+                    } else {
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<HomeDataTodayCustomerEntity> response) {
+                if (pageIndex == 0) {
+                    smartRefreshLayout.finishRefresh(false);
+                } else {
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                }
+            }
+        };
+        request(0, todayMoneyEntityJavaBeanRequest, searchByCustmor, false, false);
+    }
+
+
     /**
      * 今日收款
      */
     public void getTodayCollectionMoney(int index) {
-        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
-        nowDate = Contact.getFullUrl(Contact.TODAY_COLLECTION_MONEY, Contact.TOKEN, nowDate, nowDate, index, pageSize, App.getApplication().getUserInfor().getShop_code());
+      String  url = Contact.getFullUrl(Contact.TODAY_COLLECTION_MONEY, Contact.TOKEN, nowDate, nowDate, index, pageSize, App.getApplication().getUserInfor().getShop_code());
         //请求实体
-        JavaBeanRequest<TodayMoneyEntity> todayMoneyEntityJavaBeanRequest = new JavaBeanRequest<TodayMoneyEntity>(nowDate, TodayMoneyEntity.class);
+        JavaBeanRequest<TodayMoneyEntity> todayMoneyEntityJavaBeanRequest = new JavaBeanRequest<TodayMoneyEntity>(url, TodayMoneyEntity.class);
         HttpListener<TodayMoneyEntity> searchByCustmor = new HttpListener<TodayMoneyEntity>() {
             @Override
             public void onSucceed(int what, Response<TodayMoneyEntity> response) {
@@ -136,6 +216,62 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         request(0, todayMoneyEntityJavaBeanRequest, searchByCustmor, false, false);
     }
 
+    /**
+     * 今日客资适配器
+     *
+     * @param data
+     */
+    public void setTodayAdapter(List<HomeDataTodayCustomerEntity.DataBean> data) {
+        if (pageIndex <= 1) {
+            smartRefreshLayout.finishRefresh();
+        }
+        if (adapter == null) {
+            adapter = new QuickAdapter<HomeDataTodayCustomerEntity.DataBean>(R.layout.item_register_info, data) {
+                @Override
+                public void convert(BaseViewHolder helper, HomeDataTodayCustomerEntity.DataBean item) {
+                    TextView name = helper.getView(R.id.tv_register_name);
+                    TextView type = helper.getView(R.id.tv_register_type);
+                    TextView phone = helper.getView(R.id.tv_register_phone);
+                    TextView cotype = helper.getView(R.id.tv_register_consumption_type);
+                    TextView zone = helper.getView(R.id.tv_register_zone);
+                    TextView date = helper.getView(R.id.tv_register_date);
+                    TextView staff = helper.getView(R.id.tv_register_staff);
+                    TextView reason = helper.getView(R.id.tv_run_reason);
+
+                    LinearLayout wrapContant = helper.getView(R.id.ll_content);
+                    LinearLayout lossing= helper.getView(R.id.ll_lossing);
+
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) wrapContant.getLayoutParams();
+                    layoutParams.setMargins(0, 0, 0, 0);
+                    name.setText(StringUtils.safetyString(item.getXingming()));
+                    phone.setText("手\u2000机\u2000号:" + StringUtils.safetyString(item.getShouji()));
+                    cotype.setText("消费类型:" + StringUtils.safetyString(item.getConsultation_type()));
+                    zone.setText("客户分区:" + StringUtils.safetyString(item.getCustomer_area()));
+                    date.setText("进店日期:" +StringUtils.subDate(StringUtils.safetyString(item.getYjd_day())) );
+                    staff.setText("接待人:" + StringUtils.safetyString(item.getSales_staff()));
+                    lossing.setVisibility(View.GONE);
+                }
+            };
+            adapter.setOnItemClickListener((adapter, view, position) -> {
+                HomeDataTodayCustomerEntity.DataBean d = (HomeDataTodayCustomerEntity.DataBean) adapter.getData().get(position);
+                gotoDetails(d.getId()+"");
+            });
+            searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
+            recyclerView.setAdapter(adapter);
+        } else {
+            if (pageIndex <= 1) {
+                adapter.updateAll(data);
+            } else {
+                adapter.apped(data);
+            }
+        }
+    }
+
+    /**
+     * 今日收款
+     *
+     * @param data
+     */
     public void setTodayCollectionMoneyAdapter(List<TodayMoneyEntity.DataBean> data) {
         if (pageIndex <= 1) {
             smartRefreshLayout.finishRefresh();
@@ -185,16 +321,36 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        drawables.add(getResources().getDrawable(R.drawable.image_1));
+        drawables.add(getResources().getDrawable(R.drawable.image_2));
+        drawables.add(getResources().getDrawable(R.drawable.image_3));
+        drawables.add(getResources().getDrawable(R.drawable.image_4));
         //这里一定要ButterKnife和返回的view是同一个,不然布局显示不出来
         mSearchOrderPresenter = new SearchOrderPresenter(this);
         View inflate = inflater.inflate(R.layout.fun_game_battle_city_refresh, container, false);
         recyclerView = inflate.findViewById(R.id.recycler_view);
         smartRefreshLayout = inflate.findViewById(R.id.srl_fresh);
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            if (adapter!=null){
+                adapter.getData().clear();
+                adapter.notifyDataSetChanged();
+            }
             getdata();
         });
         smartRefreshLayout.setOnLoadMoreListener(loadme -> {
             getTodayCollectionMoney(pageIndex);
+            String[] titles = getResources().getStringArray(R.array.home_title);
+            Bundle arguments = getArguments();
+            if (arguments == null) {
+                return;
+            }
+            //传过来的标题
+            String title = arguments.getString("title");
+            if (title.equals("今日收款")) {
+                getTodayCollectionMoney(pageIndex);
+            } else if (title.equals("今日客资")) {
+                todayCustomers(pageIndex);
+            }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setBackgroundColor(getResources().getColor(R.color.gray_f9));
@@ -239,11 +395,14 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             pageIndex = 0;
             showOnPosition = 7;
             getTodayCollectionMoney(pageIndex);
+        } else if (title.equals("今日客资")) {
+            pageIndex = 0;
+            todayCustomers(pageIndex);
         }
     }
 
     /**
-     *
+     * 获取今日数据
      */
     public void getTodayData(String url, int what) {
         String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
@@ -272,7 +431,10 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         addRequestQueue(what, requst, httpResponseListener);
     }
 
-
+    /***
+     * 今日数据适配器
+     * @param data
+     */
     void setTodayCustomerAdaputer(List<TodayCustomerEntity.DataBean> data) {
         if (adapter == null) {
             adapter = new QuickAdapter<TodayCustomerEntity.DataBean>(R.layout.item_today_customer, data) {
@@ -282,9 +444,20 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     TextView date = helper.getView(R.id.tv2);
                     TextView info = helper.getView(R.id.tv3);
                     TextView info2 = helper.getView(R.id.tv4);
+                    ImageView img = helper.getView(R.id.img_today_head);
+                    RequestOptions options2 = new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.icon_head)//预加载图片
+                            .error(R.drawable.icon_head)//加载失败显示图片
+                            .priority(Priority.HIGH)//优先级
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)//缓存策略
+                            .transform(new GlideRoundTransform(10));//转化为圆形
+                    Glide.with(img).load(randomDrawable()).apply(options2).into(img);
                     date.setText(TextUtils.isEmpty(item.getPhotodate()) ? "" : item.getPhotodate());
                     name.setText("姓名:" + StringUtils.safetyString(item.getXingming()));
-                    date.setText("订单编号:" + StringUtils.safetyString(item.getOrderId1()));
+                    if (!StringUtils.empty(StringUtils.safetyString(item.getOrderId1()))) {
+                        date.setText("订单编号:" + StringUtils.safetyString(item.getOrderId1()));
+                    }
                     info.setText("套系名称:" + StringUtils.safetyString(item.getPackage_name()));
                     info2.setText("订单日期:" + StringUtils.safetyString(item.getTargetdate()));
                 }
@@ -301,7 +474,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                 //传过来的标题
                 String title = arguments.getString("title");
                 if (title.equals(titles[0])) {
-                    //   startActivity(CustomerDetailsActivity.);
+                    TodayCustomerEntity.DataBean d = (TodayCustomerEntity.DataBean) adapter.getData().get(position);
+                    gotoDetails(d.getId()+"");
                 } else {
                     mSearchOrderPresenter.sosoNetOrder(data.get(position).getOrderId(),
                             App.getContext().getResources().getString(R.string.start_time),
@@ -310,5 +484,30 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             }
         });
         recyclerView.setAdapter(adapter);
+    }
+
+    public void gotoDetails(String key) {
+        String nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
+        RegsiterPresenter regsiterPresenter = new RegsiterPresenter();
+        regsiterPresenter.setiSearchOrderPresenter(new RegsiterPresenter.RegisterSearchResult() {
+            @Override
+            public void registerSearchOk(List<RegisterEntity.DataBean> data, boolean isFresh, boolean hasMore) {
+                if (data != null && data.size() == 1) {
+                    RegisterEntity.DataBean dataBean = data.get(0);
+                    Intent it = new Intent(getActivity(), CustomerDetailsActivity.class);
+                    Bundle vb = new Bundle();
+                    vb.putString("orderId", dataBean.getCustomer_number());
+                    vb.putParcelable("data", dataBean);
+                    it.putExtra("bundle", vb);
+                    startActivity(it);
+                }
+            }
+
+            @Override
+            public void registerSearchFailed(Response<RegisterEntity> response, int pageIndex) {
+
+            }
+        });
+        regsiterPresenter.exactsearch(true, nowDate, key);
     }
 }
