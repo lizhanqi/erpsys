@@ -428,5 +428,13 @@ public class Contact {
     /**
      * 拍照排程搜索
      */
-    public static String  Photo_SCHEME_SEARCH="/SXWebErpAppStaff/SX_CXPhotoPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    public static String  PHOTO_SCHEME_SEARCH="/SXWebErpAppStaff/SX_CXPhotoPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    /**
+     * 获得今日进客资料信息(首页的今日客资量)
+     */
+    public static String  SEARCH_TODAY_CUSTOMER="/SXWebErpAppStaff/SX_JKGuestInfoMX?Token=%s&StartDate=%s&EndDate=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    /**
+     * 进客登记(根据进客类型)当日进客登记不同类型数据
+     */
+    public static String  RegisterType="/SXWebErpAppStaff/SX_InquireGuestInfoDay?Token=%s&StartDate=%s&EndDate=%s&JKTyep=%s&pageIndex=%s&pageSize=%s&Code=%s&salesstaff=%s&djstaff=%s";
 }

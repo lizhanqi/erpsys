@@ -241,7 +241,6 @@ public class SearchOrderPresenter {
             lastEndDate = endDate;
         }
         String url = Contact.getFullUrl(Contact.OPTION_PANEL_SCHEME, Contact.TOKEN, startDate, endDate, key, pageIndex, pageSize, App.getApplication().getUserInfor().getShop_code());
-        //请求实体
         JavaBeanRequest<SearchOptionPanelEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SearchOptionPanelEntity>(url, SearchOptionPanelEntity.class);
         HttpListener<SearchOptionPanelEntity> searchByCustmor = new HttpListener<SearchOptionPanelEntity>() {
             @Override
@@ -265,7 +264,7 @@ public class SearchOrderPresenter {
     }
 
     /**
-     * 选片排程
+     * 拍照排程
      */
     public void sosoPhotoScheme(String key, String startDate, String endDate, boolean isFresh, boolean showWindow) {
         if (isFresh) {
@@ -283,7 +282,7 @@ public class SearchOrderPresenter {
             endDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
             lastEndDate = endDate;
         }
-        String url = Contact.getFullUrl(Contact.Photo_SCHEME_SEARCH, Contact.TOKEN, startDate, endDate, key, pageIndex, pageSize, App.getApplication().getUserInfor().getShop_code());
+        String url = Contact.getFullUrl(Contact.PHOTO_SCHEME_SEARCH, Contact.TOKEN, startDate, endDate, key, pageIndex, pageSize, App.getApplication().getUserInfor().getShop_code());
         //请求实体
         JavaBeanRequest<PhotoSchemeSearchEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PhotoSchemeSearchEntity>(url, PhotoSchemeSearchEntity.class);
         HttpListener<PhotoSchemeSearchEntity> searchByCustmor = new HttpListener<PhotoSchemeSearchEntity>() {
