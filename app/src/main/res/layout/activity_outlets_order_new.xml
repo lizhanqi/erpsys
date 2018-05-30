@@ -119,12 +119,12 @@
                         android:hint="@string/please_select_consumption_type" />
                 </LinearLayout>
                 <!--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^男士^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-->
-                <include layout="@layout/include_man_infor"/>
+                <include layout="@layout/include_woman_infor"/>
                 <View style="@style/line" />
                 <!--end-->
                 <!--女士-->
                 <!--女士姓名-->
-                <include layout="@layout/include_woman_infor"/>
+                <include layout="@layout/include_man_infor"/>
                 <View style="@style/line" />
                 <!--end-->
 
