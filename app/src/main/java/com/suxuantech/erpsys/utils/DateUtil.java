@@ -160,6 +160,24 @@ public class DateUtil {
                 return "yyyy年MM月dd日";
             }
         },
+        RB_DATE_TIME {
+            @Override
+            public String getValue() {
+                return "yyyyMMdd HH:mm:ss.SSS";
+            }
+        },
+        RB_DATE_TIME_SYMBOL {
+            @Override
+            public String getValue() {
+                return "yyyy-MM-dd HH:mm:ss.SSS";
+            }
+        },
+        RB_TIME {
+            @Override
+            public String getValue() {
+                return "HH:mm:ss.SSS";
+            }
+        },
         DATE_MINUTE_TEXT {
             @Override
             public String getValue() {

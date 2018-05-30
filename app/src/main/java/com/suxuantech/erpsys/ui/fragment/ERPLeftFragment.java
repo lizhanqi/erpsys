@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -316,25 +317,56 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 ImageView imgIcon = (ImageView) helper.getView(R.id.img_icon);
                 TextView tvName = (TextView) helper.getView(R.id.tv_name);
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
+                CardView card = (CardView) helper.getView(R.id.card_home);
                 tvName.setText(item);
                 if (i == 0) {
                     imgIcon.setImageResource(R.drawable.icon_make_into_store_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getJkyycount());
+                    if(App.getApplication().hasPermission("K2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
                 } else if (i == 1) {
                     imgIcon.setImageResource(R.drawable.icon_photo_custmoer_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getPzcount());
+                    if(App.getApplication().hasPermission("D2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
                 } else if (i == 2) {
                     imgIcon.setImageResource(R.drawable.icon_dress_customer_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getLfcount());
+                    if(App.getApplication().hasPermission("B2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
                 } else if (i == 3) {
                     imgIcon.setImageResource(R.drawable.icon_make_up_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getHzcount());
+                    if(App.getApplication().hasPermission("C2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
                 } else if (i == 4) {
                     imgIcon.setImageResource(R.drawable.icon_option_panel_custmoer_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getXpcount());
+                    if(App.getApplication().hasPermission("E2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
                 } else if (i == 5) {
                     imgIcon.setImageResource(R.drawable.icon_get_photo_custmoer_home);
                     tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getQjcount());
+                    if(App.getApplication().hasPermission("F2")){
+                        card.setVisibility(View.VISIBLE);
+                    }else {
+                        card.setVisibility(View.GONE);
+                    }
 
                 } else if (i == 6) {
                     imgIcon.setImageResource(R.drawable.icon_me_custmer_home);
