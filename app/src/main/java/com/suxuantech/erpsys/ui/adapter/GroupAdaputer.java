@@ -151,9 +151,9 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
         Set<String> strings = data.keySet();
         List<String> list = new ArrayList<String>(strings);//B是set型的
         BaseScheme baseScheme = data.get(list.get(groupPosition)).get(childPosition);
-        if( data.get(list.get(groupPosition)).size()-1==childPosition){
+        if (data.get(list.get(groupPosition)).size() - 1 == childPosition) {
             line.setVisibility(View.GONE);
-        }else {
+        } else {
             line.setVisibility(View.VISIBLE);
         }
         tvZone.setText(baseScheme.getArea());
@@ -201,18 +201,17 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
      * @param unlock     是否是解锁
      */
     public void placeHolder(BaseScheme baseScheme, boolean unlock) {
-        if (unlock) {
-            if (!App.getApplication().hasPermission("M4")) {
-                ToastUtils.showShort("无权占位");
+        if (unlock) { //取消占位
+            if (!App.getApplication().hasPermission("M6")) {
+                ToastUtils.showShort("无权取消占位");
                 return;
             }
         } else {
             if (!App.getApplication().hasPermission("M5")) {
-                ToastUtils.showShort("无权取消占位");
+                ToastUtils.showShort("无权占位");
                 return;
             }
         }
-
         String url = "";
         if (schemeType == TypeFlag.PHOTOGRAPH) {
             if (unlock) {

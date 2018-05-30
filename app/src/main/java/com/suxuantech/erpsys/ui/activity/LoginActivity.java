@@ -218,13 +218,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     }
 
     public void loginJG(String jgName, String jgPassWord) {
-        if (jgName.equals("小飞")) {
-            jgName = "10086";
-            jgPassWord = "10086";
-        } else {
-            jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
-            jgName = EncodeUtils.base64Encode2String(jgName.getBytes());
-        }
+        jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
+        jgName = EncodeUtils.base64Encode2String(jgName.getBytes());
+        eLog("极光:" + jgName + "极光密码:" + jgPassWord);
         JMessageClient.login(jgName, jgPassWord, new BasicCallback() {
             @Override
             public void gotResult(int i, String s) {
@@ -266,13 +262,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-//                if (mCompanyID.getText().toString().equals("1")) {
-//
-//                   phpLogin(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-//                } else {
-//                    login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-//                }
+               login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
     }
@@ -313,8 +303,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     @Override
     public void initImmersionBar() {
 
-        ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7) .titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
+        ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7).titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
     }
+
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {

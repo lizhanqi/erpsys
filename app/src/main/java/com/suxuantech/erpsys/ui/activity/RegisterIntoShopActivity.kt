@@ -153,7 +153,7 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             bundle.putString("title", list.get(position).key);
             if (intent.hasExtra("title")) {
                 if (!App.getApplication().hasPermission("M2")) {
-                    ToastUtils.snackbarShort("无排程查询权限,无法进入","确定")
+                    ToastUtils.snackbarShort("无排程查询权限,无法进入", "确定")
                 } else {
                     startActivity(ScheduleActivity::class.java, bundle)
                 }
@@ -173,8 +173,12 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             }
         })
     }
-
     fun getData() {
+        if (App.getApplication().hasPermission("K2")) {
+            ToastUtils.snackbarShort("无权限获取登记统计数据","确定")
+            refreshLayout.finishRefresh();
+            return
+        }
         val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         var name1 = App.getApplication().userInfor.staffname;
         var name2 = App.getApplication().userInfor.staffname;

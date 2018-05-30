@@ -84,6 +84,7 @@
 
         <View style="@style/line"/>
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_run_reason"
             android:padding ="@dimen/px30"
             android:text="流失原因"

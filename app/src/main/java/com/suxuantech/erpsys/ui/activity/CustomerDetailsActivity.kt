@@ -117,13 +117,13 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
     fun showR(title: String) {
         if (title.equals(RUN_REASON)) {
             if (!App.getApplication().hasPermission("K11")) {
-                toastShort("抱歉,无权流失")
+                toastShort("抱歉,无权限流失")
                 return
             }
         }
         if (title.equals(NOT_INTO_SHOP)) {
             if (!App.getApplication().hasPermission("K9")) {
-                toastShort("抱歉,修改未进店")
+                toastShort("抱歉,无权限修改未进店")
                 return
             }
         }
@@ -249,7 +249,11 @@ class CustomerDetailsActivity : TitleNavigationActivity() {
                 change(2)
             }
             R.id.action_make_bargain -> {
-                startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
+                if (App.getApplication().hasPermission("K10")) {
+                    startActivity(OutletsOrderActivity::class.java, intent.getBundleExtra("bundle"))
+                } else {
+                    toastShort("无权转单")
+                }
             }
             R.id.action_not_into_shop -> {
                 showR(NOT_INTO_SHOP)

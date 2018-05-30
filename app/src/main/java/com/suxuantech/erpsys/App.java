@@ -92,11 +92,20 @@ public class App extends Application {
 
     /**
      * 检测是否有权限
-     * dicfunc. Add("K1","进客登记");dicfunc. Add("K2","进客信息查询");dicfunc. Add("K3", "新建客资")dicfunc. Add ("K5", "删除客资"):
-     * dicfunc. Add ("K8","已进店状态");.dicfunc. Add ("K9", "未进店状态"):dicfunc. Add("K10",“转订单");dicfunc. Add("K11", "流失");
-     * dicfunc. Add ("K14", "查询其他门市客资");dicfunc. Add ("K15", “查询其他登记人客资");dicfunc. Add ("M1", “摄影排程");
-     * dicfunc. Add ("M2", “排程查询");dicfunc. Add ("M3", “排程");dicfunc. Add ("M4", “删除排程");dicfunc. Add ("M5", “占位");
-     * dicfunc. Add ("M6", “取消占位");
+     * Add("A1","门市销售");    Add("A2","门市查询");           Add("A3","门市开单");Add("A5","添加产品");Add("A6","删除产品")
+     * Add("B1","礼服销售");    Add("B2","礼服查询");
+     * Add("C1","化妆销售");    Add("C2","化妆查询");
+     * Add("D1","摄影销售");    Add("D2","摄影销售");
+     * Add("E1","选片销售");    Add("E2","选片查询");
+     * Add("F1","取件订单");    Add("F2","取件订单查询");
+     * Add("I1","统计分析");    Add("I2","订单统计");         Add("I3","实收明细统);
+     * Add("J1","前台收银");    Add("J2","收款查询");         Add("I3","实收明细统计");
+     * Add("K1","进客登记");    Add("K2","进客信息查询");     Add("K3", "新建客资");Add ("K5", "删除客资"):
+     * Add("K8","已进店状态");  Add ("K9","未进店状态");      Add("K10",“转订单");    Add("K11", "流失");
+     * Add("K14","查询其他门市客资"); Add ("K15", “查询其他登记人客资");
+     * Add("M1","摄影排程");    Add ("M2", “排程查询");     Add ("M3", “排程"); Add ("M4", “删除排程");
+     * Add("M5","占位");        Add ("M6", “取消占位");
+     *
      * @param permisstion
      * @return
      */
@@ -107,6 +116,7 @@ public class App extends Application {
             return false;
         }
     }
+
     public LoginEntity getLoginData() {
         //return    CacheUtils.getInstance().getJSONObject(LOGINFILENAME);
         if (userInfo == null) {
@@ -115,10 +125,12 @@ public class App extends Application {
         }
         return userInfo;
     }
+
     public App releaseLoginData() {
-        userInfo=null;
+        userInfo = null;
         return this;
     }
+
     public UserEntity getUserInfor() {
         return App.getApplication().getLoginData().getData().get(0);
     }
@@ -129,7 +141,7 @@ public class App extends Application {
         application = this;
         setDatabase();
         context = this.getApplicationContext();
-      //  initSkinPeeler();
+        //  initSkinPeeler();
         //指定刷新默认的方式
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
@@ -474,6 +486,7 @@ public class App extends Application {
             }
         });
     }
+
     /**
      * 设置greenDao
      */

@@ -126,3 +126,5 @@ TextView实现首行缩进的方法：
     }
 
 //常用隐式意图:
+//toolbar菜单中图标显示
+((MenuBuilder) mToolbar.getMenu()).setOptionalIconsVisible(true);

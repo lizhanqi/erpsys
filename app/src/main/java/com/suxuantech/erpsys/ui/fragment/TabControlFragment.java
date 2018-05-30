@@ -21,6 +21,7 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -44,22 +45,27 @@ public class TabControlFragment extends BaseSupportFragment {
     private View view;
     private FragmentManager childFragmentManager;
     private DefaultFragmentAdapter defaultFragmentAdapter;
-   public enum  whichInFragement implements Serializable {
-       SHOOT   ("摄影资料", 1), OPTION_PANEL("选片资料", 2),   PAY_DETAILS("付款明细", 3);
-        private String name ;
-        private int index ;
-        private whichInFragement( String name , int index ){
-            this.name = name ;
-            this.index = index ;
+
+    public enum whichInFragement implements Serializable {
+        SHOOT("摄影资料", 1), OPTION_PANEL("选片资料", 2), PAY_DETAILS("付款明细", 3);
+        private String name;
+        private int index;
+
+        private whichInFragement(String name, int index) {
+            this.name = name;
+            this.index = index;
         }
+
         public String getName() {
             return name;
         }
+
         public int getIndex() {
             return index;
         }
     }
     //    设置参数确定子Fragment加载
+
     /**
      * 0是取件资料的
      * 1是摄影资料
@@ -67,7 +73,7 @@ public class TabControlFragment extends BaseSupportFragment {
      * 3是拍照礼服(礼服资料)
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         witch = (whichInFragement) getArguments().getSerializable("witch");
         view = inflater.inflate(R.layout.fragment_tab_control, container, false);
         return view;
@@ -137,8 +143,8 @@ public class TabControlFragment extends BaseSupportFragment {
         ArrayList<String> strings = new ArrayList<>();
         for (CustomerPhotoEntity.DataBean da : data) {
             String select_order_name = da.getPhototype();
-            if (select_order_name.isEmpty()){
-                select_order_name="未知";
+            if (select_order_name.isEmpty()) {
+                select_order_name = "未知";
             }
             strings.add(select_order_name);
         }
@@ -147,13 +153,13 @@ public class TabControlFragment extends BaseSupportFragment {
             fragments = new ArrayList<>();
         }
         fragments.clear();
-            for (int i = 0; i < strings.size(); i++) {
-                PhotographicDataFragment selectedPictureInformationFragment = new PhotographicDataFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("orderid", getArguments().getString("orderId"));
-                bundle.putParcelable("data", data.get(i));
-                selectedPictureInformationFragment.setArguments(bundle);
-                fragments.add(selectedPictureInformationFragment);
+        for (int i = 0; i < strings.size(); i++) {
+            PhotographicDataFragment selectedPictureInformationFragment = new PhotographicDataFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("orderid", getArguments().getString("orderId"));
+            bundle.putParcelable("data", data.get(i));
+            selectedPictureInformationFragment.setArguments(bundle);
+            fragments.add(selectedPictureInformationFragment);
         }
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
@@ -168,6 +174,7 @@ public class TabControlFragment extends BaseSupportFragment {
             tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
     }
+
     /**
      * 初始化网络控制Fragement
      *
@@ -185,13 +192,13 @@ public class TabControlFragment extends BaseSupportFragment {
             fragments = new ArrayList<>();
         }
         fragments.clear();
-            for (int i = 0; i < strings.size(); i++) {
-                SelectedPictureInformationFragment selectedPictureInformationFragment = new SelectedPictureInformationFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("orderid", getArguments().getString("orderId"));
-                bundle.putParcelable("data", data.get(i));
-                selectedPictureInformationFragment.setArguments(bundle);
-                fragments.add(selectedPictureInformationFragment);
+        for (int i = 0; i < strings.size(); i++) {
+            SelectedPictureInformationFragment selectedPictureInformationFragment = new SelectedPictureInformationFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("orderid", getArguments().getString("orderId"));
+            bundle.putParcelable("data", data.get(i));
+            selectedPictureInformationFragment.setArguments(bundle);
+            fragments.add(selectedPictureInformationFragment);
         }
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
@@ -210,7 +217,7 @@ public class TabControlFragment extends BaseSupportFragment {
      * 重置状态
      */
     private void resetpager() {
-        if (childFragmentManager==null){
+        if (childFragmentManager == null) {
             childFragmentManager = getChildFragmentManager();
         }
         FragmentTransaction ft = childFragmentManager.beginTransaction();
@@ -229,11 +236,11 @@ public class TabControlFragment extends BaseSupportFragment {
     public void onNewBundle(Bundle newBundle) {
         setArguments(newBundle);
         witch = (whichInFragement) newBundle.getSerializable("witch");
-        if (witch==OPTION_PANEL) {
+        if (witch == OPTION_PANEL) {
             getSelect();
-        } else if (witch  == whichInFragement.SHOOT ) {
+        } else if (witch == whichInFragement.SHOOT) {
             getPhotoInfo();
-        }else if (witch == whichInFragement.PAY_DETAILS) {
+        } else if (witch == whichInFragement.PAY_DETAILS) {
             getPayDetails();
         }
     }
@@ -254,14 +261,14 @@ public class TabControlFragment extends BaseSupportFragment {
             fragments = new ArrayList<>();
         }
         fragments.clear();
-            for (int i = 0; i < strings.size(); i++) {
-                PaymentDetailFragment paymentDetailFragment = new PaymentDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("orderId", getArguments().getString("orderId"));
-                bundle.putSerializable("data", data);
-                paymentDetailFragment.setArguments(bundle);
-                fragments.add(paymentDetailFragment);
-            }
+        for (int i = 0; i < strings.size(); i++) {
+            PaymentDetailFragment paymentDetailFragment = new PaymentDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", getArguments().getString("orderId"));
+            bundle.putSerializable("data", data);
+            paymentDetailFragment.setArguments(bundle);
+            fragments.add(paymentDetailFragment);
+        }
         defaultFragmentAdapter = new DefaultFragmentAdapter(childFragmentManager, strings, new DefaultFragmentAdapter.FragmentShow() {
             @Override
             public Fragment getItemFragment(int positon) {
@@ -274,15 +281,23 @@ public class TabControlFragment extends BaseSupportFragment {
             tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
     }
-    public void getPayDetails(){
+
+    /**
+     * 订单付款详情
+     */
+    public void getPayDetails() {
+        if (!App.getApplication().hasPermission("J2")) {
+            ToastUtils.snackbarShort("无权限查看", "确定");
+            return;
+        }
         String url = Contact.getFullUrl(Contact.PAYMENT, Contact.TOKEN, getArguments().getString("orderId"), App.getApplication().getUserInfor().getShop_code());
         //请求实体
         JavaBeanRequest<PaymentDetailsEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PaymentDetailsEntity>(url, RequestMethod.POST, PaymentDetailsEntity.class);
         HttpListener<PaymentDetailsEntity> searchByCustmor = new HttpListener<PaymentDetailsEntity>() {
             @Override
             public void onSucceed(int what, Response<PaymentDetailsEntity> response) {
-                if (response.get().isOK()){
-                    initPaymentFragment(response.get().getData() );
+                if (response.get().isOK()) {
+                    initPaymentFragment(response.get().getData());
                 }
             }
 

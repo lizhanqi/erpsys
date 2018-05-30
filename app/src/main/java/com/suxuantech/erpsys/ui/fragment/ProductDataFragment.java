@@ -356,11 +356,18 @@ public class ProductDataFragment extends BaseSupportFragment {
             default:
                 break;
             case R.id.tv_delete:
-                deletProduc();
+                if (App.getApplication().hasPermission("A6")) {
+                    deletProduc();
+                } else {
+                    ToastUtils.snackbarShort("无权限删除!", "确定");
+                }
                 break;
         }
     }
 
+    /**
+     * 删除产品,或者包套的判断
+     */
     public void deletProduc() {
         String orderId = getArguments().getString("orderId");
         if (mCbOneAll.isChecked()) {
@@ -409,6 +416,11 @@ public class ProductDataFragment extends BaseSupportFragment {
         }
     }
 
+    /**
+     * 删除产品,或者包套
+     * @param url
+     * @param packageDelete
+     */
     public void delete(String url, boolean packageDelete) {
         JavaBeanRequest<SimpleEntity> delete = new JavaBeanRequest<SimpleEntity>(url, SimpleEntity.class);
         delete.setMultipartFormEnable(true);

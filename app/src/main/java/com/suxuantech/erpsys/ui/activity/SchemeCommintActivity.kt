@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -121,25 +122,27 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
         initData()
         initTitle()
     }
-    fun initTitle(){
+
+    fun initTitle() {
         if (searchType == TypeFlag.OPTION_PANEL) {
-            if(isAdd){
+            if (isAdd) {
                 setTitle("选片排程(新增)")
                 //  actionBar.setSubtitle("新增");//子标题
-            }else{
+            } else {
                 setTitle("选片排程(修改)")
                 // actionBar.setSubtitle("修改");//子标题
             }
         } else if (searchType == TypeFlag.PHOTOGRAPH) {
-            if(isAdd){
+            if (isAdd) {
                 setTitle("拍照排程(新增)")
                 // supportActionBar?.setSubtitle("");//子标题
-            }else{
+            } else {
                 setTitle("拍照排程(修改)")
                 // supportActionBar?.setSubtitle("修改");//子标题
             }
         }
     }
+
     /**
      * 表单的适配器
      */
@@ -156,15 +159,15 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
                 tvFormValue.setCompoundDrawables(null, null, drawable, null);
             }
             if (item?.edit!!) {
-                tvFormValue.isEnabled=true
+                tvFormValue.isEnabled = true
                 tvFormValue.minLines = 3;
                 tvFormValue.maxLines = 3;
                 tvFormValue.setFocusableInTouchMode(true);
                 tvFormValue.setFocusable(true);
                 //tvFormValue.requestFocus();
             } else {
-                tvFormValue.isEnabled=false
-                tvFormValue.isClickable=false
+                tvFormValue.isEnabled = false
+                tvFormValue.isClickable = false
                 tvFormValue.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
                     false
                 })
@@ -182,8 +185,12 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
             var llHistoryInfo = helper?.getView<LinearLayout>(R.id.ll_history_info);
             var tvHistoryName = helper?.getView<TextView>(R.id.tv_history_name);
             var tvHistoryValue = helper?.getView<TextView>(R.id.tv_history_value);
-            tvHistoryName?.setText(item?.consumption_type);
-            tvHistoryValue?.setText(item?.selectday)
+            var draw = resources.getDrawable(R.drawable.arrows_right_gray)
+            draw.setBounds(0, 0, draw.minimumWidth, draw.minimumHeight);
+            tvHistoryValue?.setCompoundDrawables(null, null, draw, null)
+            tvHistoryValue?.gravity = Gravity.RIGHT
+            tvHistoryName?.setText(StringUtils.safetyString(item?.consumption_type));
+            tvHistoryValue?.setText(StringUtils.safetyString(item?.selectday) + StringUtils.safetyString(item?.selectTime))
         }
     }
     var photoHistoryAdapter = object : QuickAdapter<PhotoSchemeSearchEntity.DataBean>(R.layout.item_scheme_history, null) {
@@ -191,8 +198,12 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
             var llHistoryInfo = helper?.getView<LinearLayout>(R.id.ll_history_info);
             var tvHistoryName = helper?.getView<TextView>(R.id.tv_history_name);
             var tvHistoryValue = helper?.getView<TextView>(R.id.tv_history_value);
-            tvHistoryName?.setText(item?.consumption_type);
-            tvHistoryValue?.setText(item?.photodate)
+            var draw = resources.getDrawable(R.drawable.arrows_right_gray)
+            draw.setBounds(0, 0, draw.minimumWidth, draw.minimumHeight);
+            tvHistoryValue?.setCompoundDrawables(null, null, draw, null)
+            tvHistoryValue?.gravity = Gravity.RIGHT
+            tvHistoryName?.setText(StringUtils.safetyString(item?.consumption_type));
+            tvHistoryValue?.setText( StringUtils.safetyString(item?.photodate)+StringUtils.subDate(StringUtils.safetyString(item?.phototime) ))
         }
     }
 
@@ -235,7 +246,7 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
     /**
      * 初始化表单数据,以及历史信息
      */
-        fun initData() {
+    fun initData() {
         if (searchType == TypeFlag.OPTION_PANEL) {
             tvHistory?.setText("历史选片排程")
             rvScheduledHistory?.adapter = optionPanelHistoryAdapter;
@@ -425,6 +436,7 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
                         finish()
                     }
                 }
+
                 override fun onFailed(what: Int, response: Response<SimpleEntity>) {}
             }
             request<SimpleEntity>(123, request, searchByCustmor, true, true)

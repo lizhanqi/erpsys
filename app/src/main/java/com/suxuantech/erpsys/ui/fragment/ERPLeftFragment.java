@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +35,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
+import com.suxuantech.erpsys.entity.FormEntity;
 import com.suxuantech.erpsys.entity.HomeCustmoerCountEntity;
 import com.suxuantech.erpsys.entity.HomeSumEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
@@ -60,6 +60,7 @@ import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.StringUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -109,7 +110,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     private View headView;
     private View module;
     private List<HomeCustmoerCountEntity.DataBean> dataBeans;
-    private QuickAdapter<String> quickAdapter;
+    private QuickAdapter<FormEntity> quickAdapter;
 
     @Subscribe()
     @MainThread
@@ -200,7 +201,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
         //请求实体
         JavaBeanRequest<HomeCustmoerCountEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<HomeCustmoerCountEntity>(Url, RequestMethod.POST, HomeCustmoerCountEntity.class);
         HttpListener<HomeCustmoerCountEntity> searchByCustmor = new HttpListener<HomeCustmoerCountEntity>() {
-
             @Override
             public void onSucceed(int what, Response<HomeCustmoerCountEntity> response) {
                 if (response.get().isOK()) {
@@ -229,16 +229,29 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     TextView tvin = headView.findViewById(R.id.tv_today_income);
                     TextView tvon = headView.findViewById(R.id.tv_today_order_number);
                     TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
-
                     tvcn.setText(new MyString("今日客资量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
-                    tvcn.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                    if (App.getApplication().hasPermission("K2")) {
+                        tvcn.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                    } else {
+                        tvcn.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                    }
                     tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
-                    tvon.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
-
-                     tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    if (App.getApplication().hasPermission("I2")) {
+                        tvon.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                    } else {
+                        tvon.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                    }
+                    if (App.getApplication().hasPermission("I2")) {
+                        tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    } else {
+                        tvin.setText((new MyString("¥\u2000__").setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                    }
                     tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
-
-                    tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                    if (App.getApplication().hasPermission("I3")) {
+                        tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                    } else {
+                        tvrt.setText((new MyString("¥\u2000__").setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                    }
                     tvrt.append(new MyString("\n今日收款").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                 }
             }
@@ -256,33 +269,53 @@ public class ERPLeftFragment extends BaseLazyFragment {
         initImmersionBar();
         headView = inflater.inflate(R.layout.head_home, null, false);
         headView.findViewById(R.id.tv_today_customer_number).setOnClickListener(l -> {
-            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-            intent.putExtra("title", "今日客资");
-            startActivity(intent);
+            if (App.getApplication().hasPermission("K2")) {
+                Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+                intent.putExtra("title", "今日客资");
+                startActivity(intent);
+            } else {
+                ToastUtils.snackbarShort("无权查看", "确定");
+            }
         });
         headView.findViewById(R.id.tv_today_income).setOnClickListener(l -> {
-            Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-            intent.putExtra("title", "今日订单");
-            intent.putExtra("hideSearch", true);
-            startActivity(intent);
+            if (App.getApplication().hasPermission("I2")) {
+                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+                intent.putExtra("title", "今日订单");
+                intent.putExtra("hideSearch", true);
+                startActivity(intent);
+            } else {
+                ToastUtils.snackbarShort("无权查看", "确定");
+            }
         });
         headView.findViewById(R.id.tv_today_order_number).setOnClickListener(l -> {
-            Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
-            intent.putExtra("title", "今日订单");
-            intent.putExtra("hideSearch", true);
-            startActivity(intent);
+            if (App.getApplication().hasPermission("I2")) {
+                Intent intent = new Intent(getActivity(), SearchOrderActivity.class);
+                intent.putExtra("title", "今日订单");
+                intent.putExtra("hideSearch", true);
+                startActivity(intent);
+            } else {
+                ToastUtils.snackbarShort("无权查看", "确定");
+            }
         });
         headView.findViewById(R.id.tv_today_receipt).setOnClickListener(l -> {
-            Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-            intent.putExtra("title", "今日收款");
-            startActivity(intent);
+            if (App.getApplication().hasPermission("I3")) {
+                Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
+                intent.putExtra("title", "今日收款");
+                startActivity(intent);
+            } else {
+                ToastUtils.snackbarShort("无权查看", "确定");
+            }
         });
         module = inflater.inflate(R.layout.in_home_module, null, false);
         module.findViewById(R.id.tv_register_into_shop).setOnClickListener(o -> {
             startActivity(new Intent(getActivity(), RegisterIntoShopActivity.class));
         });
         module.findViewById(R.id.tv_outlets_order).setOnClickListener(o -> {
-            startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+            if (App.getApplication().hasPermission("A3")) {
+                startActivity(new Intent(getActivity(), OutletsOrderActivity.class));
+            } else {
+                ToastUtils.snackbarShort("无权开单", "确定");
+            }
         });
         module.findViewById(R.id.tv_order_search).setOnClickListener(o -> {
             startActivity(new Intent(getActivity(), SearchOrderActivity.class));
@@ -292,13 +325,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
             intent.putExtra("title", "排程");
             startActivity(intent);
         });
-//        module.findViewById(R.id.tv_schedule).setOnLongClickListener(o -> {
-//            addShortLunch("排程",R.drawable.icon_scheme_home,RegisterIntoShopActivity.class);
-////            Intent intent = new Intent(getActivity(), RegisterIntoShopActivity.class);
-////            intent.putExtra("title", );
-////            startActivity(intent);
-//            return  true;
-//        });
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -307,72 +333,16 @@ public class ERPLeftFragment extends BaseLazyFragment {
             quickAdapter.notifyDataSetChanged();
             return;
         }
-        //todo 这里还需改动,如果模块需要权限展示的话更需要改动
-        String[] titles = getResources().getStringArray(R.array.home_title);
-        List<String> strings = Arrays.asList(titles);
-        quickAdapter = new QuickAdapter<String>(R.layout.item_home_card, strings) {
+        List<FormEntity> strings = homeData(dataBeans);
+        quickAdapter = new QuickAdapter<FormEntity>(R.layout.item_home_card, strings) {
             @Override
-            protected void convert(BaseViewHolder helper, String item) {
-                int i = strings.lastIndexOf(item);
+            protected void convert(BaseViewHolder helper, FormEntity item) {
                 ImageView imgIcon = (ImageView) helper.getView(R.id.img_icon);
                 TextView tvName = (TextView) helper.getView(R.id.tv_name);
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
-                CardView card = (CardView) helper.getView(R.id.card_home);
-                tvName.setText(item);
-                if (i == 0) {
-                    imgIcon.setImageResource(R.drawable.icon_make_into_store_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getJkyycount());
-                    if(App.getApplication().hasPermission("K2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-                } else if (i == 1) {
-                    imgIcon.setImageResource(R.drawable.icon_photo_custmoer_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getPzcount());
-                    if(App.getApplication().hasPermission("D2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-                } else if (i == 2) {
-                    imgIcon.setImageResource(R.drawable.icon_dress_customer_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getLfcount());
-                    if(App.getApplication().hasPermission("B2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-                } else if (i == 3) {
-                    imgIcon.setImageResource(R.drawable.icon_make_up_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getHzcount());
-                    if(App.getApplication().hasPermission("C2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-                } else if (i == 4) {
-                    imgIcon.setImageResource(R.drawable.icon_option_panel_custmoer_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getXpcount());
-                    if(App.getApplication().hasPermission("E2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-                } else if (i == 5) {
-                    imgIcon.setImageResource(R.drawable.icon_get_photo_custmoer_home);
-                    tvValues.setText(ERPLeftFragment.this.dataBeans.get(0).getQjcount());
-                    if(App.getApplication().hasPermission("F2")){
-                        card.setVisibility(View.VISIBLE);
-                    }else {
-                        card.setVisibility(View.GONE);
-                    }
-
-                } else if (i == 6) {
-                    imgIcon.setImageResource(R.drawable.icon_me_custmer_home);
-                    tvName.setText(strings.get(i));
-                    //   tvValues.setText(item.get());
-                }
+                imgIcon.setImageResource(item.getIcon());
+                tvName.setText(item.getKey());
+                tvValues.setText(item.getValue());
             }
         };
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
@@ -395,7 +365,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), TodayCustomerActivity.class);
-                intent.putExtra("title", strings.get(position));
+                intent.putExtra("title", strings.get(position).getKey());
                 startActivity(intent);
             }
         });
@@ -406,6 +376,34 @@ public class ERPLeftFragment extends BaseLazyFragment {
         defaultItemDecoration.setHasHead(true);
         mRvCard.addItemDecoration(defaultItemDecoration);
         mRefreshLayout.setEnableLoadmore(false);
+    }
+
+    @NonNull
+    private List<FormEntity> homeData(List<HomeCustmoerCountEntity.DataBean> dataBeans) {
+        String[] titles = getResources().getStringArray(R.array.home_title);
+        List<FormEntity> strings = new ArrayList<FormEntity>();
+        HomeCustmoerCountEntity.DataBean dataBean = dataBeans.get(0);
+        if (App.getApplication().hasPermission("K2")) {
+            strings.add(new FormEntity(R.drawable.icon_make_into_store_home, titles[0], dataBean.getJkyycount()));
+        }
+        if (App.getApplication().hasPermission("D2")) {
+            strings.add(new FormEntity(R.drawable.icon_photo_custmoer_home, titles[1], dataBean.getPzcount()));
+        }
+        if (App.getApplication().hasPermission("B2")) {
+            strings.add(new FormEntity(R.drawable.icon_dress_customer_home, titles[2], dataBean.getLfcount()));
+        }
+        if (App.getApplication().hasPermission("C2")) {
+            strings.add(new FormEntity(R.drawable.icon_make_up_home, titles[3], dataBean.getHzcount()));
+        }
+
+        if (App.getApplication().hasPermission("E2")) {
+            strings.add(new FormEntity(R.drawable.icon_option_panel_custmoer_home, titles[4], dataBean.getXpcount()));
+        }
+
+        if (App.getApplication().hasPermission("F2")) {
+            strings.add(new FormEntity(R.drawable.icon_get_photo_custmoer_home, titles[5], dataBean.getQjcount()));
+        }
+        return strings;
     }
 
     @NonNull

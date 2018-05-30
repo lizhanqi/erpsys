@@ -122,6 +122,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
     SwipeMenuItemClickListener mMenuItemClickListener = new SwipeMenuItemClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge) {
+            menuBridge.closeMenu();
             if (!App.getApplication().hasPermission("M4")) {
                 toastShort("无权删除排程");
                 return;
@@ -130,7 +131,6 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
             int groupPosition = 0;//记录第几组
             int childrenPosition = -1;//记录第几组的第几个(这里-1代表就是分组的组名)
             // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
-            menuBridge.closeMenu();
             int direction = menuBridge.getDirection(); // 左侧还是右侧菜单。
             int adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
             int menuPosition = menuBridge.getPosition(); // 菜单在RecyclerView的Item中的Position。
@@ -158,7 +158,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
                     break;
                 }
             }
-            toastShort("第" + groupPosition + "组的第" + childrenPosition);
+            //toastShort("第" + groupPosition + "组的第" + childrenPosition);
             deleteScheme(groupPosition, childrenPosition);
         }
     };

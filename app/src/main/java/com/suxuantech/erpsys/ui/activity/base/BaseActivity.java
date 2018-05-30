@@ -35,6 +35,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,6 +43,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jpush.im.android.api.event.LoginStateChangeEvent;
+import cn.jpush.im.android.api.model.UserInfo;
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
@@ -103,6 +106,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
 public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity   {
+
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
     /**
      * 按钮快速点击时间(多少毫秒内点击同一个算快速点击)
@@ -321,6 +325,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         //changeStatusColor();
         //setFragmentAnimator();
         mDelegate.onCreate(savedInstanceState);
+       useEventBus();
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_LEFT);
 //        setEdgeLevel( SwipeBackLayout.EdgeLevel.MAX);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -620,6 +625,23 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
+    @Subscribe
+    public void onEvent(LoginStateChangeEvent event){
+        LoginStateChangeEvent.Reason reason = event.getReason();//获取变更的原因
+        UserInfo myInfo = event.getMyInfo();//获取当前被登出账号的信息
+        switch (reason) {
+            case user_password_change:
+                //用户密码在服务器端被修改
+                break;
+            case user_logout:
+                //用户换设备登录
+                break;
+            case user_deleted:
+                //用户被删除
+                break;
+        }
+    }
+
 }
 /*----------------换肤------------------*/
 //    @Override

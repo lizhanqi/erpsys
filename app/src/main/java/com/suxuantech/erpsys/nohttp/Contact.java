@@ -379,7 +379,7 @@ public class Contact {
      */
     public static String DELETE_PACKAGE = "/SXWebErpAppStaff/SX_DelAllConsumptioncontent?Token=%s&orderid=%s&Code=%s&brandid=%s";
     /**
-     * 删除产品验证
+     * 删除产品验证(验证包套是否锁定,是否完成,是否作废)
      */
     public static String DELETE_CHEKE = "/SXWebErpAppStaff/SX_DinDanYanZheng?Token=%s&orderid=%s&Code=%s";
     /**
