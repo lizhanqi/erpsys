@@ -228,9 +228,9 @@
                     style="@style/DetailsKey"
                     android:text="客户地址" />
 
-                <TextView
-                    android:id="@+id/tv_custmoer_address"
-                    style="@style/FormOptionValue"
+                <EditText
+                    android:id="@+id/et_custmoer_address"
+                    style="@style/TextAreaValue"
                     android:hint="请选择客户地址" />
             </LinearLayout>
 

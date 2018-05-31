@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.bigkoo.alertview.AlertView
 import com.bigkoo.alertview.OnItemClickListener
 import com.bigkoo.pickerview.TimePickerView
+import com.blankj.utilcode.util.KeyboardUtils
 import com.suxuantech.erpsys.App
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.common.OptionHelp
@@ -96,7 +97,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
     /**
      * 请选择客户地址
      */
-    private var mTvCustmoerAddress: TextView? = null
+    private var mTvCustmoerAddress: EditText? = null
     private var mLlCustmoerAddress: LinearLayout? = null
     /**
      * 请选择预约进店时间
@@ -313,7 +314,6 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         //请求实体
         var url = Contact.getFullUrl(Contact.GUEST_REGISTRATION, Contact.TOKEN)
         val stringRequest = JavaBeanRequest(url, RequestMethod.POST, GustRegistrationEntity::class.java)
-        //  var m  = HashMap<String ,String>() ;
         stringRequest.addBodyJson("Customer_name", mEtCustomerName?.text.toString())
         stringRequest.addBodyJson("Customer_tel", mEtCustomerPhone?.text.toString())
         stringRequest.addBodyJson("Customer_wechat", mEtCustomerWechat?.text.toString())
@@ -370,14 +370,11 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         stringRequest.addBodyJson("Customer_intention_id", customerIntentionId)
         stringRequest.addBodyJson("Staffid", App.getApplication().userInfor.staff_id)
         stringRequest.param2Json()
-        // val toJSONString = FastJsonUtils.toJSONString(m);
-        // stringRequest.addHeader("Content-Type", "application/json");
-        //stringRequest.setDefineRequestBodyForJson(toJSONString)
         val httpListener = object : HttpListener<GustRegistrationEntity> {
             override fun onSucceed(what: Int, response: Response<GustRegistrationEntity>?) {
                 if (response!!.get().isOK) {
+                    ToastUtils.snackbarShort("登记成功","确定")
                     search(response.get().data)
-//                    ToastUtils.showShort()
                 } else {
                     ToastUtils.showShort(response.get().getMsg())
                 }
@@ -392,6 +389,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
 
 
     fun showDateSelect(showint: TextView?) {
+        KeyboardUtils.hideSoftInput(showint)
         //                DateUtil.dateToString()
         //年月日时分秒 的显示与否，不设置则默认全部显示
         val timePickerView = TimePickerView.Builder(this, TimePickerView.OnTimeSelectListener { date, v ->
@@ -400,7 +398,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
             //                DateUtil.dateToString()
             //            toast(date.toString());
         }) //年月日时分秒 的显示与否，不设置则默认全部显示
-                .setTitleText(getString(R.string.please_select_marriage_date)).setLineSpacingMultiplier(4f).setType(booleanArrayOf(true, true, true, false, false, false))
+                .setTitleText("选择日期").setLineSpacingMultiplier(4f).setType(booleanArrayOf(true, true, true, false, false, false))
                 .setTitleColor(resources.getColor(R.color.textHint_99)).setTitleBgColor(resources.getColor(R.color.white)).build()
         timePickerView.setDate(Calendar.getInstance())//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         timePickerView.show()
@@ -440,7 +438,7 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         mTvOrderReceivingPoint = findViewById<TextView>(R.id.tv_order_receiving_point) as TextView
         mLlOrderReceivingPoint = findViewById<LinearLayout>(R.id.ll_order_receiving_point) as LinearLayout
         mLlOrderReceivingPoint?.setOnClickListener(this)
-        mTvCustmoerAddress = findViewById<TextView>(R.id.tv_custmoer_address) as TextView
+        mTvCustmoerAddress = findViewById<EditText>(R.id.et_custmoer_address) as EditText
         mLlCustmoerAddress = findViewById<LinearLayout>(R.id.ll_custmoer_address) as LinearLayout
         mLlCustmoerAddress?.setOnClickListener(this)
         mTvReservationDate = findViewById<TextView>(R.id.tv_reservation_date) as TextView
@@ -480,11 +478,11 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         }
         val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         var url = Contact.getFullUrl(Contact.INQUIRE_GUEST_INFO, Contact.TOKEN
-                , 20170101, nowDate, "",
+                , nowDate, nowDate, jkID,
                 0, 20,
-                App.getApplication().userInfor.shop_code, jkID, name1, name2
+                App.getApplication().userInfor.shop_code,"" , name1, name2
         )
-        val districtBeanJavaBeanRequest = JavaBeanRequest(url, RequestMethod.POST, RegisterEntity::class.java)
+        val districtBeanJavaBeanRequest = JavaBeanRequest(url,  RegisterEntity::class.java)
         val searchByCustmor = object : HttpListener<RegisterEntity> {
             override fun onSucceed(what: Int, response: Response<RegisterEntity>) {
                 if (response.get().isOK) {

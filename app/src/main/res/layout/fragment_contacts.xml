@@ -29,7 +29,7 @@ clickable是防止页面穿透的点击事件的
         android:drawablePadding="@dimen/px30"
         android:editable="false"
         android:gravity="center_vertical"
-        android:hint="@string/hint_input_phonenumber_or_ordernumber_or_name_search"
+        android:hint="手机号/姓名"
         android:imeOptions="actionSearch"
         android:paddingHorizontal="@dimen/px30"
         android:singleLine="true"

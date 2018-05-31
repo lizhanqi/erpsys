@@ -70,7 +70,8 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
         }
         DrawableCompat.setTint(mClearDrawable, colorAccent);//设置删除按钮的颜色和TextColor的颜色一致
         mClearDrawable.setBounds(0, 0, (int) getTextSize(), (int) getTextSize());//设置Drawable的宽高和TextSize的大小一致
-        setClearIconVisible(true);
+        //默认不可见,因为没有文字
+        setClearIconVisible(false);
         // 设置焦点改变的监听
         setOnFocusChangeListener(this);
         // 设置输入框里面内容发生改变的监听
@@ -139,15 +140,13 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
         }
         return super.onTouchEvent(event);
     }
-
-
     private boolean hasFocus;// 控件是否有焦点
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         this.hasFocus = hasFocus;
         if (hasFocus) {
-            setClearIconVisible(getText().length() > 0);
+            setClearIconVisible(getText().toString().length() > 0);
         } else {
             setClearIconVisible(false);
         }
@@ -159,19 +158,16 @@ public class OneKeyClearAutoCompleteText extends android.support.v7.widget.AppCo
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         if (hasFocus) {
-            setClearIconVisible(text.length() > 0);
+            setClearIconVisible(text.toString().length() > 0);
         }
     }
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        // TODO Auto-generated method stub
-
     }
     LeftDrawableClickListen leftDrawableClickListen;
     public void setLeftDrawableClickListen( LeftDrawableClickListen leftDrawableClickListen){

@@ -18,6 +18,7 @@ import com.suxuantech.erpsys.entity.StaffSearchEntity;
 import com.suxuantech.erpsys.entity.StoreEntity;
 import com.suxuantech.erpsys.ui.activity.base.ContactsActivity;
 import com.suxuantech.erpsys.ui.fragment.ContactDataFragment;
+import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.Text2Bitmap;
 
@@ -118,7 +119,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
     }
 
     private boolean isAddedHome(int type, String key) {
-        if (contanctsFastEntranceEntities!=null) {
+        if (contanctsFastEntranceEntities != null) {
             for (ContanctsFastEntranceEntity d : contanctsFastEntranceEntities) {
                 if (d.getType() == type && key.equals(d.getKey())) {
                     return true;
@@ -135,7 +136,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             List<BusinssunitEntity.DataBean> businssunitData = contactEntity.getBusinssunitData();
             if (businssunitData != null) {
                 BusinssunitEntity.DataBean dataBean = businssunitData.get(childPosition);
-                if (isAddedHome( ContactDataFragment.BUSINESS_UNIT_TYPE, dataBean.getId() + "")) {
+                if (isAddedHome(ContactDataFragment.BUSINESS_UNIT_TYPE, dataBean.getId() + "")) {
                     return -5;
                 } else {
                     return 1;
@@ -147,7 +148,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             //店面
             List<StoreEntity.DataBean> storeData = contactEntity.getStoreData();
             if (storeData != null) {
-                if (isAddedHome( ContactDataFragment.STORE_TYPE, storeData.get(childPosition).getShop_code() + "")) {
+                if (isAddedHome(ContactDataFragment.STORE_TYPE, storeData.get(childPosition).getShop_code() + "")) {
                     return -6;
                 } else {
                     return 2;
@@ -159,7 +160,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             //部门
             List<DepartmentEntiy.DataBean> departmentData = contactEntity.getDepartmentData();
             if (departmentData != null) {
-                if (isAddedHome( ContactDataFragment.DEPARTMENT_TYPE, departmentData.get(childPosition).getId() + "")) {
+                if (isAddedHome(ContactDataFragment.DEPARTMENT_TYPE, departmentData.get(childPosition).getId() + "")) {
                     return -7;
                 } else {
                     return 3;
@@ -195,6 +196,7 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
             }
             ImageView imgContactHead = holder.get(R.id.img_contact_head);
             TextView tvContactName = holder.get(R.id.tv_contact_name);
+
             CheckBox cbPerson = holder.get(R.id.cb_person);
             if (isOption) {
                 cbPerson.setVisibility(View.VISIBLE);
@@ -212,7 +214,9 @@ public class ContanctsAdaputer extends GroupedRecyclerViewAdapter {
                 cbPerson.setVisibility(View.GONE);
             }
             String string = StringUtils.safetyString(staffData.get(childPosition).getStaffname());
+            String zhiwei = StringUtils.safetyString(staffData.get(childPosition).getMain_position_name());
             tvContactName.setText(string);
+            tvContactName.append(new MyString("\n"+zhiwei).setSize(10).setColor(tvContactName.getResources().getColor(R.color.hintColor)));
             imgContactHead.setImageBitmap(Text2Bitmap.getNameBitMap(string, imgContactHead.getContext().getResources().getColor(R.color.white)));
         } else {
             TextView departTextview = holder.get(R.id.tv_department);

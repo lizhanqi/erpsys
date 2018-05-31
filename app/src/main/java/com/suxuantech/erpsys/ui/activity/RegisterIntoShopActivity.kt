@@ -181,7 +181,7 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
         })
     }
     fun getData() {
-        if (App.getApplication().hasPermission("K2")) {
+        if (!App.getApplication().hasPermission("K2")) {
             ToastUtils.snackbarShort("无权限获取登记统计数据","确定")
             refreshLayout.finishRefresh();
             return

@@ -9,12 +9,13 @@
 
     <ImageView
         android:id="@+id/img_contact_head"
-        android:layout_width="@dimen/px150"
-        android:layout_height="@dimen/px150"
-        android:background="@drawable/sl_butn_gray_theme"
+        android:layout_width="@dimen/px100"
+        android:layout_height="@dimen/px100"
+        android:background="@drawable/sp_head"
         android:scaleType="fitCenter" />
 
     <TextView
+        android:textColor="@color/textColor"
         android:id="@+id/tv_contact_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
         android:layout_weight="1"
         android:drawableRight="@drawable/arrows_right_gray"
         android:text="222"
-        android:textSize="@dimen/xs60" />
+        android:textSize="@dimen/xs50" />
 
     <CheckBox
         android:id="@+id/cb_person"

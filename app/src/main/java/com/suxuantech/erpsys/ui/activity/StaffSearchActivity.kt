@@ -62,7 +62,7 @@ class StaffSearchActivity : TitleNavigationActivity() {
 //            * shop_name : 时尚经典旗舰店
 //            * department_name : 门市部
 //            * main_position_name : 门市主管
-            contanTextView?.setText(MyString(StringUtils.safetyString(item?.staffname)).setSize(30))
+            contanTextView?.setText(MyString(StringUtils.safetyString(item?.staffname)).setSize(22))
             contanTextView?.append(MyString(re).setSize(10))
             val option = intent.getBooleanExtra("option", false);
             if (option) {

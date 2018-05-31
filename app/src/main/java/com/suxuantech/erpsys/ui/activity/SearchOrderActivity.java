@@ -141,6 +141,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         mSearchOrderPresenter.setiSearchOptionPanelScheme(this);
         mSearchOrderPresenter.setiSearchPhotoScheme(this);
         initView();
+        initHistoryAdapter();
         initSearchEditTextView();
         initDataAdapter();
         if (getIntent().getBooleanExtra("hideSearch", false)) {
@@ -423,14 +424,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             }
         });
         mTietNavSearch.setAdapter(new ArrayAdapter<String>(this, R.layout.simple_list_item_1, mSearchOrderPresenter.getSearchHosieryArray()));
-        mTietNavSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {//获取到焦点后设置搜索历史的适配器
-                    initHistoryAdapter();
-                }
-            }
-        });
     }
 
     /**
