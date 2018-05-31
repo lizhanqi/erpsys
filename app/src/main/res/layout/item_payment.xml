@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:padding="@dimen/px30"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/px30">
 
         <TextView
             android:id="@+id/tv_payment_date_key"
             style="@style/DetailsKey"
+            android:drawableLeft="@drawable/icon_receipt_date"
             android:text="收款日期" />
 
         <TextView
@@ -22,17 +22,19 @@
             style="@style/DetailsValue"
             android:gravity="right" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout
-        android:padding="@dimen/px30"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <View style="@style/line" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/px30">
 
         <TextView
             android:id="@+id/tv_payee_type_key"
             style="@style/DetailsKey"
+            android:drawableLeft="@drawable/icon_receipt_type"
             android:text="收款类型" />
 
         <TextView
@@ -40,35 +42,39 @@
             style="@style/DetailsValue"
             android:gravity="right" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout
-        android:padding="@dimen/px30"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <View style="@style/line" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/px30">
 
         <TextView
             android:id="@+id/tv_payment_payee_key"
             style="@style/DetailsKey"
-            android:text="收款人" />
+            android:drawableLeft="@drawable/icon_receipt_staff"
+            android:text="收&#160;款&#160;人" />
 
         <TextView
             android:id="@+id/tv_payment_payee_value"
             style="@style/DetailsValue"
             android:gravity="right" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout
-        android:padding="@dimen/px30"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <View style="@style/line" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/px30">
 
         <TextView
             android:id="@+id/tv_payment_type_key"
             style="@style/DetailsKey"
+            android:drawableLeft="@drawable/icon_pay_type"
             android:text="付款类型" />
 
         <TextView
@@ -76,17 +82,19 @@
             style="@style/DetailsValue"
             android:gravity="right" />
     </LinearLayout>
-    <View style="@style/line"/>
-    <LinearLayout
-        android:padding="@dimen/px30"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <View style="@style/line" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/px30">
 
         <TextView
             android:id="@+id/tv_payment_money_key"
             style="@style/DetailsKey"
+            android:drawableLeft="@drawable/icon_revenue"
             android:text="收款金额" />
 
         <TextView
