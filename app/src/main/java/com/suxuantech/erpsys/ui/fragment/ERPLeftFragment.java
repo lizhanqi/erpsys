@@ -76,7 +76,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
     @BindView(R.id.tv_company_name)
     FallTextView mTvCompanyName;
     @BindView(R.id.tv_today_time)
-    TextView mTvTodayTime;
+    FallTextView mTvTodayTime;
     @BindView(R.id.tv_msg_number)
     TextView mTvMsgNumber;
     @BindView(R.id.rl_msg)
@@ -231,24 +231,24 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
                     tvcn.setText(new MyString("今日客资量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                     if (App.getApplication().hasPermission("K2")) {
-                        tvcn.append(new MyString(data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                        tvcn.append(new MyString(StringUtils.empty(data.get(0).getJktotal())?"0":data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     } else {
                         tvcn.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     }
                     tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
                     if (App.getApplication().hasPermission("I2")) {
-                        tvon.append(new MyString(data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                        tvon.append(new MyString(StringUtils.empty(data.get(0).getRentotal())?"0":data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     } else {
                         tvon.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     }
                     if (App.getApplication().hasPermission("I2")) {
-                        tvin.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                        tvin.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getZongmoney())?" 0.00":data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
                     } else {
                         tvin.setText((new MyString("¥\u2000__").setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
                     }
                     tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                     if (App.getApplication().hasPermission("I3")) {
-                        tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                        tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getRealmoney())?" 0.00":data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     } else {
                         tvrt.setText((new MyString("¥\u2000__").setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     }
@@ -329,11 +329,12 @@ public class ERPLeftFragment extends BaseLazyFragment {
     }
 
     private void setData2View(List<HomeCustmoerCountEntity.DataBean> dataBeans) {
+        List<FormEntity> strings = homeData(dataBeans);
         if (quickAdapter != null) {
+            quickAdapter.updateAll(strings);
             quickAdapter.notifyDataSetChanged();
             return;
         }
-        List<FormEntity> strings = homeData(dataBeans);
         quickAdapter = new QuickAdapter<FormEntity>(R.layout.item_home_card, strings) {
             @Override
             protected void convert(BaseViewHolder helper, FormEntity item) {
@@ -342,7 +343,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
                 imgIcon.setImageResource(item.getIcon());
                 tvName.setText(item.getKey());
-                tvValues.setText(item.getValue());
+                tvValues.setText(StringUtils.empty(item.getValue()) ? "0" :item.getValue());
             }
         };
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
@@ -550,6 +551,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
                 mTvCompanyName.animateText(StringUtils.safetyString(App.getApplication().getUserInfor().getShop_name()));
+                mTvTodayTime.animateText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY));
                 initCard();
             }
 

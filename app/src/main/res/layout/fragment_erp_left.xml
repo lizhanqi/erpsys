@@ -71,7 +71,7 @@ clickable是防止页面穿透的点击事件的
                                 android:text="沈阳时尚经典"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/xs55" />
-                            <TextView
+                            <com.hanks.htextview.fall.FallTextView
                                 android:id="@+id/tv_today_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
