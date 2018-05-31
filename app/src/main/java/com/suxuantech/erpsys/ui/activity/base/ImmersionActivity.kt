@@ -111,7 +111,15 @@ abstract class ImmersionActivity : BaseActivity() {
         mImmersionBar?.barAlpha(0.8f)
         mImmersionBar?.init();
     }
-
+    /**
+     * 增加暗色导航栏
+     */
+    public fun  navigationBarAlpha() {
+        mImmersionBar?.statusBarColor(R.color.translucent_black_95)
+                ?.navigationBarColor(R.color.translucent_black_95)
+        mImmersionBar?.navigationBarAlpha(0.8f)
+        mImmersionBar?.init();
+    }
     /**
      * 设置暗色度数
      */

@@ -20,6 +20,7 @@ import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.TimePickerView;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.scwang.smartrefresh.header.WaveSwipeHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
@@ -110,6 +111,9 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     RecyclerView mSmrHistory;
     @BindView(R.id.smart_refresh)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.wv_head)
+    WaveSwipeHeader freshHead;
+
     private BaseRecyclerAdapter<HistoryEntity> historyAdapter;
     private SearchOrderPresenter mSearchOrderPresenter;
     private BaseRecyclerAdapter<SearchOrderEntity.DataBean> searchResultAdaputer;
@@ -157,7 +161,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         smartRefreshLayout.setOnRefreshListener(load -> {
             search(false);
         });
-        hideUserDefinedNav();
+
     }
 
     /**
@@ -258,7 +262,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                             tvDate.setText(StringUtils.subDate(StringUtils.safetyString(item.getPhotodate())));
                             tvChange.setOnClickListener((View view) -> {
                                 photoScheme(dataBeans, false, childenPosstion);
-                                //
                             });
                         }
                     };
@@ -284,9 +287,9 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     tvConsumptionType.setText(new MyString("消费类型:").setColor(getResources().getColor(R.color.hintColor)));
                     tvConsumptionType.append(new MyString(StringUtils.safetyString(item.getConsumption_type())).setColor(getResources().getColor(R.color.textColor)));
                     tvOrderDate.setText(new MyString("订单日期:").setColor(getResources().getColor(R.color.hintColor)));
-                    tvOrderDate.append(new MyString(StringUtils.safetyString(item.getTargetdate())).setColor(getResources().getColor(R.color.textColor)));
+                    tvOrderDate.append(new MyString(DateUtil.String2String(item.getTargetdate(),DateUtil.DatePattern.JUST_DAY_NUMBER,DateUtil.DatePattern.ONLY_DAY)).setColor(getResources().getColor(R.color.textColor)));
                     tvPackageName.setText(new MyString("包套名称:").setColor(getResources().getColor(R.color.hintColor)));
-                    tvPackageName.append(new MyString(StringUtils.safetyString(item.getPayment_money() + "")).setColor(getResources().getColor(R.color.textColor)));
+                    tvPackageName.append(new MyString(StringUtils.safetyString(item.getPackage_name() + "")).setColor(getResources().getColor(R.color.textColor)));
                 }
             };
             quickAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -541,7 +544,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 }
             }
         }).setAlertRightColor(getResources().getColor(R.color.themeColor)).show();
-        immersionBarDark();
+        navigationBarAlpha();
     }
 
     /**
@@ -638,6 +641,8 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
+        if (pageIndex==0){
+        }
         smartRefreshLayout.setEnabled(true);
         smartRefreshLayout.setEnableRefresh(true);
         //  if (pageIndex!=0){

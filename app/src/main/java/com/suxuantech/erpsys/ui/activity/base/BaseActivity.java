@@ -325,7 +325,7 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         //changeStatusColor();
         //setFragmentAnimator();
         mDelegate.onCreate(savedInstanceState);
-       useEventBus();
+       //useEventBus();
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_LEFT);
 //        setEdgeLevel( SwipeBackLayout.EdgeLevel.MAX);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);

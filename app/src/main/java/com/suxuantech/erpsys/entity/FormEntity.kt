@@ -125,6 +125,12 @@ class FormEntity {
         this.value = value
         this.valueAutoLink = linkify
     }
+
+    constructor( icon: Int,  key: String, marginTop: Int){
+        this.key = key
+        this.icon = icon
+        this.marginTop = marginTop
+    }
     constructor(icon: Int, key: String, value: String, marginTop: Int, flag2:  Any){
         this.icon = icon
         this.key = key

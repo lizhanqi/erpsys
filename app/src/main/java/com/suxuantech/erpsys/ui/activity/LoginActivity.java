@@ -185,6 +185,16 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     Dialog loadingDialog;
 
     void login(String name, String password) {
+        if (name.isEmpty()){
+            mEmailView.setError("不能为空");
+            ToastUtils.snackbarShort("请输入账号","确定");
+            return;
+        }
+        if (password.isEmpty()){
+            mPasswordView.setError("请输入密码");
+            ToastUtils.snackbarShort("请输入密码","确定");
+            return;
+        }
         loadingDialog.setCancelable(false);
         loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
@@ -415,11 +425,11 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+     } //else if (!isEmailValid(email)) {
+//            mEmailView.setError(getString(R.string.error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -433,14 +443,16 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
 
+
+    /**
+     * 密码长度判断
+     * @param password
+     * @return
+     */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 0;
     }
 
     /**

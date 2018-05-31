@@ -19,6 +19,7 @@
         app:srlEnableHeaderTranslationContent="false"
         app:srlEnableLoadMore="true">
     <com.scwang.smartrefresh.header.WaveSwipeHeader
+        android:id="@+id/wv_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
         <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"

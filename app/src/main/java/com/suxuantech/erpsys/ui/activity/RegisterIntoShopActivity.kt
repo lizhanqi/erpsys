@@ -29,6 +29,7 @@ import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.MyString
+import com.suxuantech.erpsys.utils.StringUtils
 import com.suxuantech.erpsys.utils.ToastUtils
 import com.yanzhenjie.nohttp.RequestMethod
 import com.yanzhenjie.nohttp.rest.Response
@@ -73,7 +74,13 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             var value = helper.getView<TextView>(R.id.tv_type_value)
             var icon = helper.getView<ImageView>(R.id.img_icon_type)
             name.setText(item.key)
-            value.setText(item.value)
+            if(StringUtils.empty(item.value)){
+                value.visibility=View.GONE
+            }else{
+                value.visibility=View.VISIBLE
+                name.setText(item.value)
+            }
+
             icon.setImageDrawable(resources.getDrawable(item.icon))
             var temp = "";
             if (item.flag != null) {
@@ -144,8 +151,8 @@ class RegisterIntoShopActivity : TitleNavigationActivity() {
             list.add(FormEntity(R.drawable.icon_run_away, "流失客资", "今日流失客资", 5, 2))
             list.add(FormEntity(R.drawable.icon_in_shop_unlabeled, "未标记进店日期客资", "未标记进店客资", 30, 6))
         } else {
-            list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程", "今日可排", 5))
-            list.add(FormEntity(R.drawable.icon_schedule_select_pictrue, "选片排程", "今日可排", 5))
+            list.add(FormEntity(R.drawable.icon_camera_schedule, "拍照排程",   5))
+            list.add(FormEntity(R.drawable.icon_schedule_select_pictrue, "选片排程",   5))
         }
         recyclerView?.layoutManager = LinearLayoutManager(this);
         adapter.setOnItemClickListener { adapter, view, position ->
