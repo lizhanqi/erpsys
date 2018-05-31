@@ -478,9 +478,9 @@ class IntoGuestRegistrationActivity : TitleNavigationActivity() {
         }
         val nowDate = DateUtil.getNowDate(DateUtil.DatePattern.JUST_DAY_NUMBER);
         var url = Contact.getFullUrl(Contact.INQUIRE_GUEST_INFO, Contact.TOKEN
-                , nowDate, nowDate, jkID,
+                , nowDate, nowDate,"" ,
                 0, 20,
-                App.getApplication().userInfor.shop_code,"" , name1, name2
+                App.getApplication().userInfor.shop_code,jkID , name1, name2
         )
         val districtBeanJavaBeanRequest = JavaBeanRequest(url,  RegisterEntity::class.java)
         val searchByCustmor = object : HttpListener<RegisterEntity> {

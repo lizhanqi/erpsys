@@ -130,7 +130,7 @@
     <style name="DetailsValue" parent="DetailsKey">
         <item name="android:textIsSelectable">false</item>
         <item name="android:layout_marginLeft">@dimen/px30</item>
-        <item name="android:textColor">@color/textHint_99</item>
+        <item name="android:textColor">@color/textColor</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColorHint">@color/textHint_99</item>
