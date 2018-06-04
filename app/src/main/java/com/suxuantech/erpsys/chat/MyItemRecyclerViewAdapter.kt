@@ -41,7 +41,7 @@ class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : B
             name.setText(String(EncodeUtils.base64Decode(userInfo.userName) ));
             if (item.latestMessage != null) {
                 val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)
-                time.setText(timeFormat.detailTime)
+                time.setText(timeFormat.time)
                 val oneSelf = item.latestMessage.getDirect() == MessageDirect.send
                 if (item.latestMessage.contentType == ContentType.text) {
                     val textContent = item.latestMessage.content as TextContent
