@@ -38,7 +38,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.EncodeUtils;
@@ -135,7 +135,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
     private Conversation singleConversation;
-    private LinearLayout mRootView;
+    private RelativeLayout mRootView;
     private KeyBoardView keyBoardView;
     private boolean isGrop;
     private Dialog mDialog;
@@ -221,7 +221,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = (LinearLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
+        mRootView = (RelativeLayout) inflater.inflate(R.layout.activity_conversation2, container, false);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getActivity());
         mManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
