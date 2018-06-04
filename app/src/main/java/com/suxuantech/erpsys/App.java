@@ -3,6 +3,7 @@ package com.suxuantech.erpsys;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.entity.UserEntity;
 import com.suxuantech.erpsys.ui.activity.DefaultErrorActivity;
+import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.utils.JsonUtil;
 import com.suxuantech.erpsys.utils.L;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -90,6 +92,15 @@ public class App extends Application {
         this.userPermission = userPermission;
     }
 
+    /**
+     * 退出登录
+     */
+    public void loginOut(){
+        JMessageClient.logout();
+        userInfo = null;
+        userPermission=null;
+        startActivity(new Intent(App.getContext(), LoginActivity.class));
+    }
     /**
      * 检测是否有权限
      * Add("A1","门市销售");    Add("A2","门市查询");           Add("A3","门市开单");Add("A5","添加产品");Add("A6","删除产品")
@@ -316,7 +327,7 @@ public class App extends Application {
     /**
      * get current Activity 获取当前Activity（栈中最后一个压入的）
      */
-    public static Activity currentActivity() {
+    public   Activity currentActivity() {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return null;
         }
@@ -324,10 +335,14 @@ public class App extends Application {
         return activity;
     }
 
+    public static List<Activity> getmActivitys() {
+        return mActivitys;
+    }
+
     /**
      * 结束当前Activity（栈中最后一个压入的）
      */
-    public static void finishCurrentActivity() {
+    public   void finishCurrentActivity() {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -338,7 +353,7 @@ public class App extends Application {
     /**
      * 结束指定的Activity
      */
-    public static void finishActivity(Activity activity) {
+    public   void finishActivity(Activity activity) {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -352,7 +367,7 @@ public class App extends Application {
     /**
      * 结束指定类名的Activity
      */
-    public static void finishActivity(Class<?> cls) {
+    public   void finishActivity(Class<?> cls) {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -369,7 +384,7 @@ public class App extends Application {
      * @param cls
      * @return
      */
-    public static Activity findActivity(Class<?> cls) {
+    public   Activity findActivity(Class<?> cls) {
         Activity targetActivity = null;
         if (mActivitys != null) {
             for (Activity activity : mActivitys) {
@@ -435,8 +450,10 @@ public class App extends Application {
         } catch (Exception e) {
         }
     }
-
-
+    private boolean isForeground = false;//应用是否处于前端
+    public boolean isForeground() {
+        return isForeground;
+    }
     private void registerActivityListener() {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -445,22 +462,20 @@ public class App extends Application {
                  *  监听到 Activity创建事件 将该 Activity 加入list
                  */
                 pushActivity(activity);
-
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                isForeground = true;
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                isForeground = false;
             }
 
             @Override
@@ -471,6 +486,7 @@ public class App extends Application {
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
             }
+
 
             @Override
             public void onActivityDestroyed(Activity activity) {

@@ -14,13 +14,15 @@ import android.widget.TextView;
 
 
 public class DialogCreator {
+    static TextView mLoadText;
+    static Dialog loadingDialog;
     public static Dialog createLoadingDialog(Context context, String msg) {
-        Dialog loadingDialog = new Dialog(context, IdHelper.getStyle(context, "jmui_loading_dialog_style"));
+        loadingDialog = new Dialog(context, IdHelper.getStyle(context, "jmui_loading_dialog_style"));
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(IdHelper.getLayout(context, "jmui_loading_view"), null);
         RelativeLayout layout = v.findViewById(IdHelper.getViewID(context, "jmui_dialog_view"));
         ImageView mLoadImg = v.findViewById(IdHelper.getViewID(context, "jmui_loading_img"));
-        TextView mLoadText = v.findViewById(IdHelper.getViewID(context, "jmui_loading_txt"));
+        mLoadText = v.findViewById(IdHelper.getViewID(context, "jmui_loading_txt"));
         AnimationDrawable mDrawable = (AnimationDrawable) mLoadImg.getDrawable();
         mDrawable.start();
         mLoadText.setText(msg);
@@ -29,6 +31,11 @@ public class DialogCreator {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
         return loadingDialog;
+    }
+    public static void setmLoadText(String msg) {
+        if (mLoadText != null) {
+            mLoadText.setText(msg);
+        }
     }
 
     public static Dialog createBaseCustomDialog(Context context, String title, String text,
@@ -48,7 +55,7 @@ public class DialogCreator {
     }
 
     public static Dialog createLongPressMessageDialog(Context context, String title, boolean hide,
-                                                      View.OnClickListener listener){
+                                                      View.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(IdHelper.getLayout(context, "jmui_dialog_msg_alert"), null);
         builder.setView(view);
@@ -74,7 +81,7 @@ public class DialogCreator {
         return dialog;
     }
 
-    public static Dialog createResendDialog(Context context, View.OnClickListener listener){
+    public static Dialog createResendDialog(Context context, View.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(IdHelper.getLayout(context,
                 "jmui_dialog_base_with_button"), null);

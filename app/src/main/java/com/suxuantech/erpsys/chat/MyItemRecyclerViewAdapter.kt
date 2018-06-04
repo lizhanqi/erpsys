@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys.chat
 
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import cn.jpush.im.android.api.content.TextContent
@@ -30,7 +31,13 @@ class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : B
             var name = helper.getView<TextView>(R.id.tv_list_name)
             var time = helper.getView<TextView>(R.id.tv_list_time)
             var unread = helper.getView<TextView>(R.id.tv_unread)
-            unread.text = "" + item.unReadMsgCnt
+
+            if(item.unReadMsgCnt>0){
+                unread.visibility= View.VISIBLE
+                unread.text = "" + item.unReadMsgCnt
+            }else{
+                unread.visibility= View.GONE
+            }
             name.setText(String(EncodeUtils.base64Decode(userInfo.userName) ));
             if (item.latestMessage != null) {
                 val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)

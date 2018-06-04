@@ -398,7 +398,7 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
             val searchByCustmor = object : HttpListener<SimpleEntity> {
                 override fun onSucceed(what: Int, response: Response<SimpleEntity>) {
                     if (response.get().isOK) {
-                        App.findActivity(SearchOrderActivity::class.java).finish()
+                        App.getApplication().findActivity(SearchOrderActivity::class.java).finish()
                         EventBus.getDefault().post("refresh")
                         finish()
                     }
@@ -431,7 +431,7 @@ class SchemeCommintActivity : TitleNavigationActivity(), ISearchOrderPresenter {
             val searchByCustmor = object : HttpListener<SimpleEntity> {
                 override fun onSucceed(what: Int, response: Response<SimpleEntity>) {
                     if (response.get().isOK) {
-                        App.findActivity(SearchOrderActivity::class.java).finish()
+                        App.getApplication().findActivity(SearchOrderActivity::class.java).finish()
                         EventBus.getDefault().post("refresh")
                         finish()
                     }

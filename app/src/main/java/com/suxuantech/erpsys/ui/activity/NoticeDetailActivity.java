@@ -34,7 +34,7 @@ public class NoticeDetailActivity extends TitleNavigationActivity {
               finish();
                 break;
             case  R.id.tv_nav_right:
-                App.findActivity(HistoryNoticeActivity.class);
+                App.getApplication().findActivity(HistoryNoticeActivity.class);
                 startActivity(HistoryNoticeActivity.class);
                 finish();
                 break;

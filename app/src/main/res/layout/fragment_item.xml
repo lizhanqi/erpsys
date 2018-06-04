@@ -7,7 +7,7 @@
     android:orientation="horizontal">
     <ImageView
         android:id="@+id/img_list_head"
-        android:src="@drawable/icon_person"
+        android:src="@drawable/icon_man_head"
         android:layout_width="50dp"
         android:layout_height="50dp" />
     <LinearLayout
@@ -18,14 +18,14 @@
         android:layout_height="wrap_content">
     <TextView
         android:singleLine="true"
-        android:text="66"
+        android:text=""
         android:id="@+id/tv_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem" />
     <TextView
         android:singleLine="true"
-        android:text="661"
+        android:text=""
         android:id="@+id/tv_list_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,17 +33,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:gravity="center"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:text="66"
+            android:text=""
             android:id="@+id/tv_list_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
         />
         <TextView
-            android:text="66"
+            android:text=""
             android:id="@+id/tv_unread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

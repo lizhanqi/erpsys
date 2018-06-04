@@ -1,11 +1,13 @@
 package com.suxuantech.erpsys.ui.activity.base;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -15,16 +17,21 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.bigkoo.alertview.AlertView;
+import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.ConversationActivity;
 import com.suxuantech.erpsys.entity.ProductEntity;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.HttpResponseListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
+import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.ui.dialog.DefaultRationale;
 import com.suxuantech.erpsys.ui.dialog.PermissionSetting;
 import com.suxuantech.erpsys.utils.L;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
+import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -36,6 +43,7 @@ import com.yanzhenjie.permission.Rationale;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,8 +51,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.LoginStateChangeEvent;
-import cn.jpush.im.android.api.model.UserInfo;
+import cn.jpush.im.android.api.event.NotificationClickEvent;
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
@@ -74,22 +83,22 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2017/11/3 15:46 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
- * @Description: 最基础的Activity(封装了常用的一些页面功能,以及权限处理)
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
+ * @Description: 最基础的Activity(封装了常用的一些页面功能, 以及权限处理)
  * 说明:关于权限的
  * 首先:关于权限这里可以是permissionListener也可是其他对象,如果是其他对象,那么你可以在那个对象类中写注解方式回调
  * 其次关于请求我提供了两种方式,
  * 一种是用我提供的使用addMustPermission()和requestMustPermission有由我来处理,这里一般都是页面必须使的权限
- *这里发起的请求我的请求码是MUSTPERMISSIONCODE,这里WRITE_EXTERNAL_STORAGE和READ_EXTERNAL_STORAGE不用添加,我已经添加好了
+ * 这里发起的请求我的请求码是MUSTPERMISSIONCODE,这里WRITE_EXTERNAL_STORAGE和READ_EXTERNAL_STORAGE不用添加,我已经添加好了
  * 还有一种你自己发起某个请求使用requstPermissions方法,如果回调如果为null,那么回调使用我的,结果在permissionResult中
  * 还有这里有两个弹窗
  * Rationale
  * rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
- *这样避免用户勾选不再提示，导致以后无法申请权限
- *如果想自定义 Rational
- *  1.可以请求时候传入一个RationaleListener,然后只要调用rationale.resume()就可以继续申请。
- *  2.或者重写rationaleDialog,然后调用rationale.resume方法
+ * 这样避免用户勾选不再提示，导致以后无法申请权限
+ * 如果想自定义 Rational
+ * 1.可以请求时候传入一个RationaleListener,然后只要调用rationale.resume()就可以继续申请。
+ * 2.或者重写rationaleDialog,然后调用rationale.resume方法
  * DeniedPermissionDiaLog(未获得权限被勾选了总是拒绝的)
  * 1.可以重写alwaysDeniedPermissionDiaLog方法(有主意事项,alwaysDeniedPermissionDiaLog在方法中有说明)
  * 2.或者可以传入一个permissionListener,然后自己处理剩下的流程,如果你有了permissionListener,
@@ -99,13 +108,13 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  * 如果注解的方法不是onClick(View view) 而是其他的比如onxxx(View v) 这时候如果也设置了idSetOnClick那么就会走widgetClick
  * 总结 注意这里主要的就是onClick是否被重写
  * 如果别重写了onClick，那么注解优先级高，如果没有重写onClick那么idSetOnClick高
- *
+ * <p>
  * 支持 EventBus消息接收
- *  如果使用EventBus也就是useEventBus方法
- *  那么必须在该页面一定要有一个方法用来接收消息，
- *  当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
+ * 如果使用EventBus也就是useEventBus方法
+ * 那么必须在该页面一定要有一个方法用来接收消息，
+ * 当然这个方法需要注解：@Subscribe而且这个方法必须是public类型的
  */
-public  class BaseActivity extends SupportActivity implements View.OnClickListener  , ISwipeBackActivity   {
+public class BaseActivity extends SupportActivity implements View.OnClickListener, ISwipeBackActivity {
 
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
     /**
@@ -319,13 +328,15 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
     /* ----------------------------------------------网络end----------------------------------------------*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       // mSkinInflaterFactory = new SkinInflaterFactory(this);
-       // LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
+        JMessageClient.registerEventReceiver(this);
+
+        // mSkinInflaterFactory = new SkinInflaterFactory(this);
+        // LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
         //changeStatusColor();
         //setFragmentAnimator();
         mDelegate.onCreate(savedInstanceState);
-       //useEventBus();
+        //useEventBus();
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_LEFT);
 //        setEdgeLevel( SwipeBackLayout.EdgeLevel.MAX);
         permissionSet.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -338,15 +349,16 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
 
     @Override
     protected void onResume() {
-      //  SkinManager.getInstance().attach(this);
+        //  SkinManager.getInstance().attach(this);
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    //    SkinManager.getInstance().detach(this);
-     //   mSkinInflaterFactory.clean();
+        JMessageClient.unRegisterEventReceiver(this);
+        //    SkinManager.getInstance().detach(this);
+        //   mSkinInflaterFactory.clean();
         //加上判断
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -625,23 +637,67 @@ public  class BaseActivity extends SupportActivity implements View.OnClickListen
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
-    @Subscribe
-    public void onEvent(LoginStateChangeEvent event){
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginStateChangeEvent event) {
         LoginStateChangeEvent.Reason reason = event.getReason();//获取变更的原因
-        UserInfo myInfo = event.getMyInfo();//获取当前被登出账号的信息
         switch (reason) {
+            default:
             case user_password_change:
                 //用户密码在服务器端被修改
+                showUserExit("密码被修改");
                 break;
             case user_logout:
+                showUserExit("其他设备登录");
                 //用户换设备登录
                 break;
             case user_deleted:
                 //用户被删除
+                showUserExit("用户被删除");
                 break;
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showUserExit(String reason) {
+        Looper.prepare();
+        boolean foreground = App.getApplication().isForeground();
+        //如果在后台进行系统通知
+        if (!foreground) {
+            PackageManager pm = App.getContext().getPackageManager();
+            String appName =  App.getContext().getApplicationInfo().loadLabel(pm).toString();
+            AlertView alertView = new AlertView(appName+"提醒:"+reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
+            alertView.setTitleColor(getResources().getColor(R.color.colorAccent));
+            alertView.autoDismiss(50000);
+            alertView.setRootViewHeightWrapContent();
+            alertView.setRootBackgroundResource(R.color.transparency);
+            alertView.setSystemDialogHeight(150);
+            alertView.setCancelable(true);
+            alertView.show();
+        }
+        AlertDialog.newBuilder(App.getApplication().getTopActivity()).setTitle("退出提醒:")
+                .setMessage(reason)
+                .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
+                    Intent notificationIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(notificationIntent);
+                })
+                .show();
+        Looper.loop();
+    }
+
+    /**
+     * 调到聊天页面
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onEvent(NotificationClickEvent event) {
+        Intent notificationIntent = new Intent(getApplicationContext(), ConversationActivity.class);
+        String userName = event.getMessage().getFromUser().getUserName();
+        notificationIntent.putExtra("name", userName);
+        notificationIntent.putExtra("base64", true);
+        startActivity(notificationIntent);//自定义跳转到指定页面
+    }
 }
 /*----------------换肤------------------*/
 //    @Override

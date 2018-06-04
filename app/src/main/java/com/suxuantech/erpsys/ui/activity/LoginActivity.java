@@ -117,6 +117,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     private TextView copyRight;
     private EditText mCompanyID;
     private Button mEmailSignInButton;
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -177,22 +178,26 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     public void LoginSucceed() {
         loadingDialog.dismiss();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        if (App.getmActivitys().size() > 1) {
+            App.getApplication().finishActivity(LoginActivity.class);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     Dialog loadingDialog;
 
     void login(String name, String password) {
-        if (name.isEmpty()){
+        if (name.isEmpty()) {
             mEmailView.setError("不能为空");
-            ToastUtils.snackbarShort("请输入账号","确定");
+            ToastUtils.snackbarShort("请输入账号", "确定");
             return;
         }
-        if (password.isEmpty()){
+        if (password.isEmpty()) {
             mPasswordView.setError("请输入密码");
-            ToastUtils.snackbarShort("请输入密码","确定");
+            ToastUtils.snackbarShort("请输入密码", "确定");
             return;
         }
         loadingDialog.setCancelable(false);
@@ -249,7 +254,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-        initFingerprintCore();
+        // initFingerprintCore();
         setContentView(R.layout.activity_login);
         copyRight = idGetView(R.id.copyright);
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
@@ -272,7 +277,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+                login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
     }
@@ -425,7 +430,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-     } //else if (!isEmailValid(email)) {
+        } //else if (!isEmailValid(email)) {
 //            mEmailView.setError(getString(R.string.error_invalid_email));
 //            focusView = mEmailView;
 //            cancel = true;
@@ -444,9 +449,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     }
 
 
-
     /**
      * 密码长度判断
+     *
      * @param password
      * @return
      */
@@ -631,6 +636,14 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         }
         mResultListener = null;
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressedSupport() {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
     }
 }
 

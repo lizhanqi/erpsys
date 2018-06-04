@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -23,6 +22,7 @@ import cn.jpush.im.android.api.model.UserInfo
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
+import com.suxuantech.erpsys.ui.fragment.BaseSupportFragment
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
 import io.rong.imkit.fragment.ConversationListFragment
 
@@ -38,7 +38,7 @@ import io.rong.imkit.fragment.ConversationListFragment
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-open class   ConversationListFragment : Fragment() {
+open class   ConversationListFragment : BaseSupportFragment() {
     // TODO: Customize parameters
     private var mColumnCount = 1
     private var mListener: OnListFragmentInteractionListener? = null

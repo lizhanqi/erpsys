@@ -193,13 +193,7 @@ public class JGConversationListFragment extends   com.suxuantech.erpsys.chat.Con
         mDelegate.onSupportInvisible();
     }
 
-    /**
-     * Return true if the fragment has been supportVisible.
-     */
-    @Override
-    final public boolean isSupportVisible() {
-        return mDelegate.isSupportVisible();
-    }
+
 
     /**
      * Set fragment animation with a higher priority than the ISupportActivity

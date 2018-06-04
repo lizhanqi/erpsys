@@ -22,6 +22,7 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.chat.ConversationListFragment;
 import com.suxuantech.erpsys.chat.GroupActivity;
 import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.rongim.RongConversationListFragment;
@@ -195,7 +196,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     private void initFragement() {
         SupportFragment firstFragment = SupportHelper.findFragment(getSupportFragmentManager(), ERPLeftFragment.class);
         if (firstFragment == null) {
-            mFragments[FIRST] = new MsgFragment();
+            mFragments[FIRST] = new ConversationListFragment();
             mFragments[SECOND] = new ContactsFragment();
             Bundle bundle = getBundle();
             mFragments[SECOND].setArguments(bundle);
@@ -605,6 +606,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mExitTime = System.currentTimeMillis();
         } else {
             ActivityCompat.finishAfterTransition(this);
+            App.getApplication().loginOut();
+            App.appExit();
             ///finish();
         }
     }

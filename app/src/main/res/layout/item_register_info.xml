@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/icon_send_person"
+            android:drawableLeft="@drawable/icon_man_head"
             android:drawablePadding="@dimen/px30"
             android:text="2122" />
 

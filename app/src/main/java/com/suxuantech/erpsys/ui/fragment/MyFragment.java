@@ -1,6 +1,5 @@
 package com.suxuantech.erpsys.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import com.blankj.utilcode.util.AppUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.ui.activity.LoginActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 import com.suxuantech.erpsys.utils.ToastUtils;
@@ -107,7 +105,7 @@ public class MyFragment extends BaseLazyFragment {
         view.findViewById(R.id.btn_login_out).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                App.getApplication().loginOut();
                 getActivity().finish();
             }
         });
