@@ -819,9 +819,13 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 if (localWakeLock.isHeld()) {
                     return;
                 } else {
-                    localWakeLock.setReferenceCounted(false);
-                    localWakeLock.release(); // 释放设备电源锁
-                    multipleItemQuickAdapter.soundSourceFromSpeakerphone(true);
+                    try {
+                        localWakeLock.setReferenceCounted(false);
+                        localWakeLock.release(); // 释放设备电源锁
+                        multipleItemQuickAdapter.soundSourceFromSpeakerphone(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
