@@ -95,6 +95,7 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
     public boolean useDelete = true;
     public EmotionSinglePageView(Context context) {
         super(context);
+        setVerticalScrollBarEnabled(false);
     }
     public void setColumns(int columns) {
         if (columns > 2) {
@@ -118,7 +119,7 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         setLayoutParams(lp);
         setNumColumns(columns);
-        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete,80,150));
+        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete,100,150));
         setOnItemClickListener(this);
     }
 

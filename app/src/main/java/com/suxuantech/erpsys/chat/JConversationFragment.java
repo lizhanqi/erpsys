@@ -131,7 +131,7 @@ import cn.jzvd.JZVideoPlayer;
  */
 
 public class JConversationFragment extends Fragment implements KeyBoardView.AudioInput, SensorEventListener {
-    String UserID = "123456";
+    String UserID = "";
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
     private Conversation singleConversation;
