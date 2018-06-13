@@ -22,13 +22,15 @@ ext {
     dependencies = [
            constraint             : "com.android.support.constraint:constraint-layout:1.0.2",
             //v7兼容包不解释
-            v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
+           v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
+           v4                     : "com.android.support:support-v4:${rootProject.ext.android.support_library_version}",
             //权限
             permission             : 'com.yanzhenjie:permission:2.0.0-rc2',
             //权限弹窗
             alertdialog            : 'com.yanzhenjie.alertdialog:alertdialog:1.0.1',
             //可侧滑的recyclerview
-            recyclerview_swipe     : 'com.yanzhenjie:recyclerview-swipe:1.1.3',
+           recyclerview_swipe     : 'com.yanzhenjie:recyclerview-swipe:1.1.3',
+           recyclerview: "com.android.support:recyclerview-v7:${rootProject.ext.android.support_library_version}",
             //网络nohttp
             nohttp                 : 'com.yanzhenjie.nohttp:nohttp:1.1.+',
             //网络nohttp基于okhttp为底层
