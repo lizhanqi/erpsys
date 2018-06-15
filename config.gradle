@@ -24,6 +24,7 @@ ext {
             //v7兼容包不解释
            v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
            v4                     : "com.android.support:support-v4:${rootProject.ext.android.support_library_version}",
+           core                     :"com.android.support:support-core-utils:27.1.0",
             //权限
             permission             : 'com.yanzhenjie:permission:2.0.0-rc2',
             //权限弹窗

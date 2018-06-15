@@ -49,7 +49,15 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("/signature.jks")
+            //mac 下绝对路径写法
+            //storeFile file("Users/lzq/Documents/GitHub/erpsys/app/signature.jks")
+            //mac 下相对路径
+            //storeFile file("signature.jks")
+            //windows下相对路径写法
+            // storeFile file("/signature.jks")
+            //windows 下绝对路径写法
+            //   storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
+            storeFile file("darktheme/signature.jks")
             storePassword "123456"
             keyAlias "lizhanqi"
             keyPassword "123456"
@@ -95,9 +103,9 @@ dependencies {
     implementation rootProject.ext.dependencies.butterknife
     implementation rootProject.ext.dependencies.butterknife_compiler
     implementation rootProject.ext.dependencies.constraint
-   // implementation rootProject.ext.dependencies.recyclerview
-  //  implementation 'com.android.support:recyclerview-v7:27.1.1'
-/*    implementation "com.android.support:support-core-utils:27.1.0"*/
+    implementation rootProject.ext.dependencies.recyclerview
+    //  implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation rootProject.ext.dependencies.core
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     implementation rootProject.ext.dependencies.hellocharts
     implementation rootProject.ext.dependencies.glide

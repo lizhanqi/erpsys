@@ -29,8 +29,9 @@ android {
         abortOnError false
     }
     signingConfigs {
-       release {
-           storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
+        release {
+            storeFile file("app/signature.jks")
+        //   storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
            storePassword "123456"
            keyAlias "lizhanqi"
            keyPassword "123456"
@@ -42,10 +43,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+           signingConfig signingConfigs.release
         }
-        debug {
-            signingConfig signingConfigs.release
+       debug {
+             signingConfig signingConfigs.release
         }
     }
     sourceSets {
