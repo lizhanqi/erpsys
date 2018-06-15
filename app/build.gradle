@@ -57,7 +57,7 @@ android {
             // storeFile file("/signature.jks")
             //windows 下绝对路径写法
             //   storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
-            storeFile file("darktheme/signature.jks")
+            storeFile file("signature.jks")
             storePassword "123456"
             keyAlias "lizhanqi"
             keyPassword "123456"
