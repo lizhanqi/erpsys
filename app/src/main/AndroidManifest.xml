@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.suxuantech.erpsys"
     tools:overrideLibrary="android.support.v7.appcompat">
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- //获取设备网络状态，禁用后无法获取网络状态 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -139,8 +140,8 @@
             android:name=".ui.activity.QRCodeScanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop"
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
@@ -205,9 +206,9 @@ adjustPan是把整个界面向上平移，使输入框露出，不会改变界�
 adjustResize则是重新计算弹出软键盘之后的界面大小，相当于是用更少的界面区域去显示内容，输入框一般自然也就在内了
         -->
         <activity
-            android:launchMode="singleTop"
             android:name=".chat.ConversationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/convertion"
             android:windowSoftInputMode="adjustResize" />
@@ -218,7 +219,9 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity android:name=".chat.ImageActivity" />
         <activity android:name=".chat.ConversationListActivity" />
         <activity android:name=".chat.GroupActivity" />
-        <activity android:name=".ui.activity.IntoGuestRegistrationActivity"             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".ui.activity.IntoGuestRegistrationActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.activity.RegisterIntoShopActivity" />
         <activity android:name=".ui.activity.RegisterIntoShopSearchActivity" />
         <activity android:name=".ui.activity.CustomerDetailsActivity" />
@@ -227,7 +230,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity android:name=".ui.activity.MakeUpDetailsActivity" />
         <activity android:name=".ui.activity.SchemeCommintActivity" />
         <activity android:name=".ui.activity.StaffSearchActivity" />
-        <activity android:name=".ui.activity.StaffDetailsActivity"></activity>
+        <activity android:name=".ui.activity.StaffDetailsActivity" />
+        <activity android:name=".ui.activity.BaseWebActivity"></activity>
     </application>
 
 </manifest>

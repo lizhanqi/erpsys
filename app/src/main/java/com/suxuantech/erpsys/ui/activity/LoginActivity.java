@@ -277,7 +277,13 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+
+                String url = "http://www.baidu.com";
+                Intent intent = new Intent(LoginActivity.this, BaseWebActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+
+               // login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
             }
         });
     }
