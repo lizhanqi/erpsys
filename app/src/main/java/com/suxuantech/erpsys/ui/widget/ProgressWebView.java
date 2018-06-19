@@ -19,8 +19,23 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 
 public class ProgressWebView extends WebView {
-
     private ProgressBar progressbar;
+    public interface  LoadingUrlMonitor{
+        void  loadNewUrl(String url );
+        void  loadTitle(String title );
+    }
+    LoadingUrlMonitor loadingUrl;
+    public void setLoadingUrlMonitor(LoadingUrlMonitor loadingUrl) {
+        this.loadingUrl = loadingUrl;
+    }
+    public void setProgressbar(ProgressBar progressbar) {
+        removeViewInLayout(   this.progressbar );
+        progressbar.getLayoutParams().height=10;
+     //   progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 10, 0, 0));
+        Drawable drawable = getResources().getDrawable(R.drawable.progress_bar_states);
+        progressbar.setProgressDrawable(drawable);
+        this.progressbar = progressbar;
+    }
 
     public ProgressWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,7 +47,6 @@ public class ProgressWebView extends WebView {
         Drawable drawable = context.getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
-        //todo
         setWebViewClient(new MyWebViewClient());
         setWebChromeClient(new MyWebChromeClient());
         //是否可以缩放
@@ -54,8 +68,9 @@ public class ProgressWebView extends WebView {
             if (newProgress == 100) {
                 progressbar.setVisibility(GONE);
             } else {
-                if (progressbar.getVisibility() == GONE)
+                if (progressbar.getVisibility() == GONE) {
                     progressbar.setVisibility(VISIBLE);
+                }
                 progressbar.setProgress(newProgress);
             }
             super.onProgressChanged(view, newProgress);
@@ -70,38 +85,46 @@ public class ProgressWebView extends WebView {
             return true;
         }
 
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+           if (loadingUrl!=null){
+               loadingUrl.loadTitle(title);
+           }
+        }
     }
-
     public class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(url == null) return false;
-            try {
-
-                if(url.startsWith("weixin://") //微信
-                        || url.startsWith("alipays://") //支付宝
-                        || url.startsWith("mailto://") //邮件
-                        || url.startsWith("tel://")//电话
-                        || url.startsWith("dianping://")//大众点评
-                        || url.startsWith("baidumap://")//百度地图
-                        || url.startsWith("baiduhaokan://")//百度好看视频
-                    //其他自定义的scheme
-                        ) {
+            if (url == null) {
+                return false;
+            }
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                //处理http和https开头的url
+                view.loadUrl(url);
+                if (loadingUrl != null) {
+                    loadingUrl.loadNewUrl(url);
+                }
+            } else {
+                try {
+//                    if (url.startsWith("weixin://") //微信
+//                            || url.startsWith("alipays://") //支付宝
+//                            || url.startsWith("mailto://") //邮件
+//                            || url.startsWith("tel://")//电话
+//                            || url.startsWith("dianping://")//大众点评
+//                            || url.startsWith("baidumap://")//百度地图
+//                            || url.startsWith("baiduhaokan://")//百度好看视频
+//                        //其他自定义的scheme
+//                            ) {
+//                    }
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     App.getApplication().getTopActivity().startActivity(intent);
-
-                    return true;
+                } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
+                    return true;//没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
                 }
-            } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
-                return true;//没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
             }
-
-            //处理http和https开头的url
-            view.loadUrl(url);
-
             return true;
         }
-
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, android.net.http.SslError error) {
             handler.proceed();
@@ -115,10 +138,10 @@ public class ProgressWebView extends WebView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        LayoutParams lp = (LayoutParams) progressbar.getLayoutParams();
-        lp.x = l;
-        lp.y = t;
-        progressbar.setLayoutParams(lp);
+//        ViewGroup.LayoutParams layoutParams = progressbar.getLayoutParams();
+//        layoutParams.x = l;
+//        layoutParams.y = t;
+//        progressbar.setLayoutParams(lp);
         super.onScrollChanged(l, t, oldl, oldt);
     }
 }

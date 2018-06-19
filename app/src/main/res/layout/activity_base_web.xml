@@ -1,61 +1,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/title"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/gray_f9">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="40dp"
+        android:layout_height="wrap_content" />
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/arrows_left_black" />
+            app:srlHeaderHeight="150dp"
+            app:srlHeaderMaxDragRate="1">
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:lineSpacingExtra="5dp"
+                android:padding="20dp"
+                android:background="#555"
+                android:gravity="center_horizontal"
+                android:textColor="#aaa"
+                android:textSize="16sp"
+                android:text="网页由%s提供"
+                app:layout_srlBackgroundColor="#555"
+                app:layout_srlSpinnerStyle="FixedBehind"/>
+            <com.suxuantech.erpsys.ui.widget.ProgressWebView
+                android:id="@+id/baseweb_webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="?attr/actionBarSize"/>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <!--<ezy.ui.layout.LoadingLayout-->
+        <!--android:id="@+id/loading"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</ezy.ui.layout.LoadingLayout>-->
 
-        <View
-            android:id="@+id/view_temp"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/iv_back"
-            android:background="#14191A" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/view_temp"
-            android:text="具体名称"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
-
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_star" />
-    </RelativeLayout>
-    <com.suxuantech.erpsys.ui.widget.ProgressWebView
-        android:id="@+id/baseweb_webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </LinearLayout>
