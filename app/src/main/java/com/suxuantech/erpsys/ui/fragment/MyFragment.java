@@ -13,9 +13,9 @@ import com.blankj.utilcode.util.AppUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.common.WebActivityConfig;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
-import com.suxuantech.erpsys.utils.ToastUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -49,6 +49,9 @@ public class MyFragment extends BaseLazyFragment {
     Button mBtnLoginOut;
     @BindView(R.id.rv_other_info)
     RelativeLayout otherInfo;
+    @BindView(R.id.feedback)
+    RelativeLayout feedback;
+
     //    @BindView(R.id.dampView)
 //    BounceScrollView mDampView;
     private View view;
@@ -96,12 +99,12 @@ public class MyFragment extends BaseLazyFragment {
         dampView.setView(view.findViewById(R.id.ll_cao));
 
         ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).titleBar(R.id.tv_mine).init();
-        view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showShort("三生三世");
-            }
-        });
+//        view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToastUtils.showShort("三生三世");
+//            }
+//        });
         view.findViewById(R.id.btn_login_out).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,11 +136,13 @@ public class MyFragment extends BaseLazyFragment {
         mTvNameAndPost.setText(App.getApplication().getUserInfor().getStaffname() + "\n" + App.getApplication().getUserInfor().getMain_position_name());
     }
 
-    @OnClick({R.id.switch_theme, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,})
-    public void onClick(View v) {
+    @OnClick({R.id.switch_theme,R.id.feedback, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,})
+      public void onClick(View v) {
         switch (v.getId()) {
-
             default:
+                break;
+            case R.id.feedback:
+
                 break;
             case R.id.switch_theme:
 //               if( SkinConfig.isDefaultSkin(getContext()) ){
@@ -186,6 +191,10 @@ public class MyFragment extends BaseLazyFragment {
             case R.id.tv_staff_id:
                 break;
             case R.id.about_Us:
+                WebActivityConfig webActivityConfig = new WebActivityConfig(getContext());
+                String url="http://www.suxuantech.com/col.jsp?id=106";
+                webActivityConfig.loadUrl(url).showToolbar(false);
+                webActivityConfig.start();
                 break;
             case R.id.tv_verstion:
                 break;

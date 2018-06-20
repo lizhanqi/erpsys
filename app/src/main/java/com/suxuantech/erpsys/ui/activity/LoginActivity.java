@@ -206,7 +206,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //"3201712315"
                 //  login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
                 attemptLogin();

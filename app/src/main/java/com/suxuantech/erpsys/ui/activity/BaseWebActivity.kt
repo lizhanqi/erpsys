@@ -1,14 +1,16 @@
 package com.suxuantech.erpsys.ui.activity
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.KeyEvent
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.webkit.WebSettings
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.scwang.smartrefresh.header.MaterialHeader
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.widget.ProgressWebView
@@ -16,24 +18,33 @@ import com.suxuantech.erpsys.utils.ReflexUtils
 
 class BaseWebActivity : TitleNavigationActivity() {
     protected var mWebView: ProgressWebView? = null
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
-    }
+    protected var mSmartRefresh: SmartRefreshLayout? = null
+    /**
+     * 是否展示toolbar进行导航
+     */
+    protected var showToolbar = true;
+    /**
+     * 是否显示toolbar的一键关闭
+     */
+    protected var showOneClose = true;
+    /**
+     *导航是否有菜单的刷新
+     */
+    protected var showMoreMenu = false;
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu);
-        menu?.add(Menu.NONE, 1, 0, "刷新")
-                ?.setOnMenuItemClickListener { menuItem ->
-                    mWebView?.reload()
-                    true
-                }
+        if (showMoreMenu) {
+            menu?.add(Menu.NONE, 1, 0, "刷新")
+                    ?.setOnMenuItemClickListener { menuItem ->
+                        mWebView?.reload()
+                        true
+                    }
+        }
         return true
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base_web)
-        setSwipeBackEnable(false)
+    fun showTitleNavigation() {
         supportToolbar()
         toolbar.contentInsetStartWithNavigation = 0;
         toolbar.setNavigationOnClickListener {
@@ -44,15 +55,13 @@ class BaseWebActivity : TitleNavigationActivity() {
                 onBackPressed()
             }
         }
-
-        toolbar.setLogo(R.drawable.icon_close_web)
-        var logo = ReflexUtils.getValue(toolbar, "mLogoView") as ImageView
-        logo.setOnClickListener(View.OnClickListener {
-            onBackPressed()
-        })
-        lineView.visibility = View.GONE
-        mWebView = findViewById(R.id.baseweb_webview)
-        var progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        if (showOneClose) {
+            toolbar.setLogo(R.drawable.icon_close_web)
+            var logo = ReflexUtils.getValue(toolbar, "mLogoView") as ImageView
+            logo.setOnClickListener(View.OnClickListener {
+                onBackPressed()
+            })
+        }
         mWebView?.setLoadingUrlMonitor(object : ProgressWebView.LoadingUrlMonitor {
             override fun loadTitle(title: String?) {
                 setTitle(title)
@@ -62,14 +71,49 @@ class BaseWebActivity : TitleNavigationActivity() {
                 setDomain(url!!)
             }
         });
+        var progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
         mWebView?.setProgressbar(progressBar)
-        var webSettings = mWebView?.getSettings();
-        webSettings?.setJavaScriptEnabled(true)
-        webSettings?.setSupportZoom(true)
-        webSettings?.setBuiltInZoomControls(true)
-        webSettings?.setCacheMode(WebSettings.LOAD_NO_CACHE)
-        webSettings?.setSupportMultipleWindows(true)
-        webSettings?.setJavaScriptCanOpenWindowsAutomatically(true)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        showToolbar = intent.getBooleanExtra("showToolbar", true)
+        showOneClose = intent.getBooleanExtra("showOneClose", true)
+        showMoreMenu = intent.getBooleanExtra("showMoreMenu", true)
+        setContentView(R.layout.activity_base_web)
+        lineView.visibility = View.GONE
+        mWebView = findViewById(R.id.baseweb_webview)
+        mSmartRefresh = findViewById(R.id.refreshLayout)
+        setSwipeBackEnable(false)
+        if (showToolbar) {
+            showTitleNavigation()
+        } else {
+            var domain = findViewById<TextView>(R.id.header)
+            var swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_web)
+            domain.visibility = View.GONE
+            var mWebFreshView = MaterialHeader(this);
+            mSmartRefresh?.isEnableRefresh = false
+            mSmartRefresh?.isEnabled = false
+            swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.themeColor),
+                    resources.getColor(R.color.gradual_change1),
+                    resources.getColor(R.color.gradual_change2),
+                    resources.getColor(R.color.gradual_change3))
+
+            swipeRefreshLayout.setOnRefreshListener {
+                mWebView?.reload();
+                swipeRefreshLayout?.isRefreshing = false
+            }
+
+            //mWebFreshView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            //   mWebFreshView?.setColorSchemeColors(R.color.themeColor, R.color.gradual_change1, R.color.gradual_change2, R.color.gradual_change3)
+//            mSmartRefresh?.setRefreshHeader(mWebFreshView)
+//            mSmartRefresh?.setOnRefreshListener(OnRefreshListener {
+//                mWebView?.reload();
+//                mSmartRefresh?.finishRefresh(5000)
+//            })
+        }
+
         initData();
     }
 
@@ -82,20 +126,17 @@ class BaseWebActivity : TitleNavigationActivity() {
         val url = java.net.URL(url)
         val host = url.host// 获取主机名
         var v = "网页来自" + host + "提供\n由素玄科技提供展示"
-        domain.setText(v)
+        domain?.setText(v)
     }
 
     private fun initData() {
         val intent = intent
         val url = intent.getStringExtra("url")
+
         if (url != null) {
             mWebView?.loadUrl(url)
             setDomain(url)
         }
-    }
-
-    override fun onBackPressedSupport() {
-        super.onBackPressedSupport()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

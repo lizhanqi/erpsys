@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -31,19 +32,14 @@ public class ProgressWebView extends WebView {
     public void setProgressbar(ProgressBar progressbar) {
         removeViewInLayout(   this.progressbar );
         progressbar.getLayoutParams().height=10;
-     //   progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 10, 0, 0));
         Drawable drawable = getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         this.progressbar = progressbar;
     }
-
     public ProgressWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        progressbar = new ProgressBar(context, null,
-                android.R.attr.progressBarStyleHorizontal);
-        progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-                10, 0, 0));
-
+        progressbar = new ProgressBar(context, null,   android.R.attr.progressBarStyleHorizontal);
+        progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 10, 0, 0));
         Drawable drawable = context.getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
@@ -51,12 +47,17 @@ public class ProgressWebView extends WebView {
         setWebChromeClient(new MyWebChromeClient());
         //是否可以缩放
         getSettings().setSupportZoom(true);
+       getSettings() .setJavaScriptEnabled(true);
         getSettings().setBuiltInZoomControls(true);
-        getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         getSettings().setSupportMultipleWindows(true);
         getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         getSettings().setDomStorageEnabled(true);
+        //启用地理定位
+        getSettings().setGeolocationEnabled(true);
         getSettings().setPluginState(WebSettings.PluginState.ON);
+        getSettings().setBlockNetworkImage(false);
+        getSettings().setBlockNetworkLoads(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -74,6 +75,16 @@ public class ProgressWebView extends WebView {
                 progressbar.setProgress(newProgress);
             }
             super.onProgressChanged(view, newProgress);
+        }
+
+        @Override
+        public void onExceededDatabaseQuota(String url, String databaseIdentifier, long quota, long estimatedDatabaseSize, long totalQuota, WebStorage.QuotaUpdater quotaUpdater) {
+            super.onExceededDatabaseQuota(url, databaseIdentifier, quota, estimatedDatabaseSize, totalQuota, quotaUpdater);
+        }
+
+        @Override
+        public void onReachedMaxAppCacheSize(long requiredStorage, long quota, WebStorage.QuotaUpdater quotaUpdater) {
+            super.onReachedMaxAppCacheSize(requiredStorage, quota, quotaUpdater);
         }
 
         @Override
@@ -138,9 +149,9 @@ public class ProgressWebView extends WebView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-//        ViewGroup.LayoutParams layoutParams = progressbar.getLayoutParams();
-//        layoutParams.x = l;
-//        layoutParams.y = t;
+//        LayoutParams lp = (LayoutParams) progressbar.getLayoutParams();
+//        lp.x = l;
+//        lp.y = t;
 //        progressbar.setLayoutParams(lp);
         super.onScrollChanged(l, t, oldl, oldt);
     }
