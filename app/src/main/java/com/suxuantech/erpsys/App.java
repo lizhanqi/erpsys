@@ -13,6 +13,7 @@ import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -76,10 +77,16 @@ import me.yokeyword.fragmentation.Fragmentation;
  */
 
 public class App extends Application {
+
+
+
     protected static Context context;
     private static App application;
     public static boolean ISDEBUG = true;
     public static String APP_LOG_NAME = "debug";
+    /**
+     * 登录用户信息保存的文件名
+     */
     public final static String LOGIN_FILE_NAME = "login_inf";
     private LoginEntity userInfo;
     private List<String> userPermission;
@@ -95,12 +102,16 @@ public class App extends Application {
     /**
      * 退出登录
      */
-    public void loginOut(){
+    public void loginOut() {
         JMessageClient.logout();
         userInfo = null;
-        userPermission=null;
+        userPermission = null;
+        CacheUtils.getInstance().remove(App.LOGIN_FILE_NAME);
+        SPUtils.getInstance().remove(LoginActivity.LOGIN_NAME);
+        SPUtils.getInstance().remove(LoginActivity.LOGIN_PASSWORD);
         startActivity(new Intent(App.getContext(), LoginActivity.class));
     }
+
     /**
      * 检测是否有权限
      * Add("A1","门市销售");    Add("A2","门市查询");           Add("A3","门市开单");Add("A5","添加产品");Add("A6","删除产品")
@@ -327,7 +338,7 @@ public class App extends Application {
     /**
      * get current Activity 获取当前Activity（栈中最后一个压入的）
      */
-    public   Activity currentActivity() {
+    public Activity currentActivity() {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return null;
         }
@@ -342,7 +353,7 @@ public class App extends Application {
     /**
      * 结束当前Activity（栈中最后一个压入的）
      */
-    public   void finishCurrentActivity() {
+    public void finishCurrentActivity() {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -353,7 +364,7 @@ public class App extends Application {
     /**
      * 结束指定的Activity
      */
-    public   void finishActivity(Activity activity) {
+    public void finishActivity(Activity activity) {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -367,7 +378,7 @@ public class App extends Application {
     /**
      * 结束指定类名的Activity
      */
-    public   void finishActivity(Class<?> cls) {
+    public void finishActivity(Class<?> cls) {
         if (mActivitys == null || mActivitys.isEmpty()) {
             return;
         }
@@ -384,7 +395,7 @@ public class App extends Application {
      * @param cls
      * @return
      */
-    public   Activity findActivity(Class<?> cls) {
+    public Activity findActivity(Class<?> cls) {
         Activity targetActivity = null;
         if (mActivitys != null) {
             for (Activity activity : mActivitys) {
@@ -450,10 +461,13 @@ public class App extends Application {
         } catch (Exception e) {
         }
     }
+
     private boolean isForeground = false;//应用是否处于前端
+
     public boolean isForeground() {
         return isForeground;
     }
+
     private void registerActivityListener() {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

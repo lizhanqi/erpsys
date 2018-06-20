@@ -27,9 +27,10 @@ package com.suxuantech.erpsys.entity;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-public class TempEntity  extends  BaseResult2<TempEntity.DataBean>{
+public class CompanyDomainEntity  extends  BaseResult2<CompanyDomainEntity.DataBean>{
     public static class DataBean {
         /**
+         *
          * app_code : 3201712315
          * configuration_id : 76187548
          * valid_date : 2024-05-31

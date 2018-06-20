@@ -10,13 +10,13 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +29,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.CacheUtils;
-import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.EncryptUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.SuxuanAppIdKt;
 import com.suxuantech.erpsys.chat.DialogCreator;
+import com.suxuantech.erpsys.entity.CompanyDomainEntity;
 import com.suxuantech.erpsys.entity.LoginEntity;
 import com.suxuantech.erpsys.entity.PHPLoginEntity;
 import com.suxuantech.erpsys.entity.PermissionEntity;
@@ -45,14 +47,19 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.utils.AppUtil;
 import com.suxuantech.erpsys.utils.FastJsonUtils;
+import com.suxuantech.erpsys.utils.GroupByKt;
+import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.utils.core.FingerprintCore;
 import com.suxuantech.erpsys.utils.core.KeyguardLockScreenManager;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
@@ -94,29 +101,123 @@ import static android.Manifest.permission.READ_CONTACTS;
  * QuickAdapter login screen that offers login via email/password.
  */
 public class LoginActivity extends TitleNavigationActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-
     /**
-     * Id to identity READ_CONTACTS permission request.
+     * 企业id
+     */
+    public static final String COMPANY_ID = "company_id";
+    /**
+     * 登录的用户名
+     */
+    public static final String LOGIN_NAME = "name";
+    /**
+     * 用户密码
+     */
+    public static final String LOGIN_PASSWORD = "word";
+    /**
+     * Id身份读取联系人请求许可。;
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * QuickAdapter dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView copyRight;
     private EditText mCompanyID;
     private Button mEmailSignInButton;
+    Dialog loadingDialog;
+    FingerprintCore mFingerprintCore;
+    KeyguardLockScreenManager mKeyguardLockScreenManager;
+    private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
+        @Override
+        public void onAuthenticateSuccess() {
+            mCompanyID.setText("111");
+            mEmailView.setText("小飞");
+            //    login("小飞", "0");
+            toastShort("指纹识别成功");
+        }
+
+        @Override
+        public void onAuthenticateFailed(int helpId) {
+            toastShort("指纹识别失败,请重试" + helpId);
+            startFingerprintRecognition();
+        }
+
+        @Override
+        public void onAuthenticateError(int errMsgId) {
+            toastShort("指纹识别错误" + errMsgId);
+            startFingerprintRecognition();
+        }
+
+        @Override
+        public void onStartAuthenticateResult(boolean isSuccess) {
+            toastShort("指纹识别结果" + isSuccess);
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
+        super.onCreate(savedInstanceState);
+        setSwipeBackEnable(false);
+        // initFingerprintCore();
+        setContentView(R.layout.activity_login);
+        copyRight = idGetView(R.id.copyright);
+        copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
+        mEmailView = findViewById(R.id.email);
+        populateAutoComplete();
+        mPasswordView = findViewById(R.id.password);
+        mCompanyID = findViewById(R.id.company_id);
+        String cacheID = SPUtils.getInstance().getString(COMPANY_ID);
+        if (!StringUtils.empty(cacheID)) {
+            mCompanyID.setText(cacheID);
+            mCompanyID.setSelection(cacheID.length());
+            mEmailView.requestFocus();
+            getCompanyDomainById(cacheID, true);
+        } else {
+            mCompanyID.requestFocus();
+        }
+        mCompanyID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == 10) {
+                    toastShort("获取企业id");
+                    getCompanyDomainById(editable.toString(), false);
+                }
+            }
+        });
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //"3201712315"
+                //  login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+                attemptLogin();
+            }
+        });
+    }
+
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7).titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -136,6 +237,72 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             copyRight.getParent().requestLayout();
         }
 
+    }
+
+    /**
+     * 初始化指纹识别传感器
+     */
+    private void initFingerprintCore() {
+        mFingerprintCore = new FingerprintCore(this);
+        mFingerprintCore.setFingerprintManager(mResultListener);
+        mKeyguardLockScreenManager = new KeyguardLockScreenManager(this);
+        startFingerprintRecognition();
+    }
+
+    /**
+     * 获取客户的域名地址
+     *
+     * @param companyID 客户企业id
+     * @param isCache   是否从缓存去拿
+     */
+    void getCompanyDomainById(String companyID, boolean isCache) {
+        JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.COMPANY_DOMAIN, CompanyDomainEntity.class);
+        stringRequest.add("app_code", companyID);
+        String key = "app_code=" + companyID + Contact.CONTACT_KEY;
+        key = EncryptUtils.encryptMD5ToString(key).toLowerCase();
+        stringRequest.addHeader("ACCESS-TOKEN", key);
+        if (isCache) {
+            stringRequest.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        } else {
+            stringRequest.setCacheMode(CacheMode.ONLY_REQUEST_NETWORK);
+        }
+        HttpListener<CompanyDomainEntity> httpListener = new HttpListener<CompanyDomainEntity>() {
+            @Override
+            public void onSucceed(int what, Response<CompanyDomainEntity> response) {
+                if (response.get().isOK()) {
+                    SPUtils.getInstance().put(COMPANY_ID, companyID);
+                    mEmailView.requestFocus();
+                    Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(response.get().getData());
+                    Set<String> strings = domains.keySet();
+                    for(String key:strings){
+                        String domain="";
+                        List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
+                        for (CompanyDomainEntity.DataBean dataBean:dataBeans){
+                            String api_url = dataBean.getApi_url();
+                            if (!StringUtils.empty(api_url)){
+                                domain=api_url;
+                                break;
+                            }
+                        }
+                        if(key.equals(SuxuanAppIdKt.getMC())){
+                            Contact.MC=domain;
+                        }else if (key.equals(SuxuanAppIdKt.getCRM())){
+                            Contact.CRM=domain;
+                        }else if (key.equals(SuxuanAppIdKt.getERP())){
+                            Contact.ERP=domain;
+                        }else if (key.equals(SuxuanAppIdKt.getVIP())){
+                            //Contact.VIP=domain;
+                        }
+                    }
+                }else {
+
+                }
+            }
+            @Override
+            public void onFailed(int what, Response<CompanyDomainEntity> response) {
+            }
+        };
+        request(0, stringRequest, httpListener, false, false);
     }
 
     /**
@@ -162,7 +329,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 if (response.get().isOK() || response.get().getData() != null) {
                     List<String> data = response.get().getData();
                     App.getApplication().setUserPermission(data);
-                    loginJG(App.getApplication().getUserInfor().getStaffname(), App.getApplication().getUserInfor().getStaffnumber());
+                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
                 } else {
                     loginFailed();
                 }
@@ -176,30 +343,13 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
-    public void LoginSucceed() {
-        loadingDialog.dismiss();
-        if (App.getmActivitys().size() > 1) {
-            App.getApplication().finishActivity(LoginActivity.class);
-        } else {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    Dialog loadingDialog;
-
+    /**
+     * 登录C#的
+     *
+     * @param name
+     * @param password
+     */
     void login(String name, String password) {
-        if (name.isEmpty()) {
-            mEmailView.setError("不能为空");
-            ToastUtils.snackbarShort("请输入账号", "确定");
-            return;
-        }
-        if (password.isEmpty()) {
-            mPasswordView.setError("请输入密码");
-            ToastUtils.snackbarShort("请输入密码", "确定");
-            return;
-        }
         loadingDialog.setCancelable(false);
         loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
@@ -209,6 +359,8 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 if (response.get().isOK()) {
                     //保存登录信息
                     CacheUtils.getInstance().put(App.LOGIN_FILE_NAME, FastJsonUtils.toJSONString(response.get()));
+                    SPUtils.getInstance().put(LOGIN_NAME, name);
+                    SPUtils.getInstance().put(LOGIN_PASSWORD, password);
                     getPermisstion();
                 } else {
                     loginFailed();
@@ -224,22 +376,42 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         request(0, stringRequest, httpListener, false, false);
     }
 
+    /**
+     * 登录成功
+     */
+    public void LoginSucceed() {
+        loadingDialog.dismiss();
+        if (App.getmActivitys().size() > 1) {
+            App.getApplication().finishActivity(LoginActivity.class);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     /*
       登录失败
      */
     public void loginFailed() {
         loadingDialog.dismiss();
+        CacheUtils.getInstance().remove(App.LOGIN_FILE_NAME);
+        SPUtils.getInstance().remove(LOGIN_NAME);
+        SPUtils.getInstance().remove(LOGIN_PASSWORD);
         JMessageClient.logout();
     }
 
+    /*
+    登录极光聊天的服务器
+     */
     public void loginJG(String jgName, String jgPassWord) {
         jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
-        jgName = EncodeUtils.base64Encode2String(jgName.getBytes());
         eLog("极光:" + jgName + "极光密码:" + jgPassWord);
         JMessageClient.login(jgName, jgPassWord, new BasicCallback() {
             @Override
             public void gotResult(int i, String s) {
                 if (i == 0) {
+
                     LoginSucceed();
                 } else {
                     loginFailed();
@@ -249,45 +421,12 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
-        super.onCreate(savedInstanceState);
-        setSwipeBackEnable(false);
-        // initFingerprintCore();
-        setContentView(R.layout.activity_login);
-        copyRight = idGetView(R.id.copyright);
-        copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
-        // Set up the login form.
-        mEmailView = findViewById(R.id.email);
-        populateAutoComplete();
-        mPasswordView = findViewById(R.id.password);
-        mCompanyID = findViewById(R.id.company_id);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String url = "http://www.baidu.com";
-                Intent intent = new Intent(LoginActivity.this, BaseWebActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
-
-               // login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
-            }
-        });
-    }
-
+    /**
+     * php登录
+     *
+     * @param name
+     * @param key
+     */
     private void phpLogin(String name, String key) {
         loadingDialog.show();
         String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.PHP_PREFIX);
@@ -321,51 +460,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         request(0, login, searchByCustmor, false, false);
     }
 
-    @Override
-    public void initImmersionBar() {
-
-        ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7).titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
-    }
-
-    FingerprintCore mFingerprintCore;
-    KeyguardLockScreenManager mKeyguardLockScreenManager;
-    private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
-        @Override
-        public void onAuthenticateSuccess() {
-            mCompanyID.setText("111");
-            mEmailView.setText("小飞");
-            login("小飞", "0");
-            toastShort("指纹识别成功");
-        }
-
-        @Override
-        public void onAuthenticateFailed(int helpId) {
-            toastShort("指纹识别失败,请重试" + helpId);
-            startFingerprintRecognition();
-        }
-
-        @Override
-        public void onAuthenticateError(int errMsgId) {
-            toastShort("指纹识别错误" + errMsgId);
-            startFingerprintRecognition();
-        }
-
-        @Override
-        public void onStartAuthenticateResult(boolean isSuccess) {
-            toastShort("指纹识别结果" + isSuccess);
-        }
-    };
-
     /**
-     * 初始化指纹识别传感器
+     * 自动填充的前提是需要读取通讯录
      */
-    private void initFingerprintCore() {
-        mFingerprintCore = new FingerprintCore(this);
-        mFingerprintCore.setFingerprintManager(mResultListener);
-        mKeyguardLockScreenManager = new KeyguardLockScreenManager(this);
-        startFingerprintRecognition();
-    }
-
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -373,6 +470,11 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         getLoaderManager().initLoader(0, null, this);
     }
 
+    /**
+     * 请求通讯
+     *
+     * @return
+     */
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -397,6 +499,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     /**
      * Callback received when a permissions request has been completed.
+     * 回调收到权限请求时已经完成。;
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -409,103 +512,52 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * 试图登录或注册帐户指定的登录表单。如果有错误(无效的电子邮件,缺少字段等),并给出了错误,没有实际的登录尝试。;
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-        // Reset errors.
+        //重置错误
         mEmailView.setError(null);
         mPasswordView.setError(null);
-        // Store values at the time of the login attempt.
+        mCompanyID.setError(null);
+        String comID = mCompanyID.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        boolean cancel = false;
-        View focusView = null;
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+
+        if (comID.isEmpty()) {
+            mCompanyID.setError("企业id错误");
+            ToastUtils.snackbarShort("请填写正确的企业id", "确定");
+            mCompanyID.requestFocus();
+            return;
         }
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } //else if (!isEmailValid(email)) {
-//            mEmailView.setError(getString(R.string.error_invalid_email));
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+        if (email.isEmpty()) {
+            mEmailView.setError("不能为空");
+            ToastUtils.snackbarShort("请输入账号", "确定");
+            mEmailView.requestFocus();
+            return;
         }
-    }
-
-
-    /**
-     * 密码长度判断
-     *
-     * @param password
-     * @return
-     */
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-
-
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            //       mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (password.isEmpty()) {
+            mPasswordView.setError("请输入密码");
+            ToastUtils.snackbarShort("请输入密码", "确定");
+            mPasswordView.requestFocus();
+            return;
         }
+        //校验完成进行登录
+        login(email, password);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
+                //为设备用户的“概要”联系人检索数据行。
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
                         ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
                 // Select only email addresses.
+                //选择唯一的电子邮件地址。
                 ContactsContract.Contacts.Data.MIMETYPE +
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
                 .CONTENT_ITEM_TYPE},
-
+                //显示主电子邮件地址。注意,不会有一个主电子邮件地址如果用户没有指定一个
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
@@ -519,24 +571,19 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
         addEmailsToAutoComplete(emails);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        //创建适配器以告诉AutoCompleteTextView在其下拉列表中显示什么。
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
         mEmailView.setAdapter(adapter);
     }
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -546,62 +593,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 
     /**

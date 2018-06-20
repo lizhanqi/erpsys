@@ -60,6 +60,7 @@
                     android:layout_gravity="bottom">
 
                     <AutoCompleteTextView
+                        android:maxLength="10"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@+id/email"
                         android:id="@+id/company_id"

@@ -37,12 +37,39 @@ public class Contact {
     private Contact() {        /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
-
-    //http://192.168.0.15:8033/SXWebErpAppStaff/SX_GetOrderNum?Token=SX&code=00
-    public static String TESTIP = "http://192.168.0.15:8033";
-    public static String PHP_PREFIX = "http://oa.erp.suxuantech.cn/api.php?m=login&a=";
+    /**
+     * 获取企业的域名地址的加密校验通讯秘钥
+     */
+    public final static String CONTACT_KEY = "cf155b8b6d34b1f4e70da28b681ea3f2";
+    /**
+     * 获取客户的服务器地址
+     */
+    public static String COMPANY_DOMAIN = "http://auth.suxuantech.cn/home/mobile/getProductUrl";
+    /**
+     * ERP地址
+     */
+    public static String TESTIP = "http://47.93.245.93:8084";
+    /**
+     * ERP地址
+     */
+    public static String ERP = "";
+     /**
+      * OA地址
+     */
+    public static String OA = "";
+    /**
+     * MC地址
+     */
+    public static String MC = "";
+    /**
+     * CRM地址
+     */
+    public static String CRM = "";
+    /**
+     *
+     */
+    public static String PHP_PREFIX = "http://oa.test.suxuantech.cn/api.php?m=login&a=";
     public static String TOKEN = "^******^";
-
     public static String getFullUrl(String template, Object... replace) {
         if (replace == null) {
             return template;
@@ -415,7 +442,7 @@ public class Contact {
      * (grade_type:部门所属：1集团，2品牌，3店面，4部门)
      * (1:’’,2:brandclass_id,3:shop_code，4:department_id)
      */
-    public static String  CONTACTS = "%sgetStaffList";
+    public static String CONTACTS = "%sgetStaffList";
     /**
      * 通讯录搜索
      */
@@ -423,18 +450,20 @@ public class Contact {
     /**
      * 选片排程搜索
      */
-    public static String  OPTION_PANEL_SCHEME="/SXWebErpAppStaff/SX_CXXPPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    public static String OPTION_PANEL_SCHEME = "/SXWebErpAppStaff/SX_CXXPPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
 
     /**
      * 拍照排程搜索
      */
-    public static String  PHOTO_SCHEME_SEARCH="/SXWebErpAppStaff/SX_CXPhotoPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    public static String PHOTO_SCHEME_SEARCH = "/SXWebErpAppStaff/SX_CXPhotoPaiChengCusInfo?Token=%s&StartDate=%s&EndDate=%s&orderid=%s&pageIndex=%s&pageSize=%s&Code=%s";
     /**
      * 获得今日进客资料信息(首页的今日客资量)
      */
-    public static String  SEARCH_TODAY_CUSTOMER="/SXWebErpAppStaff/SX_JKGuestInfoMX?Token=%s&StartDate=%s&EndDate=%s&pageIndex=%s&pageSize=%s&Code=%s";
+    public static String SEARCH_TODAY_CUSTOMER = "/SXWebErpAppStaff/SX_JKGuestInfoMX?Token=%s&StartDate=%s&EndDate=%s&pageIndex=%s&pageSize=%s&Code=%s";
     /**
      * 进客登记(根据进客类型)当日进客登记不同类型数据
      */
-    public static String  RegisterType="/SXWebErpAppStaff/SX_InquireGuestInfoDay?Token=%s&StartDate=%s&EndDate=%s&JKTyep=%s&pageIndex=%s&pageSize=%s&Code=%s&salesstaff=%s&djstaff=%s";
+    public static String RegisterType = "/SXWebErpAppStaff/SX_InquireGuestInfoDay?Token=%s&StartDate=%s&EndDate=%s&JKTyep=%s&pageIndex=%s&pageSize=%s&Code=%s&salesstaff=%s&djstaff=%s";
+
+
 }

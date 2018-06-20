@@ -27,84 +27,88 @@ package com.suxuantech.erpsys.entity;
  * E-mail:lizhanqihd@163.com
  * @Description: todo(用一句话描述该文件做什么)
  */
-    public   class UserEntity {
+public   class UserEntity {
     /**
-     * staff_id : 37
-     * session_id : hVUcmBPLKz
-     * ip : 127.0.0.1
+     * staff_id : 404
+     * session_id : FayWtRUVIP
+     * ip : 114.242.53.96
      * login_type : PC
      * login_method : user_name
-     * expiry : 2018-05-18 13:52:08
-     * valid_date : 90
-     * staffname : SSS
-     * staffnumber : S001
+     * expiry : 2018-06-20 20:57:37
+     * valid_date : 60
+     * staffname : 小飞
+     * staffnumber : SY001
      * brandclass : 时尚经典事业部
-     * shop_name : 时尚经典旗舰店
-     * shop_code : VVC001
-     * belong_shop_name : 时尚经典渠道部
-     * belong_shop_code : VVC009
+     * shop_name : 沈阳时尚经典婚纱店
+     * shop_code : ZX002
+     * belong_shop_name : 沈阳时尚经典婚纱店
+     * belong_shop_code : ZX002
      * is_marketing : 2
      * is_sk : 2
      * shop_type : 1
      * receiv_shop_code :
-     * is_group : 1
-     * end_date : null
-     * setkey : null
-     * department_name : 门市部
-     * department_id : 4
-     * main_position_name : ERP系统高级管理员
-     * main_position_code : p15169837225860
+     * is_group : 2
+     * end_date :
+     * setkey :
+     * department_name : 管理部
+     * department_id : 54
+     * main_position_name : 管理员
+     * main_position_code : p15196150267964
      * grade_type : 4
-     * position_code : p15169793315051,p15169901128683,p15169902642583
+     * position_code : p15169100931034,p15169793315051,p15169796813421,p15169798813228,p15169810882882,p15169811036060,p15169901128683,p15175413769707,p15211111695472,p15211111698673,p15211111698250,p15211111696338
      * status : 1
-     * sn : S
+     * sn : SY
+     * group_company_name :
      * main_work_type : 22
-     * work_type : 1,1,22,22
-     * open_id :
+     * work_type : 22,1,7,15,,6,14,22,1,22,22,22,15,22,22,6,7,1,1
+     * open_id : o3mGr0rWvmqIJjD3yDdSyznGPYsY
      * is_belong : 4
      * brandclass_id : 1
+     * jg_username : 5891778d8dab36c0acd24f041b7aadb8
      */
 
-    public int staff_id;
-    public String session_id;
-    public String ip;
-    public String login_type;
-    public String login_method;
-    public String expiry;
-    public int valid_date;
-    public String staffname;
-    public String staffnumber;
-    public String brandclass;
-    public String shop_name;
-    public String shop_code;
-    public String belong_shop_name;
-    public String belong_shop_code;
-    public int is_marketing;
-    public int is_sk;
-    public int shop_type;
-    public String receiv_shop_code;
-    public int is_group;
-    public Object end_date;
-    public Object setkey;
-    public String department_name;
-    public int department_id;
-    public String main_position_name;
-    public String main_position_code;
-    public int grade_type;
-    public String position_code;
-    public int status;
-    public String sn;
-    public String main_work_type;
-    public String work_type;
-    public String open_id;
-    public int is_belong;
-    public int brandclass_id;
+ public String staff_id;
+ public String session_id;
+ public String ip;
+ public String login_type;
+ public String login_method;
+ public String expiry;
+ public String valid_date;
+ public String staffname;
+ public String staffnumber;
+ public String brandclass;
+ public String shop_name;
+ public String shop_code;
+ public String belong_shop_name;
+ public String belong_shop_code;
+ public String is_marketing;
+ public String is_sk;
+ public String shop_type;
+ public String receiv_shop_code;
+ public String is_group;
+ public String end_date;
+ public String setkey;
+ public String department_name;
+ public String department_id;
+ public String main_position_name;
+ public String main_position_code;
+ public String grade_type;
+ public String position_code;
+ public String status;
+ public String sn;
+ public String group_company_name;
+ public String main_work_type;
+ public String work_type;
+ public String open_id;
+ public String is_belong;
+ public String brandclass_id;
+ public String jg_username;
 
-    public int getStaff_id() {
+    public String getStaff_id() {
         return staff_id;
     }
 
-    public void setStaff_id(int staff_id) {
+    public void setStaff_id(String staff_id) {
         this.staff_id = staff_id;
     }
 
@@ -148,11 +152,11 @@ package com.suxuantech.erpsys.entity;
         this.expiry = expiry;
     }
 
-    public int getValid_date() {
+    public String getValid_date() {
         return valid_date;
     }
 
-    public void setValid_date(int valid_date) {
+    public void setValid_date(String valid_date) {
         this.valid_date = valid_date;
     }
 
@@ -212,27 +216,27 @@ package com.suxuantech.erpsys.entity;
         this.belong_shop_code = belong_shop_code;
     }
 
-    public int getIs_marketing() {
+    public String getIs_marketing() {
         return is_marketing;
     }
 
-    public void setIs_marketing(int is_marketing) {
+    public void setIs_marketing(String is_marketing) {
         this.is_marketing = is_marketing;
     }
 
-    public int getIs_sk() {
+    public String getIs_sk() {
         return is_sk;
     }
 
-    public void setIs_sk(int is_sk) {
+    public void setIs_sk(String is_sk) {
         this.is_sk = is_sk;
     }
 
-    public int getShop_type() {
+    public String getShop_type() {
         return shop_type;
     }
 
-    public void setShop_type(int shop_type) {
+    public void setShop_type(String shop_type) {
         this.shop_type = shop_type;
     }
 
@@ -244,27 +248,27 @@ package com.suxuantech.erpsys.entity;
         this.receiv_shop_code = receiv_shop_code;
     }
 
-    public int getIs_group() {
+    public String getIs_group() {
         return is_group;
     }
 
-    public void setIs_group(int is_group) {
+    public void setIs_group(String is_group) {
         this.is_group = is_group;
     }
 
-    public Object getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Object end_date) {
+    public void setEnd_date(String end_date) {
         this.end_date = end_date;
     }
 
-    public Object getSetkey() {
+    public String getSetkey() {
         return setkey;
     }
 
-    public void setSetkey(Object setkey) {
+    public void setSetkey(String setkey) {
         this.setkey = setkey;
     }
 
@@ -276,11 +280,11 @@ package com.suxuantech.erpsys.entity;
         this.department_name = department_name;
     }
 
-    public int getDepartment_id() {
+    public String getDepartment_id() {
         return department_id;
     }
 
-    public void setDepartment_id(int department_id) {
+    public void setDepartment_id(String department_id) {
         this.department_id = department_id;
     }
 
@@ -300,11 +304,11 @@ package com.suxuantech.erpsys.entity;
         this.main_position_code = main_position_code;
     }
 
-    public int getGrade_type() {
+    public String getGrade_type() {
         return grade_type;
     }
 
-    public void setGrade_type(int grade_type) {
+    public void setGrade_type(String grade_type) {
         this.grade_type = grade_type;
     }
 
@@ -316,11 +320,11 @@ package com.suxuantech.erpsys.entity;
         this.position_code = position_code;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -330,6 +334,14 @@ package com.suxuantech.erpsys.entity;
 
     public void setSn(String sn) {
         this.sn = sn;
+    }
+
+    public String getGroup_company_name() {
+        return group_company_name;
+    }
+
+    public void setGroup_company_name(String group_company_name) {
+        this.group_company_name = group_company_name;
     }
 
     public String getMain_work_type() {
@@ -356,19 +368,27 @@ package com.suxuantech.erpsys.entity;
         this.open_id = open_id;
     }
 
-    public int getIs_belong() {
+    public String getIs_belong() {
         return is_belong;
     }
 
-    public void setIs_belong(int is_belong) {
+    public void setIs_belong(String is_belong) {
         this.is_belong = is_belong;
     }
 
-    public int getBrandclass_id() {
+    public String getBrandclass_id() {
         return brandclass_id;
     }
 
-    public void setBrandclass_id(int brandclass_id) {
+    public void setBrandclass_id(String brandclass_id) {
         this.brandclass_id = brandclass_id;
+    }
+
+    public String getJg_username() {
+        return jg_username;
+    }
+
+    public void setJg_username(String jg_username) {
+        this.jg_username = jg_username;
     }
 }

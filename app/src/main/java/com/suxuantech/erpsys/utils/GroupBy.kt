@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.utils
 
+import com.suxuantech.erpsys.entity.CompanyDomainEntity
 import com.suxuantech.erpsys.entity.PhotoSchemeSearchEntity
 import com.suxuantech.erpsys.entity.SearchOptionPanelEntity
 
@@ -51,5 +52,13 @@ public fun groupOptionPanelSchedule(al: List<SearchOptionPanelEntity.DataBean>):
     }
     return asb;
 }
+
+/**
+ * 域名分组,企业中可能一个系统有多个服务器
+ */
+public fun groupDomain(data: List<CompanyDomainEntity.DataBean>): Map<String?, List<CompanyDomainEntity.DataBean>> {
+    return data.groupBy { it.configuration_id }
+}
+
 
 
