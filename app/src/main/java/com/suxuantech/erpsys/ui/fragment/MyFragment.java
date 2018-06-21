@@ -1,5 +1,6 @@
 package com.suxuantech.erpsys.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.WebActivityConfig;
+import com.suxuantech.erpsys.ui.activity.FeedbackActivity;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 
@@ -142,7 +144,7 @@ public class MyFragment extends BaseLazyFragment {
             default:
                 break;
             case R.id.feedback:
-
+                startActivity(new Intent(getActivity(),FeedbackActivity.class));
                 break;
             case R.id.switch_theme:
 //               if( SkinConfig.isDefaultSkin(getContext()) ){

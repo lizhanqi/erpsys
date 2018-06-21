@@ -231,7 +231,8 @@ adjustResize则是重新计算弹出软键盘之后的界面大小，相当于�
         <activity android:name=".ui.activity.SchemeCommintActivity" />
         <activity android:name=".ui.activity.StaffSearchActivity" />
         <activity android:name=".ui.activity.StaffDetailsActivity" />
-        <activity android:name=".ui.activity.BaseWebActivity"></activity>
+        <activity android:name=".ui.activity.BaseWebActivity" />
+        <activity  android:name=".ui.activity.FeedbackActivity" />
     </application>
 
 </manifest>

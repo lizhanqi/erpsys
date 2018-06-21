@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.FeedbackActivity">
+    <EditText
+        android:id="@+id/et_feeback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/px50"
+        android:layout_marginTop="@dimen/px50"
+        android:background="@drawable/sp_edittext"
+        android:gravity="top"
+        android:hint="请输入您的建议或问题(不含业务需求)\nbug请把日志粘贴进来\n或者描述日志发生时间"
+        android:maxLines="8"
+        android:minLines="8"
+        android:padding="@dimen/px30" />
+    <EditText
+        android:id="@+id/et_feeback_people"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/px50"
+        android:layout_marginTop="@dimen/px50"
+        android:background="@drawable/sp_edittext"
+        android:gravity="top"
+        android:hint="您的联系方式"
+        android:maxLines="1"
+        android:minLines="1"
+        android:padding="@dimen/px30" />
+    <Button
+        android:id="@+id/btn_feedbak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/px50"
+        android:layout_marginTop="@dimen/px50"
+        android:background="@drawable/sp_search"
+        android:text="@string/submit"
+        android:textColor="@color/themeColor"
+        android:textSize="@dimen/xs50" />
+</LinearLayout>
