@@ -132,7 +132,9 @@ public class GroupAdaputer extends GroupedRecyclerViewAdapter {
         List<String> list = new ArrayList<String>(strings);//B是set型的
         //holder.setText(R.id.tv_count, data.get(list.get(groupPosition)).size() + "");
         StringBuffer pctime = new StringBuffer(data.get(list.get(groupPosition)).get(0).getPctime());
-        pctime.insert(2, ":");
+        if (pctime.length()>2){
+            pctime.insert(2, ":");
+        }
         holder.setText(R.id.tv_time, pctime.toString());
     }
 
