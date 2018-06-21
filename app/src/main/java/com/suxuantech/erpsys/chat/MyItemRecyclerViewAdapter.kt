@@ -10,7 +10,6 @@ import cn.jpush.im.android.api.enums.ConversationType
 import cn.jpush.im.android.api.enums.MessageDirect
 import cn.jpush.im.android.api.model.Conversation
 import cn.jpush.im.android.api.model.UserInfo
-import com.blankj.utilcode.util.EncodeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.suxuantech.erpsys.R
@@ -38,7 +37,8 @@ class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : B
             }else{
                 unread.visibility= View.GONE
             }
-            name.setText(String(EncodeUtils.base64Decode(userInfo.userName) ));
+    //        name.setText(String(EncodeUtils.base64Decode(userInfo.userName) ));
+            name.setText(userInfo.nickname);
             if (item.latestMessage != null) {
                 val timeFormat = TimeFormat(mContext, item.latestMessage.createTime)
                 time.setText(timeFormat.time)

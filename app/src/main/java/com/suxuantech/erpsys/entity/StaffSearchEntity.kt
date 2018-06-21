@@ -32,18 +32,100 @@ import android.os.Parcelable
  */
 class StaffSearchEntity : BaseResult() {
 
-
     /**
      * code : 200
      * msg :
-     * data : [{"id":82,"staffnumber":"S017","staffname":"刘扬 ","password":"MDAwMDAwMDAwMIV4oW0","department_id":4,"department_name":"门市部","main_position_id":12,"main_position_name":"门市主管","main_position_code":"p15169793587099","position_id":"43,90,94,95,116","position_code":"p15169810134774,p15169901128683,p15169901819415,p15169902052052,p15196094128600","zhiji_name":null,"turestaffname":"","group_company_name":"中国沈阳时尚经典婚纱摄影集团","brandclass":"时尚经典事业部","shop_name":"时尚经典旗舰店","shop_code":"VVC001","setkey":null,"group_id":0,"group_name":null,"is_group_admin":0,"sex":null,"entry_date":"","leave_date":null,"birthday":"","IDcard":"","nation":"","place_origin":"","political":"","education":"","graduation_school":"","marital_status":"","contract_endday":"","telephone":"13898151531","QQ":"","email":"","weixin":"","a_discount":"","b_discount":"","a_cost":null,"b_cost":null,"liaison_person":"","liaison_tel":"","salary_money":"","social_security":"","bank_cardnumber":"","addressinfo":"","remarkinfo":"","vice_work_type":null,"work_shop":"VVC001,VVC002,VVC002,VVC002,yshs,VVC002","open_id":"oaxtE1CFo1UxBOnwzaKTcms2mOZ8","open_id_name":null,"status":1,"Popedom1":null,"Popedom2":null,"Popedom3":null,"Popedom4":null,"Popedom5":null,"Popedom6":null,"Popedom7":null,"Popedom8":null,"Popedom9":null,"Popedom10":null,"Popedom11":null,"Popedom12":null,"Popedom13":null,"Popedom14":null,"Popedom15":null,"Popedom16":null,"Popedom17":null,"Popedom18":null,"zhiji_id":0,"add_time":"1521800752","sn":"S","grade_type":4,"last_login_ip":null,"last_login_time":null,"brandclass_id":1,"work_types":"22,1,2,22,22,2","is_jiguang":2}]
+     * data : [{"id":1,"staffnumber":"G001","staffname":"王晓杰演示1","password":"MDAwMDAwMDAwMIWIoW0","department_id":31,"department_name":"管理部","main_position_id":56,"main_position_name":"店长","main_position_code":"p15197109382616","position_id":"","position_code":null,"zhiji_name":null,"turestaffname":"王晓杰","group_company_name":"北京素玄科技有限公司","brandclass":"艺匠","shop_name":"艺匠北京一店","shop_code":"YJ0001","setkey":null,"group_id":0,"group_name":null,"is_group_admin":0,"sex":"男","entry_date":"2014-02-01","leave_date":null,"birthday":"","IDcard":"","nation":"","place_origin":"","political":"","education":"","graduation_school":"","marital_status":"","contract_endday":"","telephone":"18701389821","QQ":"","email":"","weixin":"","a_discount":"","b_discount":"","a_cost":null,"b_cost":null,"liaison_person":"","liaison_tel":"","salary_money":"","social_security":"","bank_cardnumber":"","addressinfo":"","remarkinfo":"","work_type":null,"vice_work_type":null,"work_shop":"YJ0001","open_id":null,"open_id_name":null,"status":1,"Popedom1":null,"Popedom2":null,"Popedom3":null,"Popedom4":null,"Popedom5":null,"Popedom6":null,"Popedom7":null,"Popedom8":null,"Popedom9":null,"Popedom10":null,"Popedom11":null,"Popedom12":null,"Popedom13":null,"Popedom14":null,"Popedom15":null,"Popedom16":null,"Popedom17":null,"Popedom18":null,"zhiji_id":0,"add_time":"1519714484","sn":"YJY","grade_type":4,"last_login_ip":null,"last_login_time":null,"brandclass_id":3,"work_types":"22","is_jiguang":1,"belong_shop_code":"YJ0001","belong_shop_name":"艺匠北京一店","jg_username":"1411af55e939196dd52eb5c78f06437e"}]
      */
 
     var data: List<DataBean>? = null
 
     class DataBean : Parcelable {
         /**
-
+         * id : 1
+         * staffnumber : G001
+         * staffname : 王晓杰演示1
+         * password : MDAwMDAwMDAwMIWIoW0
+         * department_id : 31
+         * department_name : 管理部
+         * main_position_id : 56
+         * main_position_name : 店长
+         * main_position_code : p15197109382616
+         * position_id :
+         * position_code : null
+         * zhiji_name : null
+         * turestaffname : 王晓杰
+         * group_company_name : 北京素玄科技有限公司
+         * brandclass : 艺匠
+         * shop_name : 艺匠北京一店
+         * shop_code : YJ0001
+         * setkey : null
+         * group_id : 0
+         * group_name : null
+         * is_group_admin : 0
+         * sex : 男
+         * entry_date : 2014-02-01
+         * leave_date : null
+         * birthday :
+         * IDcard :
+         * nation :
+         * place_origin :
+         * political :
+         * education :
+         * graduation_school :
+         * marital_status :
+         * contract_endday :
+         * telephone : 18701389821
+         * QQ :
+         * email :
+         * weixin :
+         * a_discount :
+         * b_discount :
+         * a_cost : null
+         * b_cost : null
+         * liaison_person :
+         * liaison_tel :
+         * salary_money :
+         * social_security :
+         * bank_cardnumber :
+         * addressinfo :
+         * remarkinfo :
+         * work_type : null
+         * vice_work_type : null
+         * work_shop : YJ0001
+         * open_id : null
+         * open_id_name : null
+         * status : 1
+         * Popedom1 : null
+         * Popedom2 : null
+         * Popedom3 : null
+         * Popedom4 : null
+         * Popedom5 : null
+         * Popedom6 : null
+         * Popedom7 : null
+         * Popedom8 : null
+         * Popedom9 : null
+         * Popedom10 : null
+         * Popedom11 : null
+         * Popedom12 : null
+         * Popedom13 : null
+         * Popedom14 : null
+         * Popedom15 : null
+         * Popedom16 : null
+         * Popedom17 : null
+         * Popedom18 : null
+         * zhiji_id : 0
+         * add_time : 1519714484
+         * sn : YJY
+         * grade_type : 4
+         * last_login_ip : null
+         * last_login_time : null
+         * brandclass_id : 3
+         * work_types : 22
+         * is_jiguang : 1
+         * belong_shop_code : YJ0001
+         * belong_shop_name : 艺匠北京一店
+         * jg_username : 1411af55e939196dd52eb5c78f06437e
          */
 
         var id: Int = 0
@@ -94,6 +176,7 @@ class StaffSearchEntity : BaseResult() {
         var bank_cardnumber: String? = null
         var addressinfo: String? = null
         var remarkinfo: String? = null
+        var work_type: String? = null
         var vice_work_type: String? = null
         var work_shop: String? = null
         var open_id: String? = null
@@ -126,6 +209,9 @@ class StaffSearchEntity : BaseResult() {
         var brandclass_id: Int = 0
         var work_types: String? = null
         var is_jiguang: Int = 0
+        var belong_shop_code: String? = null
+        var belong_shop_name: String? = null
+        var jg_username: String? = null
 
         override fun describeContents(): Int {
             return 0
@@ -180,6 +266,7 @@ class StaffSearchEntity : BaseResult() {
             dest.writeString(this.bank_cardnumber)
             dest.writeString(this.addressinfo)
             dest.writeString(this.remarkinfo)
+            dest.writeString(this.work_type)
             dest.writeString(this.vice_work_type)
             dest.writeString(this.work_shop)
             dest.writeString(this.open_id)
@@ -212,6 +299,9 @@ class StaffSearchEntity : BaseResult() {
             dest.writeInt(this.brandclass_id)
             dest.writeString(this.work_types)
             dest.writeInt(this.is_jiguang)
+            dest.writeString(this.belong_shop_code)
+            dest.writeString(this.belong_shop_name)
+            dest.writeString(this.jg_username)
         }
 
         constructor() {}
@@ -265,6 +355,7 @@ class StaffSearchEntity : BaseResult() {
             this.bank_cardnumber = `in`.readString()
             this.addressinfo = `in`.readString()
             this.remarkinfo = `in`.readString()
+            this.work_type = `in`.readString()
             this.vice_work_type = `in`.readString()
             this.work_shop = `in`.readString()
             this.open_id = `in`.readString()
@@ -297,6 +388,9 @@ class StaffSearchEntity : BaseResult() {
             this.brandclass_id = `in`.readInt()
             this.work_types = `in`.readString()
             this.is_jiguang = `in`.readInt()
+            this.belong_shop_code = `in`.readString()
+            this.belong_shop_name = `in`.readString()
+            this.jg_username = `in`.readString()
         }
 
         companion object {

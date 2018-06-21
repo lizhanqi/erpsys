@@ -116,8 +116,7 @@ public class ChatBaseActivity extends TitleNavigationActivity {
 //                dialog = DialogCreator.createBaseCustomDialog(mContext, title, msg, onClickListener);
                 break;
             case user_logout:
-                String title = mContext.getString(IdHelper.getString(mContext,
-                        "jmui_user_logout_dialog_title"));
+                String title = mContext.getString(IdHelper.getString(mContext, "jmui_user_logout_dialog_title"));
                 String msg = mContext.getString(IdHelper.getString(mContext, "jmui_user_logout_dialog_message"));
                 dialog = DialogCreator.createBaseCustomDialog(mContext, title, msg, onClickListener);
                 break;

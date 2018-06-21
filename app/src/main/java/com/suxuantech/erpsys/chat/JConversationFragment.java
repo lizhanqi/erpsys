@@ -41,7 +41,6 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.EncodeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.sj.emoji.DefEmoticons;
 import com.sj.emoji.EmojiBean;
@@ -132,6 +131,7 @@ import cn.jzvd.JZVideoPlayer;
 
 public class JConversationFragment extends Fragment implements KeyBoardView.AudioInput, SensorEventListener {
     String UserID = "";
+    String userName = "";
     private RecyclerView msgList;
     private MultipleItemQuickAdapter multipleItemQuickAdapter;
     private Conversation singleConversation;
@@ -150,8 +150,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             mSwipeRefreshLayout.setRefreshing(false);
         }
     };
-    private boolean base64;
-
     public void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -217,7 +215,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     //屏幕开关
     private PowerManager localPowerManager = null;//电源管理对象
     private PowerManager.WakeLock localWakeLock = null;//电源锁
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -226,7 +223,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         mSetting = new PermissionSetting(getActivity());
         mManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         localPowerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
-        localWakeLock = localPowerManager.newWakeLock(32, "MyPower");
+        localWakeLock = localPowerManager.newWakeLock(32, "myapp:mywakelocktag");
         //订阅接收消息,子类只要重写onEvent就能收到
         JMessageClient.registerEventReceiver(this);
         JMessageClient.registerEventReceiver(this);
@@ -251,11 +248,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
                 .setAlbumLoader(new GlideAlbumLoader()) // 设置Album加载器。
                 .build();
 
-        base64 = getActivity().getIntent().getBooleanExtra("base64", false);
-        UserID = getActivity().getIntent().getStringExtra("name");
-        if (!base64) {
-            UserID = EncodeUtils.base64Encode2String(UserID.getBytes());
-        }
+        userName = getActivity().getIntent().getStringExtra("name");
+        UserID = getActivity().getIntent().getStringExtra("userid");
         singleConversation = JMessageClient.getSingleConversation(UserID);
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);

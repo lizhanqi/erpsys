@@ -84,8 +84,8 @@ open class   ConversationListFragment : BaseSupportFragment() {
                 var con = adapter.data.get(position) as Conversation
                 var infor = con.targetInfo as UserInfo
                 var intent = Intent(activity, ConversationActivity::class.java)
-                intent.putExtra("name", infor.userName)
-                intent.putExtra("base64", true)
+                intent.putExtra("userid", infor.userName)
+                intent.putExtra("name", infor.nickname)
                 startActivity(intent)
             })
         }

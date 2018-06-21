@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.blankj.utilcode.util.EncodeUtils;
 import com.suxuantech.erpsys.R;
 
 import cn.jpush.im.android.eventbus.EventBus;
@@ -22,12 +21,7 @@ public class ConversationActivity extends ChatBaseActivity {
         supportToolbar();
         boolean name = getIntent().hasExtra("name");
         if (name){
-            boolean base64 = getIntent().getBooleanExtra("base64",false);
-            if (base64){
-                setTitle( new String(EncodeUtils.base64Decode(getIntent().getStringExtra("name"))));
-            }else {
-                setTitle(  getIntent().getStringExtra("name"));
-            }
+            setTitle(  getIntent().getStringExtra("name"));
         }else {
             Toast.makeText(this,"空联系人",Toast.LENGTH_SHORT).show();
             finish();

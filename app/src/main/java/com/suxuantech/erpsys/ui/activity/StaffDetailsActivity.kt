@@ -16,7 +16,6 @@ import com.suxuantech.erpsys.App
 import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.chat.ConversationActivity
 import com.suxuantech.erpsys.entity.FormEntity
-import com.suxuantech.erpsys.entity.PhotoSchemeSearchEntity
 import com.suxuantech.erpsys.entity.StaffSearchEntity
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
@@ -24,6 +23,7 @@ import com.suxuantech.erpsys.ui.widget.BounceScrollView
 import com.suxuantech.erpsys.ui.widget.ScrollEditText
 import com.suxuantech.erpsys.utils.MyString
 import com.suxuantech.erpsys.utils.StringUtils
+import com.suxuantech.erpsys.utils.ToastUtils
 
 class StaffDetailsActivity : TitleNavigationActivity() {
     var dampView: BounceScrollView? = null
@@ -56,10 +56,17 @@ class StaffDetailsActivity : TitleNavigationActivity() {
         }
         img_msg?.setOnClickListener {
             if (data.staffname!=App.getApplication().userInfor.staffname){
-                val intent = Intent(this, ConversationActivity::class.java)
-                intent.putExtra("name",  data.staffname)
-                intent.putExtra("base64",false)
-                startActivity(intent)
+                if(StringUtils.empty(data.jg_username)){
+                    ToastUtils.snackbarShort("对方未曾登录过系统,收不到消息哦","确定")
+                }else{
+                    val intent = Intent(this, ConversationActivity::class.java)
+                    intent.putExtra("name",  data.staffname)
+                    intent.putExtra("userid",  data.jg_username)
+                    startActivity(intent)
+                }
+
+            }else{
+                ToastUtils.snackbarShort("不能与自己聊天哦","确定")
             }
         }
         tvNameAndPost?.setText(MyString(StringUtils.safetyString(data.staffname)).setSize(25))

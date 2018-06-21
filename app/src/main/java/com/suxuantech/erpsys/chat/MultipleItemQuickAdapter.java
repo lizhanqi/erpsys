@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -84,8 +83,8 @@ import cn.jzvd.JZVideoPlayerStandard;
  * ..................佛祖开光 ,永无BUG................
  *
  * @author Created by 李站旗 on 2018/3/13 0013 16:28 .
- *         QQ:1032992210
- *         E-mail:lizhanqihd@163.com
+ * QQ:1032992210
+ * E-mail:lizhanqihd@163.com
  * @Description: 聊天内容适配器
  */
 
@@ -95,7 +94,6 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     private FileInputStream mFIS;
     private FileDescriptor mFD;
     private AudioManager audioManager;
-    private boolean base64;
     RequestOptions options = new RequestOptions()
             .centerCrop()
             .placeholder(R.mipmap.ic_launcher)//预加载图片
@@ -110,14 +108,11 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         addItemType(MessageEntity.OTHER_PEOPLE, R.layout.other_people_message);
     }
 
-    public void setBase64(boolean base64) {
-        this.base64 = base64;
-    }
 
     @Override
     protected void convert(BaseViewHolder helper, MessageEntity item) {
         Message msg = item.getMsag();
-      //  GroupInfo groupInfo = (GroupInfo) msg.getTargetInfo();
+        //  GroupInfo groupInfo = (GroupInfo) msg.getTargetInfo();
         UserInfo userInfo = (UserInfo) msg.getTargetInfo();
         setTemplate(helper, item);
         setMasseRead(msg, helper.getView(R.id.tv_msg_read));
@@ -340,20 +335,20 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                         }
                     });
                 }
-                    pic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (imageContent.getLocalPath() == null) {
-                                ToastUtils.showShort("下载中...");
-                            }else {
-                                bigImage(imageContent);
-                            }
+                pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (imageContent.getLocalPath() == null) {
+                            ToastUtils.showShort("下载中...");
+                        } else {
+                            bigImage(imageContent);
                         }
-                    });
+                    }
+                });
 
                 //大图  imageContent.getLocalPath(); //小图 imageContent.getLocalThumbnailPath()
                 if (imageContent.getLocalThumbnailPath() != null) {
-                    Glide.with(mContext).load( imageContent.getLocalThumbnailPath()).apply(options).into(pic);
+                    Glide.with(mContext).load(imageContent.getLocalThumbnailPath()).apply(options).into(pic);
                 } else {
                     Glide.with(mContext).load(mContext.getResources().getDrawable(R.drawable.logo)).apply(options).into(pic);
                     imageContent.downloadThumbnailImage(msg, new DownloadCompletionCallback() {
@@ -602,7 +597,8 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
      */
     private void setTemplate(BaseViewHolder helper, MessageEntity item) {
         UserInfo fromUser = item.getMsag().getFromUser();
-        String userName = fromUser.getUserName();
+        //  String userName = fromUser.getUserName();
+        String userName = fromUser.getNickname();
         TextView nameView = helper.getView(R.id.tv_user_name);
         TextView msgTime = helper.getView(R.id.tv_convertion_time);
         if (isConvertion(mData.lastIndexOf(item))) {
@@ -614,7 +610,8 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         } else {
             msgTime.setVisibility(View.GONE);
         }
-        nameView.setText( new String(EncodeUtils.base64Decode(userName )));
+        //    nameView.setText( new String(EncodeUtils.base64Decode(userName )));
+        nameView.setText(userName);
     }
 
     /**
@@ -633,10 +630,10 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
     }
 
     private void bigImage(ImageContent imageContent) {
-      String localPath = imageContent.getLocalPath();
+        String localPath = imageContent.getLocalPath();
 //        Intent intent = new Intent(mContext, ImageActivity.class);
 //        intent.putExtra("uri",localPath);
-   //   mContext.startActivity(intent);
+        //   mContext.startActivity(intent);
         ArrayList<String> strings = new ArrayList<>();
         strings.add(localPath);
         Album.gallery(mContext)
