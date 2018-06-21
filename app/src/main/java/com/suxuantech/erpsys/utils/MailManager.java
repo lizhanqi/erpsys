@@ -111,7 +111,7 @@ public class MailManager {
             mimeMessage.setRecipients(Message.RecipientType.TO, addresses);
             mimeMessage.setSubject(title);
             MimeBodyPart textPart = new MimeBodyPart();
-            textPart.setContent(content, "text/html");
+            textPart.setContent(content, "text/html; charset=utf-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(textPart);
             mimeMessage.setContent(multipart);
