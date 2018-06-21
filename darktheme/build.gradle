@@ -30,7 +30,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("app/signature.jks")
+            storeFile file("/app/signature.jks")
         //   storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
            storePassword "123456"
            keyAlias "lizhanqi"

@@ -8,13 +8,13 @@ ext {
     ]
     android = [
             applicationId          : "com.suxuantech.erpsys",
-            compileSdkVersion      : 27,
-            buildToolsVersion      : '27.0.3',
+            compileSdkVersion      : 28,
+            buildToolsVersion      : '28.0.0',
             minSdkVersion          : 19,
-            targetSdkVersion       : 27,
+            targetSdkVersion       : 28,
             versionCode            : 1,
             versionName            : "1.0",
-            support_library_version: '27.0+',
+            support_library_version: '28.0+',
             libraryMinSdkVersion   : 9,
             libraryTargetSdkVersion: 25,
     ]
@@ -24,7 +24,7 @@ ext {
             //v7兼容包不解释
            v7                     : "com.android.support:appcompat-v7:${rootProject.ext.android.support_library_version}",
            v4                     : "com.android.support:support-v4:${rootProject.ext.android.support_library_version}",
-           core                     :"com.android.support:support-core-utils:27.1.0",
+           core                     :"com.android.support:support-core-utils:28.+",
             //权限
             permission             : 'com.yanzhenjie:permission:2.0.0-rc2',
             //权限弹窗
@@ -97,7 +97,7 @@ ext {
             utilcode               : 'com.blankj:utilcode:1.13.1',
             //Toast弹窗但是更好用(使用不多)
             SmartShow              : 'com.github.the-pig-of-jungle:SmartShow:v1.0.3',
-            design:  'com.android.support:design:27.1.0',
+            design:  'com.android.support:design:28.+',
             //   我的
             //步骤流程
             libstepview            : 'com.lizhanqi:libstepview:1.0.1',

@@ -30,7 +30,12 @@ class BaseWebActivity : TitleNavigationActivity() {
     /**
      *导航是否有菜单的刷新
      */
-    protected var showMoreMenu = false;
+    protected var showMoreMenu = true;
+
+    /**
+     *导航是否有显示导航返回按钮
+     */
+    protected var showTitleBack = true;
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu);
@@ -45,7 +50,7 @@ class BaseWebActivity : TitleNavigationActivity() {
     }
 
     fun showTitleNavigation() {
-        supportToolbar()
+        supportToolbar(showTitleBack)
         toolbar.contentInsetStartWithNavigation = 0;
         toolbar.setNavigationOnClickListener {
             if (mWebView?.canGoBack()!!) {
@@ -58,6 +63,7 @@ class BaseWebActivity : TitleNavigationActivity() {
         if (showOneClose) {
             toolbar.setLogo(R.drawable.icon_close_web)
             var logo = ReflexUtils.getValue(toolbar, "mLogoView") as ImageView
+            logo.setPadding(0, 0, 30, 0)
             logo.setOnClickListener(View.OnClickListener {
                 onBackPressed()
             })
@@ -81,6 +87,7 @@ class BaseWebActivity : TitleNavigationActivity() {
         showToolbar = intent.getBooleanExtra("showToolbar", true)
         showOneClose = intent.getBooleanExtra("showOneClose", true)
         showMoreMenu = intent.getBooleanExtra("showMoreMenu", true)
+        showTitleBack = intent.getBooleanExtra("showTitleBack", true)
         setContentView(R.layout.activity_base_web)
         lineView.visibility = View.GONE
         mWebView = findViewById(R.id.baseweb_webview)

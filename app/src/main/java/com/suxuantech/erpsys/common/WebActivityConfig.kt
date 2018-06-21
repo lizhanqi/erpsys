@@ -46,11 +46,16 @@ class WebActivityConfig {
     /**
      *导航是否有菜单的刷新
      */
-    private var toolbarMoreMenu = false;
+    private var toolbarMoreMenu = true;
     /**
      *导航是否有菜单的刷新
      */
+    private var showTitleBack = true;
+    /**
+     *网址
+     */
     private var url = "";
+
     constructor (context: Context) {
         if (context == null) {
             throw IllegalArgumentException("Context不能为空")
@@ -72,6 +77,10 @@ class WebActivityConfig {
         toolbarMoreMenu = isShow
         return this;
     }
+    public fun showTitleBack(isShow: Boolean): WebActivityConfig {
+        showTitleBack = isShow
+        return this;
+    }
 
     public fun loadUrl(url: String): WebActivityConfig {
         this.url = url
@@ -83,6 +92,7 @@ class WebActivityConfig {
         intn.putExtra("showToolbar", showToolbar)
         intn.putExtra("showOneClose", showOneClose)
         intn.putExtra("showMoreMenu", toolbarMoreMenu)
+        intn.putExtra("showTitleBack", showTitleBack)
         intn.putExtra("url", url)
         mContext?.startActivity(intn)
     }
