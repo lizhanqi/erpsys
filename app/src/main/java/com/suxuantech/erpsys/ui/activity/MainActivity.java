@@ -606,9 +606,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mExitTime = System.currentTimeMillis();
         } else {
             ActivityCompat.finishAfterTransition(this);
-            App.getApplication().loginOut();
+            //App.getApplication().loginOut();
             App.appExit();
-            ///finish();
         }
     }
 }

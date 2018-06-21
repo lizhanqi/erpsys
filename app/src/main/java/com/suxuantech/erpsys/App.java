@@ -109,7 +109,9 @@ public class App extends Application {
         CacheUtils.getInstance().remove(App.LOGIN_FILE_NAME);
         SPUtils.getInstance().remove(LoginActivity.LOGIN_NAME);
         SPUtils.getInstance().remove(LoginActivity.LOGIN_PASSWORD);
-        startActivity(new Intent(App.getContext(), LoginActivity.class));
+        Intent intent = new Intent(App.getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        startActivity(intent);
     }
 
     /**

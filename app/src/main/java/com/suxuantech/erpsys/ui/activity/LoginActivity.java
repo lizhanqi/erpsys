@@ -206,7 +206,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.length() == 10) {
-                    toastShort("获取企业id");
                     getCompanyDomainById(editable.toString(), false);
                 }
             }
@@ -236,7 +235,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     public void initImmersionBar() {
         ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7).titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -256,7 +254,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         }
 
     }
-
     /**
      * 初始化指纹识别传感器
      */
@@ -266,7 +263,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mKeyguardLockScreenManager = new KeyguardLockScreenManager(this);
         startFingerprintRecognition();
     }
-
     /**
      * 获取客户的域名地址
      *
