@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -165,6 +167,23 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         populateAutoComplete();
         mPasswordView = findViewById(R.id.password);
         mCompanyID = findViewById(R.id.company_id);
+        mCompanyID.setOnTouchListener((view, event) -> {
+            // et.getCompoundDrawables()得到一个长度为4的数组，分别表示左右上下四张图片
+            Drawable drawable = mCompanyID.getCompoundDrawables()[2];
+            //如果右边没有图片，不再处理
+            if (drawable == null) {
+                return false;
+            }
+            //如果不是按下事件，不再处理
+            if (event.getAction() != MotionEvent.ACTION_UP) {
+                return false;
+            }
+            if (event.getX() > mCompanyID.getWidth()   - mCompanyID.getPaddingRight()    - drawable.getIntrinsicWidth()) {
+
+           //     mCompanyID.setText("");
+            }
+            return false;
+        });
         String cacheID = SPUtils.getInstance().getString(COMPANY_ID);
         if (!StringUtils.empty(cacheID)) {
             mCompanyID.setText(cacheID);
@@ -273,30 +292,31 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                     mEmailView.requestFocus();
                     Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(response.get().getData());
                     Set<String> strings = domains.keySet();
-                    for(String key:strings){
-                        String domain="";
+                    for (String key : strings) {
+                        String domain = "";
                         List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
-                        for (CompanyDomainEntity.DataBean dataBean:dataBeans){
+                        for (CompanyDomainEntity.DataBean dataBean : dataBeans) {
                             String api_url = dataBean.getApi_url();
-                            if (!StringUtils.empty(api_url)){
-                                domain=api_url;
+                            if (!StringUtils.empty(api_url)) {
+                                domain = api_url;
                                 break;
                             }
                         }
-                        if(key.equals(SuxuanAppIdKt.getMC())){
-                            Contact.MC=domain;
-                        }else if (key.equals(SuxuanAppIdKt.getCRM())){
-                            Contact.CRM=domain;
-                        }else if (key.equals(SuxuanAppIdKt.getERP())){
-                            Contact.ERP=domain;
-                        }else if (key.equals(SuxuanAppIdKt.getVIP())){
+                        if (key.equals(SuxuanAppIdKt.getMC())) {
+                            Contact.MC = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getCRM())) {
+                            Contact.CRM = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getERP())) {
+                            Contact.ERP = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getVIP())) {
                             //Contact.VIP=domain;
                         }
                     }
-                }else {
+                } else {
 
                 }
             }
+
             @Override
             public void onFailed(int what, Response<CompanyDomainEntity> response) {
             }

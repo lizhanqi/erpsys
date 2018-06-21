@@ -58,8 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom">
-
                     <AutoCompleteTextView
+                        android:drawableRight="@drawable/icon_qrcod_san"
                         android:maxLength="10"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@+id/email"
@@ -74,7 +74,6 @@
                         android:textColor="@color/copyrigth"
                         android:textColorHint="@color/copyrigth"
                         android:textSize="@dimen/xs45" />
-
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
