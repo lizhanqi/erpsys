@@ -179,7 +179,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 return false;
             }
             if (event.getX() > mCompanyID.getWidth()   - mCompanyID.getPaddingRight()    - drawable.getIntrinsicWidth()) {
-
            //     mCompanyID.setText("");
             }
             return false;
@@ -269,7 +268,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      * @param companyID 客户企业id
      * @param isCache   是否从缓存去拿
      */
-    void getCompanyDomainById(String companyID, boolean isCache) {
+  public     void getCompanyDomainById(String companyID, boolean isCache) {
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.COMPANY_DOMAIN, CompanyDomainEntity.class);
         stringRequest.add("app_code", companyID);
         String key = "app_code=" + companyID + Contact.CONTACT_KEY;
@@ -297,6 +296,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                                 domain = api_url;
                                 break;
                             }
+                        }
+                        if (domain.endsWith("/")){
+                            domain.substring(0,domain.length()-1);
                         }
                         if (key.equals(SuxuanAppIdKt.getMC())) {
                             Contact.MC = domain;
@@ -443,7 +445,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      */
     private void phpLogin(String name, String key) {
         loadingDialog.show();
-        String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.PHP_PREFIX);
+        String fullUrl = Contact.getFullUrl(Contact.PHP_LOGIN, Contact.OA);
         JavaBeanRequest<PHPLoginEntity> login = new JavaBeanRequest<PHPLoginEntity>(fullUrl, PHPLoginEntity.class);
         login.add("staffname", name);
         login.add("password", key);
@@ -486,7 +488,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     /**
      * 请求通讯
-     *
      * @return
      */
     private boolean mayRequestContacts() {

@@ -114,7 +114,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     private void selectFragment(int lastSelct) {
         int position = bottomNavigationBar.getCurrentSelectedPosition();
-       onCountChanged(JMessageClient.getAllUnReadMsgCount());
+        onCountChanged(JMessageClient.getAllUnReadMsgCount());
         switch (position) {
             case 0:
                 supportToolbar(false);
@@ -150,11 +150,10 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dLog(System.currentTimeMillis() + "");
         // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-      useEventBus();
+        useEventBus();
         setContentView(R.layout.activity_main);
         initPop();
         initFragement();
@@ -565,19 +564,21 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             }
         }
     }
+
     @Override
     @Subscribe
     public void onCountChanged(int i) {
         if (badgeItem != null) {
-            if (i >=99) {
+            if (i >= 99) {
                 badgeItem.setText("99+");
-            }   else if (i <99&&i>0) {
+            } else if (i < 99 && i > 0) {
                 badgeItem.setText(i + "");
             } else {
                 badgeItem.hide();
             }
         }
     }
+
     @Subscribe
     public void count(Integer i) {
         onCountChanged(i);

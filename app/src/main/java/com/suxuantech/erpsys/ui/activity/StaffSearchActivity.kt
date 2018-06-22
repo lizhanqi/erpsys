@@ -113,7 +113,7 @@ class StaffSearchActivity : TitleNavigationActivity() {
         if (StringUtils.empty(key)) {
             return
         }
-        var url = Contact.getFullUrl(Contact.SEARCH_PERSON, Contact.PHP_PREFIX)
+        var url = Contact.getFullUrl(Contact.SEARCH_PERSON, Contact.OA)
         val login = JavaBeanRequest(url, StaffSearchEntity::class.java)
         login.add("key_words", key)
         val searchByCustmor = object : HttpListener<StaffSearchEntity> {

@@ -178,9 +178,8 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
                     @Override
                     public void onAction(@NonNull List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
+
                             mSetting.showSetting(permissions);
-
-
                         } else {
                             toast(R.string.failure_permission);
                             onceDeniedPermission(permissions);

@@ -514,7 +514,7 @@ public class ContactDataFragment extends BaseSupportFragment {
      * 获取集团下的事业部
      */
     public void getBusinssunit() {
-        String url = Contact.getFullUrl(Contact.BUSINSSUNIT, Contact.PHP_PREFIX);
+        String url = Contact.getFullUrl(Contact.BUSINSSUNIT, Contact.OA);
         JavaBeanRequest<BusinssunitEntity> businssunit = new JavaBeanRequest<BusinssunitEntity>(url, BusinssunitEntity.class);
         HttpListener<BusinssunitEntity> searchByCustmor = new HttpListener<BusinssunitEntity>() {
             @Override
@@ -543,7 +543,7 @@ public class ContactDataFragment extends BaseSupportFragment {
      * @param Key  类型关键词
      */
     public void getContancts(@IntRange(from = 1, to = 4) int type, @NonNull String Key) {
-        String url = Contact.getFullUrl(Contact.CONTACTS, Contact.PHP_PREFIX);
+        String url = Contact.getFullUrl(Contact.CONTACTS, Contact.OA);
         JavaBeanRequest<StaffSearchEntity> contancts = new JavaBeanRequest<StaffSearchEntity>(url, StaffSearchEntity.class);
         contancts.add("grade_type", type);
         if (type == BUSINESS_UNIT_TYPE) {
@@ -580,7 +580,7 @@ public class ContactDataFragment extends BaseSupportFragment {
      * @param Key  类型关键词
      */
     public void getDepartment(@IntRange(from = 1, to = 4) int type, @NonNull String Key) {
-        String url = Contact.getFullUrl(Contact.DEPARTMENT, Contact.PHP_PREFIX);
+        String url = Contact.getFullUrl(Contact.DEPARTMENT, Contact.OA);
         JavaBeanRequest<DepartmentEntiy> department = new JavaBeanRequest<DepartmentEntiy>(url, DepartmentEntiy.class);
         department.add("grade_type", type);
         if (type == BUSINESS_UNIT_TYPE) {
@@ -612,7 +612,7 @@ public class ContactDataFragment extends BaseSupportFragment {
      * 根据事业部获实体店面以及营销店
      */
     public void getStoreByBusinssUnit(@NonNull String brandclass_id) {
-        String url = Contact.getFullUrl(Contact.STORE_BY_BUSINSSUNIT, Contact.PHP_PREFIX);
+        String url = Contact.getFullUrl(Contact.STORE_BY_BUSINSSUNIT, Contact.OA);
         JavaBeanRequest<StoreEntity> store = new JavaBeanRequest<StoreEntity>(url, StoreEntity.class);
         store.add("brandclass_id", brandclass_id);
         HttpListener<StoreEntity> searchByCustmor = new HttpListener<StoreEntity>() {

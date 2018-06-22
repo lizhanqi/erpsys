@@ -5,20 +5,35 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
+import com.suxuantech.erpsys.SuxuanAppIdKt;
+import com.suxuantech.erpsys.entity.CompanyDomainEntity;
+import com.suxuantech.erpsys.nohttp.Contact;
+import com.suxuantech.erpsys.nohttp.HttpListener;
+import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.DisplayCutoutUtils;
+import com.suxuantech.erpsys.utils.GroupByKt;
 import com.suxuantech.erpsys.utils.StringUtils;
+import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.alertdialog.AlertDialog;
+import com.yanzhenjie.nohttp.rest.CacheMode;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.permission.Permission;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 import ezy.assist.compat.SettingsCompat;
 
 public class SplashScreenActivity extends BaseActivity {
@@ -27,10 +42,31 @@ public class SplashScreenActivity extends BaseActivity {
     @Override
     public void permissionGrantedResult(List<String> permissions) {
         if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
-            transitionsActivity();
+            transitionsActivity(0);
         } else {
             alertDialog.show();
         }
+    }
+
+    /*
+    登录极光聊天的服务器
+     */
+    public void loginJG(String jgName, String jgPassWord) {
+        jgPassWord = EncryptUtils.encryptMD5ToString(jgPassWord).toLowerCase();
+        eLog("极光:" + jgName + "极光密码:" + jgPassWord);
+        JMessageClient.login(jgName, jgPassWord, new BasicCallback() {
+            @Override
+            public void gotResult(int i, String s) {
+                if (i == 0) {
+                    App.getApplication().finishActivity(LoginActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    App.getApplication().loginOut();
+                }
+            }
+        });
     }
 
     @Override
@@ -81,24 +117,98 @@ public class SplashScreenActivity extends BaseActivity {
             requestPermission(Permission.Group.STORAGE);
         } else {
             if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
-                transitionsActivity();
+                transitionsActivity(0);
             } else {
                 alertDialog.show();
             }
         }
     }
-    private void transitionsActivity() {
-        if (islogin()) {
-            startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-            finish();
-        }
+
+    private void transitionsActivity(int delayMillis) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (islogin()) {
+                    String cacheID = SPUtils.getInstance().getString(LoginActivity.COMPANY_ID);
+                    if (!StringUtils.empty(cacheID)) {
+                        getCompanyDomainById(cacheID, true);
+                    } else {
+                        App.getApplication().loginOut();
+                    }
+                } else {
+                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                    finish();
+                }
+            }
+
+        }, delayMillis);
     }
 
     /**
-     *是否登录过
+     * 获取客户的域名地址
+     *
+     * @param companyID 客户企业id
+     * @param isCache   是否从缓存去拿
+     */
+    public void getCompanyDomainById(String companyID, boolean isCache) {
+        JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.COMPANY_DOMAIN, CompanyDomainEntity.class);
+        stringRequest.add("app_code", companyID);
+        String key = "app_code=" + companyID + Contact.CONTACT_KEY;
+        key = EncryptUtils.encryptMD5ToString(key).toLowerCase();
+        stringRequest.addHeader("ACCESS-TOKEN", key);
+        if (isCache) {
+            stringRequest.setCacheMode(CacheMode.NONE_CACHE_REQUEST_NETWORK);
+        } else {
+            stringRequest.setCacheMode(CacheMode.ONLY_REQUEST_NETWORK);
+        }
+        HttpListener<CompanyDomainEntity> httpListener = new HttpListener<CompanyDomainEntity>() {
+            @Override
+            public void onSucceed(int what, Response<CompanyDomainEntity> response) {
+                if (response.get().isOK()) {
+                    Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(response.get().getData());
+                    Set<String> strings = domains.keySet();
+                    for (String key : strings) {
+                        String domain = "";
+                        List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
+                        for (CompanyDomainEntity.DataBean dataBean : dataBeans) {
+                            String api_url = dataBean.getApi_url();
+                            if (!StringUtils.empty(api_url)) {
+                                domain = api_url;
+                                break;
+                            }
+                        }
+                        if (domain.endsWith("/")) {
+                            domain.substring(0, domain.length() - 1);
+                        }
+                        if (key.equals(SuxuanAppIdKt.getMC())) {
+                            Contact.MC = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getCRM())) {
+                            Contact.CRM = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getERP())) {
+                            Contact.ERP = domain;
+                        } else if (key.equals(SuxuanAppIdKt.getOA())) {
+                            Contact.OA=domain;
+                        }
+                    }
+                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                } else {
+                    ToastUtils.snackbarShort("企业域名错误");
+                    App.getApplication().loginOut();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<CompanyDomainEntity> response) {
+                ToastUtils.snackbarShort("企业域名错误");
+                App.getApplication().loginOut();
+            }
+        };
+        request(0, stringRequest, httpListener, false, false);
+    }
+
+    /**
+     * 是否登录过
+     *
      * @return
      */
     private boolean islogin() {

@@ -48,10 +48,6 @@ public class Contact {
     /**
      * ERP地址
      */
-    public static String TESTIP = "http://47.93.245.93:8084";
-    /**
-     * ERP地址
-     */
     public static String ERP = "";
      /**
       * OA地址
@@ -65,10 +61,6 @@ public class Contact {
      * CRM地址
      */
     public static String CRM = "";
-    /**
-     *
-     */
-    public static String PHP_PREFIX = "http://oa.test.suxuantech.cn/api.php?m=login&a=";
     public static String TOKEN = "^******^";
     public static String getFullUrl(String template, Object... replace) {
         if (replace == null) {
@@ -78,7 +70,7 @@ public class Contact {
             for (int i = 0; i < replace.length; i++) {
                 replace[i] = replace[i].toString();
             }
-            com.yanzhenjie.nohttp.Logger.d(template.startsWith("%s") ? (String.format(template, replace)) : TESTIP + (String.format(template, replace)));
+            com.yanzhenjie.nohttp.Logger.d(template.startsWith("%s") ? (String.format(template, replace)) : ERP + (String.format(template, replace)));
         }
         //把所有类型转为String,并且编码
         for (int i = 0; i < replace.length; i++) {
@@ -88,7 +80,7 @@ public class Contact {
                 replace[i] = URLEncoder.encode(replace[i].toString());
             }
         }
-        return template.startsWith("%s") ? (String.format(template, replace)) : TESTIP + (String.format(template, replace));
+        return template.startsWith("%s") ? (String.format(template, replace)) : ERP + (String.format(template, replace));
     }
 
 
@@ -417,7 +409,7 @@ public class Contact {
     /**
      * php登录
      */
-    public static String PHP_LOGIN = "%scheck";
+    public static String PHP_LOGIN = "%s/api.php?m=login&a=check";
     /**
      * 可切换店面
      */
@@ -425,28 +417,28 @@ public class Contact {
     /**
      * 获取集团下的事业部列表
      */
-    public static String BUSINSSUNIT = "%sgetBrandList";
+    public static String BUSINSSUNIT = "%s/api.php?m=login&a=getBrandList";
     /**
      * 获取事业部下的店面列表
      * brandclass_id：事业部id
      */
-    public static String STORE_BY_BUSINSSUNIT = "%sgetShopList";
+    public static String STORE_BY_BUSINSSUNIT = "%s/api.php?m=login&a=getShopList";
     /**
      * 获取部门
      * (grade_type:部门所属：1集团，2品牌，3店面)
      * (1:’’,2:brandclass_id,3:shop_code)
      */
-    public static String DEPARTMENT = "%sgetDepartmentList";
+    public static String DEPARTMENT = "%s/api.php?m=login&a=getDepartmentList";
     /**
      * 获取人员
      * (grade_type:部门所属：1集团，2品牌，3店面，4部门)
      * (1:’’,2:brandclass_id,3:shop_code，4:department_id)
      */
-    public static String CONTACTS = "%sgetStaffList";
+    public static String CONTACTS = "%s/api.php?m=login&a=getStaffList";
     /**
      * 通讯录搜索
      */
-    public static String SEARCH_PERSON = "%sseacherStaff";
+    public static String SEARCH_PERSON = "%s/api.php?m=login&a=seacherStaff";
     /**
      * 选片排程搜索
      */
