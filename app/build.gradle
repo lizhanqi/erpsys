@@ -88,6 +88,7 @@ android {
     }
 }
 dependencies {
+    implementation 'com.github.czy1121:loadinglayout:1.0.1'
     implementation rootProject.ext.dependencies.v7
     implementation rootProject.ext.dependencies.v4
     implementation rootProject.ext.dependencies.permission
@@ -106,6 +107,8 @@ dependencies {
     implementation rootProject.ext.dependencies.recyclerview
     //  implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation rootProject.ext.dependencies.core
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     implementation rootProject.ext.dependencies.hellocharts
     implementation rootProject.ext.dependencies.glide

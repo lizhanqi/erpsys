@@ -13,14 +13,12 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
-import com.suxuantech.erpsys.SuxuanAppIdKt;
 import com.suxuantech.erpsys.entity.CompanyDomainEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.activity.base.BaseActivity;
 import com.suxuantech.erpsys.utils.DisplayCutoutUtils;
-import com.suxuantech.erpsys.utils.GroupByKt;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.alertdialog.AlertDialog;
@@ -29,8 +27,6 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.permission.Permission;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
@@ -165,36 +161,13 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onSucceed(int what, Response<CompanyDomainEntity> response) {
                 if (response.get().isOK()) {
-                    Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(response.get().getData());
-                    Set<String> strings = domains.keySet();
-                    for (String key : strings) {
-                        String domain = "";
-                        List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
-                        for (CompanyDomainEntity.DataBean dataBean : dataBeans) {
-                            String api_url = dataBean.getApi_url();
-                            if (!StringUtils.empty(api_url)) {
-                                domain = api_url;
-                                break;
-                            }
-                        }
-                        if (domain.endsWith("/")) {
-                            domain = domain.substring(0, domain.length() - 1);
-                        }
-                        if (key.equals(SuxuanAppIdKt.getMC())) {
-                            Contact.MC = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getCRM())) {
-                            Contact.CRM = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getERP())) {
-                            Contact.ERP = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getOA())) {
-                            Contact.OA = domain;
-                        }
-                    }
-                    App.getApplication().finishActivity(LoginActivity.class);
-                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                    // loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    List<CompanyDomainEntity.DataBean> data = response.get().getData();
+                    LoginActivity.domainAssignment(data);
+//                    App.getApplication().finishActivity(LoginActivity.class);
+//                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
                 } else {
                     ToastUtils.snackbarShort("企业域名错误");
                     App.getApplication().loginOut();

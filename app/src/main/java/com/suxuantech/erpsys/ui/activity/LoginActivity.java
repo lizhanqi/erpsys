@@ -178,8 +178,8 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             if (event.getAction() != MotionEvent.ACTION_UP) {
                 return false;
             }
-            if (event.getX() > mCompanyID.getWidth()   - mCompanyID.getPaddingRight()    - drawable.getIntrinsicWidth()) {
-           //     mCompanyID.setText("");
+            if (event.getX() > mCompanyID.getWidth() - mCompanyID.getPaddingRight() - drawable.getIntrinsicWidth()) {
+                //     mCompanyID.setText("");
             }
             return false;
         });
@@ -234,6 +234,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     public void initImmersionBar() {
         ImmersionBar.with(this).navigationBarColor(R.color.mainNavline_e7).titleBar(findViewById(R.id.rl_root_login)).statusBarDarkFont(true).init();
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -253,6 +254,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         }
 
     }
+
     /**
      * 初始化指纹识别传感器
      */
@@ -262,13 +264,47 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mKeyguardLockScreenManager = new KeyguardLockScreenManager(this);
         startFingerprintRecognition();
     }
+
+    /**
+     * 设置域名
+     *
+     * @param data
+     */
+    public static void domainAssignment(List<CompanyDomainEntity.DataBean> data) {
+        Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(data);
+        Set<String> strings = domains.keySet();
+        for (String key : strings) {
+            String domain = "";
+            List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
+            for (CompanyDomainEntity.DataBean dataBean : dataBeans) {
+                String api_url = dataBean.getApi_url();
+                if (!StringUtils.empty(api_url)) {
+                    domain = api_url;
+                    break;
+                }
+            }
+            if (domain.endsWith("/")) {
+                domain = domain.substring(0, domain.length() - 1);
+            }
+            if (key.equals(SuxuanAppIdKt.getMC())) {
+                Contact.MC = domain;
+            } else if (key.equals(SuxuanAppIdKt.getCRM())) {
+                Contact.CRM = domain;
+            } else if (key.equals(SuxuanAppIdKt.getERP())) {
+                Contact.ERP = domain;
+            } else if (key.equals(SuxuanAppIdKt.getOA())) {
+                Contact.OA = domain;
+            }
+        }
+    }
+
     /**
      * 获取客户的域名地址
      *
      * @param companyID 客户企业id
      * @param isCache   是否从缓存去拿
      */
-  public     void getCompanyDomainById(String companyID, boolean isCache) {
+    public void getCompanyDomainById(String companyID, boolean isCache) {
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.COMPANY_DOMAIN, CompanyDomainEntity.class);
         stringRequest.add("app_code", companyID);
         String key = "app_code=" + companyID + Contact.CONTACT_KEY;
@@ -285,33 +321,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 if (response.get().isOK()) {
                     SPUtils.getInstance().put(COMPANY_ID, companyID);
                     mEmailView.requestFocus();
-                    Map<String, List<CompanyDomainEntity.DataBean>> domains = GroupByKt.groupDomain(response.get().getData());
-                    Set<String> strings = domains.keySet();
-                    for (String key : strings) {
-                        String domain = "";
-                        List<CompanyDomainEntity.DataBean> dataBeans = domains.get(key);
-                        for (CompanyDomainEntity.DataBean dataBean : dataBeans) {
-                            String api_url = dataBean.getApi_url();
-                            if (!StringUtils.empty(api_url)) {
-                                domain = api_url;
-                                break;
-                            }
-                        }
-                        if (domain.endsWith("/")){
-                            domain=  domain.substring(0,domain.length()-1);
-                        }
-                        if (key.equals(SuxuanAppIdKt.getMC())) {
-                            Contact.MC = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getCRM())) {
-                            Contact.CRM = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getERP())) {
-                            Contact.ERP = domain;
-                        } else if (key.equals(SuxuanAppIdKt.getVIP())) {
-                            //Contact.VIP=domain;
-                        }
-                    }
-                } else {
-
+                    domainAssignment(response.get().getData());
                 }
             }
 
@@ -488,6 +498,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     /**
      * 请求通讯
+     *
      * @return
      */
     private boolean mayRequestContacts() {
