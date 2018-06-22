@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="@dimen/px30"
-        android:paddingLeft="@dimen/px50">
+         >
 
         <ImageView
             android:id="@+id/imag_user_head"
@@ -36,6 +36,7 @@
             android:src="@drawable/icon_man_head" />
 
         <LinearLayout
+            android:layout_marginRight="@dimen/px30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/imag_user_head"
@@ -49,6 +50,7 @@
                 android:text="name" />
 
             <LinearLayout
+
                 android:id="@+id/ll_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

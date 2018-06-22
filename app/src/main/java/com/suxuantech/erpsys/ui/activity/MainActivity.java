@@ -24,7 +24,6 @@ import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.ConversationListFragment;
 import com.suxuantech.erpsys.chat.GroupActivity;
-import com.suxuantech.erpsys.chat.dummy.DummyContent;
 import com.suxuantech.erpsys.rongim.RongConversationListFragment;
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity;
 import com.suxuantech.erpsys.ui.adapter.ConversationListAdapterEx;
@@ -39,10 +38,11 @@ import com.suxuantech.erpsys.ui.fragment.WorkFragment;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
-import org.jetbrains.annotations.NotNull;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
+import cn.jpush.im.android.api.JMessageClient;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
@@ -52,7 +52,7 @@ import io.rong.message.ContactNotificationMessage;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportHelper;
 
-public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver, com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends TitleNavigationActivity implements IUnReadMessageObserver {
     private BottomNavigationBar bottomNavigationBar;
     private long mExitTime = 0;
     private TextBadgeItem badgeItem;
@@ -114,6 +114,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
 
     private void selectFragment(int lastSelct) {
         int position = bottomNavigationBar.getCurrentSelectedPosition();
+       onCountChanged(JMessageClient.getAllUnReadMsgCount());
         switch (position) {
             case 0:
                 supportToolbar(false);
@@ -153,7 +154,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
         // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-//       useEventBus();
+      useEventBus();
         setContentView(R.layout.activity_main);
         initPop();
         initFragement();
@@ -458,7 +459,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
      * 初始化页面的导航
      */
     private void initMyBottomNavigation() {
-        badgeItem = new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setText("2").setHideOnSelect(true);
+        badgeItem = new TextBadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.msgColor).setHideOnSelect(true);
         msgItem = new BottomNavigationItem(R.drawable.icon_msg_pressed, getString(R.string.msg));
         msgItem.setBadgeItem(badgeItem);
         msgItem.setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.icon_msg_normal));//非选中的图片
@@ -486,7 +487,7 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                 .setFirstSelectedPosition(2)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(onTabSelectedListener);
-        badgeItem.hide();
+        onCountChanged(JMessageClient.getAllUnReadMsgCount());
         //startFragment(ERPFragment.class);
     }
 
@@ -564,22 +565,22 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             }
         }
     }
-
     @Override
+    @Subscribe
     public void onCountChanged(int i) {
         if (badgeItem != null) {
-            if (i <= 0) {
-                badgeItem.setText(i + "");
-            } else if (i < 99) {
+            if (i >=99) {
                 badgeItem.setText("99+");
+            }   else if (i <99&&i>0) {
+                badgeItem.setText(i + "");
             } else {
-                badgeItem.setText(null);
+                badgeItem.hide();
             }
         }
     }
-
-    @Override
-    public void onListFragmentInteraction(@NotNull DummyContent.DummyItem item) {
+    @Subscribe
+    public void count(Integer i) {
+        onCountChanged(i);
     }
 
     @Override

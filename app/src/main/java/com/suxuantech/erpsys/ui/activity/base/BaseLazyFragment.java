@@ -144,7 +144,7 @@ public abstract class BaseLazyFragment extends BaseSupportFragment {
      * 初始化沉浸式
      */
     public void initImmersionBar() {
-        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar = ImmersionBar.with(getActivity());
       //  mImmersionBar.barColor(R.color.transparency);
         mImmersionBar.navigationBarColor(R.color.mainNavline_e7).keyboardEnable(true).init();
     }

@@ -31,34 +31,39 @@ import java.util.List;
  * Created by YanZhenjie on 2018/1/1.
  */
 public final class PermissionSetting {
-
     private final Context mContext;
-
+    private AlertDialog.Builder alertDialog;
     public PermissionSetting(Context context) {
         this.mContext = context;
     }
-
     public void showSetting(final List<String> permissions) {
         List<String> permissionNames = Permission.transformText(mContext, permissions);
         String message = mContext.getString(R.string.message_permission_always_failed, TextUtils.join("\n", permissionNames));
-
         final SettingService settingService = AndPermission.permissionSetting(mContext);
-        AlertDialog.newBuilder(mContext)
-                .setCancelable(false)
-                .setTitle(R.string.title_dialog)
-                .setMessage(message)
-                .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        settingService.execute();
-                    }
-                })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        settingService.cancel();
-                    }
-                })
-                .show();
+        if (alertDialog == null) {
+            alertDialog = AlertDialog.newBuilder(mContext)
+                    .setCancelable(false)
+                    .setTitle(R.string.title_dialog)
+                    .setMessage(message)
+                    .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settingService.execute();
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settingService.cancel();
+                        }
+                    });
+
+        } else {
+            alertDialog.setMessage(message);
+        }
+        if (alertDialog.create().isShowing()) {
+          return;
+        }
+        alertDialog.show();
     }
 }

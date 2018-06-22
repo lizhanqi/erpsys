@@ -60,6 +60,8 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -143,6 +145,11 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Rationale mRationale;
     PermissionSetting mSetting;
+    //调用距离传感器，控制屏幕
+    private SensorManager mManager;//传感器管理对象
+    //屏幕开关
+    private PowerManager localPowerManager = null;//电源管理对象
+    private PowerManager.WakeLock localWakeLock = null;//电源锁
     Handler hd = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -150,6 +157,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             mSwipeRefreshLayout.setRefreshing(false);
         }
     };
+
     public void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -209,12 +217,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         }
         return true;
     }
-    //调用距离传感器，控制屏幕
 
-    private SensorManager mManager;//传感器管理对象
-    //屏幕开关
-    private PowerManager localPowerManager = null;//电源管理对象
-    private PowerManager.WakeLock localWakeLock = null;//电源锁
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -226,8 +229,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         localWakeLock = localPowerManager.newWakeLock(32, "myapp:mywakelocktag");
         //订阅接收消息,子类只要重写onEvent就能收到
         JMessageClient.registerEventReceiver(this);
-        JMessageClient.registerEventReceiver(this);
-        //    base64 = getArguments().getBoolean("base64", false);
         return mRootView;
     }
 
@@ -250,9 +251,12 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
         userName = getActivity().getIntent().getStringExtra("name");
         UserID = getActivity().getIntent().getStringExtra("userid");
+
         singleConversation = JMessageClient.getSingleConversation(UserID);
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);
+            singleConversation.resetUnreadCount();
+            EventBus.getDefault().post(new Integer(JMessageClient.getAllUnReadMsgCount()));
         }
         initView();
     }
@@ -278,7 +282,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
 
 
     private void initView() {
-
         msgList = mRootView.findViewById(R.id.rv_msg);
         msgList.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
@@ -503,6 +506,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             //设置需要已读回执
             MessageSendingOptions options = new MessageSendingOptions();
             options.setNeedReadReceipt(true);
+           // options.setShowNotification(false);
             JMessageClient.sendMessage(msg, options);
             //更新页面
             MessageEntity messageEntity = new MessageEntity(msg);
@@ -718,15 +722,13 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         //获取事件发生的会话对象
         Conversation conversation = event.getConversation();
         List<Message> newMessageList = event.getOfflineMessageList();//获取此次线期间会话收到的新消息列表
-        Log.i("JIM", String.format(Locale.SIMPLIFIED_CHINESE, "收到%d条来自%s的离线消息。\n", newMessageList.size(), conversation.getTargetId()));
+        for (Message ms : newMessageList) {
+            multipleItemQuickAdapter.appendData(new MessageEntity(ms));
+        }
+        msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+        singleConversation.resetUnreadCount();
+        EventBus.getDefault().post(new Integer(JMessageClient.getAllUnReadMsgCount()));
     }
-//    /**
-//     * 收到消息(在线的)
-//     */
-//    public void onEvent(MessageEvent event) {//子线程
-//        event.getMessage().getContent();
-//        ToastUtils.show(event.getMessage().getContent().toJson());
-//    }
 
     /**
      * 接受消息的事件 收到消息(在线的)主线程
@@ -736,6 +738,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
             event.getMessage().getContent();
             multipleItemQuickAdapter.appendData(new MessageEntity(event.getMessage()));
             msgList.scrollToPosition(multipleItemQuickAdapter.getData().size() - 1);
+            singleConversation.resetUnreadCount();
+            EventBus.getDefault().post(new Integer(JMessageClient.getAllUnReadMsgCount()));
         }
     }
 

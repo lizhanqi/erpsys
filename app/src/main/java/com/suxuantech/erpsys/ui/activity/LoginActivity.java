@@ -426,7 +426,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             @Override
             public void gotResult(int i, String s) {
                 if (i == 0) {
-
                     LoginSucceed();
                 } else {
                     loginFailed();

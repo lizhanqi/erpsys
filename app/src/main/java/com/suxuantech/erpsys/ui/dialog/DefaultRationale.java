@@ -36,7 +36,6 @@ public final class DefaultRationale implements Rationale {
     public void showRationale(Context context, List<String> permissions, final RequestExecutor executor) {
         List<String> permissionNames = Permission.transformText(context, permissions);
         String message = context.getString(R.string.message_permission_rationale, TextUtils.join("\n", permissionNames));
-
         AlertDialog.newBuilder(context)
                 .setCancelable(false)
                 .setTitle(R.string.title_dialog)

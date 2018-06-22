@@ -157,16 +157,13 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
     private Unbinder unbinder;
     private Rationale mRationale;
     private PermissionSetting mSetting;
-
     /**
      * 权限授予结果
      *
      * @param permissions
      */
     public void permissionGrantedResult(List<String> permissions) {
-
     }
-
     public void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -182,14 +179,22 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
                     public void onAction(@NonNull List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
                             mSetting.showSetting(permissions);
+
+
                         } else {
                             toast(R.string.failure_permission);
+                            onceDeniedPermission(permissions);
                         }
                     }
                 })
                 .start();
     }
-
+    /**
+     * 拒绝非永久拒绝
+     * @param permissions
+     */
+    void onceDeniedPermission(List<String> permissions) {
+    }
 
     private void requestPermission(String[]... permissions) {
         AndPermission.with(this)
@@ -329,7 +334,6 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         JMessageClient.registerEventReceiver(this);
-
         // mSkinInflaterFactory = new SkinInflaterFactory(this);
         // LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinInflaterFactory);
         super.onCreate(savedInstanceState);
@@ -665,8 +669,8 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
         //如果在后台进行系统通知
         if (!foreground) {
             PackageManager pm = App.getContext().getPackageManager();
-            String appName =  App.getContext().getApplicationInfo().loadLabel(pm).toString();
-            AlertView alertView = new AlertView(appName+"提醒:"+reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
+            String appName = App.getContext().getApplicationInfo().loadLabel(pm).toString();
+            AlertView alertView = new AlertView(appName + "提醒:" + reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
             alertView.setTitleColor(getResources().getColor(R.color.colorAccent));
             alertView.autoDismiss(50000);
             alertView.setRootViewHeightWrapContent();

@@ -13,14 +13,6 @@ import cn.jpush.im.android.api.model.UserInfo
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.suxuantech.erpsys.R
-import com.suxuantech.erpsys.chat.ConversationListFragment.OnListFragmentInteractionListener
-import com.suxuantech.erpsys.chat.dummy.DummyContent.DummyItem
-
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
- */
 class MyItemRecyclerViewAdapter(layoutResId: Int, data: List<Conversation>?) : BaseQuickAdapter<Conversation, BaseViewHolder>(layoutResId, data) {
     override fun convert(helper: com.chad.library.adapter.base.BaseViewHolder, item: Conversation) {
         if (item.type == ConversationType.single) {

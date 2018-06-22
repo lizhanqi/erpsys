@@ -38,6 +38,7 @@ import com.suxuantech.erpsys.common.OptionHelp;
 import com.suxuantech.erpsys.entity.FormEntity;
 import com.suxuantech.erpsys.entity.HomeCustmoerCountEntity;
 import com.suxuantech.erpsys.entity.HomeSumEntity;
+import com.suxuantech.erpsys.entity.PermissionEntity;
 import com.suxuantech.erpsys.entity.RegisterEntity;
 import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
@@ -62,6 +63,7 @@ import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -115,7 +117,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
     @Subscribe()
     @MainThread
     public void EventBus(String key) {
-        //todo 这里不知道是不是需要再次更新权限列表呢?
         if (key.equals("changeUser")) {
             mRefreshLayout.startRefresh();
         }
@@ -231,24 +232,24 @@ public class ERPLeftFragment extends BaseLazyFragment {
                     TextView tvrt = headView.findViewById(R.id.tv_today_receipt);
                     tvcn.setText(new MyString("今日客资量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                     if (App.getApplication().hasPermission("K2")) {
-                        tvcn.append(new MyString(StringUtils.empty(data.get(0).getJktotal())?"0":data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                        tvcn.append(new MyString(StringUtils.empty(data.get(0).getJktotal()) ? "0" : data.get(0).getJktotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     } else {
                         tvcn.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     }
                     tvon.setText((new MyString("今日订单量\u3000").setSize(15).setColor(getResources().getColor(R.color.mainNav_66))));
                     if (App.getApplication().hasPermission("I2")) {
-                        tvon.append(new MyString(StringUtils.empty(data.get(0).getRentotal())?"0":data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
+                        tvon.append(new MyString(StringUtils.empty(data.get(0).getRentotal()) ? "0" : data.get(0).getRentotal()).setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     } else {
                         tvon.append(new MyString("__").setSize(15).setColor(getResources().getColor(R.color.edit_text)));
                     }
                     if (App.getApplication().hasPermission("I2")) {
-                        tvin.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getZongmoney())?" 0.00":data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
+                        tvin.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getZongmoney()) ? " 0.00" : data.get(0).getZongmoney())).setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
                     } else {
                         tvin.setText((new MyString("¥\u2000__").setSize(20).setColor(getResources().getColor(R.color.colorAccent))));
                     }
                     tvin.append(new MyString("\n今日营收").setSize(15).setSize(15).setColor(getResources().getColor(R.color.mainNav_66)));
                     if (App.getApplication().hasPermission("I3")) {
-                        tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getRealmoney())?" 0.00":data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
+                        tvrt.setText((new MyString("¥" + StringUtils.moneyFormat(StringUtils.empty(data.get(0).getRealmoney()) ? " 0.00" : data.get(0).getRealmoney())).setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     } else {
                         tvrt.setText((new MyString("¥\u2000__").setSize(20)).setColor(getResources().getColor(R.color.colorAccent)));
                     }
@@ -343,7 +344,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
                 TextView tvValues = (TextView) helper.getView(R.id.tv_values);
                 imgIcon.setImageResource(item.getIcon());
                 tvName.setText(item.getKey());
-                tvValues.setText(StringUtils.empty(item.getValue()) ? "0" :item.getValue());
+                tvValues.setText(StringUtils.empty(item.getValue()) ? "0" : item.getValue());
             }
         };
         mRvCard.setOnTouchListener(new View.OnTouchListener() {
@@ -552,7 +553,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
                 mTvCompanyName.animateText(StringUtils.safetyString(App.getApplication().getUserInfor().getShop_name()));
                 mTvTodayTime.animateText(DateUtil.getNowDate(DateUtil.DatePattern.ONLY_DAY));
-                initCard();
+                getPermisstion();
             }
 
             @Override
@@ -567,8 +568,44 @@ public class ERPLeftFragment extends BaseLazyFragment {
             }
         });
         mRefreshLayout.startRefresh();
-
     }
+
+    /**
+     * 获取登录人权限
+     */
+    public void getPermisstion() {
+        App.getApplication().releaseLoginData();
+        if (App.getApplication().getUserInfor().getMain_work_type().isEmpty()) {
+            ToastUtils.snackbarShort("未设置工作类型!无法获取权限");
+            return;
+        }
+        if (App.getApplication().getUserInfor().getMain_position_code().isEmpty()) {
+            ToastUtils.snackbarShort("未设置主岗位,无法获取权限");
+            return;
+        }
+        String string = Contact.getFullUrl(Contact.LOGIN_PERMISSION, Contact.TOKEN, App.getApplication().getUserInfor().getMain_work_type() + "," + App.getApplication().getUserInfor().getWork_type(),
+        App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(), App.getApplication().getUserInfor().getShop_code());
+        JavaBeanRequest<PermissionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PermissionEntity>(string, RequestMethod.POST, PermissionEntity.class);
+        districtBeanJavaBeanRequest.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
+        HttpListener<PermissionEntity> searchByCustmor = new HttpListener<PermissionEntity>() {
+            @Override
+            public void onSucceed(int what, Response<PermissionEntity> response) {
+                if (response.get().isOK() || response.get().getData() != null) {
+                    List<String> data = response.get().getData();
+                    App.getApplication().setUserPermission(data);
+                    initCard();
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<PermissionEntity> response) {
+            }
+        };
+        request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
 
     public void addShortLunch(String title, int lunchIcon, Class<?> cls) {
         //创建一个添加快捷方式的Intent
