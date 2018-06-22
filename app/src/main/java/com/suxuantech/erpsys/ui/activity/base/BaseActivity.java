@@ -679,6 +679,7 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
             alertView.show();
         }
         AlertDialog.newBuilder(App.getApplication().getTopActivity()).setTitle("退出提醒:")
+                .setCancelable(false)
                 .setMessage(reason)
                 .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
                     Intent notificationIntent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -697,8 +698,8 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
     public void onEvent(NotificationClickEvent event) {
         Intent notificationIntent = new Intent(getApplicationContext(), ConversationActivity.class);
         String userName = event.getMessage().getFromUser().getUserName();
-        notificationIntent.putExtra("name", userName);
-        notificationIntent.putExtra("base64", true);
+        notificationIntent.putExtra("userid", userName);
+        notificationIntent.putExtra("name", event.getMessage().getFromUser().getNickname());
         startActivity(notificationIntent);//自定义跳转到指定页面
     }
 }
