@@ -161,14 +161,14 @@ public class DefaultItemDecoration2 extends RecyclerView.ItemDecoration {
                 }
             } else if (firstRaw) { //第一行其他列
                 if (topDrawable) {
-                    outRect.set(mDividerHeight / 2, 0, mDividerHeight / 2, mDividerHeight / 2);
+                    outRect.set(mDividerHeight / 2, mDividerHeight, mDividerHeight / 2, mDividerHeight / 2);
                 } else {
                     outRect.set(mDividerHeight / 2, mDividerHeight, mDividerHeight / 2, mDividerHeight / 2);
                 }
             } else if (lastRaw && firstColumn) { //最后一行第一列
                 outRect.set(0, mDividerHeight / 2, mDividerHeight / 2, 0);
             } else if (lastRaw && lastColumn) { // 最后一行最后一列
-                outRect.set(mDividerHeight / 2, mDividerHeight / 2, 0, mDividerHeight / 2);
+                outRect.set(mDividerHeight / 2, mDividerHeight / 2, 0, 0);
             } else if (lastRaw) { // 最后一行其他情况
                 outRect.set(mDividerHeight / 2, mDividerHeight / 2, mDividerHeight / 2, 0);
             } else if (firstColumn) { // 中间的第一列

@@ -133,7 +133,6 @@ public class ERPLeftFragment extends BaseLazyFragment {
             public void onClick(View view) {
                 OptionHelp optionHelp = new OptionHelp(getActivity());
                 optionHelp.setUrlTag(OptionHelp.UrlTag.OPTION_EXCUTE_SHOP);
-                //  optionHelp.setTitle("");
                 startActivity(optionHelp.creat());
             }
         });
@@ -584,7 +583,7 @@ public class ERPLeftFragment extends BaseLazyFragment {
             return;
         }
         String string = Contact.getFullUrl(Contact.LOGIN_PERMISSION, Contact.TOKEN, App.getApplication().getUserInfor().getMain_work_type() + "," + App.getApplication().getUserInfor().getWork_type(),
-        App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(), App.getApplication().getUserInfor().getShop_code());
+                App.getApplication().getUserInfor().getMain_position_code() + "," + App.getApplication().getUserInfor().getPosition_code(), App.getApplication().getUserInfor().getShop_code());
         JavaBeanRequest<PermissionEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<PermissionEntity>(string, RequestMethod.POST, PermissionEntity.class);
         districtBeanJavaBeanRequest.setCacheMode(CacheMode.REQUEST_NETWORK_FAILED_READ_CACHE);
         HttpListener<PermissionEntity> searchByCustmor = new HttpListener<PermissionEntity>() {

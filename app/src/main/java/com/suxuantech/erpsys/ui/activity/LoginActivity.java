@@ -298,7 +298,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                             }
                         }
                         if (domain.endsWith("/")){
-                            domain.substring(0,domain.length()-1);
+                            domain=  domain.substring(0,domain.length()-1);
                         }
                         if (key.equals(SuxuanAppIdKt.getMC())) {
                             Contact.MC = domain;

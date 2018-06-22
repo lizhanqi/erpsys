@@ -178,7 +178,7 @@ public class SplashScreenActivity extends BaseActivity {
                             }
                         }
                         if (domain.endsWith("/")) {
-                            domain.substring(0, domain.length() - 1);
+                            domain = domain.substring(0, domain.length() - 1);
                         }
                         if (key.equals(SuxuanAppIdKt.getMC())) {
                             Contact.MC = domain;
@@ -187,10 +187,14 @@ public class SplashScreenActivity extends BaseActivity {
                         } else if (key.equals(SuxuanAppIdKt.getERP())) {
                             Contact.ERP = domain;
                         } else if (key.equals(SuxuanAppIdKt.getOA())) {
-                            Contact.OA=domain;
+                            Contact.OA = domain;
                         }
                     }
-                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    App.getApplication().finishActivity(LoginActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    // loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
                 } else {
                     ToastUtils.snackbarShort("企业域名错误");
                     App.getApplication().loginOut();
