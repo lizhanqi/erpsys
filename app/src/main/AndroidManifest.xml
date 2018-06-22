@@ -60,7 +60,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <!-- 融云 -->
+        <!-- 融云(姚帅手机号注册的) -->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="kj7swf8ok1jp2" />

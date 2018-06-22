@@ -32,9 +32,9 @@ android {
         release {
             storeFile file("/app/signature.jks")
         //   storeFile file( "E:\\androidcode\\suxuantech\\erpsys\\app\\signature.jks")
-           storePassword "123456"
-           keyAlias "lizhanqi"
-           keyPassword "123456"
+            storePassword "sx201710"
+            keyAlias "suxuantech"
+            keyPassword "sx201710"
            v2SigningEnabled false
        }
     }
