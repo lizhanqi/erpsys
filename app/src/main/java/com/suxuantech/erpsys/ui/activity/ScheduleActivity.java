@@ -272,7 +272,7 @@ public class ScheduleActivity extends TitleNavigationActivity implements ISearch
         mRecyclerView.setSwipeMenuCreator(mSwipeMenuCreator);
         // 菜单点击监听。
         mRecyclerView.setSwipeMenuItemClickListener(mMenuItemClickListener);
-        mRecyclerView.setItemViewSwipeEnabled(false);
+//        mRecyclerView.setItemViewSwipeEnabled(false);
         mRecyclerView.setAdapter(groupAdaputer);
         mPtrFrame = findViewById(R.id.rotate_header_grid_view_frame);
         mPtrFrame.setMinimumHeight(200);

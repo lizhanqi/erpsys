@@ -113,12 +113,12 @@ public class SplashScreenActivity extends BaseActivity {
             requestPermission(Permission.Group.STORAGE);
         } else {
             if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
-                transitionsActivity(0);
+                transitionsActivity(1500);
             } else {
                 alertDialog.show();
             }
         }
-    }
+    } 
 
     private void transitionsActivity(int delayMillis) {
         new Handler().postDelayed(new Runnable() {
@@ -136,7 +136,6 @@ public class SplashScreenActivity extends BaseActivity {
                     finish();
                 }
             }
-
         }, delayMillis);
     }
 

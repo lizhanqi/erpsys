@@ -200,6 +200,7 @@ public class App extends Application {
             }
         }
         JMessageClient.setDebugMode(ISDEBUG);
+        JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
         JMessageClient.init(this);
     }
 

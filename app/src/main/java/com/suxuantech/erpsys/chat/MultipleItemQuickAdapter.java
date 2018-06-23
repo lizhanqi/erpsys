@@ -621,6 +621,9 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         UserInfo fromUser = item.getMsag().getFromUser();
         //  String userName = fromUser.getUserName();
         String userName = fromUser.getNickname();
+        if (userName==null){
+            return;
+        }
         TextView nameView = helper.getView(R.id.tv_user_name);
         TextView msgTime = helper.getView(R.id.tv_convertion_time);
         if (isConvertion(mData.lastIndexOf(item))) {
