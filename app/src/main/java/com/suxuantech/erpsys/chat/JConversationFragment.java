@@ -796,6 +796,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
     public void onDestroy() {
         super.onDestroy();
         JMessageClient.unRegisterEventReceiver(this);
+        JMessageClient.exitConversation();
         multipleItemQuickAdapter.stopVoice(null);
     }
 

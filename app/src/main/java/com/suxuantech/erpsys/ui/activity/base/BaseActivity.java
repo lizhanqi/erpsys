@@ -178,8 +178,12 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
                     @Override
                     public void onAction(@NonNull List<String> permissions) {
                         if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, permissions)) {
-
-                            mSetting.showSetting(permissions);
+                          //妈的9.0有问题明明是同意但是还是会走拒绝的
+                            if (!hasPermission(permissions)) {
+                                mSetting.showSetting(permissions);
+                            }else {
+                                permissionGrantedResult(permissions);
+                            }
                         } else {
                             toast(R.string.failure_permission);
                             onceDeniedPermission(permissions);
@@ -671,7 +675,7 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
             String appName = App.getContext().getApplicationInfo().loadLabel(pm).toString();
             AlertView alertView = new AlertView(appName + "提醒:" + reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
             alertView.setTitleColor(getResources().getColor(R.color.colorAccent));
-            alertView.autoDismiss(50000);
+            alertView.autoDismiss(3000);
             alertView.setRootViewHeightWrapContent();
             alertView.setRootBackgroundResource(R.color.transparency);
             alertView.setSystemDialogHeight(150);

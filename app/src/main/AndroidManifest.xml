@@ -51,6 +51,19 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/AppTheme">
+        <!--极光-->
+        <receiver
+            android:name=".chat.JGIMReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.im.android.action.IM_RESPONSE"/>
+                <action android:name="cn.jpush.im.android.action.NOTIFICATION_CLICK_PROXY"/>
+
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </receiver>
+        <!--极光-->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.suxuantech.erpsys.FileProvider"
