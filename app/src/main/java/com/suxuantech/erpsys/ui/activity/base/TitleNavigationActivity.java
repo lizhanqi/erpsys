@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 
@@ -163,6 +164,7 @@ abstract public class TitleNavigationActivity extends ImmersionActivity {
                 mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        KeyboardUtils.hideSoftInput(view);
                         onBackPressed();
                     }
                 });
