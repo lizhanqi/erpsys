@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
@@ -145,7 +146,9 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                 sendView.setVisibility(View.VISIBLE);
                 sendView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_message_sending));
                 helper.getView(R.id.tv_msg_read).setVisibility(View.GONE);
-                ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_sending_img));
+                Drawable drawable = mContext.getResources().getDrawable(R.drawable.jmui_sending_img);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth() / 3 * 2, drawable.getMinimumWidth() / 3 * 2);
+                ((ImageView) helper.getView(R.id.img_msg_status)).setImageDrawable(drawable);
             } else if (messageStatus == MessageStatus.send_fail) {
                 //发送失败
                 ImageView sendView = helper.getView(R.id.img_msg_status);
@@ -283,13 +286,15 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                         //已经ok
                     }
                 });
-                voice.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_send_3));
+
                 voice.setId(R.id.id_voice_image);
                 if (oneSelf) {
+                    voice.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_send_3));
                     linearLayout.addView(voiceLenth);
                     linearLayout.addView(voice);
                     linearLayout.setBackground(mContext.getResources().getDrawable(R.drawable.sl_bg_chat_oneself_message));
                 } else {
+                    voice.setImageDrawable(mContext.getResources().getDrawable(R.drawable.jmui_receive_3));
                     linearLayout.setBackground(mContext.getResources().getDrawable(R.drawable.sl_bg_chat_other_people_message));
                     linearLayout.addView(voice);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -410,6 +415,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                             MessageEntity messageEntity = mData.get(i);
                             if (messageEntity.getMsag().getDirect() == MessageDirect.receive && messageEntity.getMsag().getContentType() == ContentType.voice) {
                                 playVoice(messageEntity, 0);
+
                                 break;
                             }
                         }
@@ -429,6 +435,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
                     }
                 }
             });
+            stopAnimation(item);
         } finally {
             try {
                 if (mFIS != null) {
@@ -437,6 +444,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -491,9 +499,19 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         int viewPosition = mData.lastIndexOf(item);
         ImageView voice = (ImageView) getViewByPosition(viewPosition, R.id.id_voice_image);
         if (voice != null) {
-            voice.setImageResource(R.drawable.jmui_voice_send);
+            if (item.getItemType() == MessageEntity.ONESELF) {
+                voice.setImageResource(R.drawable.jmui_voice_send);
+            } else {
+                voice.setImageResource(R.drawable.jmui_voice_receive);
+            }
             mVoiceAnimation = (AnimationDrawable) voice.getDrawable();
             mVoiceAnimation.start();
+        }
+    }
+
+    public void stopCurrentVoice() {
+        if (currentVoiceMessage != null) {
+            stopVoice(currentVoiceMessage);
         }
     }
 
@@ -505,14 +523,18 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MessageE
         if (audioManager != null) {
             audioManager.setMode(AudioManager.MODE_NORMAL);
         }
-
+        stopAnimation(messageEntity);
     }
 
     private void stopAnimation(MessageEntity item) {
         int viewPosition = mData.lastIndexOf(item);
         ImageView voice = (ImageView) getViewByPosition(viewPosition, R.id.id_voice_image);
         if (voice != null) {
-            voice.setImageResource(R.drawable.jmui_send_3);
+            if (item.getItemType() == MessageEntity.ONESELF) {
+                voice.setImageResource(R.drawable.jmui_send_3);
+            } else {
+                voice.setImageResource(R.drawable.jmui_receive_3);
+            }
             mVoiceAnimation.stop();
         }
     }

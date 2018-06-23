@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             android:src="@drawable/icon_add"
             android:id="@+id/btn_fit_emotion"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content" />
         <View style="@style/line" android:layout_width="1dp" android:layout_height="match_parent"/>
         <android.support.v7.widget.RecyclerView

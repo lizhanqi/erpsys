@@ -92,7 +92,7 @@ class StaffSearchActivity : TitleNavigationActivity() {
         supportToolbar()
         setCenterTitle("通讯录搜索")
         val defaultItemDecoration = DefaultItemDecoration(resources.getColor(R.color.mainNavline_e7))
-        defaultItemDecoration.setJustLeftOffsetX(50)
+        defaultItemDecoration.setJustLeftOffsetX(resources.getDimension(R.dimen.px50).toInt())
         var otcKey = findViewById<OneKeyClearAutoCompleteText>(R.id.otc_key);
         var rvResult = findViewById<RecyclerView>(R.id.rv_result);
         rvResult.addItemDecoration(defaultItemDecoration)

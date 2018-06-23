@@ -58,6 +58,7 @@ import com.suxuantech.erpsys.ui.widget.MarqueTextView;
 import com.suxuantech.erpsys.ui.widget.WaveHelper;
 import com.suxuantech.erpsys.ui.widget.WaveView;
 import com.suxuantech.erpsys.utils.DateUtil;
+import com.suxuantech.erpsys.utils.DensityUtils;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.ScreenUtils;
 import com.suxuantech.erpsys.utils.StringUtils;
@@ -373,7 +374,8 @@ public class ERPLeftFragment extends BaseLazyFragment {
         quickAdapter.addHeaderView(module);
         quickAdapter.addHeaderView(headView);
         mRvCard.setAdapter(quickAdapter);
-        DefaultItemDecoration2 defaultItemDecoration = new DefaultItemDecoration2(getResources().getColor(R.color.gray_f9), 30, 30, QuickAdapter.HEADER_VIEW, QuickAdapter.FOOTER_VIEW);
+        int with= DensityUtils.dp2px(getContext(), 10);
+        DefaultItemDecoration2 defaultItemDecoration = new DefaultItemDecoration2(getResources().getColor(R.color.gray_f9),with, with, QuickAdapter.HEADER_VIEW, QuickAdapter.FOOTER_VIEW);
         defaultItemDecoration.setHasHead(true);
         mRvCard.addItemDecoration(defaultItemDecoration);
         mRefreshLayout.setEnableLoadmore(false);

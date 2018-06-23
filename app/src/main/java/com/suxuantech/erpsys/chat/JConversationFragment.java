@@ -248,10 +248,8 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         AlbumConfig.newBuilder(getActivity())
                 .setAlbumLoader(new GlideAlbumLoader()) // 设置Album加载器。
                 .build();
-
         userName = getActivity().getIntent().getStringExtra("name");
         UserID = getActivity().getIntent().getStringExtra("userid");
-
         singleConversation = JMessageClient.getSingleConversation(UserID);
         if (singleConversation == null) {
             singleConversation = Conversation.createSingleConversation(UserID);
@@ -404,7 +402,6 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         emotionView.setUseDelete(false);
         emotionView.setEmotion(strings);
         keyBoardView.addEmotionView(emotionView, getResources().getDrawable(strings.get(0).icon));
-
         keyBoardView.setAudioInput(this);
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(getActivity());
         simpleAppsGridView.setOnItemClickListener(new SimpleAppsGridView.OnItemClickListener() {
@@ -779,6 +776,7 @@ public class JConversationFragment extends Fragment implements KeyBoardView.Audi
         boolean b = hasPermission(objects);
         if (!b) {
             requestPermission(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        multipleItemQuickAdapter.stopCurrentVoice();
         }
     }
 

@@ -88,6 +88,10 @@ public class KeyBoardView extends AutoHeightLayout {
     private RelativeLayout input;
     private Editable tempText;
     private ImageView btnFitDelete;
+    private boolean showAddEmotionButton;
+    public void setShowAddEmotionButton(boolean showAddEmotionButton) {
+        this.showAddEmotionButton = showAddEmotionButton;
+    }
 
     //语音录入中
     public interface AudioInput {
@@ -213,6 +217,11 @@ public class KeyBoardView extends AutoHeightLayout {
     }
 
     public void init() {
+        if (showAddEmotionButton){
+            btnFitEmotion.setVisibility(VISIBLE);
+        }else {
+            btnFitEmotion.setVisibility(GONE);
+        }
         //监听返回按键,前提是  rcEditText.requestFocus();,已经获得到了光标焦点
         rcEditText.setOnKeyListener(new OnKeyListener() {
             @Override

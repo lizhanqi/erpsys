@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
+import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.keyboard.adaputer.EmotionGridViewAdapter;
 import com.suxuantech.erpsys.chat.keyboard.entity.EmotionBean;
 
@@ -49,7 +49,7 @@ import java.util.ArrayList;
  * @Description: 表情View
  */
 
-public class EmotionSinglePageView extends GridView implements AdapterView.OnItemClickListener {
+    public class EmotionSinglePageView extends GridView implements AdapterView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (emotionClick != null) {
@@ -60,7 +60,6 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
                 editText.dispatchKeyEvent(new KeyEvent(  KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             }
         } else {
-
             if (editText != null) {
                 //修改大小,不然输入上的表情过大,输入文字后边直接缩小问题
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), emotion.get(position).icon);
@@ -75,7 +74,6 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
                 spannableString.setSpan(imageSpan, 0, spannableString.length(),SpannableString.SPAN_MARK_MARK);
                 editText.append(spannableString);
             }
-            Toast.makeText(getContext(), editText.getText(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -119,7 +117,7 @@ public class EmotionSinglePageView extends GridView implements AdapterView.OnIte
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         setLayoutParams(lp);
         setNumColumns(columns);
-        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete,100,150));
+        setAdapter(new EmotionGridViewAdapter(getContext(),emotion,useDelete, (int) getResources().getDimension(R.dimen.px50),150));
         setOnItemClickListener(this);
     }
 

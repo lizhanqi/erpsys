@@ -365,7 +365,9 @@ public class ContactDataFragment extends BaseSupportFragment {
             mRlOrganization.setSwipeMenuCreator(mSwipeMenuCreator);
         }
         DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.mainNavline_e7));
-        defaultItemDecoration.setJustLeftOffsetX(50);
+       //int margin= DensityUtils.dp2px(getContext(),25);
+        int margin= (int) getResources().getDimension(R.dimen.px50);
+        defaultItemDecoration.setJustLeftOffsetX(margin);
         mRlOrganization.addItemDecoration(defaultItemDecoration);
         mRlOrganization.setSwipeMenuItemClickListener(mMenuItemClickListener);
         contanctsAdaputer = new ContanctsAdaputer(getActivity());

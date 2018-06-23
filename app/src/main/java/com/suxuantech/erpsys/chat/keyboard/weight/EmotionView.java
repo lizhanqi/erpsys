@@ -145,7 +145,7 @@ public class EmotionView extends LinearLayout  implements AdapterView.OnItemClic
             limt.add(getbeans);
             gridView.setTag(i);
             gridView.setGravity(HORIZONTAL);
-            gridView.setAdapter(new EmotionGridViewAdapter(getContext(),limt.get(i),useDelete,150,150));
+            gridView.setAdapter(new EmotionGridViewAdapter(getContext(),limt.get(i),useDelete,50,150));
             gridView.setOnItemClickListener(this);
             ag.add(gridView);
              }
