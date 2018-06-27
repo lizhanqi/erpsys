@@ -170,7 +170,6 @@ public class App extends Application {
         super.onCreate();
         application = this;
         context = this.getApplicationContext();
-        CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM,true);
         if (AppUtils.isMainProcess(this)){
             //初始化greendao
             setDatabase();
@@ -209,6 +208,7 @@ public class App extends Application {
                 TinyDancer.create()
                         .show(context);
             }
+            CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM,true);
         }
         //极光IM初始化(坑比,这里所有进程都需要初始化)
         JMessageClient.setDebugMode(ISDEBUG);
