@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -130,6 +131,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     Dialog loadingDialog;
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
+    boolean logining;
+    private long  lastClickTime = 0;
+    private int clickCount = 0;
     private FingerprintCore.IFingerprintResultListener mResultListener = new FingerprintCore.IFingerprintResultListener() {
         @Override
         public void onAuthenticateSuccess() {
@@ -165,6 +169,40 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         // initFingerprintCore();
         setContentView(R.layout.activity_login);
         copyRight = idGetView(R.id.copyright);
+        idGetView(R.id.image_view_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickCount++;
+                if (clickCount == 5) {
+                    App.CARE_IM_LOGIN=! App.CARE_IM_LOGIN;
+                    if (App.CARE_IM_LOGIN) {
+                        toastShort("关心IM");
+                    }else {
+                        toastShort("不再关心IM");
+                    }
+                    lastClickTime=0;
+                    clickCount=0;
+                    Log.d("次数:",""+5);
+                } else  {
+                    long now = System.currentTimeMillis();
+                    if (lastClickTime - now < 1000) {
+                        lastClickTime = now;
+                        if (clickCount >=3 && clickCount <= 4){
+                            if (App.CARE_IM_LOGIN) {
+                                toastShort("再点击" + (5 - clickCount)+"不再关心IM登录");
+                            }else {
+                                toastShort("再点击" + (5 - clickCount)+"关心IM登录");
+                            }
+                        }
+                        Log.d("次数:",""+clickCount);
+                    } else {
+                        Log.d("次数:",""+1);
+                        lastClickTime = now;
+                        clickCount = 1;
+                    }
+                }
+            }
+        });
         copyRight.setText(getString(R.string.copyright) + " V" + AppUtil.getVersionName(this));
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
@@ -365,7 +403,12 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 if (response.get().isOK() || response.get().getData() != null) {
                     List<String> data = response.get().getData();
                     App.getApplication().setUserPermission(data);
-                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    if (App.CARE_IM_LOGIN) {
+                        loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    } else {
+                        LoginSucceed();
+                    }
+
                 } else {
                     loginFailed();
                 }
@@ -386,6 +429,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      * @param password
      */
     void login(String name, String password) {
+        logining = true;
         loadingDialog.setCancelable(false);
         loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
@@ -417,6 +461,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      */
     public void LoginSucceed() {
         loadingDialog.dismiss();
+        logining = false;
         if (App.getmActivitys().size() > 1) {
             App.getApplication().finishActivity(LoginActivity.class);
             EventBus.getDefault().postSticky("reLogin");
@@ -431,6 +476,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
       登录失败
      */
     public void loginFailed() {
+        logining = false;
         loadingDialog.dismiss();
         CacheUtils.getInstance().remove(App.LOGIN_FILE_NAME);
         SPUtils.getInstance().remove(LOGIN_NAME);
@@ -658,6 +704,12 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     @Override
     protected void onDestroy() {
+        if (logining) {
+            CacheUtils.getInstance().remove(App.LOGIN_FILE_NAME);
+            SPUtils.getInstance().remove(LOGIN_NAME);
+            SPUtils.getInstance().remove(LOGIN_PASSWORD);
+            JMessageClient.logout();
+        }
         if (mFingerprintCore != null) {
             mFingerprintCore.onDestroy();
             mFingerprintCore = null;
@@ -686,7 +738,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 if (StringUtils.strIsNumber(result) && result.length() == 10) {
                     mCompanyID.setText(result);
                 } else {
-                    ToastUtils.snackbarShort(this,"格式错误!", "确定", new View.OnClickListener() {
+                    ToastUtils.snackbarShort(this, "格式错误!", "确定", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
