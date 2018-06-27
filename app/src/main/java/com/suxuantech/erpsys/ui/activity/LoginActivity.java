@@ -19,7 +19,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -174,29 +173,28 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
             public void onClick(View view) {
                 clickCount++;
                 if (clickCount == 5) {
-                    App.CARE_IM_LOGIN=! App.CARE_IM_LOGIN;
+                    App.CARE_IM_LOGIN = !App.CARE_IM_LOGIN;
                     if (App.CARE_IM_LOGIN) {
+                      SPUtils.getInstance().put(App.CARE_IM,true);
                         toastShort("关心IM");
-                    }else {
+                    } else {
+                        SPUtils.getInstance().put(App.CARE_IM,false);
                         toastShort("不再关心IM");
                     }
-                    lastClickTime=0;
-                    clickCount=0;
-                    Log.d("次数:",""+5);
-                } else  {
+                    lastClickTime = 0;
+                    clickCount = 0;
+                } else {
                     long now = System.currentTimeMillis();
                     if (lastClickTime - now < 1000) {
                         lastClickTime = now;
-                        if (clickCount >=3 && clickCount <= 4){
+                        if (clickCount >= 3 && clickCount <= 4) {
                             if (App.CARE_IM_LOGIN) {
-                                toastShort("再点击" + (5 - clickCount)+"不再关心IM登录");
-                            }else {
-                                toastShort("再点击" + (5 - clickCount)+"关心IM登录");
+                                toastShort("再点击" + (5 - clickCount) + "不再关心IM登录");
+                            } else {
+                                toastShort("再点击" + (5 - clickCount) + "关心IM登录");
                             }
                         }
-                        Log.d("次数:",""+clickCount);
                     } else {
-                        Log.d("次数:",""+1);
                         lastClickTime = now;
                         clickCount = 1;
                     }
@@ -430,7 +428,13 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
      */
     void login(String name, String password) {
         logining = true;
-        loadingDialog.setCancelable(false);
+        loadingDialog.setCancelable(true);
+        loadingDialog.setOnCancelListener(it -> {
+            it.dismiss();
+            ToastUtils.snackbarShort("登录已取消","确定");
+            getRequestQueue().cancelAll();
+            loginFailed();
+        });
         loadingDialog.show();
         JavaBeanRequest stringRequest = new JavaBeanRequest(Contact.getFullUrl(Contact.LOGIN, Contact.TOKEN, name, password), RequestMethod.POST, LoginEntity.class);
         HttpListener<LoginEntity> httpListener = new HttpListener<LoginEntity>() {
@@ -453,7 +457,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 loginFailed();
             }
         };
-        request(0, stringRequest, httpListener, false, false);
+        request(858, stringRequest, httpListener, false, false);
     }
 
     /**

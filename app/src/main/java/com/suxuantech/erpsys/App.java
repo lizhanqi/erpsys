@@ -87,6 +87,10 @@ public class App extends Application {
      * 是否关心登录即时通讯
      */
     public static boolean CARE_IM_LOGIN = true;
+    /**
+     *保存是否关心通讯登录的设置
+     */
+    public static String CARE_IM= "care_im_login";
     public static String APP_LOG_NAME = "debug";
     /**
      * 登录用户信息保存的文件名
@@ -166,6 +170,7 @@ public class App extends Application {
         super.onCreate();
         application = this;
         context = this.getApplicationContext();
+        CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM,true);
         if (AppUtils.isMainProcess(this)){
             //初始化greendao
             setDatabase();
@@ -207,7 +212,7 @@ public class App extends Application {
         }
         //极光IM初始化(坑比,这里所有进程都需要初始化)
         JMessageClient.setDebugMode(ISDEBUG);
-        // JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
+        // JMessageClient.setNotificationFlag(JMessageClient.FLA G_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
         JMessageClient.init(this);
     }
 

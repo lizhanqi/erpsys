@@ -112,11 +112,12 @@ public class SplashScreenActivity extends BaseActivity {
         if (!hasPermission(Permission.Group.STORAGE)) {
             requestPermission(Permission.Group.STORAGE);
         } else {
-            if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
-                transitionsActivity(1500);
-            } else {
-                alertDialog.show();
-            }
+//            if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
+//
+//            } else {
+//                alertDialog.show();
+//            }
+            transitionsActivity(1500);
         }
     } 
 
@@ -162,11 +163,14 @@ public class SplashScreenActivity extends BaseActivity {
                 if (response.get().isOK()) {
                     List<CompanyDomainEntity.DataBean> data = response.get().getData();
                     LoginActivity.domainAssignment(data);
-//                    App.getApplication().finishActivity(LoginActivity.class);
-//                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-                    loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    if (App.CARE_IM_LOGIN){
+                        loginJG(App.getApplication().getUserInfor().getJg_username(), App.getApplication().getUserInfor().getStaffnumber());
+                    }else {
+                        App.getApplication().finishActivity(LoginActivity.class);
+                        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 } else {
                     ToastUtils.snackbarShort("企业域名错误");
                     App.getApplication().loginOut();
