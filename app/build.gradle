@@ -2,13 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.antfortune.freeline'
-freeline {
-    hack true
-    productFlavor "develop"
-    autoDependency false
-}
-android {
+apply plugin: 'kotlin-android-extensions'
 
+android {
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'armeabi-v7a'//,  'x86_64','armeabi'
+//            universalApk false
+//        }
+//    }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
@@ -19,10 +23,11 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-//        ndk {
-//            //   abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', 'x86', 'x86_64'
-//            abiFilters  'armeabi-v7a','x86','x86_64','mips64', 'arm64-v8a','mips'
-//        }
+        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+/*        ndk {
+            //   abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', 'x86', 'x86_64'
+            abiFilters  'armeabi-v7a','x86'//,'x86_64','mips64', 'arm64-v8a','mips'
+        }*/
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "a04189425ae181529578cc52", //JPush上注册的包名对应的appkey.
@@ -34,13 +39,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     //multiDex的一些相关配置，这样配置可以让你的编译速度更快
-    dexOptions {
-        preDexLibraries = false
-        //让它不要对Lib做preDexing
-//        incremental true(已经弃用)
-        //开启incremental dexing,优化编译效率，这个功能android studio默认是关闭的。
-        javaMaxHeapSize "8g"     //增加java堆内存大小
-    }
+//    dexOptions {
+//        preDexLibraries = false
+//        //让它不要对Lib做preDexing
+////        incremental true(已经弃用)
+//        //开启incremental dexing,优化编译效率，这个功能android studio默认是关闭的。
+//        javaMaxHeapSize "8g"     //增加java堆内存大小
+//    }
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -88,7 +93,7 @@ android {
     }
 }
 dependencies {
-    implementation 'com.github.czy1121:loadinglayout:1.0.1'
+//    implementation 'com.github.czy1121:loadinglayout:1.0.1'
     implementation rootProject.ext.dependencies.v7
     implementation rootProject.ext.dependencies.v4
     implementation rootProject.ext.dependencies.permission
@@ -124,9 +129,9 @@ dependencies {
     implementation rootProject.ext.dependencies.libstepview
     implementation rootProject.ext.dependencies.alertview
     implementation rootProject.ext.dependencies.utilcode
-    implementation rootProject.ext.dependencies.zbar
+    //implementation rootProject.ext.dependencies.zbar
     implementation rootProject.ext.dependencies.pickerview
-    implementation rootProject.ext.dependencies.camera
+//    implementation rootProject.ext.dependencies.camera
     implementation rootProject.ext.dependencies.album
     implementation rootProject.ext.dependencies.SuperTextView
     implementation rootProject.ext.dependencies.ImmersedBar
@@ -165,8 +170,11 @@ dependencies {
     implementation rootProject.ext.dependencies.SmartRefreshHeader
     implementation rootProject.ext.dependencies.numberProgressBar
     implementation rootProject.ext.dependencies.buttonProgress
-    implementation "com.hanks:htextview-base:+"
-    implementation "com.hanks:htextview-fall:+"       // optional
+    implementation 'com.hanks:htextview-base:+'
+    implementation 'com.hanks:htextview-fall:+'
+   // implementation project(':libzbar')
+    //帧数检测工具
+    debugImplementation "com.github.brianPlummer:tinydancer:0.1.2"
 }
 
 //删除release文件夹
@@ -199,4 +207,4 @@ task releaseDel(type: Delete) {
         }
     }
 }*/
-apply plugin: 'kotlin-android-extensions'
+

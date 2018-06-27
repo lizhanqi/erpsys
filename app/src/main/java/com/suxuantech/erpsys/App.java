@@ -1,6 +1,7 @@
 package com.suxuantech.erpsys;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
+import com.antfortune.freeline.util.AppUtils;
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
+import com.codemonkeylabs.fpslibrary.TinyDancer;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -163,9 +166,52 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
-        setDatabase();
+
         context = this.getApplicationContext();
-        //  initSkinPeeler();
+        if (AppUtils.isMainProcess(this)){
+            //初始化greendao
+            setDatabase();
+            //  initSkinPeeler();
+            //初始化刷新默认头尾
+            initFreshDefault();
+            //初始化百度地图
+            SDKInitializer.initialize(this);
+            // FreelineCore.init(this);
+            //工具类初始化
+            Utils.init(this);
+            //融云初始化
+            RongIM.init(this);
+            //Activity的队列监听
+            registerActivityListener();
+            //网络初始化
+            newinitNohttp();
+            //fragmention显示球初始化
+            Fragmentation.builder()
+                    // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
+                    .stackViewMode(Fragmentation.BUBBLE)
+                    .debug(false)
+                    .install();
+            //错误页初始化
+            initErrorPage();
+            if (!ISDEBUG) {
+                try {
+                    //融云检测初始化
+                    RongPushClient.checkManifest(this);
+                } catch (RongException e) {
+                    e.printStackTrace();
+                }
+            }
+            //帧数检测初始化
+            TinyDancer.create()
+                    .show(context);
+            //极光IM初始化
+            JMessageClient.setDebugMode(ISDEBUG);
+            JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
+            JMessageClient.init(this);
+        }
+    }
+
+    private void initFreshDefault() {
         //指定刷新默认的方式
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
@@ -180,30 +226,30 @@ public class App extends Application {
                 return new FalsifyFooter(context);//指定为 Footer，默认是 BallPulseFooter;
             }
         });
-        SDKInitializer.initialize(this);
-        // FreelineCore.init(this);
-        Utils.init(this);
-        RongIM.init(this);
-        registerActivityListener();
-        newinitNohttp();
-        Fragmentation.builder()
-                // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
-                .stackViewMode(Fragmentation.BUBBLE)
-                .debug(false)
-                .install();
-        initErrorPage();
-        if (!ISDEBUG) {
-            try {
-                RongPushClient.checkManifest(this);
-            } catch (RongException e) {
-                e.printStackTrace();
-            }
-        }
-        JMessageClient.setDebugMode(ISDEBUG);
-        JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
-        JMessageClient.init(this);
     }
 
+    /**
+     * 包名判断是否为主进程
+     * @param
+     * @return
+     */
+    public boolean isMainProcess(){
+        return getApplicationContext().getPackageName().equals(getCurrentProcessName());
+    }
+    /**
+     * 获取当前进程名
+     */
+    private String getCurrentProcessName() {
+        int pid = android.os.Process.myPid();
+        String processName = "";
+        ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo process : manager.getRunningAppProcesses()) {
+            if (process.pid == pid) {
+                processName = process.processName;
+            }
+        }
+        return processName;
+    }
     /**
      * 换肤初始化
      */

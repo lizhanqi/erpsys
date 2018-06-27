@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.suxuantech.erpsys"
     tools:overrideLibrary="android.support.v7.appcompat">
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- //获取设备网络状态，禁用后无法获取网络状态 -->
@@ -52,7 +54,7 @@
         android:testOnly="false"
         android:theme="@style/AppTheme">
         <!--极光-->
-        <receiver
+ <!--       <receiver
             android:name=".chat.JGIMReceiver"
             android:enabled="true"
             android:exported="false">
@@ -62,7 +64,7 @@
 
                 <category android:name="${applicationId}"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <!--极光-->
         <provider
             android:name="android.support.v4.content.FileProvider"

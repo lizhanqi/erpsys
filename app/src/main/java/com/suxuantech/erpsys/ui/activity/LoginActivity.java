@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +55,7 @@ import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.utils.core.FingerprintCore;
 import com.suxuantech.erpsys.utils.core.KeyguardLockScreenManager;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -65,6 +67,7 @@ import java.util.Set;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
+import io.rong.eventbus.EventBus;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -179,7 +182,10 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 return false;
             }
             if (event.getX() > mCompanyID.getWidth() - mCompanyID.getPaddingRight() - drawable.getIntrinsicWidth()) {
-                //     mCompanyID.setText("");
+                Intent intent = new Intent(this, CaptureActivity.class);
+                startActivityForResult(intent, 222);
+//                Intent intent = new Intent(this, QRCodeScanActivity.class);
+//                startActivityForResult(intent, 222);
             }
             return false;
         });
@@ -223,8 +229,11 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //"3201712315"
-                //  login(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim());
+//                WebActivityConfig webActivityConfig = new WebActivityConfig(LoginActivity.this);
+//                String url = "http://www.suxuantech.com/col.jsp?id=106";
+//                url = "http://demo.rockoa.com/?m=index&d=we";
+//                webActivityConfig.loadUrl(url).showToolbar(false);
+//                webActivityConfig.start();
                 attemptLogin();
             }
         });
@@ -410,6 +419,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         loadingDialog.dismiss();
         if (App.getmActivitys().size() > 1) {
             App.getApplication().finishActivity(LoginActivity.class);
+            EventBus.getDefault().postSticky("reLogin");
         } else {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -618,7 +628,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -667,6 +676,26 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 222 && resultCode == RESULT_OK) {
+            if (data.getStringExtra("result") != null) {
+                String result = data.getStringExtra("result");
+                if (StringUtils.strIsNumber(result) && result.length() == 10) {
+                    mCompanyID.setText(result);
+                } else {
+                    ToastUtils.snackbarShort(this,"格式错误!", "确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 

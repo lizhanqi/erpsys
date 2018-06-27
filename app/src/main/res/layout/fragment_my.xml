@@ -216,6 +216,7 @@ clickable是防止页面穿透的点击事件的
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/rl_fingerprint"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/px125"

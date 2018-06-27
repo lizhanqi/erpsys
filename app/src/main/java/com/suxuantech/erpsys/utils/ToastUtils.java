@@ -144,6 +144,33 @@ public class ToastUtils {
         } : listener).show();
     }
 
+    public static void snackbarShort(Activity activity,String text, String action, View.OnClickListener listener) {
+        if (activity == null) {
+            showShort(text);
+            return;
+        }
+        View decorView =   activity.getWindow().getDecorView();
+        View viewById = decorView.findViewById(R.id.content_view_layout);
+        if (viewById != null) {
+            decorView =   viewById;
+        }
+        if (make != null) {
+            make.dismiss();
+        }
+        make = Snackbar.make(decorView, text, Snackbar.LENGTH_INDEFINITE);
+//        App.getApplication().getResources().getColor(R.color.noticeOrange);
+        View view = make.getView();
+        ViewGroup parent = (ViewGroup) view.getParent();
+        view.setBackgroundResource(R.color.noticeOrange);
+        make.setText(text);
+        make.setDuration(5000);
+        make.setAction(action, listener == null ? new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        } : listener).show();
+    }
+
     public static void snackbarShort(int text, String action, View.OnClickListener listener) {
         snackbarShort(App.getApplication().getResources().getString(text), action, listener);
     }
