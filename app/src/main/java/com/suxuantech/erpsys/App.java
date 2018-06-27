@@ -204,12 +204,11 @@ public class App extends Application {
                 TinyDancer.create()
                         .show(context);
             }
-
-            //极光IM初始化
-            JMessageClient.setDebugMode(ISDEBUG);
-           // JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
-            JMessageClient.init(this);
         }
+        //极光IM初始化(坑比,这里所有进程都需要初始化)
+        JMessageClient.setDebugMode(ISDEBUG);
+        // JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
+        JMessageClient.init(this);
     }
 
     private void initFreshDefault() {
