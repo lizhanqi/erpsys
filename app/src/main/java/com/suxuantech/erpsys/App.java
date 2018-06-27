@@ -82,15 +82,15 @@ import me.yokeyword.fragmentation.Fragmentation;
 public class App extends Application {
     protected static Context context;
     private static App application;
-    public static boolean ISDEBUG = true;
+    public static boolean ISDEBUG = false;
     /**
      * 是否关心登录即时通讯
      */
     public static boolean CARE_IM_LOGIN = true;
     /**
-     *保存是否关心通讯登录的设置
+     * 保存是否关心通讯登录的设置
      */
-    public static String CARE_IM= "care_im_login";
+    public static String CARE_IM = "care_im_login";
     public static String APP_LOG_NAME = "debug";
     /**
      * 登录用户信息保存的文件名
@@ -102,9 +102,11 @@ public class App extends Application {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
+
     public void setUserPermission(List<String> userPermission) {
         this.userPermission = userPermission;
     }
+
     /**
      * 退出登录
      */
@@ -170,7 +172,7 @@ public class App extends Application {
         super.onCreate();
         application = this;
         context = this.getApplicationContext();
-        if (AppUtils.isMainProcess(this)){
+        if (AppUtils.isMainProcess(this)) {
             //初始化greendao
             setDatabase();
             //  initSkinPeeler();
@@ -189,31 +191,38 @@ public class App extends Application {
             newinitNohttp();
             //错误页初始化
             initErrorPage();
+            CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM, true);
+            ISDEBUG = SPUtils.getInstance().getBoolean(APP_LOG_NAME, true);
             //fragmention显示球初始化
             Fragmentation.builder()
                     // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
-                    .stackViewMode(Fragmentation.BUBBLE)
+                    .stackViewMode(Fragmentation.SHAKE)
                     .debug(ISDEBUG)
                     .install();
-
-            if (!ISDEBUG) {
-                try {
-                    //融云检测初始化
-                    RongPushClient.checkManifest(this);
-                } catch (RongException e) {
-                    e.printStackTrace();
-                }
-            }else{
-                //帧数检测初始化
-                TinyDancer.create()
-                        .show(context);
-            }
-            CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM,true);
+            App.getApplication().debug();
         }
         //极光IM初始化(坑比,这里所有进程都需要初始化)
         JMessageClient.setDebugMode(ISDEBUG);
         // JMessageClient.setNotificationFlag(JMessageClient.FLA G_NOTIFY_WITH_LED|JMessageClient.NOTI_MODE_NO_VIBRATE);
         JMessageClient.init(this);
+    }
+
+    /**
+     * 需要debug才能开启的东西
+     */
+    public void debug() {
+        if (!ISDEBUG) {
+            try {
+                //融云检测初始化
+                RongPushClient.checkManifest(this);
+            } catch (RongException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //帧数检测初始化
+            TinyDancer.create()
+                    .show(context);
+        }
     }
 
     private void initFreshDefault() {
@@ -235,12 +244,14 @@ public class App extends Application {
 
     /**
      * 包名判断是否为主进程
+     *
      * @param
      * @return
      */
-    public boolean isMainProcess(){
+    public boolean isMainProcess() {
         return getApplicationContext().getPackageName().equals(getCurrentProcessName());
     }
+
     /**
      * 获取当前进程名
      */
@@ -255,6 +266,7 @@ public class App extends Application {
         }
         return processName;
     }
+
     /**
      * 换肤初始化
      */

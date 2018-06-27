@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
@@ -20,6 +22,7 @@ import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,15 +56,16 @@ public class MyFragment extends BaseLazyFragment {
     RelativeLayout otherInfo;
     @BindView(R.id.feedback)
     RelativeLayout feedback;
-
+    private long lastClickTime = 0;
+    private int clickCount = 0;
     //    @BindView(R.id.dampView)
 //    BounceScrollView mDampView;
     private View view;
 
-    @Subscribe()
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @MainThread
     public void EventBus(String key) {
-        if (key.equals("changeUser")) {
+        if (key.equals("changeShop") || key.equals("reLogin")) {
             data2View();
         }
     }
@@ -95,7 +99,7 @@ public class MyFragment extends BaseLazyFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        useEventBus();
+
         BounceScrollView dampView = view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
         dampView.setView(view.findViewById(R.id.ll_cao));
@@ -119,7 +123,13 @@ public class MyFragment extends BaseLazyFragment {
 
     @Override
     protected int setLayoutId() {
+        useEventBus();
         return R.layout.fragment_my;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void data2View() {
@@ -138,13 +148,13 @@ public class MyFragment extends BaseLazyFragment {
         mTvNameAndPost.setText(App.getApplication().getUserInfor().getStaffname() + "\n" + App.getApplication().getUserInfor().getMain_position_name());
     }
 
-    @OnClick({R.id.switch_theme,R.id.feedback, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,})
-      public void onClick(View v) {
+    @OnClick({R.id.switch_theme, R.id.feedback, R.id.img_top, R.id.tv_mine, R.id.img_user_head, R.id.tv_department, R.id.tv_store, R.id.tv_staff_serial_number, R.id.tv_staff_phone, R.id.tv_staff_id, R.id.about_Us, R.id.tv_verstion, R.id.btn_login_out,})
+    public void onClick(View v) {
         switch (v.getId()) {
             default:
                 break;
             case R.id.feedback:
-                startActivity(new Intent(getActivity(),FeedbackActivity.class));
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
             case R.id.switch_theme:
 //               if( SkinConfig.isDefaultSkin(getContext()) ){
@@ -181,6 +191,35 @@ public class MyFragment extends BaseLazyFragment {
             case R.id.tv_mine:
                 break;
             case R.id.img_user_head:
+                clickCount++;
+                if (clickCount == 5) {
+                    App.ISDEBUG = !App.ISDEBUG;
+                    if (App.ISDEBUG) {
+                        SPUtils.getInstance().put(App.APP_LOG_NAME, true);
+                        ToastUtils.showShort("开启Debug(重启应用生效)");
+                    } else {
+                        SPUtils.getInstance().put(App.APP_LOG_NAME, false);
+                        ToastUtils.showShort("关闭Debug(重启应用生效)");
+                    }
+                    App.getApplication().debug();
+                    lastClickTime = 0;
+                    clickCount = 0;
+                } else {
+                    long now = System.currentTimeMillis();
+                    if (lastClickTime - now < 1000) {
+                        lastClickTime = now;
+                        if (clickCount >= 3 && clickCount <= 4) {
+                            if (App.ISDEBUG) {
+                                ToastUtils.showLong("再点击" + (5 - clickCount) + "关闭Debug");
+                            } else {
+                                ToastUtils.showLong("再点击" + (5 - clickCount) + "开启Debug");
+                            }
+                        }
+                    } else {
+                        lastClickTime = now;
+                        clickCount = 1;
+                    }
+                }
                 break;
             case R.id.tv_department:
                 break;
@@ -194,7 +233,8 @@ public class MyFragment extends BaseLazyFragment {
                 break;
             case R.id.about_Us:
                 WebActivityConfig webActivityConfig = new WebActivityConfig(getContext());
-                String url="http://www.suxuantech.com/col.jsp?id=106";
+                String url = "http://www.suxuantech.com/col.jsp?id=106";
+                url = "http://demo.rockoa.com/?m=index&d=we";
                 webActivityConfig.loadUrl(url).showToolbar(false);
                 webActivityConfig.start();
                 break;
