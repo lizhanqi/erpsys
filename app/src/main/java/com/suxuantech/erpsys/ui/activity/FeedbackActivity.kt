@@ -18,6 +18,8 @@ class FeedbackActivity : TitleNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback)
+        supportToolbar()
+        setTitle("问题反馈")
         etFeeback = findViewById<EditText>(R.id.et_feeback)
         etFeebackPeople = findViewById<EditText>(R.id.et_feeback_people)
         btnFeedbak = findViewById<Button>(R.id.btn_feedbak)
