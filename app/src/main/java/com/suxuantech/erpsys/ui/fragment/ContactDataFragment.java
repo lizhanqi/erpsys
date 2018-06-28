@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BusinssunitEntity;
@@ -100,13 +102,12 @@ public class ContactDataFragment extends BaseSupportFragment {
     private String homeDepartmentName;//首页的联系人顶部名称
     private ArrayList navigation;
     private ContanctsFastEntranceEntityDao contanctsFastEntranceEntityDao;
-    public static String FRESH_FAST_ENTRANCE = "freshFast";
+
     QuickAdapter<ContanctsFastEntranceEntity> fastEntranceQuickAdapter = new QuickAdapter<ContanctsFastEntranceEntity>(R.layout.item_textview, null) {
         @Override
         public int getItemViewType(int position) {
             return -5;
         }
-
         @Override
         protected void convert(com.chad.library.adapter.base.BaseViewHolder helper, ContanctsFastEntranceEntity item) {
             TextView view = helper.getView(R.id.tv_item);
@@ -205,16 +206,34 @@ public class ContactDataFragment extends BaseSupportFragment {
     };
 
     @Override
+    public void putNewBundle(Bundle newBundle) {
+       setArguments(newBundle);
+            Log.d("用户切换","更新3");
+            initArguments();
+            Log.d("用户切换","更新3type"+         getArguments().getInt("type", 100000) );
+            Log.d("用户切换","更新3keyCode"+         getArguments().getString("keyCode", "") );
+            smartRefreshLayout.autoRefresh();
+    }
+
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         unbinder = ButterKnife.bind(this, view);
-        useEventBus();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initArguments();
+        contanctsFastEntranceEntityDao = App.getApplication().getDaoSession().getContanctsFastEntranceEntityDao();
+        initView();
+        getContactTreeContrl(type, keyCode);
+    }
+    private void initArguments(){
         type = getArguments().getInt("type", DEPARTMENT_TYPE);
         navigation = getArguments().getStringArrayList("navigation");
         showDepartmentName = getArguments().getBoolean("showDepartmentName", false);
@@ -224,11 +243,7 @@ public class ContactDataFragment extends BaseSupportFragment {
         isOption = getArguments().getBoolean("isOption", false);
         searchEntrance = getArguments().getBoolean("searchEntrance", true);
         keyCode = getArguments().getString("keyCode");
-        contanctsFastEntranceEntityDao = App.getApplication().getDaoSession().getContanctsFastEntranceEntityDao();
-        initView();
-        getContactTreeContrl(type, keyCode);
     }
-
     /**
      * 跳转到一个新的页面
      *
@@ -291,12 +306,12 @@ public class ContactDataFragment extends BaseSupportFragment {
                     ContanctsFastEntranceEntityDao.Properties.Type.eq(contanctsFastEntranceEntity.getType()));
             queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
         }
-        EventBus.getDefault().post(FRESH_FAST_ENTRANCE);
+        EventBus.getDefault().post(StringTag.FRESH_FAST_ENTRANCE);
     }
 
     //通知首页更新
     @Subscribe
-    public void notifyFastHome(String contanct) {
+    public void notifyFastHome( ) {
         List<ContanctsFastEntranceEntity> contanctsFastEntranceEntities = contanctsFastEntranceEntityDao.loadAll();
         contanctsAdaputer.setContanctsFastEntranceEntities(contanctsFastEntranceEntities);
         contanctsAdaputer.notifyDataSetChanged();
@@ -332,7 +347,7 @@ public class ContactDataFragment extends BaseSupportFragment {
             mTvDepartment.setText(homeDepartmentName);
         }
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            notifyFastHome(FRESH_FAST_ENTRANCE);
+            notifyFastHome();
             getContactTreeContrl(type, keyCode);
         });
         //很神奇,这里如果不进行复制设置返回按钮出栈的时候,导航有问题
@@ -468,13 +483,13 @@ public class ContactDataFragment extends BaseSupportFragment {
                 QueryBuilder<ContanctsFastEntranceEntity> queryBuilder = contanctsFastEntranceEntityDao.queryBuilder();
                 queryBuilder.where(ContanctsFastEntranceEntityDao.Properties.Key.eq(contanctsFastEntranceEntity.getKey()), ContanctsFastEntranceEntityDao.Properties.Type.eq(contanctsFastEntranceEntity.getType()));
                 queryBuilder.buildDelete().executeDeleteWithoutDetachingEntities();
-                EventBus.getDefault().post(FRESH_FAST_ENTRANCE);
+                EventBus.getDefault().post(StringTag.FRESH_FAST_ENTRANCE);
             }
         });
         quickentryRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         quickentryRecycleView.setAdapter(fastEntranceQuickAdapter);
         quickentryRecycleView.addItemDecoration(defaultItemDecoration);
-        notifyFastHome(FRESH_FAST_ENTRANCE);
+        notifyFastHome( );
     }
 
     /**
@@ -601,7 +616,6 @@ public class ContactDataFragment extends BaseSupportFragment {
                     contanctsAdaputer.changeDataSet();
                 }
             }
-
             @Override
             public void onFailed(int what, Response<DepartmentEntiy> response) {
                 smartRefreshLayout.finishRefresh();
@@ -609,7 +623,6 @@ public class ContactDataFragment extends BaseSupportFragment {
         };
         requestNOError(0, department, searchByCustmor, false, false);
     }
-
     /**
      * 根据事业部获实体店面以及营销店
      */

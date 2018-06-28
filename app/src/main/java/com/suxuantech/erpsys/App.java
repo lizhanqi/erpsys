@@ -199,7 +199,7 @@ public class App extends Application {
                     .stackViewMode(Fragmentation.SHAKE)
                     .debug(ISDEBUG)
                     .install();
-            App.getApplication().debug();
+         debug();
         }
         //极光IM初始化(坑比,这里所有进程都需要初始化)
         JMessageClient.setDebugMode(ISDEBUG);

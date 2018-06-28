@@ -75,8 +75,8 @@ public class ContactsActivity extends TitleNavigationActivity   {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        ContactsFragment contactsFragment = new ContactsFragment();
         useEventBus();
+        ContactsFragment contactsFragment = new ContactsFragment();
         Bundle extras = getIntent().getExtras();
 //        int type = getIntent().getIntExtra("type", 1);
 //        boolean isOption = getIntent().getBooleanExtra("isOption", false);

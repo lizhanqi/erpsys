@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -664,33 +663,38 @@ public class BaseActivity extends SupportActivity implements View.OnClickListene
                 break;
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void showUserExit(String reason) {
-        Looper.prepare();
-        boolean foreground = App.getApplication().isForeground();
-        //如果在后台进行系统通知
-        if (!foreground) {
-            PackageManager pm = App.getContext().getPackageManager();
-            String appName = App.getContext().getApplicationInfo().loadLabel(pm).toString();
-            AlertView alertView = new AlertView(appName + "提醒:" + reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
-            alertView.setTitleColor(getResources().getColor(R.color.colorAccent));
-            alertView.autoDismiss(3000);
-            alertView.setRootViewHeightWrapContent();
-            alertView.setRootBackgroundResource(R.color.transparency);
-            alertView.setSystemDialogHeight(150);
-            alertView.setCancelable(true);
-            alertView.show();
-        }
-        AlertDialog.newBuilder(App.getApplication().getTopActivity()).setTitle("退出提醒:")
-                .setCancelable(false)
-                .setMessage(reason)
-                .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
-                    Intent notificationIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(notificationIntent);
-                })
-                .show();
-        Looper.loop();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean foreground = App.getApplication().isForeground();
+                //如果在后台进行系统通知
+                if (!foreground) {
+                    PackageManager pm = App.getContext().getPackageManager();
+                    String appName = App.getContext().getApplicationInfo().loadLabel(pm).toString();
+                    AlertView alertView = new AlertView(appName + "提醒:" + reason, "", null, null, null, App.getApplication().getTopActivity(), AlertView.Style.SYSTEMTOP, null);
+                    alertView.setTitleColor(getResources().getColor(R.color.colorAccent));
+                    alertView.autoDismiss(3000);
+                    alertView.setRootViewHeightWrapContent();
+                    alertView.setRootBackgroundResource(R.color.transparency);
+                    alertView.setSystemDialogHeight(150);
+                    alertView.setCancelable(true);
+                    alertView.show();
+                }
+                AlertDialog.newBuilder(App.getApplication().getTopActivity()).setTitle("退出提醒:")
+                        .setCancelable(false)
+                        .setMessage(reason)
+                        .setPositiveButton("确定", (DialogInterface var1, int var2) -> {
+                              LoginActivity.exitStaffID = App.getApplication().getUserInfor().getStaff_id();
+                            Intent notificationIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(notificationIntent);
+                        })
+                        .show();
+            }
+        });
+/*        Looper.prepare();
+
+        Looper.loop();*/
     }
 
     /**

@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
@@ -712,7 +713,7 @@ public class OptionActivity extends TitleNavigationActivity {
                     dataBeanBaseMsg.setUrl(Url);
                     dataBeanBaseMsg.setUrlTag(urlTag);
                     EventBus.getDefault().post(dataBeanBaseMsg);
-                    EventBus.getDefault().post("changeUser");
+                    EventBus.getDefault().post(StringTag.CHANGE_SHOP);
                 }
             }
             finish();

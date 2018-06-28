@@ -32,6 +32,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.hanks.htextview.fall.FallTextView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;
@@ -115,10 +116,10 @@ public class ERPLeftFragment extends BaseLazyFragment {
     private List<HomeCustmoerCountEntity.DataBean> dataBeans;
     private QuickAdapter<FormEntity> quickAdapter;
 
-    @Subscribe()
+    @Subscribe(priority = 98)
     @MainThread
     public void EventBus(String key) {
-        if (key.equals("changeUser")) {
+        if (key.equals(StringTag.CHANGE_SHOP)||key.equals(StringTag.RELOGIN)) {
             mRefreshLayout.startRefresh();
         }
     }

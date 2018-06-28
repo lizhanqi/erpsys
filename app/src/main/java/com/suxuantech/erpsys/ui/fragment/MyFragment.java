@@ -2,7 +2,6 @@ package com.suxuantech.erpsys.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.WebActivityConfig;
@@ -22,7 +22,6 @@ import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
 import com.suxuantech.erpsys.ui.widget.BounceScrollView;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,10 +61,9 @@ public class MyFragment extends BaseLazyFragment {
 //    BounceScrollView mDampView;
     private View view;
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    @MainThread
+    @Subscribe(priority = 97)
     public void EventBus(String key) {
-        if (key.equals("changeShop") || key.equals("reLogin")) {
+        if (key.equals(StringTag.CHANGE_SHOP) || key.equals(StringTag.RELOGIN)) {
             data2View();
         }
     }
@@ -84,7 +82,6 @@ public class MyFragment extends BaseLazyFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             initImmersionBar();
-            //  ImmersionBar.with(getActivity()).reset().navigationBarColor(R.color.translucent_black_90).statusBarDarkFont(false).init();
         }
     }
 
@@ -99,18 +96,10 @@ public class MyFragment extends BaseLazyFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         BounceScrollView dampView = view.findViewById(R.id.dampView);
         dampView.setImageView(view.findViewById(R.id.img_top));
         dampView.setView(view.findViewById(R.id.ll_cao));
-
         ImmersionBar.with(getActivity()).reset().statusBarDarkFont(false).titleBar(R.id.tv_mine).init();
-//        view.findViewById(R.id.about_Us).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ToastUtils.showShort("三生三世");
-//            }
-//        });
         view.findViewById(R.id.btn_login_out).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,17 +186,16 @@ public class MyFragment extends BaseLazyFragment {
                     if (App.ISDEBUG) {
                         SPUtils.getInstance().put(App.APP_LOG_NAME, true);
                         ToastUtils.showShort("开启Debug(重启应用生效)");
+                        App.getApplication().debug();
                     } else {
                         SPUtils.getInstance().put(App.APP_LOG_NAME, false);
                         ToastUtils.showShort("关闭Debug(重启应用生效)");
                     }
-                    App.getApplication().debug();
                     lastClickTime = 0;
                     clickCount = 0;
                 } else {
                     long now = System.currentTimeMillis();
-                    if (lastClickTime - now < 1000) {
-                        lastClickTime = now;
+                    if (now - lastClickTime < 1000) {
                         if (clickCount >= 3 && clickCount <= 4) {
                             if (App.ISDEBUG) {
                                 ToastUtils.showLong("再点击" + (5 - clickCount) + "关闭Debug");
@@ -216,9 +204,9 @@ public class MyFragment extends BaseLazyFragment {
                             }
                         }
                     } else {
-                        lastClickTime = now;
                         clickCount = 1;
                     }
+                    lastClickTime = now;
                 }
                 break;
             case R.id.tv_department:

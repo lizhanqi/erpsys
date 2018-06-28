@@ -37,11 +37,12 @@ public class SplashScreenActivity extends BaseActivity {
 
     @Override
     public void permissionGrantedResult(List<String> permissions) {
-        if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
-            transitionsActivity(0);
-        } else {
-            alertDialog.show();
-        }
+        transitionsActivity(0);
+//        if (SettingsCompat.canDrawOverlays(SplashScreenActivity.this)) {
+//
+//        } else {
+//            alertDialog.show();
+//        }
     }
 
     /*

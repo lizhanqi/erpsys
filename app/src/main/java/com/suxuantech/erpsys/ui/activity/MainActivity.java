@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
@@ -20,6 +21,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.ConversationListFragment;
@@ -152,8 +154,8 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     protected void onCreate(Bundle savedInstanceState) {
         // requstPermissions(0,Manifest.permission.SYSTEM_ALERT_WINDOW);
         super.onCreate(savedInstanceState);
-        setSwipeBackEnable(false);
         useEventBus();
+        setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         initPop();
         initFragement();
@@ -218,7 +220,6 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             mFragments[FOUR] = SupportHelper.findFragment(getSupportFragmentManager(), MyFragment.class);
             showHideFragment(mFragments[2]);
         }
-
     }
 
     @NonNull
@@ -566,7 +567,6 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
     }
 
     @Override
-    @Subscribe
     public void onCountChanged(int i) {
         if (badgeItem != null) {
             if (i >= 99) {
@@ -578,11 +578,23 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
             }
         }
     }
-
     @Subscribe
     public void count(Integer i) {
         onCountChanged(i);
     }
+    @Subscribe(priority = 100)
+    public void count(String tag) {
+        if (tag.equals(StringTag.CHANGE_USER)){
+            Log.d("用户切换","更新1");
+            if (  SupportHelper.findFragment(getSupportFragmentManager(), ContactsFragment.class)!=null){
+                Bundle bundle = getBundle();
+                Log.d("用户切换","更新1type"+         bundle.getInt("type", 100000) );
+                Log.d("用户切换","更新1keyCode"+         bundle.getString("keyCode", "") );
+                mFragments[SECOND].putNewBundle(bundle);
+            }
+        }
+    }
+
 
     @Override
     public void onBackPressedSupport() {

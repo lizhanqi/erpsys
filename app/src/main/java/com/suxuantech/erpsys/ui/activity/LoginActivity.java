@@ -35,6 +35,7 @@ import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.suxuantech.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.SuxuanAppIdKt;
@@ -59,15 +60,13 @@ import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
-
+import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
-import io.rong.eventbus.EventBus;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -130,6 +129,10 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     Dialog loadingDialog;
     FingerprintCore mFingerprintCore;
     KeyguardLockScreenManager mKeyguardLockScreenManager;
+    /**
+     * 被异常退出账号
+     */
+    public  static  String exitStaffID;
     boolean logining;
     private long  lastClickTime = 0;
     private int clickCount = 0;
@@ -185,8 +188,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                     clickCount = 0;
                 } else {
                     long now = System.currentTimeMillis();
-                    if (lastClickTime - now < 1000) {
-                        lastClickTime = now;
+                    if (now-lastClickTime  < 1000) {
                         if (clickCount >= 3 && clickCount <= 4) {
                             if (App.CARE_IM_LOGIN) {
                                 toastShort("再点击" + (5 - clickCount) + "不再关心IM登录");
@@ -195,9 +197,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                             }
                         }
                     } else {
-                        lastClickTime = now;
                         clickCount = 1;
                     }
+                    lastClickTime = now;
                 }
             }
         });
@@ -468,14 +470,20 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         logining = false;
         if (App.getmActivitys().size() > 1) {
             App.getApplication().finishActivity(LoginActivity.class);
-            EventBus.getDefault().postSticky("reLogin");
+            EventBus.getDefault().post(StringTag.RELOGIN);
+            //异常退出账号
+            if (!StringUtils.empty(exitStaffID)){
+                //切换账号了
+                if (!exitStaffID.equals(App.getApplication().getUserInfor().staff_id)){
+                    EventBus.getDefault().post(StringTag.CHANGE_USER);
+                }
+            }
         } else {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
     }
-
     /*
       登录失败
      */

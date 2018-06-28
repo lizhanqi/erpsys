@@ -26,8 +26,6 @@
     <!-- //鉴权所需该权限获取进程列表 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- //使用步行AR导航，配置Camera权限 -->
-
-
     <!-- 百度地图end -->
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -54,18 +52,6 @@
         android:testOnly="false"
         android:theme="@style/AppTheme">
         <!--极光-->
- <!--       <receiver
-            android:name=".chat.JGIMReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.im.android.action.IM_RESPONSE"/>
-                <action android:name="cn.jpush.im.android.action.NOTIFICATION_CLICK_PROXY"/>
-
-                <category android:name="${applicationId}"/>
-            </intent-filter>
-        </receiver>-->
-        <!--极光-->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.suxuantech.erpsys.FileProvider"
@@ -75,6 +61,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <receiver
+            android:name="cn.jpush.im.android.helpers.IMReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+
         <!-- 融云(姚帅手机号注册的) -->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"

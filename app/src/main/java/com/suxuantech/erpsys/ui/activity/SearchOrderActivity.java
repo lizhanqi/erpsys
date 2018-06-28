@@ -60,6 +60,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+//import top.lizhanqi.www.libzbar.scan.CaptureActivity;
 
 /**
  * ......................我佛慈悲....................
