@@ -196,7 +196,7 @@ public class App extends Application {
             //fragmention显示球初始化
             Fragmentation.builder()
                     // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
-                    .stackViewMode(Fragmentation.SHAKE)
+                    .stackViewMode(Fragmentation.BUBBLE)
                     .debug(ISDEBUG)
                     .install();
          debug();

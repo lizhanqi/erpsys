@@ -102,7 +102,9 @@ public class MainActivity extends TitleNavigationActivity implements IUnReadMess
                     currentFragment.popToChild(MsgFragment.class, false);
                 } else if (currentFragment instanceof ContactsFragment) {
                     for (int i = 0; i < count - 1; i++) {
-                        currentFragment.popChild();
+                        if (count>1){
+                            currentFragment.popChild();
+                        }
                     }
                 } else if (currentFragment instanceof ERPLeftFragment) {
                     currentFragment.popToChild(ERPLeftFragment.class, false);
