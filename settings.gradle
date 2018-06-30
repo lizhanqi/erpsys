@@ -1,1 +1,2 @@
-include ':app', ':libzxing', ':libcalendar', ':IMLib', ':IMKit',':RecordVoice', ':darktheme'
+include ':app', ':libcalendar', ':IMLib', ':IMKit', ':RecordVoice', ':darktheme', ':libzbar'
+

@@ -56,17 +56,21 @@ import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.suxuantech.erpsys.utils.core.FingerprintCore;
 import com.suxuantech.erpsys.utils.core.KeyguardLockScreenManager;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.CacheMode;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.permission.Permission;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
+import cn.lzq.zbarscanner.demo.ScanActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -220,10 +224,13 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 return false;
             }
             if (event.getX() > mCompanyID.getWidth() - mCompanyID.getPaddingRight() - drawable.getIntrinsicWidth()) {
-                Intent intent = new Intent(this, CaptureActivity.class);
-                startActivityForResult(intent, 222);
-//                Intent intent = new Intent(this, QRCodeScanActivity.class);
-//                startActivityForResult(intent, 222);
+                ScanActivity.isDebug=true;
+                if (!hasPermission(Permission.Group.CAMERA)) {
+                    requestPermission(Permission.Group.CAMERA);
+                }else {
+                    Intent intent = new Intent(this,ScanActivity.class);
+                    startActivityForResult(intent, 222);
+                }
             }
             return false;
         });
@@ -659,6 +666,9 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        if (cursor==null){
+            return;
+        }
         List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -749,6 +759,8 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 String result = data.getStringExtra("result");
                 if (StringUtils.strIsNumber(result) && result.length() == 10) {
                     mCompanyID.setText(result);
+                    mCompanyID.setSelection(result.length());
+                    getCompanyDomainById(result,false);
                 } else {
                     ToastUtils.snackbarShort(this, "格式错误!", "确定", new View.OnClickListener() {
                         @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.QRCodeScanActivity">
-
+<!--
     <com.yanzhenjie.zbar.camera.CameraPreview
         android:id="@+id/capture_preview"
         android:layout_width="match_parent"
@@ -28,6 +28,6 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/scan_line"/>
         </RelativeLayout>
-    </com.yanzhenjie.zbar.camera.CameraPreview>
+    </com.yanzhenjie.zbar.camera.CameraPreview>-->
 
 </RelativeLayout>

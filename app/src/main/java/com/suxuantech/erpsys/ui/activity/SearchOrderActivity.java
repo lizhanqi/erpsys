@@ -48,7 +48,6 @@ import com.suxuantech.erpsys.utils.KeyBoardUtils;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.permission.Permission;
 
@@ -60,6 +59,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.lzq.zbarscanner.demo.ScanActivity;
 //import top.lizhanqi.www.libzbar.scan.CaptureActivity;
 
 /**
@@ -477,7 +477,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 if (!hasPermission(Permission.Group.CAMERA)) {
                     requestPermission(Permission.Group.CAMERA);
                 } else {
-                    Intent intent = new Intent(this, CaptureActivity.class);
+                    Intent intent = new Intent(this, ScanActivity.class);
                     startActivityForResult(intent, GET_ORDER_ID);
                 }
                 break;

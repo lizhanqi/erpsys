@@ -24,10 +24,10 @@ android {
         versionName rootProject.ext.android.versionName
         // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-/*        ndk {
+        ndk {
             //   abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', 'x86', 'x86_64'
             abiFilters  'armeabi-v7a','x86'//,'x86_64','mips64', 'arm64-v8a','mips'
-        }*/
+        }
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "a04189425ae181529578cc52", //JPush上注册的包名对应的appkey.
@@ -93,7 +93,7 @@ android {
     }
 }
 dependencies {
-//    implementation 'com.github.czy1121:loadinglayout:1.0.1'
+    //    implementation 'com.github.czy1121:loadinglayout:1.0.1'
     implementation rootProject.ext.dependencies.v7
     implementation rootProject.ext.dependencies.v4
     implementation rootProject.ext.dependencies.permission
@@ -131,7 +131,7 @@ dependencies {
     implementation rootProject.ext.dependencies.utilcode
     //implementation rootProject.ext.dependencies.zbar
     implementation rootProject.ext.dependencies.pickerview
-//    implementation rootProject.ext.dependencies.camera
+    //    implementation rootProject.ext.dependencies.camera
     implementation rootProject.ext.dependencies.album
     implementation rootProject.ext.dependencies.SuperTextView
     implementation rootProject.ext.dependencies.ImmersedBar
@@ -157,7 +157,7 @@ dependencies {
     ////        exclude group: 'com.android.support'
     //    }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':libzxing')
+    // implementation project(':libzxing')
     implementation project(':IMLib')
     implementation project(':IMKit')
     implementation project(':libcalendar')
@@ -172,9 +172,10 @@ dependencies {
     implementation rootProject.ext.dependencies.buttonProgress
     implementation 'com.hanks:htextview-base:+'
     implementation 'com.hanks:htextview-fall:+'
-   // implementation project(':libzbar')
+    // implementation project(':libzbar')
     //帧数检测工具
-    debugImplementation "com.github.brianPlummer:tinydancer:0.1.2"
+    debugImplementation 'com.github.brianPlummer:tinydancer:0.1.2'
+    implementation project(':libzbar')
 }
 
 //删除release文件夹

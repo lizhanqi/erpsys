@@ -6,10 +6,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
@@ -21,24 +24,30 @@ import com.suxuantech.erpsys.R;
 
 public class ProgressWebView extends WebView {
     private ProgressBar progressbar;
-    public interface  LoadingUrlMonitor{
-        void  loadNewUrl(String url );
-        void  loadTitle(String title );
+
+    public interface LoadingUrlMonitor {
+        void loadNewUrl(String url);
+
+        void loadTitle(String title);
     }
+
     LoadingUrlMonitor loadingUrl;
+
     public void setLoadingUrlMonitor(LoadingUrlMonitor loadingUrl) {
         this.loadingUrl = loadingUrl;
     }
+
     public void setProgressbar(ProgressBar progressbar) {
-        removeViewInLayout(   this.progressbar );
-        progressbar.getLayoutParams().height=10;
+        removeViewInLayout(this.progressbar);
+        progressbar.getLayoutParams().height = 10;
         Drawable drawable = getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         this.progressbar = progressbar;
     }
+
     public ProgressWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        progressbar = new ProgressBar(context, null,   android.R.attr.progressBarStyleHorizontal);
+        progressbar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
         progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 10, 0, 0));
         Drawable drawable = context.getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
@@ -47,7 +56,7 @@ public class ProgressWebView extends WebView {
         setWebChromeClient(new MyWebChromeClient());
         //是否可以缩放
         getSettings().setSupportZoom(true);
-       getSettings() .setJavaScriptEnabled(true);
+        getSettings().setJavaScriptEnabled(true);
         getSettings().setBuiltInZoomControls(true);
         getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         getSettings().setSupportMultipleWindows(true);
@@ -61,6 +70,10 @@ public class ProgressWebView extends WebView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+
+
+
+
     }
 
     public class MyWebChromeClient extends WebChromeClient {
@@ -99,12 +112,27 @@ public class ProgressWebView extends WebView {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-           if (loadingUrl!=null){
-               loadingUrl.loadTitle(title);
-           }
+            if (loadingUrl != null) {
+                loadingUrl.loadTitle(title);
+            }
         }
     }
+
+    //https://blog.csdn.net/lhkzx007/article/details/41527177
     public class MyWebViewClient extends WebViewClient {
+        @Nullable
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            return super.shouldInterceptRequest(view, request);
+        }
+
+        @Nullable
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+
+            return super.shouldInterceptRequest(view, url);
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url == null) {
@@ -136,6 +164,7 @@ public class ProgressWebView extends WebView {
             }
             return true;
         }
+
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, android.net.http.SslError error) {
             handler.proceed();
