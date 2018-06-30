@@ -45,6 +45,7 @@ import java.util.List;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.lzq.zbarscanner.demo.ScanActivity;
 import io.rong.imkit.RongIM;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.RongException;
@@ -211,6 +212,7 @@ public class App extends Application {
      * 需要debug才能开启的东西
      */
     public void debug() {
+        ScanActivity.isDebug=ISDEBUG;
         if (!ISDEBUG) {
             try {
                 //融云检测初始化
