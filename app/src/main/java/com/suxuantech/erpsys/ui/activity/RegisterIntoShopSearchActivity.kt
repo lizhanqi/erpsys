@@ -25,6 +25,7 @@ import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.presenter.RegsiterPresenter
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
+import com.suxuantech.erpsys.ui.widget.ErrorView
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.StringUtils
@@ -82,9 +83,14 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
             llLossing!!.visibility = View.GONE
         }
     }
-
+    var errorView: ErrorView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        errorView = ErrorView(this);
+        errorView?.setOnClickListener {
+            errorView?.setProgressBarVisible(true)
+            smartRefreshLayout?.autoRefresh()
+        }
         setContentView(R.layout.activity_register_into_shop_search)
         supportToolbar()
         title = intent.getStringExtra("title");
@@ -96,7 +102,9 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
             override fun registerSearchFailed(response: Response<RegisterEntity>?, pageIndex: Int) {
                 smartRefreshLayout?.finishRefresh()
                 smartRefreshLayout?.finishLoadMore()
+                setSoSoAdaputer(null, pageIndex<1, false)
             }
+
 
             override fun registerSearchOk(data: List<RegisterEntity.DataBean>?, isFresh: Boolean, hasMore: Boolean) {
                 setSoSoAdaputer(data!!, isFresh, hasMore)
@@ -138,6 +146,8 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
         if (hideSearch) {
             findViewById<LinearLayout>(R.id.ll_serach).visibility = View.GONE;
             smartRefreshLayout?.autoRefresh()
+        }else{
+            smartRefreshLayout?.setBackgroundColor(resources.getColor(R.color.white))
         }
         smartRefreshLayout?.isEnableLoadMore = true
         rvRegister!!.layoutManager = LinearLayoutManager(baseContext)
@@ -247,6 +257,7 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
                     setAdaputer(response.get().data)
                 } else {
                     if (pageIndex == 0) {
+                        setAdaputer(null)
                         smartRefreshLayout?.finishRefresh(false)
                     } else {
                         smartRefreshLayout?.finishLoadMore(false)
@@ -280,7 +291,13 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     /**
      * 设置类型的适配器
      */
-    private fun setAdaputer(dataX: List<RegisterEntity.DataBean>) {
+    private fun setAdaputer(dataX: List<RegisterEntity.DataBean>?) {
+        if (dataX == null || dataX.size < pageSize) {
+            smartRefreshLayout?.setEnableLoadMore(false)
+        } else {
+            smartRefreshLayout?.setEnableLoadMore(true)
+        }
+        adapter.emptyView = errorView;
         if (pageIndex == 0 || pageIndex == 1) {
             adapter.updateAll(dataX)
             rvRegister!!.adapter = adapter
@@ -292,13 +309,16 @@ class RegisterIntoShopSearchActivity : TitleNavigationActivity() {
     /**
      * 设置搜索的设配器
      */
-    private fun setSoSoAdaputer(dataX: List<RegisterEntity.DataBean>, isFresh: Boolean, hasMore: Boolean) {
+    private fun setSoSoAdaputer(dataX: List<RegisterEntity.DataBean>?, isFresh: Boolean, hasMore: Boolean) {
         if (isFresh) {
             smartRefreshLayout?.finishRefresh()
         } else {
             smartRefreshLayout?.finishLoadMore()
         }
         smartRefreshLayout?.setEnableAutoLoadMore(hasMore)
+        errorView?.reset()
+        errorView?.setBackgroundColor(resources.getColor(R.color.white))
+        adapter.emptyView = errorView;
         if (pageIndex == 0 || pageIndex == 1) {
             adapter.updateAll(dataX)
             rvRegister!!.adapter = adapter

@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.suxuantech.StringTag;
+import com.suxuantech.erpsys.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;

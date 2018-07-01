@@ -32,7 +32,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.hanks.htextview.fall.FallTextView;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.suxuantech.StringTag;
+import com.suxuantech.erpsys.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.OptionHelp;

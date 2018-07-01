@@ -82,7 +82,6 @@
     <style name="notData">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/bgColor_divier</item>
         <item name="android:orientation">vertical</item>
     </style>
     <!--一个横线-->

@@ -21,7 +21,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.gyf.barlibrary.ImmersionBar;
-import com.suxuantech.StringTag;
+import com.suxuantech.erpsys.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.chat.ConversationListFragment;

@@ -22,7 +22,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.suxuantech.StringTag;
+import com.suxuantech.erpsys.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.BusinssunitEntity;

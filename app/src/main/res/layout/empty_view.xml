@@ -7,7 +7,7 @@
         android:layout_height="80dp"
         android:layout_width="80dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/empty_icon"/>
+        android:src="@drawable/not_data"/>
     <LinearLayout
         android:gravity="center"
         android:orientation="horizontal"
@@ -19,8 +19,9 @@
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"/>
+            android:id="@+id/progress_error"/>
         <TextView
+            android:id="@+id/tv_error_text"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

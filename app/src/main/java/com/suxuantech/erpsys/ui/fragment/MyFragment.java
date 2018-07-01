@@ -13,7 +13,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
-import com.suxuantech.StringTag;
+import com.suxuantech.erpsys.StringTag;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.common.WebActivityConfig;

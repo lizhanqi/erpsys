@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/rc_notice_warning"
     tools:context="com.suxuantech.erpsys.ui.activity.TodayCustomerActivity">
     <fragment
         android:id="@+id/fdata"
         android:name="com.suxuantech.erpsys.ui.fragment.HomeDataFragement"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.gyf.barlibrary.ImmersionBar;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.ui.activity.base.BaseLazyFragment;
-import com.suxuantech.erpsys.utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,7 @@ public class ERPRightFragment extends BaseLazyFragment {
         //这个不能重复设置,否则会多次下移,导致视图问题
         ImmersionBar.setTitleBar(getActivity(),mRootView);
         TextView tv_revenue = view.findViewById(R.id.tv_revenue);
-        TextUtils.setColorText(tv_revenue, "￥", "10000 ", R.color.noticeOrange);
+        //TextUtils.setColorText(tv_revenue, "￥", "10000 ", R.color.noticeOrange);
 //       String tmp = "价格 ：<font color=\""+getResources().getColor(R.color.noticeOrange)+"\">%s";
 //       String str1=String.format(tmp, String.format("￥%1$.2f元", 6000));
 //       tv_revenue.setText(Html.fromHtml(str1));

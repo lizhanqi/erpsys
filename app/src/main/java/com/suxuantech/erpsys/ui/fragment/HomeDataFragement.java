@@ -38,6 +38,7 @@ import com.suxuantech.erpsys.ui.activity.CustomerDetailsActivity;
 import com.suxuantech.erpsys.ui.activity.OrderDetailActivity;
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
+import com.suxuantech.erpsys.ui.widget.ErrorView;
 import com.suxuantech.erpsys.utils.DateUtil;
 import com.suxuantech.erpsys.utils.GlideRoundTransform;
 import com.suxuantech.erpsys.utils.MyString;
@@ -168,6 +169,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                 } else {
                     if (pageIndex == 0) {
                         smartRefreshLayout.finishRefresh(false);
+                        setTodayAdapter(null);
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
@@ -178,6 +180,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             public void onFailed(int what, Response<HomeDataTodayCustomerEntity> response) {
                 if (pageIndex == 0) {
                     smartRefreshLayout.finishRefresh(false);
+
                 } else {
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 }
@@ -185,7 +188,6 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         };
         request(0, todayMoneyEntityJavaBeanRequest, searchByCustmor, false, false);
     }
-
 
     /**
      * 今日收款
@@ -209,6 +211,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                 } else {
                     if (pageIndex == 0) {
                         smartRefreshLayout.finishRefresh(false);
+                        setTodayCollectionMoneyAdapter(null);
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     }
@@ -233,9 +236,17 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
      * @param data
      */
     public void setTodayAdapter(List<HomeDataTodayCustomerEntity.DataBean> data) {
+        if (data == null || data.size() < pageSize) {
+            smartRefreshLayout.setEnableLoadMore(false);
+        } else {
+            smartRefreshLayout.setEnableLoadMore(true);
+        }
         if (pageIndex <= 1) {
             smartRefreshLayout.finishRefresh();
+        } else {
+            smartRefreshLayout.finishLoadMore();
         }
+        errorView.reset();
         if (adapter == null) {
             adapter = new QuickAdapter<HomeDataTodayCustomerEntity.DataBean>(R.layout.item_register_info, data) {
                 @Override
@@ -248,7 +259,6 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     TextView date = helper.getView(R.id.tv_register_date);
                     TextView staff = helper.getView(R.id.tv_register_staff);
                     TextView reason = helper.getView(R.id.tv_run_reason);
-
                     LinearLayout wrapContant = helper.getView(R.id.ll_content);
                     LinearLayout lossing = helper.getView(R.id.ll_lossing);
 
@@ -263,12 +273,14 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     lossing.setVisibility(View.GONE);
                 }
             };
+
             adapter.setOnItemClickListener((adapter, view, position) -> {
                 HomeDataTodayCustomerEntity.DataBean d = (HomeDataTodayCustomerEntity.DataBean) adapter.getData().get(position);
                 gotoDetails(d.getId() + "");
             });
             searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
             recyclerView.setAdapter(adapter);
+            adapter.setEmptyView(errorView);
         } else {
             if (pageIndex <= 1) {
                 adapter.updateAll(data);
@@ -284,9 +296,15 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
      * @param data
      */
     public void setTodayCollectionMoneyAdapter(List<TodayMoneyEntity.DataBean> data) {
+        if (data == null || data.size() < pageSize) {
+            smartRefreshLayout.setEnableLoadMore(false);
+        } else {
+            smartRefreshLayout.setEnableLoadMore(true);
+        }
         if (pageIndex <= 1) {
             smartRefreshLayout.finishRefresh();
         }
+        errorView.reset();
         if (adapter == null) {
             adapter = new QuickAdapter<TodayMoneyEntity.DataBean>(R.layout.item_search_option_panel, data) {
                 @Override
@@ -319,8 +337,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                         App.getContext().getResources().getString(R.string.end_time), true, false);
             });
             searchItemDecoration = new DefaultItemDecoration(getResources().getColor(R.color.gray_f9), 0, 30).offSetX(0);
-            //      recyclerView.addItemDecoration(searchItemDecoration);
             recyclerView.setAdapter(adapter);
+            adapter.setEmptyView(errorView);
         } else {
             if (pageIndex <= 1) {
                 adapter.updateAll(data);
@@ -330,6 +348,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         }
     }
 
+    ErrorView errorView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         drawables.add(getResources().getDrawable(R.drawable.image_1));
@@ -338,7 +358,16 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         drawables.add(getResources().getDrawable(R.drawable.image_4));
         //这里一定要ButterKnife和返回的view是同一个,不然布局显示不出来
         mSearchOrderPresenter = new SearchOrderPresenter(this);
-        View inflate = inflater.inflate(R.layout.fun_game_battle_city_refresh, container, false);
+        View inflate = inflater.inflate(R.layout.smartrefresh_and_recyclerview, container, false);
+        errorView = new ErrorView(getContext());
+        errorView.setBackgroundColor(getResources().getColor(R.color.white));
+        errorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                errorView.setProgressBarVisible(true);
+                smartRefreshLayout.autoRefresh();
+            }
+        });
         recyclerView = inflate.findViewById(R.id.recycler_view);
         smartRefreshLayout = inflate.findViewById(R.id.srl_fresh);
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -432,6 +461,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     setTodayCustomerAdaputer(data);
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 } else {
+                    setTodayCustomerAdaputer(null);
                     smartRefreshLayout.finishRefresh(false);
                 }
             }
@@ -439,6 +469,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             @Override
             public void onFailed(int what, Response<TodayCustomerEntity> response) {
                 smartRefreshLayout.finishRefresh(false);
+                setTodayCustomerAdaputer(null);
                 smartRefreshLayout.finishLoadMore();
             }
         };
@@ -462,6 +493,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     setMakeAnIntoStoreAdaputer(data);
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 } else {
+                    setMakeAnIntoStoreAdaputer(null);
                     smartRefreshLayout.finishRefresh(false);
                 }
             }
@@ -469,6 +501,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             @Override
             public void onFailed(int what, Response<MakeAnIntoStoreEntity> response) {
                 smartRefreshLayout.finishRefresh(false);
+                setMakeAnIntoStoreAdaputer(null);
                 smartRefreshLayout.finishLoadMore();
             }
         };
@@ -481,6 +514,9 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
      * (拍照客户,礼服客户,化妆客户,选片客户,取件客户)
      */
     void setTodayCustomerAdaputer(List<TodayCustomerEntity.DataBean> data) {
+
+        smartRefreshLayout.setEnableLoadMore(false);
+        errorView.reset();
         if (adapter == null) {
             adapter = new QuickAdapter<TodayCustomerEntity.DataBean>(R.layout.item_today_customer, data) {
                 @Override
@@ -502,6 +538,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
 
                 }
             };
+            adapter.setEmptyView(errorView);
         } else {
             adapter.updateAll(data);
         }
@@ -509,9 +546,9 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                    mSearchOrderPresenter.sosoNetOrder(data.get(position).getOrderId(),
-                            App.getContext().getResources().getString(R.string.start_time),
-                            App.getContext().getResources().getString(R.string.end_time), true, false);
+                mSearchOrderPresenter.sosoNetOrder(data.get(position).getOrderId(),
+                        App.getContext().getResources().getString(R.string.start_time),
+                        App.getContext().getResources().getString(R.string.end_time), true, false);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -548,6 +585,8 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
     }
 
     public void setMakeAnIntoStoreAdaputer(List<MakeAnIntoStoreEntity.DataBean> makeAnIntoStoreAdaputer) {
+        smartRefreshLayout.setEnableLoadMore(false);
+        errorView.reset();
         if (adapter == null) {
             adapter = new QuickAdapter<MakeAnIntoStoreEntity.DataBean>(R.layout.item_today_customer, makeAnIntoStoreAdaputer) {
                 @Override
@@ -564,6 +603,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     info2.setText("预约进店:" + DateUtil.String2String(item.getYjd_day(), DateUtil.DatePattern.RB_DATE_TIME_SYMBOL, DateUtil.DatePattern.ALL_TIME));
                 }
             };
+            adapter.setEmptyView(errorView);
         } else {
             adapter.updateAll(makeAnIntoStoreAdaputer);
         }
