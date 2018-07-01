@@ -68,7 +68,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragment;
 
 public class OrderDetailActivity extends TitleNavigationActivity implements DressMaterialFragment.OnFragmentInteractionListener {
@@ -78,8 +77,8 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     private BaseRecyclerAdapter<String> stringBaseRecyclerAdapter;
     private ProductDataFragment productDataFragment;
     String current;
-    public static int SHOW_PHOTO_MATERIAL=4,SHOW_OPTION_PANEL_MATERIAL=5;
-    public static String SHOWONPOSITION ="showOnPosition";
+    public static int SHOW_PHOTO_MATERIAL = 4, SHOW_OPTION_PANEL_MATERIAL = 5;
+    public static String SHOWONPOSITION = "showOnPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +100,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
     @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
-            case R.id. ll_toolbar_center_root:
+            case R.id.ll_toolbar_center_root:
             case R.id.img_toolbar_center:
             case R.id.tv_toolbar_center_title:
                 if (getIntent().getBooleanExtra("canChange", true)) {
@@ -130,79 +129,69 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         }
         switch (current) {
             default:
-                if (findFragment(CustomerInformationFragment.class) == null) {
+                if (mFragments[0] == null) {
                     CustomerInformationFragment customerInformationFragment = new CustomerInformationFragment();
                     mFragments[0] = customerInformationFragment;
                     Bundle bund = getIntent().getExtras();
                     customerInformationFragment.setArguments(bund);
-                    loadRootFragment(R.id.container, mFragments[0], false, true);
-                } else {
-                    start(mFragments[0], ISupportFragment.SINGLETASK);
                 }
+                loadRootFragment(R.id.container, mFragments[0], false, true);
                 break;
             case "服务费用":
-                if (findFragment(ServiceFeeFragment.class) == null) {
+                if (mFragments[1] == null) {
                     ServiceFeeFragment serviceFeeFragment = new ServiceFeeFragment();
                     mFragments[1] = serviceFeeFragment;
-                    loadRootFragment(R.id.container, mFragments[1], false, true);
-                } else {
-                    start(mFragments[1], ISupportFragment.SINGLETASK);
                 }
+                loadRootFragment(R.id.container, mFragments[1], false, true);
                 break;
             case "付款明细":
                 toTabFragement(TabControlFragment.whichInFragement.PAY_DETAILS);
                 break;
             case "取件资料":
-                if (findFragment(TakeDataFragment.class) == null) {
+                if (mFragments[5] == null) {
                     TakeDataFragment takeDataFragment = new TakeDataFragment();
                     mFragments[5] = takeDataFragment;
                     String orderId = getIntent().getStringExtra("orderId");
                     Bundle bundle = new Bundle();
                     bundle.putString("orderId", orderId);
                     takeDataFragment.setArguments(bundle);
-                    loadRootFragment(R.id.container, mFragments[5], false, true);
-                } else {
-                    start(mFragments[5], ISupportFragment.SINGLETASK);
                 }
+                loadRootFragment(R.id.container, mFragments[5], false, true);
                 break;
             case "摄影资料":
                 toTabFragement(TabControlFragment.whichInFragement.SHOOT);
                 break;
             case "化妆资料":
-                if (findFragment(MakeUpFragment.class) == null) {
+                if (mFragments[6] == null) {
                     MakeUpFragment makeUpFragment = new MakeUpFragment();
                     mFragments[6] = makeUpFragment;
                     Bundle data = getIntent().getExtras();
                     makeUpFragment.setArguments(data);
-                    loadRootFragment(R.id.container, mFragments[6], false, true);
                 }
+                loadRootFragment(R.id.container, mFragments[6], false, true);
                 break;
             case "选片资料":
                 toTabFragement(TabControlFragment.whichInFragement.OPTION_PANEL);
                 break;
             case "礼服资料":
-                if (findFragment(ProductDataFragment.class) == null) {
+                if (mFragments[4] == null) {
                     DressMaterialFragment dressMaterialFragment = new DressMaterialFragment();
                     mFragments[4] = dressMaterialFragment;
                     String orderId = getIntent().getStringExtra("orderId");
                     Bundle bundle = new Bundle();
                     bundle.putString("orderId", orderId);
                     dressMaterialFragment.setArguments(bundle);
-                    loadRootFragment(R.id.container, mFragments[4], false, true);
-                } else {
-                    start(mFragments[4], ISupportFragment.SINGLETASK);
                 }
+                loadRootFragment(R.id.container, mFragments[4], false, true);
                 break;
             case "产品资料":
-                if (findFragment(ProductDataFragment.class) == null) {
+                if (mFragments[3] == null) {
                     productDataFragment = new ProductDataFragment();
                     mFragments[3] = productDataFragment;
                     Bundle bundle = getIntent().getExtras();
                     productDataFragment.setArguments(bundle);
-                    loadRootFragment(R.id.container, mFragments[3], false, true);
-                } else {
-                    start(mFragments[3], ISupportFragment.SINGLETASK);
                 }
+                loadRootFragment(R.id.container, productDataFragment, false, true);
                 break;
         }
     }
@@ -245,7 +234,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                     .setEnabled(true)
                     .setOnMenuItemClickListener(menuItem -> {
                         if (productDataFragment.hasPackage()) {
-                            String[] s = {"一销产品" };
+                            String[] s = {"一销产品"};
                             AlertView alertView = new AlertView("添加产品", null, getString(R.string.cancel), null, s, this, AlertView.Style.ACTIONSHEET, new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Object o, int position) {//position -1是取消按钮
@@ -278,8 +267,7 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         } else if (add.equals("removeAllMenu")) {
             menu.clear();
-        }
-        else if (add.equals("removeEdit")) {
+        } else if (add.equals("removeEdit")) {
             menu.removeItem(1);
         }
     }
@@ -292,17 +280,10 @@ public class OrderDetailActivity extends TitleNavigationActivity implements Dres
         Bundle bd = new Bundle();
         bd.putSerializable("witch", witch);
         bd.putString("orderId", getIntent().getStringExtra("orderId"));
-         TabControlFragment tabControlFragment = new TabControlFragment();
+        TabControlFragment tabControlFragment = new TabControlFragment();
         mFragments[2] = tabControlFragment;
         tabControlFragment.setArguments(bd);
         loadRootFragment(R.id.container, mFragments[2], false, true);
-//        if (findFragment(TabControlFragment.class) == null) {
-//
-//        } else {
-//            // 传递的bundle数据，会调用目标Fragment的onNewBundle(Bundle newBundle)方法
-//            start(mFragments[2], ISupportFragment.SINGLETASK);
-//            mFragments[2].onNewBundle(bd);
-//        }
     }
 
     /**
