@@ -103,7 +103,7 @@ class StaffDetailsActivity : TitleNavigationActivity() {
         val mailIntent = Intent(Intent.ACTION_SENDTO)
         mailIntent.data = Uri.parse("mailto:"+StringUtils.safetyString(data.email))
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, "来自"+ App.getApplication().userInfor.staffname+"的邮件")
-        mailIntent.putExtra(Intent.EXTRA_TEXT, "\u3000\u3000您好!我是")
+        mailIntent.putExtra(Intent.EXTRA_TEXT, "\u3000\u3000您好!我是"+App.getApplication().userInfor.staffname)
         mainlFormEntity.valueAutoAction=mailIntent
         arrayList.add(mainlFormEntity)
         var adapter = object : QuickAdapter<FormEntity>(R.layout.item_form, arrayList) {

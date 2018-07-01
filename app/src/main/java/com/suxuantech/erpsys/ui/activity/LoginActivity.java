@@ -168,6 +168,17 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
     };
 
     @Override
+    public void permissionGrantedResult(List<String> permissions) {
+        if(permissions.get(0).equals(Permission.CAMERA)){
+            if (hasPermission(Permission.CAMERA)){
+                Intent intent = new Intent(this,ScanActivity.class);
+                startActivityForResult(intent, 222);
+            }
+        }
+        super.permissionGrantedResult(permissions);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         loadingDialog = DialogCreator.createLoadingDialog(LoginActivity.this, "登录中ing...");
         super.onCreate(savedInstanceState);
