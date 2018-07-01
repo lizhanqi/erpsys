@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.KeyEvent
 import android.view.Menu
+import android.view.MotionEvent
 import android.view.View
 import android.webkit.WebSettings
 import android.widget.ImageView
@@ -15,6 +16,8 @@ import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.ui.activity.base.TitleNavigationActivity
 import com.suxuantech.erpsys.ui.widget.ProgressWebView
 import com.suxuantech.erpsys.utils.ReflexUtils
+
+
 
 class BaseWebActivity : TitleNavigationActivity() {
     protected var mWebView: ProgressWebView? = null
@@ -111,7 +114,22 @@ class BaseWebActivity : TitleNavigationActivity() {
                 mWebView?.reload();
                 swipeRefreshLayout?.isRefreshing = false
             }
+            mWebView?.setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(v: View, event: MotionEvent): Boolean {
+                    when (event.getAction()) {
+                        MotionEvent.ACTION_DOWN -> run {
+                            if (mWebView?.getScrollY()!! <= 0) {
+                                swipeRefreshLayout.setEnabled(true)
+                            } else {
+                                swipeRefreshLayout.setEnabled(false)
+                            }
+                        }
 
+                    }
+                    return false
+                }
+
+            })
             //mWebFreshView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             //   mWebFreshView?.setColorSchemeColors(R.color.themeColor, R.color.gradual_change1, R.color.gradual_change2, R.color.gradual_change3)
 //            mSmartRefresh?.setRefreshHeader(mWebFreshView)
