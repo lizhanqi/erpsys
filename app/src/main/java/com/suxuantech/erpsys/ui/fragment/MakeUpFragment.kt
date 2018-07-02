@@ -22,6 +22,7 @@ import com.suxuantech.erpsys.nohttp.HttpListener
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest
 import com.suxuantech.erpsys.ui.activity.MakeUpDetailsActivity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
+import com.suxuantech.erpsys.ui.widget.ErrorView
 import com.suxuantech.erpsys.utils.MyString
 import com.suxuantech.erpsys.utils.StringUtils
 import com.yanzhenjie.nohttp.RequestMethod
@@ -31,24 +32,18 @@ import com.yanzhenjie.nohttp.rest.Response
  * 化妆
  */
 class MakeUpFragment : BaseSupportFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     var tvSumMoney: TextView? = null
     var tvPaidMoney: TextView? = null
     var tvDebtMoney: TextView? = null
     var rvMakeUp: RecyclerView? = null
     var smart_refresh: SmartRefreshLayout? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    var erroView :ErrorView?=null;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        erroView= ErrorView(context)
+        erroView?.setBackgroundColor(resources.getColor(R.color.white))
         return inflater.inflate(R.layout.fragment_make_up, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val string = arguments?.getString("orderId");
@@ -56,8 +51,13 @@ class MakeUpFragment : BaseSupportFragment() {
         tvPaidMoney = view.findViewById<View>(R.id.tv_paid_money) as TextView
         tvDebtMoney = view.findViewById<View>(R.id.tv_debt_money) as TextView
         rvMakeUp = view.findViewById<View>(R.id.rv_make_up) as RecyclerView
+        erroView?.setOnClickListener(View.OnClickListener {
+            erroView?.setLoading(true)
+            smart_refresh?.autoRefresh();
+        })
         smart_refresh = view.findViewById<View>(R.id.smrl_make_up) as SmartRefreshLayout
         smart_refresh?.autoRefresh()
+        smart_refresh?.setEnableLoadMore(false)
         smart_refresh?.setOnRefreshListener(OnRefreshListener {
             if (!TextUtils.isEmpty(string)) {
                 getData(string)
@@ -86,13 +86,19 @@ class MakeUpFragment : BaseSupportFragment() {
         val searchByCustmor = object : HttpListener<MakeUpEntity> {
             override fun onSucceed(what: Int, response: Response<MakeUpEntity>) {
                 smart_refresh?.finishRefresh()
+
                 if (response.get().isOK) {
                     setAdapter(response.get().data)
+                }else{
+                    erroView?.let { smart_refresh?.setRefreshContent(it) }
+                    erroView?.setLoading(false)
                 }
             }
 
             override fun onFailed(what: Int, response: Response<MakeUpEntity>) {
-                smart_refresh?.finishRefresh()
+                erroView?.setLoading(false)
+                smart_refresh?.finishRefresh(false)
+                erroView?.let { smart_refresh?.setRefreshContent(it) }
             }
         }
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false)
@@ -132,6 +138,7 @@ class MakeUpFragment : BaseSupportFragment() {
             intent.putExtra("makeUpId", "" + data.get(position).id)
             startActivity(intent);
         }
+        rvMakeUp?.let { smart_refresh?.setRefreshContent(it) }
     }
 
     companion object {

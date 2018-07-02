@@ -43,7 +43,7 @@ public class ErrorView extends LinearLayout {
     ProgressBar progressBar;
 
     public ErrorView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public ErrorView(Context context, @Nullable AttributeSet attrs) {
@@ -54,34 +54,48 @@ public class ErrorView extends LinearLayout {
         setBackgroundColor(context.getResources().getColor(R.color.bgColor_divier));
     }
 
-    public void setErrorText(String text) {
+    public ErrorView setErrorText(String text) {
         tverror.setText(text);
         progressBar.setVisibility(INVISIBLE);
+        return this;
     }
 
-    public void reset( ) {
+    public ErrorView reset() {
         tverror.setText("暂无数据,点击重试");
         progressBar.setVisibility(INVISIBLE);
+        setVisibility(VISIBLE);
+        return this;
     }
-    public void reset( String  errorText) {
+
+    public ErrorView reset(String errorText) {
         tverror.setText(errorText);
         progressBar.setVisibility(INVISIBLE);
+        setVisibility(VISIBLE);
+        return this;
     }
+
     public void setLoading(boolean b) {
         setProgressBarVisible(b);
-        if (b){
+        if (b) {
             tverror.setText("加载中");
             progressBar.setVisibility(VISIBLE);
-        }else {
+        } else {
             reset();
         }
     }
 
-    public void setProgressBarVisible(boolean b) {
+    public ErrorView loading() {
+        tverror.setText("加载中");
+        progressBar.setVisibility(VISIBLE);
+        return this;
+    }
+
+    public ErrorView setProgressBarVisible(boolean b) {
         if (b) {
             progressBar.setVisibility(VISIBLE);
         } else {
             progressBar.setVisibility(INVISIBLE);
         }
+        return this;
     }
 }

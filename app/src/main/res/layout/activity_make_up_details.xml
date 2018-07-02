@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sm_refresh"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:padding="@dimen/px30"
-    android:orientation="horizontal"
     tools:context=".ui.activity.MakeUpDetailsActivity">
-    <TextView
-        android:textSize="@dimen/xs50"
-        android:id="@+id/tv_make_up_info"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
-    <TextView
-        android:textSize="@dimen/xs50"
-        android:gravity="right"
-        android:id="@+id/tv_make_up_number_info"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:padding="@dimen/px30"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textSize="@dimen/xs50"
+            android:id="@+id/tv_make_up_info"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:textSize="@dimen/xs50"
+            android:gravity="right"
+            android:id="@+id/tv_make_up_number_info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
