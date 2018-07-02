@@ -25,6 +25,6 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="没有数据,点击重试" />
+            android:text="暂无数据,点击重试" />
     </LinearLayout>
 </LinearLayout>

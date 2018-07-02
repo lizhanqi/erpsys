@@ -49,7 +49,7 @@ class DressMaterialFragment : BaseSupportFragment() {
                 } else {
                     errorView?.reset()
                     errorView?.let { smartRefreshLayout?.setRefreshContent(it) }
-                    smartRefreshLayout?.finishRefresh(false)
+                    smartRefreshLayout?.finishRefresh(true)
                 }
             }
 

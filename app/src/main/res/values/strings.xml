@@ -441,6 +441,6 @@
 
     <string name="picker_internalerror">发生错误</string>
     <string name="send_location_error">位置截图失败或会话为空</string>
-    <string name="empty_no_data">没有数据,点击重试</string>
+    <string name="empty_no_data">暂无数据,点击重试</string>
     <string name="empty_network_error">网络出错,点击重试</string>
 </resources>

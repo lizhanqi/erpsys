@@ -210,7 +210,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     setTodayCollectionMoneyAdapter(data);
                 } else {
                     if (pageIndex == 0) {
-                        smartRefreshLayout.finishRefresh(false);
+                        smartRefreshLayout.finishRefresh(true);
                         setTodayCollectionMoneyAdapter(null);
                     } else {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
@@ -364,13 +364,14 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         errorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                errorView.setProgressBarVisible(true);
+
                 smartRefreshLayout.autoRefresh();
             }
         });
         recyclerView = inflate.findViewById(R.id.recycler_view);
         smartRefreshLayout = inflate.findViewById(R.id.srl_fresh);
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            errorView.setLoading(true);
             if (adapter != null) {
                 adapter.getData().clear();
                 adapter.notifyDataSetChanged();
@@ -462,7 +463,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 } else {
                     setTodayCustomerAdaputer(null);
-                    smartRefreshLayout.finishRefresh(false);
+                    smartRefreshLayout.finishRefresh(true);
                 }
             }
 
@@ -494,7 +495,7 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
                     smartRefreshLayout.finishLoadMoreWithNoMoreData();
                 } else {
                     setMakeAnIntoStoreAdaputer(null);
-                    smartRefreshLayout.finishRefresh(false);
+                    smartRefreshLayout.finishRefresh(true);
                 }
             }
 
@@ -514,7 +515,6 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
      * (拍照客户,礼服客户,化妆客户,选片客户,取件客户)
      */
     void setTodayCustomerAdaputer(List<TodayCustomerEntity.DataBean> data) {
-
         smartRefreshLayout.setEnableLoadMore(false);
         errorView.reset();
         if (adapter == null) {
@@ -584,6 +584,10 @@ public class HomeDataFragement extends BaseSupportFragment implements ISearchOrd
         regsiterPresenter.exactsearch(true, nowDate, key);
     }
 
+    /**
+     * 预约进店适配器
+     * @param makeAnIntoStoreAdaputer
+     */
     public void setMakeAnIntoStoreAdaputer(List<MakeAnIntoStoreEntity.DataBean> makeAnIntoStoreAdaputer) {
         smartRefreshLayout.setEnableLoadMore(false);
         errorView.reset();
