@@ -68,6 +68,5 @@
             android:text="@string/recently_search"
             android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-    <View
-       style="@style/line"/>
+
 </LinearLayout>
