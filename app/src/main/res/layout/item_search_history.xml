@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="@dimen/px30"
-    android:paddingBottom="@dimen/px30"
-    android:paddingLeft="@dimen/px55"
-    android:id="@+id/tv_history"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/px55">
 
-</TextView>
+    <TextView
+        android:textSize="@dimen/xs36"
+        android:id="@+id/tv_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingVertical="@dimen/px50"
+        android:singleLine="true"
+        android:text="66666666" />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tv_time"
+        android:textSize="@dimen/xs25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/px50"
+        android:paddingLeft="@dimen/px55"
+        android:singleLine="true"
+        android:text="66666666" />
+</LinearLayout>

@@ -318,6 +318,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     /**
      * 拍照排程的点击事件
+     *
      * @param item
      * @param isAdd
      * @param changeIndex
@@ -350,6 +351,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     /**
      * 选片排程的点击事件
+     *
      * @param item
      * @param isAdd
      * @param changeIndex
@@ -463,6 +465,22 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             @Override
             public void convert(RecyclerHolder holder, HistoryEntity item, int position, boolean isScrolling) {
                 TextView view = holder.getView(R.id.tv_history);
+                TextView time = holder.getView(R.id.tv_time);
+                Long date = item.getDate();
+                long todayOrYesterday = DateUtil.getTodayOrYesterday(date);
+                if (todayOrYesterday == 0) {
+                    String date1 = DateUtil.long2String(date  , DateUtil.DatePattern.ONLY_HOUR_MINUTE);
+                    time.setText("今天"+date1.toString());
+                } else if (todayOrYesterday == -1) {
+                    String date1 = DateUtil.long2String(date  , DateUtil.DatePattern.ONLY_HOUR_MINUTE);
+                    time.setText("昨天"+date1.toString());
+                } else if (todayOrYesterday == -2) {
+                    String date1 = DateUtil.long2String(date  , DateUtil.DatePattern.ONLY_HOUR_MINUTE);
+                    time.setText("前天"+date1.toString());
+                } else {
+                    String date1 = DateUtil.long2String(date  , DateUtil.DatePattern.YEAR_MONTHE_DAY_TEXT);
+                    time.setText(date1);
+                }
                 view.setText(item.getName());
             }
         };
@@ -762,7 +780,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchPhotoSchemeFailed(Response<PhotoSchemeSearchEntity> response, int pageIndex) {
-     if (pageIndex == 0) {
+        if (pageIndex == 0) {
             smartRefreshLayout.finishRefresh(false);
             errorView.reset();
             photoSchemeAdaputer.setEmptyView(errorView);

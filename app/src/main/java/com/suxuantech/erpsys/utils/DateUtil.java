@@ -415,4 +415,33 @@ public class DateUtil {
                 return -1;
         }
     }
-}
+
+    /**
+     * -2:前天,-1：昨天,0：今天,1：明天,2：后天
+     * @param date
+     * @return
+     */
+    public static long getTodayOrYesterday(long date) {//date 是存储的时间戳
+        //所在时区时8，系统初始时间是1970-01-01 80:00:00，注意是从八点开始，计算的时候要加回去
+        int offSet = Calendar.getInstance().getTimeZone().getRawOffset();
+        long today = (System.currentTimeMillis() + offSet) / 86400000;
+        long start = (date + offSet) / 86400000;
+        long intervalTime = start - today;
+//        //-2:前天,-1：昨天,0：今天,1：明天,2：后天
+//        String strDes = "";
+//        if (intervalTime == 0) {
+//            strDes = getContext().getResources().getString(R.string.today);//今天
+//        } else if (intervalTime == -1) {
+//            strDes = getContext().getResources().getString(R.string.yesterday);//昨天
+//        } else {
+//            strDes = getFormatDate(date);//直接显示时间
+//        }
+        return intervalTime;
+    }
+    public static String long2String(Long dateString, DatePattern target) {
+        SimpleDateFormat dateformat = new SimpleDateFormat(target.getValue());
+
+        String dateStr = dateformat.format(dateString);
+        return dateStr;
+    }
+    }

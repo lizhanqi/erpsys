@@ -21,6 +21,7 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -111,11 +112,22 @@ public class SearchOrderPresenter {
         for (HistoryEntity h : searchHosiery) {
             String name = h.getName();
             if (name.equals(trim)) {
+                //更新时间
+                h.setDate(System.currentTimeMillis());
+                historyDao.update(h);
+                Collections.sort(searchHosiery, new Comparator<HistoryEntity>() {
+                    @Override
+                    public int compare(HistoryEntity historyEntity, HistoryEntity t1) {
+                        return historyEntity.getDate()>t1.getDate()?-1:1;
+                    }
+                });
                 return searchHosiery;
             }
         }
         HistoryEntity studentMsgBean = new HistoryEntity();
         studentMsgBean.setName(trim);
+      studentMsgBean.setDate(System.currentTimeMillis());
+      //  studentMsgBean.setTime(DateUtil.getNowDate(DateUtil.DatePattern.YEAR_MONTHE_DAY_TEXT));
         historyDao.insert(studentMsgBean);
         return searchHosiery = loadAllHistory();
     }
@@ -124,9 +136,16 @@ public class SearchOrderPresenter {
      * 获取本地DB中搜索历史
      */
     private List<HistoryEntity> loadAllHistory() {
+
         searchHosiery = historyDao.loadAll();
         //倒序下，因为最新的要在上面显示
-        Collections.reverse(searchHosiery);
+        Collections.sort(searchHosiery, new Comparator<HistoryEntity>() {
+            @Override
+            public int compare(HistoryEntity historyEntity, HistoryEntity t1) {
+                return historyEntity.getDate()>t1.getDate()?-1:1;
+            }
+        });
+      // Collections.reverse(searchHosiery);
         return searchHosiery;
     }
 
