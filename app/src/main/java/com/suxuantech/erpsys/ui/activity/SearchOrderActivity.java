@@ -568,7 +568,14 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             quickAdapter.setEnableLoadMore(false);
             quickAdapter.updateAll(null);
         }
-
+        if (optionPanelAdaputer != null) {
+            optionPanelAdaputer.setEnableLoadMore(false);
+            optionPanelAdaputer.updateAll(null);
+        }
+        if (optionPanelAdaputer != null) {
+            optionPanelAdaputer.setEnableLoadMore(false);
+            optionPanelAdaputer.updateAll(null);
+        }
         //网络搜搜
         if (searchType == TypeFlag.NOMAL) {
             if (App.getApplication().hasPermission("A2")) {
