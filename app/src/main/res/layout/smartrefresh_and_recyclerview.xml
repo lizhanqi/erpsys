@@ -25,7 +25,7 @@
             app:srlDrawableMarginRight="20dp"
             app:srlDrawableArrow="@drawable/ic_arrow"
             app:srlClassicsSpinnerStyle="Translate"/>
-        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        <android.support.v7.widget.RecyclerView
             android:background="@color/white"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

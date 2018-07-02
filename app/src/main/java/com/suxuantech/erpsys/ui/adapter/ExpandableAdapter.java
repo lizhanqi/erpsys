@@ -14,6 +14,7 @@ import com.suxuantech.erpsys.entity.DressEntity;
 import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,9 +32,24 @@ public class ExpandableAdapter extends GroupedRecyclerViewAdapter {
 
     public ExpandableAdapter(Context context, List<DressEntity.DataBean> data) {
         super(context);
+        if (data==null){
+            data=new ArrayList<>();
+        }
         mData = data;
     }
-
+    public  void upData(List<DressEntity.DataBean> data){
+        if (data==null){
+           if (mData!=null){
+               mData.clear();
+           }else {
+               mData=new ArrayList<>();
+           }
+        }else {
+            mData.clear();
+            mData.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getGroupCount() {
         return mData == null ? 0 : mData.size();
