@@ -98,4 +98,11 @@ public class ErrorView extends LinearLayout {
         }
         return this;
     }
+
+    public ErrorView setProgressBarGone() {
+
+            progressBar.setVisibility(GONE);
+
+        return this;
+    }
 }

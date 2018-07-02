@@ -13,6 +13,7 @@ import com.suxuantech.erpsys.R
 import com.suxuantech.erpsys.entity.PaymentDetailsEntity
 import com.suxuantech.erpsys.ui.adapter.QuickAdapter
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration
+import com.suxuantech.erpsys.ui.widget.ErrorView
 import com.suxuantech.erpsys.utils.DateUtil
 import com.suxuantech.erpsys.utils.StringUtils
 
@@ -31,6 +32,7 @@ class PaymentDetailFragment : BaseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         var position = arguments?.getInt("position")
         var data = arguments?.getSerializable("data") as PaymentDetailsEntity.DataBean
         var paylist = view.findViewById<RecyclerView>(R.id.rv_payment);
@@ -44,6 +46,10 @@ class PaymentDetailFragment : BaseSupportFragment() {
                 }
             }
              paylist.adapter=quickAdapter
+          var empty=  ErrorView(context)
+            empty.setBackgroundColor(resources.getColor(R.color.white) )
+            empty.reset("暂无明细").setProgressBarGone()
+            quickAdapter.setEmptyView(empty)
         } else if (position == 1) {
             var lf = data.lf
             var quickAdapter = object : QuickAdapter<PaymentDetailsEntity.DataBean.LfBean>(R.layout.item_payment, lf) {
@@ -52,6 +58,10 @@ class PaymentDetailFragment : BaseSupportFragment() {
                 }
             }
             paylist.adapter=quickAdapter
+            var empty=  ErrorView(context)
+            empty.setBackgroundColor(resources.getColor(R.color.white) )
+            empty.reset("暂无明细").setProgressBarGone()
+            quickAdapter.setEmptyView(empty)
         } else if (position == 2) {
             var hz = data.hz
             var quickAdapter = object : QuickAdapter<PaymentDetailsEntity.DataBean.HzBean>(R.layout.item_payment, hz) {
@@ -60,6 +70,10 @@ class PaymentDetailFragment : BaseSupportFragment() {
                 }
             }
             paylist.adapter=quickAdapter
+            var empty=  ErrorView(context)
+            empty.setBackgroundColor(resources.getColor(R.color.white) )
+            empty.reset("暂无明细").setProgressBarGone()
+            quickAdapter.setEmptyView(empty)
         }
     }
 

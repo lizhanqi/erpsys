@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,10 @@ import com.suxuantech.erpsys.utils.MyString;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -47,7 +49,7 @@ import butterknife.Unbinder;
  */
 public class TakeDataFragment extends BaseSupportFragment {
     @BindView(R.id.recycler_view)
-    SwipeMenuRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     //    @BindView(R.id.rotate_header_grid_view_frame)
 //    PtrClassicFrameLayout mRotateHeaderGridViewFrame;
     @BindView(R.id.srl_fresh)

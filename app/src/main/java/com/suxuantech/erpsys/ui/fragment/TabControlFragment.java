@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.suxuantech.erpsys.App;
 import com.suxuantech.erpsys.R;
 import com.suxuantech.erpsys.entity.CustomerPhotoEntity;
@@ -21,6 +22,7 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.DefaultFragmentAdapter;
+import com.suxuantech.erpsys.ui.widget.ErrorView;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
@@ -45,6 +47,8 @@ public class TabControlFragment extends BaseSupportFragment {
     private View view;
     private FragmentManager childFragmentManager;
     private DefaultFragmentAdapter defaultFragmentAdapter;
+    ErrorView errorView;
+    View contentView;
 
     public enum whichInFragement implements Serializable {
         SHOOT("摄影资料", 1), OPTION_PANEL("选片资料", 2), PAY_DETAILS("付款明细", 3);
@@ -75,9 +79,16 @@ public class TabControlFragment extends BaseSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         witch = (whichInFragement) getArguments().getSerializable("witch");
+        errorView = new ErrorView(getContext());
+        errorView.setOnClickListener(view1 -> {
+            refreshLayout.autoRefresh();
+        });
         view = inflater.inflate(R.layout.fragment_tab_control, container, false);
+        contentView = view.findViewById(R.id.ll_content);
         return view;
     }
+
+    SmartRefreshLayout refreshLayout;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -85,6 +96,11 @@ public class TabControlFragment extends BaseSupportFragment {
         fragments = new ArrayList<>();
         childFragmentManager = getChildFragmentManager();
         tablayout = view.findViewById(R.id.tablayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> {
+            onNewBundle(getArguments());
+        });
         pager = view.findViewById(R.id.vp);
         onNewBundle(getArguments());
     }
@@ -99,19 +115,32 @@ public class TabControlFragment extends BaseSupportFragment {
         HttpListener<SelectPictureEntity> searchByCustmor = new HttpListener<SelectPictureEntity>() {
             @Override
             public void onSucceed(int what, Response<SelectPictureEntity> response) {
+                refreshLayout.finishRefresh();
                 if (response.get().isOK()) {
                     List<SelectPictureEntity.DataBean> data = response.get().getData();
                     if (data != null) {
+                        refreshLayout.setRefreshContent(contentView);
                         initSelectFragment(data);
+                    } else {
+                        showError();
                     }
+                } else {
+                    showError();
                 }
             }
 
             @Override
             public void onFailed(int what, Response<SelectPictureEntity> response) {
+                refreshLayout.finishRefresh(false);
+                showError();
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
+    }
+
+    public void showError() {
+        errorView.reset();
+        refreshLayout.setRefreshContent(errorView);
     }
 
     /**
@@ -124,16 +153,24 @@ public class TabControlFragment extends BaseSupportFragment {
         HttpListener<CustomerPhotoEntity> searchByCustmor = new HttpListener<CustomerPhotoEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerPhotoEntity> response) {
+                refreshLayout.finishRefresh();
                 if (response.get().isOK()) {
                     List<CustomerPhotoEntity.DataBean> data = response.get().getData();
                     if (data != null) {
+                        refreshLayout.setRefreshContent(contentView);
                         initPhotoFragement(data);
+                    } else {
+                        showError();
                     }
+                } else {
+                    showError();
                 }
             }
 
             @Override
             public void onFailed(int what, Response<CustomerPhotoEntity> response) {
+                refreshLayout.finishRefresh(false);
+                showError();
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
@@ -289,6 +326,8 @@ public class TabControlFragment extends BaseSupportFragment {
     public void getPayDetails() {
         if (!App.getApplication().hasPermission("J2")) {
             ToastUtils.snackbarShort("无权限查看", "确定");
+            refreshLayout.finishRefresh(false);
+            showError();
             return;
         }
         String url = Contact.getFullUrl(Contact.PAYMENT, Contact.TOKEN, getArguments().getString("orderId"), App.getApplication().getUserInfor().getShop_code());
@@ -297,13 +336,19 @@ public class TabControlFragment extends BaseSupportFragment {
         HttpListener<PaymentDetailsEntity> searchByCustmor = new HttpListener<PaymentDetailsEntity>() {
             @Override
             public void onSucceed(int what, Response<PaymentDetailsEntity> response) {
+                refreshLayout.finishRefresh( );
                 if (response.get().isOK()) {
+                    refreshLayout.setRefreshContent(contentView);
                     initPaymentFragment(response.get().getData());
+                }else {
+                    showError();
                 }
             }
 
             @Override
             public void onFailed(int what, Response<PaymentDetailsEntity> response) {
+                refreshLayout.finishRefresh(false);
+                showError();
             }
         };
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);

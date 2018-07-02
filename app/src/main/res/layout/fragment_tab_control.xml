@@ -1,42 +1,41 @@
 <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:srlEnablePreviewInEditMode="true"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:srlPrimaryColor="@color/white"
     app:srlAccentColor="@color/themeColor"
-    app:srlFixedHeaderViewId="@+id/tableLayout">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:clickable="true"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.TabControlFragment">
-    <!--取件资料-->
-    <android.support.design.widget.TabLayout
-        android:layout_gravity="center"
-        android:id="@+id/tablayout"
+    app:srlPrimaryColor="@color/white">
+    <LinearLayout
+        android:layout_marginTop="@dimen/album_dp_10"
+        android:id="@+id/ll_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px106"
-        app:tabTextColor="@color/textHint_99"
-        app:tabBackground="@color/white"
-        app:tabMinWidth="@dimen/px360"
-        app:tabIndicatorHeight="@dimen/px5"
-        app:tabIndicatorColor="@color/themeColor"
-        app:tabGravity="center"
-        app:tabMode="fixed"
-        app:tabMaxWidth="@dimen/px360"
-        app:tabSelectedTextColor="@color/themeColor">
-    </android.support.design.widget.TabLayout>
-    <View style="@style/line" android:id="@+id/view_tl"/>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.TabControlFragment">
+        <!--取件资料-->
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px106"
+            android:layout_gravity="center"
+            app:tabBackground="@color/white"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/themeColor"
+            app:tabIndicatorHeight="@dimen/px5"
+            app:tabMaxWidth="@dimen/px360"
+            app:tabMinWidth="@dimen/px360"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/themeColor"
+            app:tabTextColor="@color/textHint_99" />
+        <View
+            android:id="@+id/view_tl"
+            style="@style/line" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
