@@ -710,10 +710,17 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchOptionPaneFailed(Response<SearchOptionPanelEntity> response, int pageIndex) {
+        if (pageIndex == 0) {
+            smartRefreshLayout.finishRefresh(false);
+            errorView.reset();
+            optionPanelAdaputer.setEmptyView(errorView);
+            mSmrHistory.setAdapter(optionPanelAdaputer);
+        }
         if (smartRefreshLayout != null) {
             smartRefreshLayout.setEnabled(true);
             smartRefreshLayout.setEnableRefresh(true);
             smartRefreshLayout.finishLoadMore(false);
+
         }
     }
 
@@ -748,6 +755,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchPhotoSchemeFailed(Response<PhotoSchemeSearchEntity> response, int pageIndex) {
+     if (pageIndex == 0) {
+            smartRefreshLayout.finishRefresh(false);
+            errorView.reset();
+            photoSchemeAdaputer.setEmptyView(errorView);
+            mSmrHistory.setAdapter(photoSchemeAdaputer);
+        }
         smartRefreshLayout.setEnabled(true);
         smartRefreshLayout.setEnableRefresh(true);
         //  if (pageIndex!=0){
