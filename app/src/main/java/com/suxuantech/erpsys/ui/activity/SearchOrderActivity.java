@@ -3,7 +3,6 @@ package com.suxuantech.erpsys.ui.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +39,7 @@ import com.suxuantech.erpsys.ui.adapter.QuickAdapter;
 import com.suxuantech.erpsys.ui.adapter.RecyclerHolder;
 import com.suxuantech.erpsys.ui.widget.AdjustDrawableTextView;
 import com.suxuantech.erpsys.ui.widget.DefaultItemDecoration;
+import com.suxuantech.erpsys.ui.widget.ErrorView;
 import com.suxuantech.erpsys.ui.widget.OneKeyClearAutoCompleteText;
 import com.suxuantech.erpsys.ui.widget.TextViewDrawableClickView;
 import com.suxuantech.erpsys.utils.DateUtil;
@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -125,11 +124,18 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
     TypeFlag searchType = TypeFlag.NOMAL;
     private QuickAdapter<ArrayList<SearchOptionPanelEntity.DataBean>> optionPanelAdaputer;
     private QuickAdapter<ArrayList<PhotoSchemeSearchEntity.DataBean>> photoSchemeAdaputer;
+    ErrorView errorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_order);
+        errorView = new ErrorView(this);
+        errorView.setOnClickListener(view -> {
+                    errorView.setProgressBarVisible(true);
+                    smartRefreshLayout.autoRefresh();
+                }
+        );
         useButterKnife();
         if (getIntent().hasExtra("type")) {
             searchType = (TypeFlag) getIntent().getSerializableExtra("type");
@@ -217,9 +223,11 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                             });
                         }
                     };
+
                     rvAllSchemed.setAdapter(childenAdaputer);
                 }
             };
+            optionPanelAdaputer.setEmptyView(errorView);
         } else if (TypeFlag.PHOTOGRAPH == searchType) {
             ArrayList<ArrayList<PhotoSchemeSearchEntity.DataBean>> lists = new ArrayList<>();
             photoSchemeAdaputer = new QuickAdapter<ArrayList<PhotoSchemeSearchEntity.DataBean>>(R.layout.item_search_option_panel, lists) {
@@ -270,7 +278,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     rvAllSchemed.setAdapter(childenAdaputer);
                 }
             };
-
+            photoSchemeAdaputer.setEmptyView(errorView);
         } else {
             quickAdapter = new QuickAdapter<SearchOrderEntity.DataBean>(R.layout.item_new_search_order_info, null) {
                 @Override
@@ -289,7 +297,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                     tvConsumptionType.setText(new MyString("消费类型:").setColor(getResources().getColor(R.color.hintColor)));
                     tvConsumptionType.append(new MyString(StringUtils.safetyString(item.getConsumption_type())).setColor(getResources().getColor(R.color.textColor)));
                     tvOrderDate.setText(new MyString("订单日期:").setColor(getResources().getColor(R.color.hintColor)));
-                    tvOrderDate.append(new MyString(DateUtil.String2String(item.getTargetdate(),DateUtil.DatePattern.JUST_DAY_NUMBER,DateUtil.DatePattern.ONLY_DAY)).setColor(getResources().getColor(R.color.textColor)));
+                    tvOrderDate.append(new MyString(DateUtil.String2String(item.getTargetdate(), DateUtil.DatePattern.JUST_DAY_NUMBER, DateUtil.DatePattern.ONLY_DAY)).setColor(getResources().getColor(R.color.textColor)));
                     tvPackageName.setText(new MyString("包套名称:").setColor(getResources().getColor(R.color.hintColor)));
                     tvPackageName.append(new MyString(StringUtils.safetyString(item.getPackage_name() + "")).setColor(getResources().getColor(R.color.textColor)));
                 }
@@ -304,9 +312,16 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
                 intent.putExtras(bundle);
                 startActivity(intent);
             });
+            quickAdapter.setEmptyView(errorView);
         }
     }
 
+    /**
+     * 拍照排程的点击事件
+     * @param item
+     * @param isAdd
+     * @param changeIndex
+     */
     private void photoScheme(ArrayList<PhotoSchemeSearchEntity.DataBean> item, boolean isAdd, int changeIndex) {
         if (schemeData.getArea().equals("全部") || item.get(0).getArea().equals(schemeData.getArea())) {
             if (isAdd) {
@@ -333,6 +348,12 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         }
     }
 
+    /**
+     * 选片排程的点击事件
+     * @param item
+     * @param isAdd
+     * @param changeIndex
+     */
     private void optionPanelScheme(ArrayList<SearchOptionPanelEntity.DataBean> item, boolean isAdd, int changeIndex) {
         if (schemeData.getArea().equals("全部") || item.get(0).getArea().equals(schemeData.getArea())) {
             if (isAdd) {
@@ -500,25 +521,6 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         }
     }
 
-    /**
-     * 订单的详情拼接
-     *
-     * @param text
-     * @param color
-     * @return
-     */
-    public String colorText(Map<String, String> text, @IdRes int... color) {
-        StringBuffer sb = new StringBuffer();
-        int i = 0;
-        for (Map.Entry<String, String> entry : text.entrySet()) {
-            sb.append("<font color='" + getResources().getColor(color[0]) + "'>" + entry.getKey() + "</font> <font color='" + getResources().getColor(color[1]) + "'>" + entry.getValue() + "</font><br/>");
-            if (i == text.size()) {
-                sb.append("<br/>");
-            }
-            i++;
-        }
-        return sb.toString();
-    }
 
     /**
      * 弹窗确认删除历史
@@ -564,6 +566,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
         }
         if (quickAdapter != null) {
             quickAdapter.setEnableLoadMore(false);
+            quickAdapter.updateAll(null);
         }
 
         //网络搜搜
@@ -571,7 +574,7 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
             if (App.getApplication().hasPermission("A2")) {
                 mSearchOrderPresenter.sosoNetOrder(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
             } else {
-                ToastUtils.snackbarShort("无权查询","确定");
+                ToastUtils.snackbarShort("无权查询", "确定");
             }
         } else if (searchType == TypeFlag.OPTION_PANEL) {
             mSearchOrderPresenter.sosoOptionPanelScheme(key, mBtnStartDate.getText().toString(), mBtnEndDate.getText().toString(), true, showWindow);
@@ -635,7 +638,11 @@ public class SearchOrderActivity extends TitleNavigationActivity implements ISea
 
     @Override
     public void searchFailed(Response<SearchOrderEntity> response, int pageIndex) {
-        if (pageIndex==0){
+        if (pageIndex == 0) {
+            smartRefreshLayout.finishRefresh(false);
+            errorView.reset();
+            quickAdapter.setEmptyView(errorView);
+            mSmrHistory.setAdapter(quickAdapter);
         }
         smartRefreshLayout.setEnabled(true);
         smartRefreshLayout.setEnableRefresh(true);
