@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <LinearLayout
+            android:id="@+id/ll_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/rl_delete"
@@ -40,7 +41,7 @@
                     app:sRightTextSize="@dimen/xs40"
                     app:sTextViewDrawablePadding="@dimen/px30"></com.allen.library.SuperTextView>
             </LinearLayout>
-            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_one_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

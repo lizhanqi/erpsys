@@ -6,11 +6,13 @@ import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,12 +31,12 @@ import com.suxuantech.erpsys.nohttp.Contact;
 import com.suxuantech.erpsys.nohttp.HttpListener;
 import com.suxuantech.erpsys.nohttp.JavaBeanRequest;
 import com.suxuantech.erpsys.ui.adapter.ProductGroupAdaputer;
+import com.suxuantech.erpsys.ui.widget.ErrorView;
 import com.suxuantech.erpsys.utils.StringUtils;
 import com.suxuantech.erpsys.utils.ToastUtils;
 import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,12 +64,14 @@ public class ProductDataFragment extends BaseSupportFragment {
     @BindView(R.id.stv_one_package)
     SuperTextView mStvOnePackage;
     @BindView(R.id.recycler_one_product)
-    SwipeMenuRecyclerView mRecyclerOneProduct;
+    RecyclerView mRecyclerOneProduct;
     @BindView(R.id.smart_refresh)
     SmartRefreshLayout smartRefreshLayout;
+
+    @BindView(R.id.ll_content)
+    LinearLayout llContent;
     private Unbinder unbinder;
     private ProductGroupAdaputer productGroupAdaputer;
-
     /**
      * order_type" : 6, // 7==已完成
      * "blankoutannal" : 0,  //1 == 作废
@@ -76,7 +80,7 @@ public class ProductDataFragment extends BaseSupportFragment {
      */
     private List<DeleteCheckEntity.DataBean> productPermission;
     private CustomerProductEntity.DataBean dataBean;
-
+    ErrorView errorView;
     /**
      * 一销或者二销任意一项没锁定
      *
@@ -117,9 +121,16 @@ public class ProductDataFragment extends BaseSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_data, container, false);
+        errorView = new ErrorView(getContext());
         unbinder = ButterKnife.bind(this, view);
         useEventBus();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         onCheckedChange();
+        smartRefreshLayout.setEnableLoadMore(false);
         smartRefreshLayout.autoRefresh();
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
             if (isShowCheckBox) {
@@ -128,7 +139,7 @@ public class ProductDataFragment extends BaseSupportFragment {
             deleteCheck();
             getProduct();
         });
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     /**
@@ -162,6 +173,11 @@ public class ProductDataFragment extends BaseSupportFragment {
         }
     }
 
+    /**
+     * 添加包套
+     *
+     * @param url
+     */
     public void addPackage(String url) {
         //请求实体
         JavaBeanRequest<SimpleEntity> districtBeanJavaBeanRequest = new JavaBeanRequest<SimpleEntity>(url, RequestMethod.POST, SimpleEntity.class);
@@ -190,12 +206,14 @@ public class ProductDataFragment extends BaseSupportFragment {
         request(2, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     public void setData(CustomerProductEntity.DataBean dataBean) {
+        if (dataBean.getEx() == null && dataBean.getYx() == null) {
+            smartRefreshLayout.setRefreshContent(errorView);
+            return;
+        } else {
+            smartRefreshLayout.setRefreshContent(llContent);
+        }
         productGroupAdaputer = new ProductGroupAdaputer(getActivity(), true, dataBean);
         mRecyclerOneProduct.setAdapter(productGroupAdaputer);
         //recycleview和其他view滑动冲突可以禁用
@@ -279,6 +297,9 @@ public class ProductDataFragment extends BaseSupportFragment {
 //        alertView.show();
     }
 
+    /**
+     * 获得客户产品
+     */
     public void getProduct() {
         String orderId = getArguments().getString("orderId");
         String url = Contact.getFullUrl(Contact.CUSTOMER_PRODUCT, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
@@ -286,8 +307,8 @@ public class ProductDataFragment extends BaseSupportFragment {
         HttpListener<CustomerProductEntity> searchByCustmor = new HttpListener<CustomerProductEntity>() {
             @Override
             public void onSucceed(int what, Response<CustomerProductEntity> response) {
-                smartRefreshLayout.finishRefresh();
                 dataBean = response.get().getData();
+                smartRefreshLayout.finishRefresh();
                 if (response.get().isOK()) {
                     if (dataBean != null) {
                         List<CustomerProductEntity.DataBean.YxBean.YxpBean> yxp = dataBean.getYx().getYxp();
@@ -315,6 +336,9 @@ public class ProductDataFragment extends BaseSupportFragment {
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
+    /**
+     * 删除产品验证(验证包套是否锁定,是否完成,是否作废)
+     */
     private void deleteCheck() {
         String orderId = getArguments().getString("orderId");
         String url = Contact.getFullUrl(Contact.DELETE_CHEKE, Contact.TOKEN, orderId, App.getApplication().getUserInfor().getShop_code());
@@ -418,6 +442,7 @@ public class ProductDataFragment extends BaseSupportFragment {
 
     /**
      * 删除产品,或者包套
+     *
      * @param url
      * @param packageDelete
      */
@@ -429,6 +454,7 @@ public class ProductDataFragment extends BaseSupportFragment {
             public void onSucceed(int what, Response<SimpleEntity> response) {
                 smartRefreshLayout.autoRefresh();
                 if (packageDelete) {
+                    mCbOneAll.setChecked(false);
                     EventBus.getDefault().post("removeAllMenu");
                 }
             }
