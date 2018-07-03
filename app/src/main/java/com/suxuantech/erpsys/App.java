@@ -10,14 +10,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
-import com.antfortune.freeline.util.AppUtils;
 import com.anye.greendao.gen.DaoMaster;
 import com.anye.greendao.gen.DaoSession;
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.Utils;
-import com.codemonkeylabs.fpslibrary.TinyDancer;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -173,7 +171,7 @@ public class App extends Application {
         super.onCreate();
         application = this;
         context = this.getApplicationContext();
-        if (AppUtils.isMainProcess(this)) {
+        if (isMainProcess()) {
             //初始化greendao
             setDatabase();
             //  initSkinPeeler();
@@ -193,7 +191,7 @@ public class App extends Application {
             //错误页初始化
             initErrorPage();
             CARE_IM_LOGIN = SPUtils.getInstance().getBoolean(CARE_IM, true);
-            ISDEBUG = SPUtils.getInstance().getBoolean(APP_LOG_NAME, true);
+            ISDEBUG = SPUtils.getInstance().getBoolean(APP_LOG_NAME, false);
             //fragmention显示球初始化
             Fragmentation.builder()
                     // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
@@ -222,8 +220,8 @@ public class App extends Application {
             }
         } else {
             //帧数检测初始化
-            TinyDancer.create()
-                    .show(context);
+//            TinyDancer.create()
+//                    .show(context);
         }
     }
 

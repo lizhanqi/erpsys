@@ -222,7 +222,6 @@ public class MyFragment extends BaseLazyFragment {
             case R.id.about_Us:
                 WebActivityConfig webActivityConfig = new WebActivityConfig(getContext());
                 String url = "http://www.suxuantech.com/col.jsp?id=106";
-                url = "http://demo.rockoa.com/?m=index&d=we";
                 webActivityConfig.loadUrl(url).showToolbar(false);
                 webActivityConfig.start();
                 break;

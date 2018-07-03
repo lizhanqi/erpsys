@@ -70,8 +70,9 @@ public class ProgressWebView extends WebView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
-
+        removeJavascriptInterface("searchBoxJavaBridge_");// API，显式地移除 searchBoxJavaBridge_、accessibility、accessibilityTraversal
+        removeJavascriptInterface("accessibility");
+        removeJavascriptInterface("accessibilityTraversal");
 
 
     }
@@ -167,7 +168,8 @@ public class ProgressWebView extends WebView {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, android.net.http.SslError error) {
-            handler.proceed();
+      //发现证书错误时，不采用handler.proceed()方法进行处理，采用默认的方法handler.cancel()进行处理，停止加载问题页面。
+            handler.cancel();
         }
 
         @Override

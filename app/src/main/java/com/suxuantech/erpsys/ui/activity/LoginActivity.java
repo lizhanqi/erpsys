@@ -235,7 +235,6 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
                 return false;
             }
             if (event.getX() > mCompanyID.getWidth() - mCompanyID.getPaddingRight() - drawable.getIntrinsicWidth()) {
-                ScanActivity.isDebug=true;
                 if (!hasPermission(Permission.Group.CAMERA)) {
                     requestPermission(Permission.Group.CAMERA);
                 }else {
@@ -440,7 +439,7 @@ public class LoginActivity extends TitleNavigationActivity implements LoaderMana
         request(0, districtBeanJavaBeanRequest, searchByCustmor, false, false);
     }
 
-    /**
+    /**A
      * 登录C#的
      *
      * @param name

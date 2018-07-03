@@ -225,7 +225,6 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void result(byte[] data, int w, int h, Rect rect) {
                 if (isDebug) {
-
                     final Bitmap bitmap = decodeYUV2Bitmap(data, w, h);
                     final Bitmap bitmap1 = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height());
                     runOnUiThread(new Runnable() {

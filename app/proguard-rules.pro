@@ -285,4 +285,7 @@ public static java.lang.String TABLENAME;
 -keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
      <init>(...);
  }
-
+#实体
+-keep class com.suxuantech.erpsys.entity.** { *; }
+#聊天
+-keep class com.suxuantech.erpsys.chat.** { *; }
